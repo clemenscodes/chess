@@ -1,0 +1,50 @@
+{
+	"tasksRunnerOptions": {
+		"default": {
+			"runner": "nx/tasks-runners/default",
+			"options": {
+				"cacheableTargets": []
+			}
+		}
+	},
+	"targetDefaults": {
+		"build": {
+			"dependsOn": ["^build"]
+		}
+	},
+	"workspaceLayout": {
+		"appsDir": "apps",
+		"libsDir": "libs"
+	},
+	"installation": {
+		"version": "16.10.0",
+		"plugins": {
+			"@jnxplus/nx-maven": "latest"
+		}
+	},
+	"generators": {
+		"@jnxplus/nx-maven": {
+			"application": {
+				"framework": "none",
+				"simplePackageName": true,
+				"minimal": true,
+				"directory": "apps",
+				"simpleName": true,
+				"groupId": "thm.pis",
+				"projectVersion": "0.0.1",
+				"parentProject": "pis"
+			},
+			"library": {
+				"framework": "none",
+				"simplePackageName": true,
+				"simpleName": true,
+				"skipStarterCode": true,
+				"directory": "libs",
+				"groupId": "thm.pis",
+				"projectVersion": "0.0.1",
+				"parentProject": "pis"
+			}
+		}
+	},
+	"plugins": ["@jnxplus/nx-maven"]
+}

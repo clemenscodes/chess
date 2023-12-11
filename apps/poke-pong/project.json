@@ -1,0 +1,30 @@
+{
+	"name": "poke-pong",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "application",
+	"sourceRoot": "apps/poke-pong/src",
+	"targets": {
+		"build": {
+			"executor": "@jnxplus/nx-maven:run-task",
+			"outputs": ["{projectRoot}/target"],
+			"options": {
+				"task": "compile -DskipTests=true"
+			}
+		},
+		"serve": {
+			"executor": "@jnxplus/nx-maven:run-task",
+			"options": {
+				"task": "exec:java"
+			},
+			"dependsOn": ["build"]
+		},
+		"test": {
+			"executor": "@jnxplus/nx-maven:run-task",
+			"options": {
+				"task": "test"
+			},
+			"dependsOn": ["build"]
+		}
+	},
+	"tags": []
+}

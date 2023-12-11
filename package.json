@@ -1,0 +1,46 @@
+{
+	"name": "pis",
+	"version": "0.0.1",
+	"description": "Monorepo für Programmierung interaktiver Systeme",
+	"author": "Clemens Horn",
+	"license": "MIT",
+	"private": true,
+	"scripts": {
+		"fmt": "pnpm fmt:xml && pnpm fmt:java && pnpm nx format --all",
+		"fmt:check": "pnpm nx format:check --all",
+		"fmt:xml": "prettier --plugin=@prettier/plugin-xml --print-width 80 --write '**/*.xml'",
+		"fmt:java": "prettier --plugin=prettier-plugin-java --print-width 80 --write '**/*.java'",
+		"build": "pnpm nx affected -t build --output-style=stream",
+		"build:ci": "pnpm run build --configuration=ci",
+		"build:all": "pnpm nx run-many -t build --output-style=stream --skip-nx-cache",
+		"test": "pnpm nx affected -t test --output-style=stream",
+		"test:ci": "pnpm run test --configuration=ci",
+		"test:all": "pnpm nx run-many -t test --output-style=stream --skip-nx-cache",
+		"prepare": "husky install"
+	},
+	"devDependencies": {
+		"@commitlint/cli": "^18.2.0",
+		"@commitlint/config-conventional": "^18.1.0",
+		"@commitlint/config-nx-scopes": "^18.3.0",
+		"@jnxplus/nx-maven": "^0.15.1",
+		"@prettier/plugin-xml": "^3.2.1",
+		"commitizen": "^4.3.0",
+		"commitlint": "^18.2.0",
+		"cz-git": "^1.7.1",
+		"husky": "^8.0.3",
+		"nx": "^17.0.2",
+		"prettier": "^3.0.3",
+		"prettier-plugin-java": "^2.3.1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/clemenscodes/pis.git"
+	},
+	"bugs": {
+		"url": "https://github.com/clemenscodes/pis/issues"
+	},
+	"homepage": "https://github.com/clemenscodes/pis#readme",
+	"keywords": [
+		"java"
+	]
+}
