@@ -1,7 +1,7 @@
 {
-	"name": "pis",
+	"name": "chess",
 	"version": "0.0.1",
-	"description": "Monorepo für Programmierung interaktiver Systeme",
+	"description": "Monorepo für das Programmierprojekt von Programmierung interaktiver Systeme",
 	"author": "Clemens Horn",
 	"license": "MIT",
 	"private": true,

@@ -47,36 +47,10 @@
 	</build>
 
 	<modules>
-		<module>apps/evolis</module>
-		<module>apps/voltobal</module>
-		<module>apps/random-pokejoust</module>
-		<module>apps/interactive-pokejoust</module>
-		<module>libs/libprocessing</module>
-		<module>libs/pokemon</module>
-		<module>libs/ibitak</module>
-		<module>apps/evolis-controller</module>
-		<module>apps/tictactoe</module>
-		<module>apps/evolis-package</module>
-		<module>apps/poke-pong</module>
-		<module>libs/libtictactoe</module>
-		<module>libs/libpoke-pong</module>
-		<module>apps/mvc-poke-pong</module>
-		<module>apps/poke-team</module>
-		<module>apps/pokedex</module>
-		<module>libs/libpoke-team</module>
-		<module>libs/libpokedex</module>
-		<module>apps/evolis-final</module>
-		<module>apps/poke-dinner</module>
-		<module>apps/gotta-catch-em-all</module>
-		<module>apps/semaphore-molecule-factory</module>
-		<module>apps/poke-trade</module>
-		<module>apps/network-demo</module>
-		<module>libs/libtcpong</module>
-		<module>apps/tcpong</module>
-		<module>libs/libtcp</module>
-		<module>apps/pokeview</module>
-		<module>libs/libcontrolp5</module>
 		<module>apps/chess</module>
+		<module>libs/libprocessing</module>
+		<module>libs/libcontrolp5</module>
+		<module>libs/libtcp</module>
 		<module>libs/libchess</module>
 	</modules>
 </project>
