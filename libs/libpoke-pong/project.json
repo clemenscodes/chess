@@ -1,0 +1,22 @@
+{
+	"name": "libpoke-pong",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "library",
+	"sourceRoot": "./libs/libpoke-pong/src",
+	"targets": {
+		"build": {
+			"executor": "@jnxplus/nx-maven:run-task",
+			"outputs": ["{projectRoot}/target"],
+			"options": {
+				"task": "install -DskipTests=true"
+			}
+		},
+		"test": {
+			"executor": "@jnxplus/nx-maven:run-task",
+			"options": {
+				"task": "test"
+			}
+		}
+	},
+	"tags": []
+}

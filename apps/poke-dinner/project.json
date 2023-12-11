@@ -1,0 +1,30 @@
+{
+	"name": "poke-dinner",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "application",
+	"sourceRoot": "./apps/poke-dinner/src",
+	"targets": {
+		"build": {
+			"executor": "@jnxplus/nx-maven:run-task",
+			"outputs": ["{projectRoot}/target"],
+			"options": {
+				"task": "compile -DskipTests=true"
+			}
+		},
+		"serve": {
+			"executor": "@jnxplus/nx-maven:run-task",
+			"options": {
+				"task": "exec:java"
+			},
+			"dependsOn": ["build"]
+		},
+		"test": {
+			"executor": "@jnxplus/nx-maven:run-task",
+			"options": {
+				"task": "test"
+			},
+			"dependsOn": ["build"]
+		}
+	},
+	"tags": []
+}

@@ -1,0 +1,20 @@
+# Nx
+.nx/installation
+.nx/cache
+
+# IntelliJ
+.idea/
+**/.project
+**/.settings
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+dist/
+
+# Node
+node_modules
+docs
+coverage

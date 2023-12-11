@@ -1,0 +1,8 @@
+{
+	"plugins": ["prettier-plugin-java", "@prettier/plugin-xml"],
+	"printWidth": 80,
+	"trailingComma": "all",
+	"tabWidth": 4,
+	"useTabs": true,
+	"xmlWhitespaceSensitivity": "ignore"
+}
