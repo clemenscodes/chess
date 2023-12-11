@@ -1,6 +1,6 @@
 package tcp;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -10,6 +10,7 @@ public class ConnectionManager {
 	private Socket serverSocket;
 	private Socket clientSocket;
 	private final String host;
+
 	private final int port;
 	private boolean isClient;
 	private boolean connectionAlive;
