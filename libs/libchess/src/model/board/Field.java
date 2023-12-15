@@ -15,7 +15,7 @@ public class Field implements Serializable {
 		return piece;
 	}
 
-	public void setPiece(Piece piece) {
+	void setPiece(Piece piece) {
 		this.piece = piece;
 	}
 }
