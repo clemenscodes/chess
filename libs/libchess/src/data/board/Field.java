@@ -1,21 +1,21 @@
 package data.board;
 
-import data.piece.Unit;
+import data.piece.Piece;
 import java.io.Serializable;
 
 public class Field implements Serializable {
 
-	private Unit unit;
+	private Piece piece;
 
-	public Field(Unit unit) {
-		setUnit(unit);
+	public Field(Piece piece) {
+		setPiece(piece);
 	}
 
-	public Unit getUnit() {
-		return unit;
+	public Piece getPiece() {
+		return piece;
 	}
 
-	private void setUnit(Unit unit) {
-		this.unit = unit;
+	private void setPiece(Piece piece) {
+		this.piece = piece;
 	}
 }
