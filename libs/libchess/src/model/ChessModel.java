@@ -5,6 +5,7 @@ import model.data.board.Board;
 import model.data.board.Field;
 import model.data.player.Black;
 import model.data.player.White;
+import model.data.unit.Unit;
 
 public class ChessModel {
 
@@ -16,8 +17,8 @@ public class ChessModel {
 	public void startGame(int width, int height) {
 		setGameState(GameState.START);
 		setBoard(new Board(new Field[8 * 8]));
-		setWhite(new White());
-		setBlack(new Black());
+		setWhite(new White(new Unit[16]));
+		setBlack(new Black(new Unit[16]));
 	}
 
 	public void startNewGame(int width, int height) {
