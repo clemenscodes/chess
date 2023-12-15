@@ -1,9 +1,9 @@
-package data.unit;
+package data.piece;
 
 import data.Color;
 import java.io.Serializable;
 
-public class Unit implements Serializable {
+public class Piece implements Serializable {
 
 	private Color color;
 	private String name;
@@ -11,7 +11,7 @@ public class Unit implements Serializable {
 	private int position;
 	private int id;
 
-	public Unit(Color color, String name, int material, int position, int id) {
+	public Piece(Color color, String name, int material, int position, int id) {
 		setColor(color);
 		setName(name);
 		setMaterial(material);

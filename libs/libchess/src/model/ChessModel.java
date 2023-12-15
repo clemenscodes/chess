@@ -15,7 +15,7 @@ public class ChessModel {
 
 	public void startGame(int width, int height) {
 		setGameState(GameState.START);
-		setBoard(new Board(new Field[8 * 8]));
+		setBoard(new Board());
 		setWhite(new White());
 		setBlack(new Black());
 	}

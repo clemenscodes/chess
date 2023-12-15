@@ -1,6 +1,6 @@
 package data.board;
 
-import data.unit.Unit;
+import data.piece.Unit;
 import java.io.Serializable;
 
 public class Field implements Serializable {

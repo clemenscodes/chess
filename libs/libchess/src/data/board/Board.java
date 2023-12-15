@@ -6,8 +6,8 @@ public class Board implements Serializable {
 
 	private Field[] fields;
 
-	public Board(Field[] fields) {
-		setFields(fields);
+	public Board() {
+		setFields(new Field[8 * 8]);
 	}
 
 	public Field[] getFields() {

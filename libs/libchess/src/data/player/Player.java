@@ -2,7 +2,7 @@ package data.player;
 
 import data.Color;
 import data.board.Board;
-import data.unit.*;
+import data.piece.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -27,16 +27,12 @@ public class Player implements Serializable {
 	}
 
 	private void initializePawns() {
-		int position;
 		pawns = new ArrayList<>();
 		for (int i = 1; i <= 8; i++) {
-			if (getColor() == Color.WHITE) {
-				position = Board.getRowIndex(2) + i;
-				pawns.add(new Pawn(getColor(), position, position));
-			} else {
-				position = Board.getRowIndex(8) - i;
-				pawns.add(new Pawn(getColor(), position, position));
-			}
+			int position = getColor() == Color.WHITE
+				? Board.getRowIndex(2) + i
+				: Board.getRowIndex(8) - i;
+			pawns.add(new Pawn(getColor(), position, position));
 		}
 	}
 
