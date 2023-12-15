@@ -6,6 +6,7 @@
 	"license": "MIT",
 	"private": true,
 	"scripts": {
+		"cloc": "cloc libs/libchess/src/model",
 		"fmt": "pnpm fmt:xml && pnpm fmt:java && pnpm nx format --all",
 		"fmt:check": "pnpm nx format:check --all",
 		"fmt:xml": "prettier --plugin=@prettier/plugin-xml --print-width 80 --write '**/*.xml'",
