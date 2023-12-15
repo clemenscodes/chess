@@ -13,10 +13,6 @@ public class ChessView extends PApplet implements IChessView {
 		pixelDensity(1);
 	}
 
-	public void setController(IChessController controller) {
-		this.controller = controller;
-	}
-
 	@Override
 	public void draw() {
 		controller.nextFrame();
@@ -30,6 +26,10 @@ public class ChessView extends PApplet implements IChessView {
 	@Override
 	public void setup() {
 		controller.startGame(width, height);
+	}
+
+	public void setController(IChessController controller) {
+		this.controller = controller;
 	}
 
 	public void drawGameOver() {}

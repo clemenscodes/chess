@@ -19,28 +19,8 @@ public class Piece implements Serializable {
 		setId(id);
 	}
 
-	private void setId(int id) {
-		this.id = id;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	private Color getColor() {
-		return color;
-	}
-
-	private void setColor(Color color) {
-		this.color = color;
-	}
-
 	public String getName() {
 		return name;
-	}
-
-	private void setName(String name) {
-		this.name = name;
 	}
 
 	public int getMaterial() {
@@ -51,11 +31,31 @@ public class Piece implements Serializable {
 		return position;
 	}
 
+	public int getId() {
+		return id;
+	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	private void setColor(Color color) {
+		this.color = color;
+	}
+
+	private void setName(String name) {
+		this.name = name;
+	}
+
 	private void setPosition(int position) {
 		this.position = position;
 	}
 
 	private void setMaterial(int material) {
 		this.material = material;
+	}
+
+	private void setId(int id) {
+		this.id = id;
 	}
 }

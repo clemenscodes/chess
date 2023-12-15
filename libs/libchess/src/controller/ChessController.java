@@ -42,7 +42,22 @@ public class ChessController implements IChessController {
 	}
 
 	public void nextFrame() {
-		GameState state = this.model.getGameState();
+		var state = model.getGameState();
+		var board = model.getBoard();
+		for (var f : board.getFields()) {
+			var p = f.getPiece();
+			if (p == null) {
+				System.out.println("Empty field");
+			} else {
+				System.out.println(p.getName());
+				System.out.println(p.getMaterial());
+				System.out.println(p.getPosition());
+				System.out.println(p.getColor());
+				System.out.println(p.getId());
+			}
+		}
+		var white = board.getWhite();
+		var black = board.getBlack();
 		view.setBackground();
 		switch (state) {
 			case START -> view.drawStart();
@@ -59,7 +74,7 @@ public class ChessController implements IChessController {
 	}
 
 	public void handleUserInput(char key, int keyCode) {
-		GameState state = getGameState();
+		var state = getGameState();
 		switch (state) {
 			case START, GAME_OVER -> handleStartOrGameOverInput(key);
 			case PLAYING -> handlePlayingInput(key, keyCode);
