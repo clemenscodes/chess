@@ -1,16 +1,22 @@
 package model;
 
+import model.data.Board;
 import model.data.GameState;
-import model.data.Player;
+import model.data.player.Black;
+import model.data.player.White;
 
 public class ChessModel {
 
 	private GameState state;
-	private Player white;
-	private Player black;
+	private White white;
+	private Black black;
+	private Board board;
 
 	public void startGame(int width, int height) {
 		setGameState(GameState.START);
+		setBoard(new Board());
+		setWhite(new White());
+		setBlack(new Black());
 	}
 
 	public void startNewGame(int width, int height) {
@@ -25,15 +31,23 @@ public class ChessModel {
 		return;
 	}
 
+	public Board getBoard() {
+		return board;
+	}
+
+	private void setBoard(Board board) {
+		this.board = board;
+	}
+
 	public GameState getGameState() {
 		return state;
 	}
 
-	public Player getWhite() {
+	public White getWhite() {
 		return white;
 	}
 
-	public Player getBlack() {
+	public Black getBlack() {
 		return black;
 	}
 
@@ -41,11 +55,11 @@ public class ChessModel {
 		this.state = state;
 	}
 
-	private void setWhite(Player white) {
+	private void setWhite(White white) {
 		this.white = white;
 	}
 
-	private void setBlack(Player black) {
+	private void setBlack(Black black) {
 		this.black = black;
 	}
 }

@@ -1,6 +1,6 @@
-import processing.core.PApplet;
 import controller.ChessController;
 import model.ChessModel;
+import processing.core.PApplet;
 import tcp.ConnectionManager;
 import tcp.DataManager;
 import view.ChessView;

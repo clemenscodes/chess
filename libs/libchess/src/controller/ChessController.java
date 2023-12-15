@@ -2,7 +2,8 @@ package controller;
 
 import model.ChessModel;
 import model.data.GameState;
-import model.data.Player;
+import model.data.player.Black;
+import model.data.player.White;
 import tcp.ConnectionManager;
 import tcp.DataManager;
 import view.IChessView;
@@ -67,11 +68,11 @@ public class ChessController implements IChessController {
 		return model.getGameState();
 	}
 
-	public Player getWhite() {
+	public White getWhite() {
 		return model.getWhite();
 	}
 
-	public Player getBlack() {
+	public Black getBlack() {
 		return model.getBlack();
 	}
 
