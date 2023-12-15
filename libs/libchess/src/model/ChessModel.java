@@ -1,9 +1,8 @@
 package model;
 
-import model.data.GameState;
-import model.data.board.Board;
-import model.data.player.Black;
-import model.data.player.White;
+import model.board.Board;
+import model.player.Black;
+import model.player.White;
 
 public class ChessModel implements IChessModel {
 

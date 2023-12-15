@@ -1,7 +1,7 @@
-package model.data.board;
+package model.board;
 
 import java.io.Serializable;
-import model.data.piece.Piece;
+import model.piece.Piece;
 
 public class Field implements Serializable {
 

@@ -1,7 +1,7 @@
-package model.data.piece;
+package model.piece;
 
 import java.io.Serializable;
-import model.data.Color;
+import model.Color;
 
 public class Pawn extends Piece implements Serializable {
 

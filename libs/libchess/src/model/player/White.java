@@ -1,7 +1,7 @@
-package model.data.player;
+package model.player;
 
 import java.io.Serializable;
-import model.data.Color;
+import model.Color;
 
 public class White extends Player implements Serializable {
 

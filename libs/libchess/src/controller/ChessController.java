@@ -1,7 +1,7 @@
 package controller;
 
+import model.GameState;
 import model.IChessModel;
-import model.data.GameState;
 import tcp.IConnectionManager;
 import tcp.IDataManager;
 import view.IChessView;

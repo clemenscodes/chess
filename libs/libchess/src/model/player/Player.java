@@ -1,10 +1,10 @@
-package model.data.player;
+package model.player;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import model.data.Color;
-import model.data.board.Board;
-import model.data.piece.*;
+import model.Color;
+import model.board.Board;
+import model.piece.*;
 
 public class Player implements Serializable {
 
@@ -24,79 +24,6 @@ public class Player implements Serializable {
 		initializeRooks();
 		initializeQueens();
 		initializeKing();
-	}
-
-	private void initializePawns() {
-		pawns = new ArrayList<>();
-		for (int i = 1; i <= 8; i++) {
-			int position = getColor() == Color.WHITE
-				? Board.getRowIndex(2) + i
-				: Board.getRowIndex(8) - i;
-			pawns.add(new Pawn(getColor(), position, position));
-		}
-	}
-
-	private void initializeKnights() {
-		int position;
-		knights = new ArrayList<>();
-		if (getColor() == Color.WHITE) {
-			position = Board.getRowIndex(1) + 2;
-			knights.add(new Knight(getColor(), position, position));
-			position = Board.getRowIndex(1) + 7;
-			knights.add(new Knight(getColor(), position, position));
-		} else {
-			position = Board.getRowIndex(8) + 2;
-			knights.add(new Knight(getColor(), position, position));
-			position = Board.getRowIndex(8) + 7;
-			knights.add(new Knight(getColor(), position, position));
-		}
-	}
-
-	private void initializeBishops() {
-		int position;
-		bishops = new ArrayList<>();
-		if (getColor() == Color.WHITE) {
-			position = Board.getRowIndex(1) + 3;
-			bishops.add(new Bishop(getColor(), position, position));
-			position = Board.getRowIndex(1) + 6;
-			bishops.add(new Bishop(getColor(), position, position));
-		} else {
-			position = Board.getRowIndex(8) + 3;
-			bishops.add(new Bishop(getColor(), position, position));
-			position = Board.getRowIndex(8) + 6;
-			bishops.add(new Bishop(getColor(), position, position));
-		}
-	}
-
-	private void initializeRooks() {
-		int position;
-		rooks = new ArrayList<>();
-		if (getColor() == Color.WHITE) {
-			position = Board.getRowIndex(1) + 1;
-			rooks.add(new Rook(getColor(), position, position));
-			position = Board.getRowIndex(1) + 8;
-			rooks.add(new Rook(getColor(), position, position));
-		} else {
-			position = Board.getRowIndex(8) + 1;
-			rooks.add(new Rook(getColor(), position, position));
-			position = Board.getRowIndex(8) + 8;
-			rooks.add(new Rook(getColor(), position, position));
-		}
-	}
-
-	private void initializeQueens() {
-		queens = new ArrayList<>();
-		int position = getColor() == Color.WHITE
-			? Board.getRowIndex(1) + 4
-			: Board.getRowIndex(8) + 4;
-		queens.add(new Queen(getColor(), position, position));
-	}
-
-	private void initializeKing() {
-		int position = getColor() == Color.WHITE
-			? Board.getRowIndex(1) + 5
-			: Board.getRowIndex(8) + 5;
-		king = new King(getColor(), position, position);
 	}
 
 	public ArrayList<Pawn> getPawns() {
@@ -125,6 +52,85 @@ public class Player implements Serializable {
 
 	public Color getColor() {
 		return color;
+	}
+
+	private void initializePawns() {
+		ArrayList<Pawn> pawns = new ArrayList<>();
+		for (int i = 1; i <= 8; i++) {
+			int position = getColor() == Color.WHITE
+				? Board.getRowIndex(2) + i
+				: Board.getRowIndex(8) - i;
+			pawns.add(new Pawn(getColor(), position, position));
+		}
+		setPawns(pawns);
+	}
+
+	private void initializeKnights() {
+		int position;
+		ArrayList<Knight> knights = new ArrayList<>();
+		if (getColor() == Color.WHITE) {
+			position = Board.getRowIndex(1) + 2;
+			knights.add(new Knight(getColor(), position, position));
+			position = Board.getRowIndex(1) + 7;
+			knights.add(new Knight(getColor(), position, position));
+		} else {
+			position = Board.getRowIndex(8) + 2;
+			knights.add(new Knight(getColor(), position, position));
+			position = Board.getRowIndex(8) + 7;
+			knights.add(new Knight(getColor(), position, position));
+		}
+		setKnights(knights);
+	}
+
+	private void initializeBishops() {
+		int position;
+		ArrayList<Bishop> bishops = new ArrayList<>();
+		if (getColor() == Color.WHITE) {
+			position = Board.getRowIndex(1) + 3;
+			bishops.add(new Bishop(getColor(), position, position));
+			position = Board.getRowIndex(1) + 6;
+			bishops.add(new Bishop(getColor(), position, position));
+		} else {
+			position = Board.getRowIndex(8) + 3;
+			bishops.add(new Bishop(getColor(), position, position));
+			position = Board.getRowIndex(8) + 6;
+			bishops.add(new Bishop(getColor(), position, position));
+		}
+		setBishops(bishops);
+	}
+
+	private void initializeRooks() {
+		int position;
+		ArrayList<Rook> rooks = new ArrayList<>();
+		if (getColor() == Color.WHITE) {
+			position = Board.getRowIndex(1) + 1;
+			rooks.add(new Rook(getColor(), position, position));
+			position = Board.getRowIndex(1) + 8;
+			rooks.add(new Rook(getColor(), position, position));
+		} else {
+			position = Board.getRowIndex(8) + 1;
+			rooks.add(new Rook(getColor(), position, position));
+			position = Board.getRowIndex(8) + 8;
+			rooks.add(new Rook(getColor(), position, position));
+		}
+		setRooks(rooks);
+	}
+
+	private void initializeQueens() {
+		ArrayList<Queen> queens = new ArrayList<>();
+		int position = getColor() == Color.WHITE
+			? Board.getRowIndex(1) + 4
+			: Board.getRowIndex(8) + 4;
+		queens.add(new Queen(getColor(), position, position));
+		setQueens(queens);
+	}
+
+	private void initializeKing() {
+		int position = getColor() == Color.WHITE
+			? Board.getRowIndex(1) + 5
+			: Board.getRowIndex(8) + 5;
+		King king = new King(getColor(), position, position);
+		setKing(king);
 	}
 
 	private void setColor(Color color) {
