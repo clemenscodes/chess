@@ -1,10 +1,10 @@
-package data.player;
+package model.data.player;
 
-import data.Color;
-import data.board.Board;
-import data.piece.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import model.data.Color;
+import model.data.board.Board;
+import model.data.piece.*;
 
 public class Player implements Serializable {
 

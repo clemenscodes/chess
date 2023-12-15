@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ConnectionManager {
+public class ConnectionManager implements IConnectionManager {
 
 	private ServerSocket server;
 	private Socket serverSocket;

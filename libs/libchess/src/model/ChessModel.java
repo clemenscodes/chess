@@ -1,12 +1,11 @@
 package model;
 
-import data.GameState;
-import data.board.Board;
-import data.board.Field;
-import data.player.Black;
-import data.player.White;
+import model.data.GameState;
+import model.data.board.Board;
+import model.data.player.Black;
+import model.data.player.White;
 
-public class ChessModel {
+public class ChessModel implements IChessModel {
 
 	private GameState state;
 	private White white;
@@ -22,14 +21,6 @@ public class ChessModel {
 
 	public void startNewGame(int width, int height) {
 		setGameState(GameState.PLAYING);
-	}
-
-	public void moveWhite(float distance) {
-		return;
-	}
-
-	public void moveBlack(float distance) {
-		return;
 	}
 
 	public Board getBoard() {

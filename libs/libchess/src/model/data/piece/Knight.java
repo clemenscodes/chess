@@ -1,7 +1,7 @@
-package data.piece;
+package model.data.piece;
 
-import data.Color;
 import java.io.Serializable;
+import model.data.Color;
 
 public class Knight extends Piece implements Serializable {
 

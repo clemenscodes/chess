@@ -1,6 +1,6 @@
 package controller;
 
-import data.GameState;
+import model.data.GameState;
 
 public interface IChessController {
 	void nextFrame();

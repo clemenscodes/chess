@@ -3,7 +3,7 @@ package tcp;
 import java.io.*;
 import java.net.Socket;
 
-public class DataManager {
+public class DataManager implements IDataManager {
 
 	private InputStream in;
 	private OutputStream out;

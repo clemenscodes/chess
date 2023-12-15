@@ -1,31 +1,29 @@
 package controller;
 
-import data.GameState;
-import data.player.Black;
-import data.player.White;
-import model.ChessModel;
-import tcp.ConnectionManager;
-import tcp.DataManager;
+import model.IChessModel;
+import model.data.GameState;
+import tcp.IConnectionManager;
+import tcp.IDataManager;
 import view.IChessView;
 
 public class ChessController implements IChessController {
 
-	private ChessModel model;
-	private ConnectionManager connectionManager;
-	private DataManager dataManager;
+	private IConnectionManager connectionManager;
+	private IDataManager dataManager;
+	private IChessModel model;
 	private IChessView view;
 	protected int width;
 	protected int height;
 
-	public void setDataManager(DataManager dataManager) {
+	public void setDataManager(IDataManager dataManager) {
 		this.dataManager = dataManager;
 	}
 
-	public void setConnectionManager(ConnectionManager connectionManager) {
+	public void setConnectionManager(IConnectionManager connectionManager) {
 		this.connectionManager = connectionManager;
 	}
 
-	public void setModel(ChessModel model) {
+	public void setModel(IChessModel model) {
 		this.model = model;
 	}
 
@@ -56,24 +54,8 @@ public class ChessController implements IChessController {
 		}
 	}
 
-	public void moveWhite(float distance) {
-		model.moveWhite(distance);
-	}
-
-	public void moveBlack(float distance) {
-		model.moveBlack(distance);
-	}
-
 	public GameState getGameState() {
 		return model.getGameState();
-	}
-
-	public White getWhite() {
-		return model.getWhite();
-	}
-
-	public Black getBlack() {
-		return model.getBlack();
 	}
 
 	public void handleUserInput(char key, int keyCode) {
