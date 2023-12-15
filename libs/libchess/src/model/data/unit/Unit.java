@@ -1,14 +1,16 @@
 package model.data.unit;
 
+import model.data.Color;
 import java.io.Serializable;
 
 public class Unit implements Serializable {
 
+    Color color;
 	String name;
 	int material;
 	int position;
 
-	public Unit(String name, int material) {
+	public Unit(Color color, String name, int material) {
 		setName(name);
 		setMaterial(material);
 	}
