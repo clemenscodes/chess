@@ -5,15 +5,26 @@ import model.data.Color;
 
 public class Unit implements Serializable {
 
-	Color color;
-	String name;
-	int material;
-	int position;
+	private Color color;
+	private String name;
+	private int material;
+	private int position;
+	private int id;
 
-	public Unit(Color color, String name, int material) {
+	public Unit(Color color, String name, int material, int position, int id) {
 		setColor(color);
 		setName(name);
 		setMaterial(material);
+		setPosition(position);
+		setId(id);
+	}
+
+	private void setId(int id) {
+		this.id = id;
+	}
+
+	public int getId() {
+		return id;
 	}
 
 	private Color getColor() {

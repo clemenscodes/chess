@@ -17,4 +17,12 @@ public class Board implements Serializable {
 	public void setFields(Field[] fields) {
 		this.fields = fields;
 	}
+
+	public static int getRowIndex(int row) {
+		if (row >= 1 && row <= 8) {
+			return ((row - 1) * 8);
+		} else {
+			throw new Error("Row does not exist");
+		}
+	}
 }
