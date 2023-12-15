@@ -1,7 +1,7 @@
 package model;
 
-import model.data.Board;
 import model.data.GameState;
+import model.data.board.Board;
 import model.data.player.Black;
 import model.data.player.White;
 
