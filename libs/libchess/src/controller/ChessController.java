@@ -1,9 +1,9 @@
 package controller;
 
+import data.GameState;
+import data.player.Black;
+import data.player.White;
 import model.ChessModel;
-import model.data.GameState;
-import model.data.player.Black;
-import model.data.player.White;
 import tcp.ConnectionManager;
 import tcp.DataManager;
 import view.IChessView;

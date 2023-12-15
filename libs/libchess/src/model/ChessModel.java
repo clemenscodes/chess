@@ -1,10 +1,10 @@
 package model;
 
-import model.data.GameState;
-import model.data.board.Board;
-import model.data.board.Field;
-import model.data.player.Black;
-import model.data.player.White;
+import data.GameState;
+import data.board.Board;
+import data.board.Field;
+import data.player.Black;
+import data.player.White;
 
 public class ChessModel {
 

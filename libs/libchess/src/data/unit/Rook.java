@@ -1,7 +1,7 @@
-package model.data.unit;
+package data.unit;
 
+import data.Color;
 import java.io.Serializable;
-import model.data.Color;
 
 public class Rook extends Unit implements Serializable {
 

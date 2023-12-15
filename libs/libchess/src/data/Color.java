@@ -1,4 +1,4 @@
-package model.data;
+package data;
 
 public enum Color {
 	WHITE,

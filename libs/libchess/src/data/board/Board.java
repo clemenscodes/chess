@@ -1,4 +1,4 @@
-package model.data.board;
+package data.board;
 
 import java.io.Serializable;
 
