@@ -87,7 +87,7 @@ public class Player implements Serializable {
 		for (int i = 0; i < 8; i++) {
 			int position = getColor() == Color.WHITE
 				? Board.getRowIndex(2) + i
-				: Board.getRowIndex(8) - i;
+				: Board.getRowIndex(8) - i - 1;
 			pawns.add(new Pawn(getColor(), position, position));
 		}
 		setPawns(pawns);

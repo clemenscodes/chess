@@ -10,13 +10,26 @@ public class Piece implements Serializable {
 	private int material;
 	private int position;
 	private int id;
+	private char symbol;
 
-	public Piece(Color color, String name, int material, int position, int id) {
+	public Piece(
+		Color color,
+		String name,
+		int material,
+		int position,
+		int id,
+		char symbol
+	) {
 		setColor(color);
 		setName(name);
 		setMaterial(material);
 		setPosition(position);
 		setId(id);
+		setSymbol(symbol);
+	}
+
+	public Color getColor() {
+		return color;
 	}
 
 	public String getName() {
@@ -35,8 +48,8 @@ public class Piece implements Serializable {
 		return id;
 	}
 
-	public Color getColor() {
-		return color;
+	public char getSymbol() {
+		return symbol;
 	}
 
 	private void setColor(Color color) {
@@ -57,5 +70,9 @@ public class Piece implements Serializable {
 
 	private void setId(int id) {
 		this.id = id;
+	}
+
+	private void setSymbol(char symbol) {
+		this.symbol = symbol;
 	}
 }
