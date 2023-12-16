@@ -18,7 +18,6 @@ public class ConnectionManager implements IConnectionManager {
 	public ConnectionManager(String host, int port) {
 		this.host = host;
 		this.port = port;
-		startClient();
 	}
 
 	public boolean getConnectionAlive() {

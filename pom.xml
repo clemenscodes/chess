@@ -48,8 +48,6 @@
 
 	<modules>
 		<module>apps/chess</module>
-		<module>libs/libprocessing</module>
-		<module>libs/libcontrolp5</module>
 		<module>libs/libtcp</module>
 		<module>libs/libchess</module>
 	</modules>

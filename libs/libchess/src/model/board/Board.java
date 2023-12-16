@@ -69,7 +69,7 @@ public class Board implements Serializable {
 		allPieces.addAll(player.getQueens());
 		allPieces.add(player.getKing());
 		for (var p : allPieces) {
-			fields[p.getPosition() - 1] = new Field(p);
+			fields[p.getPosition()] = new Field(p);
 		}
 	}
 }

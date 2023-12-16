@@ -31,20 +31,18 @@
 		</dependency>
 		<dependency>
 			<groupId>thm.pis</groupId>
-			<artifactId>libcontrolp5</artifactId>
+			<artifactId>controlp5</artifactId>
 			<version>0.0.1</version>
-			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>thm.pis</groupId>
+			<artifactId>processing</artifactId>
+			<version>0.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>thm.pis</groupId>
 			<artifactId>libtcp</artifactId>
 			<version>0.0.1</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.jetbrains</groupId>
-			<artifactId>annotations</artifactId>
-			<version>RELEASE</version>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
