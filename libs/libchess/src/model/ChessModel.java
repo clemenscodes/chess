@@ -1,10 +1,10 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import model.enums.Color;
 import model.enums.GameState;
 import model.piece.Piece;
-import model.piece.extension.Empty;
 import model.player.Player;
 
 public class ChessModel implements IChessModel {
@@ -15,11 +15,26 @@ public class ChessModel implements IChessModel {
 	private GameState state;
 	private Player white;
 	private Player black;
+	private Player next;
 
 	public static void main(String[] args) {
-		ChessModel chessModel = new ChessModel();
-		chessModel.startGame();
-		chessModel.printBoard();
+		var model = new ChessModel();
+		model.startGame();
+		model.move(10, 22);
+		model.move(50, 34);
+	}
+
+	private void setNext() {
+		next = getNext().getColor() == Color.White ? getBlack() : getWhite();
+		printNext();
+	}
+
+	private Player getNext() {
+		return next;
+	}
+
+	private void initializeNext() {
+		next = getWhite();
 	}
 
 	public static int getRankIndex(int rank) {
@@ -42,9 +57,12 @@ public class ChessModel implements IChessModel {
 		setWhite(new Player(Color.White));
 		setBlack(new Player(Color.Black));
 		initializePieces();
+		initializeNext();
+		printGame();
 	}
 
 	public void startNewGame() {
+		startGame();
 		setGameState(GameState.Playing);
 	}
 
@@ -70,9 +88,7 @@ public class ChessModel implements IChessModel {
 
 	private void initializePieces() {
 		pieces = new Piece[RANKS * FILES];
-		for (int i = 0; i < pieces.length; i++) {
-			pieces[i] = new Empty(i, i);
-		}
+		Arrays.fill(pieces, null);
 		addPieces(getWhite(), pieces);
 		addPieces(getBlack(), pieces);
 	}
@@ -96,11 +112,35 @@ public class ChessModel implements IChessModel {
 			for (int file = 0; file < FILES; file++) {
 				int index = rank * FILES + file;
 				Piece piece = pieces[index];
-				char symbol = piece.getSymbol();
+				char symbol = piece == null ? ' ' : piece.getSymbol();
 				boardString.append("[").append(symbol).append("]");
 			}
-			boardString.append("\n");
+			if (rank != 0) boardString.append("\n");
 		}
 		System.out.println(boardString);
+	}
+
+	private void printNext() {
+		System.out.print("Next turn: ");
+		System.out.println(getNext().getColor());
+	}
+
+	private void printGame() {
+		printBoard();
+		printNext();
+	}
+
+	private void move(String algebraicMove) {
+		System.out.println(getNext().getColor() + "'s move: " + algebraicMove);
+		printBoard();
+		setNext();
+	}
+
+	private void move(int source, int destination) {
+		var p = pieces[source];
+		pieces[source] = null;
+		pieces[destination] = p;
+		printBoard();
+		setNext();
 	}
 }

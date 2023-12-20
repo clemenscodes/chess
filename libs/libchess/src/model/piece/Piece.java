@@ -26,12 +26,6 @@ public abstract class Piece implements IPiece, Serializable {
 		setId(id);
 	}
 
-	public Piece(Pieces variant, int position, int id) {
-		setVariant(variant);
-		setPosition(position);
-		setId(id);
-	}
-
 	public abstract boolean isValidMove(int position);
 
 	public void move(int position) {
