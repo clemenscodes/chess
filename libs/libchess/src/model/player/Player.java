@@ -2,11 +2,11 @@ package model.player;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import model.Color;
-import model.board.Board;
-import model.piece.*;
+import model.ChessModel;
+import model.enums.Color;
+import model.piece.extension.*;
 
-public class Player implements Serializable {
+public abstract class Player implements Serializable {
 
 	private Color color;
 	private ArrayList<Pawn> pawns;
@@ -86,8 +86,8 @@ public class Player implements Serializable {
 		ArrayList<Pawn> pawns = new ArrayList<>();
 		for (int i = 0; i < 8; i++) {
 			int position = getColor() == Color.White
-				? Board.getRowIndex(2) + i
-				: Board.getRowIndex(8) - i - 1;
+				? ChessModel.getRankIndex(2) + i
+				: ChessModel.getRankIndex(8) - i - 1;
 			pawns.add(new Pawn(getColor(), position, position));
 		}
 		setPawns(pawns);
@@ -97,14 +97,14 @@ public class Player implements Serializable {
 		int position;
 		ArrayList<Knight> knights = new ArrayList<>();
 		if (getColor() == Color.White) {
-			position = Board.getRowIndex(1) + 1;
+			position = ChessModel.getRankIndex(1) + 1;
 			knights.add(new Knight(getColor(), position, position));
-			position = Board.getRowIndex(1) + 6;
+			position = ChessModel.getRankIndex(1) + 6;
 			knights.add(new Knight(getColor(), position, position));
 		} else {
-			position = Board.getRowIndex(8) + 1;
+			position = ChessModel.getRankIndex(8) + 1;
 			knights.add(new Knight(getColor(), position, position));
-			position = Board.getRowIndex(8) + 6;
+			position = ChessModel.getRankIndex(8) + 6;
 			knights.add(new Knight(getColor(), position, position));
 		}
 		setKnights(knights);
@@ -114,14 +114,14 @@ public class Player implements Serializable {
 		int position;
 		ArrayList<Bishop> bishops = new ArrayList<>();
 		if (getColor() == Color.White) {
-			position = Board.getRowIndex(1) + 2;
+			position = ChessModel.getRankIndex(1) + 2;
 			bishops.add(new Bishop(getColor(), position, position));
-			position = Board.getRowIndex(1) + 5;
+			position = ChessModel.getRankIndex(1) + 5;
 			bishops.add(new Bishop(getColor(), position, position));
 		} else {
-			position = Board.getRowIndex(8) + 2;
+			position = ChessModel.getRankIndex(8) + 2;
 			bishops.add(new Bishop(getColor(), position, position));
-			position = Board.getRowIndex(8) + 5;
+			position = ChessModel.getRankIndex(8) + 5;
 			bishops.add(new Bishop(getColor(), position, position));
 		}
 		setBishops(bishops);
@@ -131,14 +131,14 @@ public class Player implements Serializable {
 		int position;
 		ArrayList<Rook> rooks = new ArrayList<>();
 		if (getColor() == Color.White) {
-			position = Board.getRowIndex(1);
+			position = ChessModel.getRankIndex(1);
 			rooks.add(new Rook(getColor(), position, position));
-			position = Board.getRowIndex(1) + 7;
+			position = ChessModel.getRankIndex(1) + 7;
 			rooks.add(new Rook(getColor(), position, position));
 		} else {
-			position = Board.getRowIndex(8);
+			position = ChessModel.getRankIndex(8);
 			rooks.add(new Rook(getColor(), position, position));
-			position = Board.getRowIndex(8) + 7;
+			position = ChessModel.getRankIndex(8) + 7;
 			rooks.add(new Rook(getColor(), position, position));
 		}
 		setRooks(rooks);
@@ -147,16 +147,16 @@ public class Player implements Serializable {
 	private void initializeQueens() {
 		ArrayList<Queen> queens = new ArrayList<>();
 		int position = getColor() == Color.White
-			? Board.getRowIndex(1) + 3
-			: Board.getRowIndex(8) + 3;
+			? ChessModel.getRankIndex(1) + 3
+			: ChessModel.getRankIndex(8) + 3;
 		queens.add(new Queen(getColor(), position, position));
 		setQueens(queens);
 	}
 
 	private void initializeKing() {
 		int position = getColor() == Color.White
-			? Board.getRowIndex(1) + 4
-			: Board.getRowIndex(8) + 4;
+			? ChessModel.getRankIndex(1) + 4
+			: ChessModel.getRankIndex(8) + 4;
 		King king = new King(getColor(), position, position);
 		setKing(king);
 	}

@@ -1,7 +1,9 @@
-package model.piece;
+package model.piece.extension;
 
 import java.io.Serializable;
-import model.Color;
+import model.piece.IPiece;
+import model.piece.Piece;
+import model.piece.Pieces;
 
 public class Empty extends Piece implements Serializable, IPiece {
 

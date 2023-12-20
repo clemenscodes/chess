@@ -1,7 +1,7 @@
 package model.piece;
 
 import java.io.Serializable;
-import model.Color;
+import model.enums.Color;
 
 public abstract class Piece implements Serializable, IPiece {
 

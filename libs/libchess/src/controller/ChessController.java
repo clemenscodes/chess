@@ -1,7 +1,7 @@
 package controller;
 
-import model.GameState;
 import model.IChessModel;
+import model.enums.GameState;
 import tcp.IConnectionManager;
 import tcp.IDataManager;
 import view.IChessView;
@@ -43,8 +43,7 @@ public class ChessController implements IChessController {
 
 	public void nextFrame() {
 		var state = model.getGameState();
-		var board = model.getBoard();
-		System.out.println(board);
+		model.printBoard();
 		view.setBackground();
 		switch (state) {
 			case Start -> view.drawStart();
