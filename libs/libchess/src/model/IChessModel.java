@@ -1,7 +1,6 @@
 package model;
 
 import model.enums.GameState;
-import model.fen.ForsythEdwardsNotation;
 import model.piece.Piece;
 
 public interface IChessModel {
@@ -12,6 +11,4 @@ public interface IChessModel {
 	void startNewGame();
 
 	Piece[] getPieces();
-
-	ForsythEdwardsNotation getFen();
 }
