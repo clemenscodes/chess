@@ -19,8 +19,8 @@ public class ChessModel implements IChessModel {
 	private boolean next;
 
 	public static void main(String[] args) {
-		var fen = new ForsythEdwardsNotation();
 		var model = new ChessModel();
+		var fen = new ForsythEdwardsNotation();
 		model.setFen(fen);
 		model.startGame();
 		model.move(10, 22);

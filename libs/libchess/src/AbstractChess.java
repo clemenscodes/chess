@@ -10,15 +10,14 @@ public abstract class AbstractChess extends ChessView {
 	private final String host;
 	private final int port;
 
-	public AbstractChess(int width, int height, String host, int port) {
-		super(width, height);
+	public AbstractChess(String host, int port) {
 		this.host = host;
 		this.port = port;
 	}
 
 	public void setup() {
 		var model = new ChessModel();
-		var view = new ChessView(width, height);
+		var view = new ChessView();
 		var controller = new ChessController();
 		var connectionManager = new ConnectionManager(host, port);
 		var dataManager = new DataManager();

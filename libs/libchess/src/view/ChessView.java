@@ -3,14 +3,21 @@ package view;
 import controller.IChessController;
 import processing.core.PApplet;
 import processing.event.KeyEvent;
+import processing.opengl.PGraphics2D;
 
 public class ChessView extends PApplet implements IChessView {
 
 	private IChessController controller;
 
-	public ChessView(int width, int height) {
-		setSize(width, height);
-		pixelDensity(1);
+	@Override
+	public void settings() {
+		fullScreen();
+		pixelDensity(displayDensity());
+	}
+
+	@Override
+	public void setup() {
+		controller.startGame();
 	}
 
 	@Override
@@ -23,11 +30,6 @@ public class ChessView extends PApplet implements IChessView {
 		controller.handleUserInput(key, keyCode);
 	}
 
-	@Override
-	public void setup() {
-		controller.startGame();
-	}
-
 	public void setController(IChessController controller) {
 		this.controller = controller;
 	}
@@ -35,10 +37,18 @@ public class ChessView extends PApplet implements IChessView {
 	public void drawGameOver() {}
 
 	public void setBackground() {
-		background(0);
+		background(255);
 	}
 
 	public void drawStart() {}
 
 	public void drawPlaying() {}
+
+	private void fillWhite() {
+		fill(237, 214, 176);
+	}
+
+	private void fillBlack() {
+		fill(181, 136, 99);
+	}
 }

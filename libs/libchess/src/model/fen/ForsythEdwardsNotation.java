@@ -4,8 +4,6 @@ import model.ChessModel;
 
 public class ForsythEdwardsNotation {
 
-	public static String StartingPosition =
-		"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 	private String[] piecePlacementData;
 	private char activeColor;
 	private String castling;
@@ -14,7 +12,7 @@ public class ForsythEdwardsNotation {
 	private int fullMoveNumber;
 
 	public ForsythEdwardsNotation() {
-		parse(ForsythEdwardsNotation.StartingPosition);
+		parse("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 	}
 
 	public ForsythEdwardsNotation(String fen) {
