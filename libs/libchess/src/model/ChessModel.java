@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import model.enums.GameState;
 import model.piece.Piece;
 import model.player.Player;
@@ -24,8 +26,6 @@ public class ChessModel implements IChessModel {
 	public static void main(String[] args) {
 		var model = new ChessModel();
 		model.startGame();
-		model.move(10, 22);
-		model.move(50, 34);
 	}
 
 	public static int getRankIndex(int rank) {
@@ -151,7 +151,6 @@ public class ChessModel implements IChessModel {
 			"'s move: " +
 			algebraicMove
 		);
-		setActiveColor(getActiveColor() == 'w' ? "b" : "w");
 	}
 
 	private void move(int source, int destination) {
@@ -161,6 +160,7 @@ public class ChessModel implements IChessModel {
 		}
 		pieces[source] = null;
 		pieces[destination] = p;
+		setActiveColor(getActiveColor() == 'w' ? "b" : "w");
 		printBoard();
 	}
 
@@ -283,6 +283,85 @@ public class ChessModel implements IChessModel {
 			fullMoveNumber = fullMoveNumberValue;
 		} catch (NumberFormatException e) {
 			throw new IllegalArgumentException("Invalid full-move number");
+		}
+	}
+
+	public static class ChessMoveParser {
+
+		public static Move parseAlgebraicNotation(String algebraicNotation) {
+			Pattern pattern = Pattern.compile(
+				"([NBRQK]?[a-h]?[1-8]?[x-]?)?([a-h][1-8])(=[NBRQK])?([+#])?"
+			);
+			Matcher matcher = pattern.matcher(algebraicNotation);
+
+			if (matcher.matches()) {
+				String piece = matcher.group(1);
+				String destinationSquare = matcher.group(2);
+				String promotion = matcher.group(3);
+				String checkOrMate = matcher.group(4);
+				System.out.println("Piece: " + piece);
+				System.out.println("Destination Square: " + destinationSquare);
+				System.out.println("Promotion: " + promotion);
+				System.out.println("Check or Mate: " + checkOrMate);
+				return new Move(
+					piece,
+					destinationSquare,
+					promotion,
+					checkOrMate
+				);
+			} else {
+				System.out.println(
+					"Invalid algebraic notation. Please provide a valid move."
+				);
+				return null;
+			}
+		}
+
+		public static void main(String[] args) {
+			String algebraicNotation = "Nf3xNd2#";
+			Move parsedMove = parseAlgebraicNotation(algebraicNotation);
+			if (parsedMove != null) {
+				System.out.println("Parsed Move: " + parsedMove.toString());
+			}
+		}
+	}
+
+	public static class Move {
+
+		private String piece;
+		private String destinationSquare;
+		private String promotion;
+		private String checkOrMate;
+
+		public Move(
+			String piece,
+			String destinationSquare,
+			String promotion,
+			String checkOrMate
+		) {
+			this.piece = piece;
+			this.destinationSquare = destinationSquare;
+			this.promotion = promotion;
+			this.checkOrMate = checkOrMate;
+		}
+
+		@Override
+		public String toString() {
+			return (
+				"Move: " +
+				"Piece='" +
+				piece +
+				'\'' +
+				", Destination Square='" +
+				destinationSquare +
+				'\'' +
+				", Promotion='" +
+				promotion +
+				'\'' +
+				", Check or Mate='" +
+				checkOrMate +
+				'\''
+			);
 		}
 	}
 }
