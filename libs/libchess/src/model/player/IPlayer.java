@@ -1,7 +1,6 @@
 package model.player;
 
 import java.util.ArrayList;
-import model.enums.Color;
 import model.piece.extension.*;
 
 public interface IPlayer {
@@ -17,7 +16,7 @@ public interface IPlayer {
 
 	King getKing();
 
-	Color getColor();
+	boolean isWhite();
 
 	void setPawns(ArrayList<Pawn> pawns);
 

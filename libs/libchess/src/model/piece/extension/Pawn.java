@@ -1,19 +1,18 @@
 package model.piece.extension;
 
 import java.io.Serializable;
-import model.enums.Color;
 import model.piece.Piece;
 import model.piece.Pieces;
 
 public class Pawn extends Piece implements Serializable {
 
-	public Pawn(Color color, int position, int id) {
-		super(color, Pieces.Pawn, 1, position, id);
-		setSymbol(getColor() == Color.White ? '♙' : '♟');
+	public Pawn(boolean isWhite, int position) {
+		super(isWhite, Pieces.Pawn, 1, position);
+		setSymbol(isWhite() ? '♙' : '♟');
 	}
 
 	@Override
-	public boolean isValidMove(int position) {
+	public boolean isValidMove(int position, Piece[] pieces) {
 		return false;
 	}
 }

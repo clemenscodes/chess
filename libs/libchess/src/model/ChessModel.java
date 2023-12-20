@@ -2,7 +2,6 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import model.enums.Color;
 import model.enums.GameState;
 import model.piece.Piece;
 import model.player.Player;
@@ -15,7 +14,7 @@ public class ChessModel implements IChessModel {
 	private GameState state;
 	private Player white;
 	private Player black;
-	private Player next;
+	private boolean next;
 
 	public static void main(String[] args) {
 		var model = new ChessModel();
@@ -25,16 +24,16 @@ public class ChessModel implements IChessModel {
 	}
 
 	private void setNext() {
-		next = getNext().getColor() == Color.White ? getBlack() : getWhite();
+		next = !getNext();
 		printNext();
 	}
 
-	private Player getNext() {
+	private boolean getNext() {
 		return next;
 	}
 
 	private void initializeNext() {
-		next = getWhite();
+		next = true;
 	}
 
 	public static int getRankIndex(int rank) {
@@ -54,8 +53,8 @@ public class ChessModel implements IChessModel {
 
 	public void startGame() {
 		setGameState(GameState.Start);
-		setWhite(new Player(Color.White));
-		setBlack(new Player(Color.Black));
+		setWhite(new Player(true));
+		setBlack(new Player(false));
 		initializePieces();
 		initializeNext();
 		printGame();
@@ -122,7 +121,7 @@ public class ChessModel implements IChessModel {
 
 	private void printNext() {
 		System.out.print("Next turn: ");
-		System.out.println(getNext().getColor());
+		System.out.println(getNext() ? "White" : "Black");
 	}
 
 	private void printGame() {
@@ -131,13 +130,16 @@ public class ChessModel implements IChessModel {
 	}
 
 	private void move(String algebraicMove) {
-		System.out.println(getNext().getColor() + "'s move: " + algebraicMove);
-		printBoard();
-		setNext();
+		System.out.println(
+			(getNext() ? "White" : "Black") + "'s move: " + algebraicMove
+		);
 	}
 
 	private void move(int source, int destination) {
 		var p = pieces[source];
+		if (!p.isValidMove(destination, pieces)) {
+			throw new Error("Invalid move");
+		}
 		pieces[source] = null;
 		pieces[destination] = p;
 		printBoard();

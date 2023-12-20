@@ -1,39 +1,23 @@
 package model.piece;
 
 import java.io.Serializable;
-import model.enums.Color;
 
 public abstract class Piece implements IPiece, Serializable {
 
-	private Color color;
+	private boolean isWhite;
 	private Pieces variant;
 	private int material;
-	private int id;
 	private int position;
 	private char symbol;
 
-	public Piece(
-		Color color,
-		Pieces variant,
-		int material,
-		int position,
-		int id
-	) {
-		setColor(color);
+	public Piece(boolean isWhite, Pieces variant, int material, int position) {
+		setIsWhite(isWhite);
 		setVariant(variant);
 		setMaterial(material);
 		setPosition(position);
-		setId(id);
 	}
 
-	public abstract boolean isValidMove(int position);
-
-	public void move(int position) {
-		if (!isValidMove(position)) {
-			throw new Error("Invalid move");
-		}
-		setPosition(position);
-	}
+	public abstract boolean isValidMove(int position, Piece[] pieces);
 
 	protected void setSymbol(char symbol) {
 		this.symbol = symbol;
@@ -43,8 +27,8 @@ public abstract class Piece implements IPiece, Serializable {
 		return symbol;
 	}
 
-	public Color getColor() {
-		return color;
+	public boolean isWhite() {
+		return isWhite;
 	}
 
 	public Pieces getVariant() {
@@ -59,12 +43,8 @@ public abstract class Piece implements IPiece, Serializable {
 		return position;
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	private void setColor(Color color) {
-		this.color = color;
+	private void setIsWhite(boolean isWhite) {
+		this.isWhite = isWhite;
 	}
 
 	private void setVariant(Pieces variant) {
@@ -73,10 +53,6 @@ public abstract class Piece implements IPiece, Serializable {
 
 	private void setMaterial(int material) {
 		this.material = material;
-	}
-
-	private void setId(int id) {
-		this.id = id;
 	}
 
 	protected void setPosition(int position) {
