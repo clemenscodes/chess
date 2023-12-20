@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import model.enums.GameState;
+import model.fen.ForsythEdwardsNotation;
 import model.piece.Piece;
 import model.player.Player;
 
@@ -14,26 +15,16 @@ public class ChessModel implements IChessModel {
 	private GameState state;
 	private Player white;
 	private Player black;
+	private ForsythEdwardsNotation fen;
 	private boolean next;
 
 	public static void main(String[] args) {
+		var fen = new ForsythEdwardsNotation();
 		var model = new ChessModel();
+		model.setFen(fen);
 		model.startGame();
 		model.move(10, 22);
 		model.move(50, 34);
-	}
-
-	private void setNext() {
-		next = !getNext();
-		printNext();
-	}
-
-	private boolean getNext() {
-		return next;
-	}
-
-	private void initializeNext() {
-		next = true;
 	}
 
 	public static int getRankIndex(int rank) {
@@ -41,6 +32,10 @@ public class ChessModel implements IChessModel {
 			return (rank - 1) * FILES;
 		}
 		throw new Error("Rank does not exist");
+	}
+
+	public ForsythEdwardsNotation getFen() {
+		return fen;
 	}
 
 	public Piece[] getPieces() {
@@ -83,6 +78,23 @@ public class ChessModel implements IChessModel {
 
 	private void setBlack(Player black) {
 		this.black = black;
+	}
+
+	private void setFen(ForsythEdwardsNotation fen) {
+		this.fen = fen;
+	}
+
+	private void setNext() {
+		next = !getNext();
+		printNext();
+	}
+
+	private boolean getNext() {
+		return next;
+	}
+
+	private void initializeNext() {
+		next = true;
 	}
 
 	private void initializePieces() {
