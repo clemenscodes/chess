@@ -25,7 +25,7 @@ public class ChessView extends PApplet implements IChessView {
 
 	@Override
 	public void setup() {
-		controller.startGame(width, height);
+		controller.startGame();
 	}
 
 	public void setController(IChessController controller) {

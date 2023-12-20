@@ -1,39 +1,25 @@
 package model;
 
 import java.util.ArrayList;
+import model.enums.Color;
 import model.enums.GameState;
 import model.piece.Piece;
 import model.piece.extension.Empty;
 import model.player.Player;
-import model.player.extension.Black;
-import model.player.extension.White;
 
 public class ChessModel implements IChessModel {
 
 	public static int FILES = 8;
 	public static int RANKS = 8;
-	private GameState state;
-	private White white;
-	private Black black;
 	private Piece[] pieces;
+	private GameState state;
+	private Player white;
+	private Player black;
 
-	public void startGame(int width, int height) {
-		setGameState(GameState.Start);
-		setWhite(new White());
-		setBlack(new Black());
-		initializePieces();
-	}
-
-	public void startNewGame(int width, int height) {
-		setGameState(GameState.Playing);
-	}
-
-	public GameState getGameState() {
-		return state;
-	}
-
-	private void setGameState(GameState state) {
-		this.state = state;
+	public static void main(String[] args) {
+		ChessModel chessModel = new ChessModel();
+		chessModel.startGame();
+		chessModel.printBoard();
 	}
 
 	public static int getRankIndex(int rank) {
@@ -43,19 +29,42 @@ public class ChessModel implements IChessModel {
 		throw new Error("Rank does not exist");
 	}
 
-	public White getWhite() {
+	public Piece[] getPieces() {
+		return pieces;
+	}
+
+	public GameState getGameState() {
+		return state;
+	}
+
+	public void startGame() {
+		setGameState(GameState.Start);
+		setWhite(new Player(Color.White));
+		setBlack(new Player(Color.Black));
+		initializePieces();
+	}
+
+	public void startNewGame() {
+		setGameState(GameState.Playing);
+	}
+
+	private void setGameState(GameState state) {
+		this.state = state;
+	}
+
+	public Player getWhite() {
 		return white;
 	}
 
-	public Black getBlack() {
+	public Player getBlack() {
 		return black;
 	}
 
-	private void setWhite(White white) {
+	private void setWhite(Player white) {
 		this.white = white;
 	}
 
-	private void setBlack(Black black) {
+	private void setBlack(Player black) {
 		this.black = black;
 	}
 
@@ -64,11 +73,11 @@ public class ChessModel implements IChessModel {
 		for (int i = 0; i < pieces.length; i++) {
 			pieces[i] = new Empty(i, i);
 		}
-		renderPieces(getWhite(), pieces);
-		renderPieces(getBlack(), pieces);
+		addPieces(getWhite(), pieces);
+		addPieces(getBlack(), pieces);
 	}
 
-	private void renderPieces(Player player, Piece[] pieces) {
+	private void addPieces(Player player, Piece[] pieces) {
 		var allPieces = new ArrayList<Piece>();
 		allPieces.addAll(player.getPawns());
 		allPieces.addAll(player.getBishops());
@@ -81,7 +90,7 @@ public class ChessModel implements IChessModel {
 		}
 	}
 
-	public void printBoard() {
+	private void printBoard() {
 		var boardString = new StringBuilder();
 		for (int rank = RANKS - 1; rank >= 0; rank--) {
 			for (int file = 0; file < FILES; file++) {

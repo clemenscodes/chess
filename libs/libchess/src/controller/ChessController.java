@@ -31,19 +31,16 @@ public class ChessController implements IChessController {
 		this.view = view;
 	}
 
-	public void startGame(int width, int height) {
-		this.width = width;
-		this.height = height;
-		model.startGame(width, height);
+	public void startGame() {
+		model.startGame();
 	}
 
 	public void startNewGame() {
-		model.startNewGame(width, height);
+		model.startNewGame();
 	}
 
 	public void nextFrame() {
 		var state = model.getGameState();
-		model.printBoard();
 		view.setBackground();
 		switch (state) {
 			case Start -> view.drawStart();

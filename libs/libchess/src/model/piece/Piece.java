@@ -3,7 +3,7 @@ package model.piece;
 import java.io.Serializable;
 import model.enums.Color;
 
-public abstract class Piece implements Serializable, IPiece {
+public abstract class Piece implements IPiece, Serializable {
 
 	private Color color;
 	private Pieces variant;

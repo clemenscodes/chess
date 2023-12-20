@@ -1,13 +1,14 @@
 package model;
 
 import model.enums.GameState;
+import model.piece.Piece;
 
 public interface IChessModel {
 	GameState getGameState();
 
-	void startGame(int width, int height);
+	void startGame();
 
-	void startNewGame(int width, int height);
+	void startNewGame();
 
-	void printBoard();
+	Piece[] getPieces();
 }

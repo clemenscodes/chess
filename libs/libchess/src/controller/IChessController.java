@@ -7,7 +7,8 @@ public interface IChessController {
 
 	void handleUserInput(char key, int keyCode);
 
-	void startGame(int width, int height);
+	void startGame();
+	void startNewGame();
 
 	GameState getGameState();
 }

@@ -6,7 +6,7 @@ import model.ChessModel;
 import model.enums.Color;
 import model.piece.extension.*;
 
-public abstract class Player implements Serializable {
+public class Player implements IPlayer, Serializable {
 
 	private Color color;
 	private ArrayList<Pawn> pawns;
