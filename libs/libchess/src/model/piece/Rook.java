@@ -6,6 +6,12 @@ import model.Color;
 public class Rook extends Piece implements Serializable {
 
 	public Rook(Color color, int position, int id) {
-		super(color, "rook", 5, position, id, 'r');
+		super(color, Pieces.Rook, 5, position, id);
+		setSymbol(getColor() == Color.White ? '♖' : '♜');
+	}
+
+	@Override
+	public boolean isValidMove(int position) {
+		return false;
 	}
 }

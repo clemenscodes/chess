@@ -3,37 +3,58 @@ package model.piece;
 import java.io.Serializable;
 import model.Color;
 
-public class Piece implements Serializable {
+public abstract class Piece implements Serializable, IPiece {
 
 	private Color color;
-	private String name;
+	private Pieces variant;
 	private int material;
-	private int position;
 	private int id;
+	private int position;
 	private char symbol;
 
 	public Piece(
 		Color color,
-		String name,
+		Pieces variant,
 		int material,
 		int position,
-		int id,
-		char symbol
+		int id
 	) {
 		setColor(color);
-		setName(name);
+		setVariant(variant);
 		setMaterial(material);
 		setPosition(position);
 		setId(id);
-		setSymbol(symbol);
+	}
+
+	public Piece(Pieces variant, int position, int id) {
+		setVariant(variant);
+		setPosition(position);
+		setId(id);
+	}
+
+	public abstract boolean isValidMove(int position);
+
+	public void move(int position) {
+		if (!isValidMove(position)) {
+			throw new Error("Invalid move");
+		}
+		setPosition(position);
+	}
+
+	protected void setSymbol(char symbol) {
+		this.symbol = symbol;
+	}
+
+	public char getSymbol() {
+		return symbol;
 	}
 
 	public Color getColor() {
 		return color;
 	}
 
-	public String getName() {
-		return name;
+	public Pieces getVariant() {
+		return variant;
 	}
 
 	public int getMaterial() {
@@ -48,20 +69,12 @@ public class Piece implements Serializable {
 		return id;
 	}
 
-	public char getSymbol() {
-		return symbol;
-	}
-
 	private void setColor(Color color) {
 		this.color = color;
 	}
 
-	private void setName(String name) {
-		this.name = name;
-	}
-
-	private void setPosition(int position) {
-		this.position = position;
+	private void setVariant(Pieces variant) {
+		this.variant = variant;
 	}
 
 	private void setMaterial(int material) {
@@ -72,7 +85,7 @@ public class Piece implements Serializable {
 		this.id = id;
 	}
 
-	private void setSymbol(char symbol) {
-		this.symbol = symbol;
+	protected void setPosition(int position) {
+		this.position = position;
 	}
 }

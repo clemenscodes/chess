@@ -6,6 +6,12 @@ import model.Color;
 public class Queen extends Piece implements Serializable {
 
 	public Queen(Color color, int position, int id) {
-		super(color, "queen", 9, position, id, 'q');
+		super(color, Pieces.Queen, 9, position, id);
+		setSymbol(getColor() == Color.White ? '♕' : '♛');
+	}
+
+	@Override
+	public boolean isValidMove(int position) {
+		return false;
 	}
 }

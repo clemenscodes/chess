@@ -8,12 +8,12 @@ public class ChessModel implements IChessModel {
 	private Board board;
 
 	public void startGame(int width, int height) {
-		setGameState(GameState.START);
+		setGameState(GameState.Start);
 		setBoard(new Board());
 	}
 
 	public void startNewGame(int width, int height) {
-		setGameState(GameState.PLAYING);
+		setGameState(GameState.Playing);
 	}
 
 	public GameState getGameState() {

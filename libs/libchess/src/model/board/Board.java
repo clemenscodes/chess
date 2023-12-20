@@ -2,6 +2,7 @@ package model.board;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import model.piece.Empty;
 import model.piece.Piece;
 import model.player.Black;
 import model.player.Player;
@@ -19,7 +20,7 @@ public class Board implements Serializable {
 	public static int F_ROW = 40;
 	public static int G_ROW = 48;
 	public static int H_ROW = 56;
-	private Field[] fields;
+	private Piece[] pieces;
 	private White white;
 	private Black black;
 
@@ -33,11 +34,7 @@ public class Board implements Serializable {
 	public Board() {
 		setWhite(new White());
 		setBlack(new Black());
-		initializeFields();
-	}
-
-	public Field[] getFields() {
-		return fields;
+		initializePieces();
 	}
 
 	public White getWhite() {
@@ -48,10 +45,6 @@ public class Board implements Serializable {
 		return black;
 	}
 
-	private void setFields(Field[] fields) {
-		this.fields = fields;
-	}
-
 	private void setWhite(White white) {
 		this.white = white;
 	}
@@ -60,17 +53,16 @@ public class Board implements Serializable {
 		this.black = black;
 	}
 
-	private void initializeFields() {
-		var fields = new Field[ROWS * COLUMNS];
+	private void initializePieces() {
+		pieces = new Piece[ROWS * COLUMNS];
 		for (int i = 0; i < 64; i++) {
-			fields[i] = new Field(null);
+			pieces[i] = new Empty(i, i);
 		}
-		addPiecesToFields(getWhite(), fields);
-		addPiecesToFields(getBlack(), fields);
-		setFields(fields);
+		renderPieces(getWhite(), pieces);
+		renderPieces(getBlack(), pieces);
 	}
 
-	private void addPiecesToFields(Player player, Field[] fields) {
+	private void renderPieces(Player player, Piece[] pieces) {
 		ArrayList<Piece> allPieces = new ArrayList<>();
 		allPieces.addAll(player.getPawns());
 		allPieces.addAll(player.getBishops());
@@ -79,7 +71,7 @@ public class Board implements Serializable {
 		allPieces.addAll(player.getQueens());
 		allPieces.add(player.getKing());
 		for (var p : allPieces) {
-			fields[p.getPosition()] = new Field(p);
+			pieces[p.getPosition()] = p;
 		}
 	}
 
@@ -89,13 +81,9 @@ public class Board implements Serializable {
 		for (int row = ROWS - 1; row >= 0; row--) {
 			for (int col = 0; col < COLUMNS; col++) {
 				int index = row * COLUMNS + col;
-				Field field = fields[index];
-				if (field.getPiece() == null) {
-					boardString.append("[ ]");
-				} else {
-					char pieceSymbol = field.getPiece().getSymbol();
-					boardString.append("[").append(pieceSymbol).append("]");
-				}
+				Piece piece = pieces[index];
+				char symbol = piece.getSymbol();
+				boardString.append("[").append(symbol).append("]");
 			}
 			boardString.append("\n");
 		}

@@ -6,6 +6,6 @@ import model.Color;
 public class White extends Player implements Serializable {
 
 	public White() {
-		super(Color.WHITE);
+		super(Color.White);
 	}
 }

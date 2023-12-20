@@ -85,7 +85,7 @@ public class Player implements Serializable {
 	private void initializePawns() {
 		ArrayList<Pawn> pawns = new ArrayList<>();
 		for (int i = 0; i < 8; i++) {
-			int position = getColor() == Color.WHITE
+			int position = getColor() == Color.White
 				? Board.getRowIndex(2) + i
 				: Board.getRowIndex(8) - i - 1;
 			pawns.add(new Pawn(getColor(), position, position));
@@ -96,7 +96,7 @@ public class Player implements Serializable {
 	private void initializeKnights() {
 		int position;
 		ArrayList<Knight> knights = new ArrayList<>();
-		if (getColor() == Color.WHITE) {
+		if (getColor() == Color.White) {
 			position = Board.getRowIndex(1) + 1;
 			knights.add(new Knight(getColor(), position, position));
 			position = Board.getRowIndex(1) + 6;
@@ -113,7 +113,7 @@ public class Player implements Serializable {
 	private void initializeBishops() {
 		int position;
 		ArrayList<Bishop> bishops = new ArrayList<>();
-		if (getColor() == Color.WHITE) {
+		if (getColor() == Color.White) {
 			position = Board.getRowIndex(1) + 2;
 			bishops.add(new Bishop(getColor(), position, position));
 			position = Board.getRowIndex(1) + 5;
@@ -130,7 +130,7 @@ public class Player implements Serializable {
 	private void initializeRooks() {
 		int position;
 		ArrayList<Rook> rooks = new ArrayList<>();
-		if (getColor() == Color.WHITE) {
+		if (getColor() == Color.White) {
 			position = Board.getRowIndex(1);
 			rooks.add(new Rook(getColor(), position, position));
 			position = Board.getRowIndex(1) + 7;
@@ -146,7 +146,7 @@ public class Player implements Serializable {
 
 	private void initializeQueens() {
 		ArrayList<Queen> queens = new ArrayList<>();
-		int position = getColor() == Color.WHITE
+		int position = getColor() == Color.White
 			? Board.getRowIndex(1) + 3
 			: Board.getRowIndex(8) + 3;
 		queens.add(new Queen(getColor(), position, position));
@@ -154,7 +154,7 @@ public class Player implements Serializable {
 	}
 
 	private void initializeKing() {
-		int position = getColor() == Color.WHITE
+		int position = getColor() == Color.White
 			? Board.getRowIndex(1) + 4
 			: Board.getRowIndex(8) + 4;
 		King king = new King(getColor(), position, position);
