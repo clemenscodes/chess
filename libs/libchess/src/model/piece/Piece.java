@@ -2,10 +2,11 @@ package model.piece;
 
 import java.io.Serializable;
 
-public abstract class Piece implements IPiece, Serializable {
+public abstract class Piece implements Movable, Serializable {
 
 	private Pieces variant;
 	private char symbol;
+	private long bits;
 
 	public Piece(Pieces variant, char symbol) {
 		setVariant(variant);
@@ -14,6 +15,14 @@ public abstract class Piece implements IPiece, Serializable {
 
 	protected void setSymbol(char symbol) {
 		this.symbol = symbol;
+	}
+
+	protected void setBits(long bits) {
+		this.bits = bits;
+	}
+
+	public long getBits() {
+		return bits;
 	}
 
 	public char getSymbol() {
@@ -27,6 +36,4 @@ public abstract class Piece implements IPiece, Serializable {
 	private void setVariant(Pieces variant) {
 		this.variant = variant;
 	}
-
-	public abstract boolean isValidMove(int position, Piece[] pieces);
 }
