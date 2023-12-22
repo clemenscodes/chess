@@ -1,10 +1,16 @@
 package model.piece;
 
 public enum Pieces {
-	Pawn,
-	Bishop,
-	Knight,
-	Rook,
-	Queen,
-	King,
+	WhitePawn,
+	WhiteBishop,
+	WhiteKnight,
+	WhiteRook,
+	WhiteQueen,
+	WhiteKing,
+	BlackPawn,
+	BlackBishop,
+	BlackKnight,
+	BlackRook,
+	BlackQueen,
+	BlackKing,
 }

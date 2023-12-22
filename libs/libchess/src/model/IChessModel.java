@@ -9,6 +9,4 @@ public interface IChessModel {
 	void startGame();
 
 	void startNewGame();
-
-	Piece[] getPieces();
 }
