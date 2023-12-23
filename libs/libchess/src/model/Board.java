@@ -32,7 +32,7 @@ public class Board implements Serializable {
 	private BlackBishop blackBishop;
 	private BlackPawn blackPawn;
 
-	public Board(ForsythEdwardsNotation fen) {
+	public Board() {
 		setBlackRook(new BlackRook());
 		setBlackKnight(new BlackKnight());
 		setBlackBishop(new BlackBishop());
@@ -45,8 +45,19 @@ public class Board implements Serializable {
 		setWhiteQueen(new WhiteQueen());
 		setWhiteKing(new WhiteKing());
 		setWhitePawn(new WhitePawn());
-		String[] ppd = fen.getPiecePlacementData();
-		initializePieces(ppd);
+	}
+
+	public void initializePieces(String[] ppd) {
+		for (int rank = 0; rank < ppd.length; rank++) {
+			int file = 0;
+			for (char pieceChar : ppd[rank].toCharArray()) {
+				if (Character.isDigit(pieceChar)) {
+					file += Character.getNumericValue(pieceChar);
+				} else {
+					initializePiece(pieceChar, rank, file++);
+				}
+			}
+		}
 	}
 
 	public WhiteKing getWhiteKing() {
@@ -152,19 +163,6 @@ public class Board implements Serializable {
 		long newBit = 1L << (rank * DIMENSION + file);
 		piece.setBits(bits | newBit);
 		setPiece(piece);
-	}
-
-	private void initializePieces(String[] ppd) {
-		for (int rank = 0; rank < ppd.length; rank++) {
-			int file = 0;
-			for (char pieceChar : ppd[rank].toCharArray()) {
-				if (Character.isDigit(pieceChar)) {
-					file += Character.getNumericValue(pieceChar);
-				} else {
-					initializePiece(pieceChar, rank, file++);
-				}
-			}
-		}
 	}
 
 	private Piece getPiece(Pieces kind) {

@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 public class ForsythEdwardsNotation implements Serializable {
 
+	public static final int MAX_HALF_MOVE_CLOCK = 150;
+	public static final int MIN_HALF_MOVE_CLOCK = 0;
+	public static final int MIN_FULL_MOVE_CLOCK = 1;
 	private String[] piecePlacementData;
 	private char activeColor;
 	private String castling;
@@ -135,12 +138,12 @@ public class ForsythEdwardsNotation implements Serializable {
 	private void setHalfMoveClock(String halfMoveClockStr) {
 		try {
 			int halfMoveClockValue = Integer.parseInt(halfMoveClockStr);
-			if (halfMoveClockValue < 0) {
+			if (halfMoveClockValue < MIN_HALF_MOVE_CLOCK) {
 				throw new IllegalArgumentException(
 					"Invalid half-move clock: It cannot be negative"
 				);
 			}
-			if (halfMoveClockValue > 150) {
+			if (halfMoveClockValue > MAX_HALF_MOVE_CLOCK) {
 				throw new IllegalArgumentException(
 					"Invalid half-move clock: Maximum allowed value is 150 under the seventy-five move rule"
 				);
@@ -154,7 +157,7 @@ public class ForsythEdwardsNotation implements Serializable {
 	private void setFullMoveNumber(String fullMoveNumberStr) {
 		try {
 			int fullMoveNumberValue = Integer.parseInt(fullMoveNumberStr);
-			if (fullMoveNumberValue < 1) {
+			if (fullMoveNumberValue < MIN_FULL_MOVE_CLOCK) {
 				throw new IllegalArgumentException(
 					"Invalid full-move number: It must be greater than or equal to 1"
 				);

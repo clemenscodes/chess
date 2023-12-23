@@ -12,13 +12,6 @@ public class ChessModel implements IChessModel {
 
 	public static void main(String[] args) {
 		var model = new ChessModel();
-		model.setFen(
-			new ForsythEdwardsNotation(
-				"8/5k2/3p4/1p1Pp2p/pP2Pp1P/P4P1K/8/8 b - - 99 50"
-			)
-		);
-		model.setBoard(new Board(model.getFen()));
-		System.out.println(model.getBoard());
 		model.startGame();
 	}
 
@@ -39,6 +32,10 @@ public class ChessModel implements IChessModel {
 	}
 
 	public void startGame() {
+		setFen(new ForsythEdwardsNotation());
+		setBoard(new Board());
+		getBoard().initializePieces(getFen().getPiecePlacementData());
+		setMoveList(new MoveList());
 		setGameState(GameState.Start);
 		printGame();
 	}
@@ -56,7 +53,7 @@ public class ChessModel implements IChessModel {
 		this.fen = fen;
 	}
 
-	private void setMovelist(MoveList moveList) {
+	private void setMoveList(MoveList moveList) {
 		this.moveList = moveList;
 	}
 
@@ -70,6 +67,7 @@ public class ChessModel implements IChessModel {
 	}
 
 	private void printGame() {
+		System.out.println(getBoard());
 		printNext();
 	}
 }
