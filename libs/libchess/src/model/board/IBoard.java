@@ -1,5 +1,7 @@
 package model.board;
 
+import model.piece.Piece;
+import model.piece.Pieces;
 import model.piece.bishop.extension.BlackBishop;
 import model.piece.bishop.extension.WhiteBishop;
 import model.piece.king.extension.BlackKing;
@@ -15,6 +17,10 @@ import model.piece.rook.extension.WhiteRook;
 
 public interface IBoard {
 	void initializePieces(String[] ppd);
+
+	long[] getAllPieces();
+
+	Pieces getPieceByIndex(int index);
 
 	WhiteKing getWhiteKing();
 

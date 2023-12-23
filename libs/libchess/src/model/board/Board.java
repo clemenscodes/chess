@@ -3,6 +3,8 @@ package model.board;
 import static model.piece.Pieces.SYMBOLS;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import model.ChessModel;
 import model.piece.Piece;
 import model.piece.Pieces;
 import model.piece.bishop.extension.BlackBishop;
@@ -67,16 +69,46 @@ public class Board implements IBoard, Serializable {
 	}
 
 	public void initializePieces(String[] ppd) {
-		for (int rank = 0; rank < ppd.length; rank++) {
+		int reverseRank = 0;
+		for (int rank = 7; rank >= 0; rank--) {
 			int file = 0;
-			for (char pieceChar : ppd[rank].toCharArray()) {
+			for (char pieceChar : ppd[reverseRank].toCharArray()) {
 				if (Character.isDigit(pieceChar)) {
 					file += Character.getNumericValue(pieceChar);
 				} else {
 					initializePiece(pieceChar, rank, file++);
 				}
 			}
+			reverseRank++;
 		}
+	}
+
+	public long[] getAllPieces() {
+		return new long[] {
+			getBlackRook().getBits(),
+			getBlackKnight().getBits(),
+			getBlackBishop().getBits(),
+			getBlackQueen().getBits(),
+			getBlackKing().getBits(),
+			getBlackPawn().getBits(),
+			getWhiteRook().getBits(),
+			getWhiteKnight().getBits(),
+			getWhiteBishop().getBits(),
+			getWhiteQueen().getBits(),
+			getWhiteKing().getBits(),
+			getWhitePawn().getBits(),
+		};
+	}
+
+	public Pieces getPieceByIndex(int index) {
+		long[] allPieces = getAllPieces();
+		long mask = 1L << index;
+		for (int i = 0; i < allPieces.length; i++) {
+			if ((allPieces[i] & mask) != 0) {
+				return Pieces.PIECE_BY_INDEX[i];
+			}
+		}
+		throw new Error("No piece is set on the square");
 	}
 
 	public WhiteKing getWhiteKing() {
@@ -179,8 +211,10 @@ public class Board implements IBoard, Serializable {
 		Pieces kind = Pieces.fromSymbol(symbol);
 		Piece piece = getPiece(kind);
 		long bits = piece.getBits();
-		long newBit = 1L << (rank * SIZE + file);
-		piece.setBits(bits | newBit);
+		int index = rank * SIZE + file;
+		long newBit = 1L << (index);
+		long newBits = bits | newBit;
+		piece.setBits(newBits);
 		setPiece(piece);
 	}
 
@@ -218,23 +252,6 @@ public class Board implements IBoard, Serializable {
 		}
 	}
 
-	private long[] getAllPieces() {
-		return new long[] {
-			getBlackRook().getBits(),
-			getBlackKnight().getBits(),
-			getBlackBishop().getBits(),
-			getBlackQueen().getBits(),
-			getBlackKing().getBits(),
-			getBlackPawn().getBits(),
-			getWhiteRook().getBits(),
-			getWhiteKnight().getBits(),
-			getWhiteBishop().getBits(),
-			getWhiteQueen().getBits(),
-			getWhiteKing().getBits(),
-			getWhitePawn().getBits(),
-		};
-	}
-
 	private char getPieceSymbol(int squareIndex, long[] pieces) {
 		for (int i = 0; i < pieces.length; i++) {
 			if ((pieces[i] & (1L << squareIndex)) != 0) {
@@ -248,7 +265,7 @@ public class Board implements IBoard, Serializable {
 	public String toString() {
 		var pieces = getAllPieces();
 		var stringBuilder = new StringBuilder();
-		for (int rank = 0; rank < SIZE; rank++) {
+		for (int rank = 7; rank >= 0; rank--) {
 			for (int file = 0; file < SIZE; file++) {
 				char pieceSymbol = getPieceSymbol(rank * SIZE + file, pieces);
 				stringBuilder

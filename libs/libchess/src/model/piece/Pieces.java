@@ -1,18 +1,18 @@
 package model.piece;
 
 public enum Pieces {
-	WhitePawn,
-	WhiteBishop,
-	WhiteKnight,
+	BlackRook,
+	BlackKnight,
+	BlackBishop,
+	BlackQueen,
+	BlackKing,
+	BlackPawn,
 	WhiteRook,
+	WhiteKnight,
+	WhiteBishop,
 	WhiteQueen,
 	WhiteKing,
-	BlackPawn,
-	BlackBishop,
-	BlackKnight,
-	BlackRook,
-	BlackQueen,
-	BlackKing;
+	WhitePawn;
 
 	public static Pieces fromSymbol(char symbol) {
 		return switch (symbol) {
@@ -47,5 +47,20 @@ public enum Pieces {
 		model.piece.queen.extension.WhiteQueen.SYMBOL,
 		model.piece.king.extension.WhiteKing.SYMBOL,
 		model.piece.pawn.extension.WhitePawn.SYMBOL,
+	};
+
+	public static final Pieces[] PIECE_BY_INDEX = {
+		BlackRook,
+		BlackKnight,
+		BlackBishop,
+		BlackQueen,
+		BlackKing,
+		BlackPawn,
+		WhiteRook,
+		WhiteKnight,
+		WhiteBishop,
+		WhiteQueen,
+		WhiteKing,
+		WhitePawn,
 	};
 }
