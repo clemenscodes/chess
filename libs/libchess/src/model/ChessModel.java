@@ -16,15 +16,6 @@ public class ChessModel implements IChessModel {
 	private IBoard board;
 	private IMoveList moveList;
 
-	public static void printLongInBinary(long l) {
-		for (int i = 63; i >= 0; i--) {
-			long mask = 1L << i;
-			long bit = (l & mask) >> i;
-			System.out.print(bit);
-		}
-		System.out.println();
-	}
-
 	public static void main(String[] args) {
 		var model = new ChessModel();
 		model.startGame();
