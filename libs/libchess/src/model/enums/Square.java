@@ -1,7 +1,9 @@
 package model.enums;
 
+import java.io.Serializable;
+
 // LERF (Little Endian Rank-File Mapping)
-public enum Squares {
+public enum Square implements Serializable {
 	a1,
 	b1,
 	c1,

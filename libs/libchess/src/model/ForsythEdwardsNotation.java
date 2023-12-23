@@ -10,18 +10,13 @@ public class ForsythEdwardsNotation implements Serializable {
 	private String enPassant;
 	private int halfMoveClock;
 	private int fullMoveNumber;
-	private Board board;
 
 	public ForsythEdwardsNotation() {
 		parse("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 	}
 
 	public Board getBoard() {
-		return board;
-	}
-
-	private void setBoard(Board board) {
-		this.board = board;
+		return new Board();
 	}
 
 	public String[] getPiecePlacementData() {
@@ -65,14 +60,14 @@ public class ForsythEdwardsNotation implements Serializable {
 
 	private void setPiecePlacementData(String piecePlacement) {
 		var ppd = piecePlacement.split("/");
-		if (ppd.length != ChessModel.RANKS) {
+		if (ppd.length != Board.DIMENSION) {
 			throw new IllegalArgumentException("Invalid piece placement data");
 		}
 		for (var rank : ppd) {
-			if (rank.length() > ChessModel.FILES) {
+			if (rank.length() > Board.DIMENSION) {
 				throw new IllegalArgumentException(
 					"Invalid piece placement data: Each rank should have at most " +
-					ChessModel.FILES +
+					Board.DIMENSION +
 					" files"
 				);
 			}

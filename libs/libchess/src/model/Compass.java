@@ -1,7 +1,9 @@
 package model;
 
+import java.io.Serializable;
+
 // LERF (Little Endian Rank-File Mapping Compass)
-public abstract class Compass {
+public abstract class Compass implements Serializable {
 
 	public static byte NORTH = 8;
 	public static byte NORTH_EAST = 9;

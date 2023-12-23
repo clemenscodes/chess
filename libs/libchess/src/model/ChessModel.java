@@ -1,13 +1,14 @@
 package model;
 
 import model.enums.GameState;
+import model.move.MoveList;
 
 public class ChessModel implements IChessModel {
 
-	public static int FILES = 8;
-	public static int RANKS = 8;
 	private GameState state;
 	private ForsythEdwardsNotation fen;
+	private MoveList moveList;
+	private Board board;
 
 	public static void main(String[] args) {
 		var model = new ChessModel();
@@ -19,8 +20,16 @@ public class ChessModel implements IChessModel {
 		return state;
 	}
 
+	public MoveList getMoveList() {
+		return moveList;
+	}
+
 	public ForsythEdwardsNotation getFen() {
 		return fen;
+	}
+
+	public Board getBoard() {
+		return board;
 	}
 
 	public void startGame() {
@@ -39,6 +48,14 @@ public class ChessModel implements IChessModel {
 
 	private void setFen(ForsythEdwardsNotation fen) {
 		this.fen = fen;
+	}
+
+	private void setMovelist(MoveList moveList) {
+		this.moveList = moveList;
+	}
+
+	private void setBoard(Board board) {
+		this.board = board;
 	}
 
 	private void printNext() {
