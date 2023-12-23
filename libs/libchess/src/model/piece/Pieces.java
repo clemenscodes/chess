@@ -33,4 +33,19 @@ public enum Pieces {
 			);
 		};
 	}
+
+	public static final char[] SYMBOLS = {
+		model.piece.rook.extension.BlackRook.SYMBOL,
+		model.piece.knight.extension.BlackKnight.SYMBOL,
+		model.piece.bishop.extension.BlackBishop.SYMBOL,
+		model.piece.queen.extension.BlackQueen.SYMBOL,
+		model.piece.king.extension.BlackKing.SYMBOL,
+		model.piece.pawn.extension.BlackPawn.SYMBOL,
+		model.piece.rook.extension.WhiteRook.SYMBOL,
+		model.piece.knight.extension.WhiteKnight.SYMBOL,
+		model.piece.bishop.extension.WhiteBishop.SYMBOL,
+		model.piece.queen.extension.WhiteQueen.SYMBOL,
+		model.piece.king.extension.WhiteKing.SYMBOL,
+		model.piece.pawn.extension.WhitePawn.SYMBOL,
+	};
 }

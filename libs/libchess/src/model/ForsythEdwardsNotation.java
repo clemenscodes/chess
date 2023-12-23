@@ -63,14 +63,14 @@ public class ForsythEdwardsNotation implements Serializable {
 
 	private void setPiecePlacementData(String piecePlacement) {
 		var ppd = piecePlacement.split("/");
-		if (ppd.length != Board.DIMENSION) {
+		if (ppd.length != Board.SIZE) {
 			throw new IllegalArgumentException("Invalid piece placement data");
 		}
 		for (var rank : ppd) {
-			if (rank.length() > Board.DIMENSION) {
+			if (rank.length() > Board.SIZE) {
 				throw new IllegalArgumentException(
 					"Invalid piece placement data: Each rank should have at most " +
-					Board.DIMENSION +
+					Board.SIZE +
 					" files"
 				);
 			}

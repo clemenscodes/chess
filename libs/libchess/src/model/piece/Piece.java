@@ -11,16 +11,16 @@ public abstract class Piece implements Movable, Serializable {
 		setVariant(variant);
 	}
 
-	public void setBits(long bits) {
-		this.bits = bits;
+	public Pieces getVariant() {
+		return variant;
 	}
 
 	public long getBits() {
 		return bits;
 	}
 
-	public Pieces getVariant() {
-		return variant;
+	public void setBits(long bits) {
+		this.bits = bits;
 	}
 
 	private void setVariant(Pieces variant) {

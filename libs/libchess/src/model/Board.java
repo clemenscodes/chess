@@ -1,5 +1,7 @@
 package model;
 
+import static model.piece.Pieces.SYMBOLS;
+
 import java.io.Serializable;
 import model.piece.Piece;
 import model.piece.Pieces;
@@ -18,7 +20,24 @@ import model.piece.rook.extension.WhiteRook;
 
 public class Board implements Serializable {
 
-	public static final int DIMENSION = 8;
+	public static final byte SIZE = 8;
+	public static final byte NORTH = SIZE;
+	public static final byte EAST = 1;
+	public static final byte SOUTH = -SIZE;
+	public static final byte WEST = -1;
+	public static final byte NORTH_EAST = NORTH + EAST;
+	public static final byte SOUTH_EAST = SOUTH + EAST;
+	public static final byte SOUTH_WEST = SOUTH + WEST;
+	public static final byte NORTH_WEST = NORTH + WEST;
+	public static final byte NORTH_NORTH_EAST = NORTH + NORTH_EAST;
+	public static final byte NORTH_NORTH_WEST = NORTH + NORTH_WEST;
+	public static final byte SOUTH_SOUTH_EAST = SOUTH + SOUTH_EAST;
+	public static final byte SOUTH_SOUTH_WEST = SOUTH + SOUTH_WEST;
+	public static final byte EAST_EAST_NORTH = EAST + NORTH_EAST;
+	public static final byte EAST_EAST_SOUTH = EAST + SOUTH_EAST;
+	public static final byte WEST_WEST_NORTH = WEST + NORTH_WEST;
+	public static final byte WEST_WEST_SOUTH = WEST + SOUTH_WEST;
+
 	private WhiteKing whiteKing;
 	private WhiteQueen whiteQueen;
 	private WhiteRook whiteRook;
@@ -160,7 +179,7 @@ public class Board implements Serializable {
 		Pieces kind = Pieces.fromSymbol(symbol);
 		Piece piece = getPiece(kind);
 		long bits = piece.getBits();
-		long newBit = 1L << (rank * DIMENSION + file);
+		long newBit = 1L << (rank * SIZE + file);
 		piece.setBits(bits | newBit);
 		setPiece(piece);
 	}
@@ -217,27 +236,11 @@ public class Board implements Serializable {
 	}
 
 	private char getPieceSymbol(int squareIndex, long[] pieces) {
-		char[] symbols = {
-			BlackRook.SYMBOL,
-			BlackKnight.SYMBOL,
-			BlackBishop.SYMBOL,
-			BlackQueen.SYMBOL,
-			BlackKing.SYMBOL,
-			BlackPawn.SYMBOL,
-			WhiteRook.SYMBOL,
-			WhiteKnight.SYMBOL,
-			WhiteBishop.SYMBOL,
-			WhiteQueen.SYMBOL,
-			WhiteKing.SYMBOL,
-			WhitePawn.SYMBOL,
-		};
-
 		for (int i = 0; i < pieces.length; i++) {
 			if ((pieces[i] & (1L << squareIndex)) != 0) {
-				return symbols[i];
+				return SYMBOLS[i];
 			}
 		}
-
 		return ' ';
 	}
 
@@ -245,12 +248,9 @@ public class Board implements Serializable {
 	public String toString() {
 		var pieces = getAllPieces();
 		var stringBuilder = new StringBuilder();
-		for (int rank = 0; rank < DIMENSION; rank++) {
-			for (int file = 0; file < DIMENSION; file++) {
-				char pieceSymbol = getPieceSymbol(
-					rank * DIMENSION + file,
-					pieces
-				);
+		for (int rank = 0; rank < SIZE; rank++) {
+			for (int file = 0; file < SIZE; file++) {
+				char pieceSymbol = getPieceSymbol(rank * SIZE + file, pieces);
 				stringBuilder
 					.append('[')
 					.append(pieceSymbol)
