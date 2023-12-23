@@ -9,12 +9,7 @@ module.exports = {
 		"scope-enum": async (ctx) => [
 			2,
 			"always",
-			[
-				...(await getProjects(
-					ctx,
-					({ name }) => !name.includes("e2e") && !name.includes("sb"),
-				)),
-			],
+			[...(await getProjects(ctx, ({ name }) => !name.includes("e2e") && !name.includes("sb")))],
 		],
 	},
 	prompt: {
@@ -25,17 +20,13 @@ module.exports = {
 			type: "Select the type of change that you're committing:",
 			scope: "Denote the SCOPE of this change (optional):",
 			customScope: "Denote the SCOPE of this change:",
-			subject:
-				"Write a SHORT, IMPERATIVE tense description of the change:\n",
+			subject: "Write a SHORT, IMPERATIVE tense description of the change:\n",
 			body: 'Provide a LONGER description of the change (optional). Use "|" to break new line:\n',
-			breaking:
-				'List any BREAKING CHANGES (optional). Use "|" to break new line:\n',
-			footerPrefixesSelect:
-				"Select the ISSUES type of changeList by this change (optional):",
+			breaking: 'List any BREAKING CHANGES (optional). Use "|" to break new line:\n',
+			footerPrefixesSelect: "Select the ISSUES type of changeList by this change (optional):",
 			customFooterPrefix: "Input ISSUES prefix:",
 			footer: "List any ISSUES by this change. E.g.: #31, #34:\n",
-			confirmCommit:
-				"Are you sure you want to proceed with the commit above?",
+			confirmCommit: "Are you sure you want to proceed with the commit above?",
 		},
 		types: [
 			{
@@ -104,9 +95,7 @@ module.exports = {
 		breaklineNumber: 100,
 		breaklineChar: "|",
 		skipQuestions: [],
-		issuePrefixes: [
-			{ value: "closed", name: "closed:   ISSUES has been processed" },
-		],
+		issuePrefixes: [{ value: "closed", name: "closed:   ISSUES has been processed" }],
 		customIssuePrefixAlign: "top",
 		emptyIssuePrefixAlias: "skip",
 		customIssuePrefixAlias: "custom",

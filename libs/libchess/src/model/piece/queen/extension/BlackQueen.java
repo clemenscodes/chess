@@ -6,7 +6,9 @@ import model.piece.queen.Queen;
 
 public class BlackQueen extends Queen implements Serializable {
 
+	public static final char SYMBOL = '♛';
+
 	public BlackQueen() {
-		super(Pieces.BlackQueen, '♛');
+		super(Pieces.BlackQueen);
 	}
 }

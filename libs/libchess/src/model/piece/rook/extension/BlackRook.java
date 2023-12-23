@@ -6,7 +6,9 @@ import model.piece.rook.Rook;
 
 public class BlackRook extends Rook implements Serializable {
 
+	public static final char SYMBOL = '♜';
+
 	public BlackRook() {
-		super(Pieces.BlackRook, '♜');
+		super(Pieces.BlackRook);
 	}
 }

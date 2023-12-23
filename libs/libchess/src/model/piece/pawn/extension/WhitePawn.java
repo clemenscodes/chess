@@ -6,7 +6,9 @@ import model.piece.pawn.Pawn;
 
 public class WhitePawn extends Pawn implements Serializable {
 
+	public static final char SYMBOL = '♙';
+
 	public WhitePawn() {
-		super(Pieces.WhitePawn, '♙');
+		super(Pieces.WhitePawn);
 	}
 }

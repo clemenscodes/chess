@@ -13,6 +13,8 @@ public class ChessModel implements IChessModel {
 	public static void main(String[] args) {
 		var model = new ChessModel();
 		model.setFen(new ForsythEdwardsNotation());
+		model.setBoard(new Board(model.getFen()));
+		System.out.println(model.getBoard());
 		model.startGame();
 	}
 

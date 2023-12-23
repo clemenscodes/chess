@@ -6,7 +6,9 @@ import model.piece.king.King;
 
 public class WhiteKing extends King implements Serializable {
 
+	public static final char SYMBOL = '♔';
+
 	public WhiteKing() {
-		super(Pieces.WhiteKing, '♔');
+		super(Pieces.WhiteKing);
 	}
 }

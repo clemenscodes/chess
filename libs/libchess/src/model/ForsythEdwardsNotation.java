@@ -15,10 +15,6 @@ public class ForsythEdwardsNotation implements Serializable {
 		parse("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 	}
 
-	public Board getBoard() {
-		return new Board();
-	}
-
 	public String[] getPiecePlacementData() {
 		return piecePlacementData;
 	}

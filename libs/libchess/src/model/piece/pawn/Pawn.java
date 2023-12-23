@@ -7,8 +7,8 @@ import model.piece.Pieces;
 
 public abstract class Pawn extends Piece implements Serializable {
 
-	public Pawn(Pieces variant, char symbol) {
-		super(variant, symbol);
+	public Pawn(Pieces variant) {
+		super(variant);
 	}
 
 	public boolean isValidMove(int source, int destination, Board board) {

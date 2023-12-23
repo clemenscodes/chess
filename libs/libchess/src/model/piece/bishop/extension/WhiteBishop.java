@@ -6,7 +6,9 @@ import model.piece.bishop.Bishop;
 
 public class WhiteBishop extends Bishop implements Serializable {
 
+	public static final char SYMBOL = '♗';
+
 	public WhiteBishop() {
-		super(Pieces.WhiteBishop, '♗');
+		super(Pieces.WhiteBishop);
 	}
 }
