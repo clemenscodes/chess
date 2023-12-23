@@ -2,6 +2,7 @@ package model;
 
 import model.board.Board;
 import model.board.IBoard;
+import model.board.Square;
 import model.fen.ForsythEdwardsNotation;
 import model.fen.IForsythEdwardsNotation;
 import model.move.IMove;
@@ -19,7 +20,7 @@ public class ChessModel implements IChessModel {
 	public static void main(String[] args) {
 		var model = new ChessModel();
 		model.startGame();
-		model.makeMove(new Move(Square.e2, Square.e3));
+		model.makeMove(new Move(Square.e2, Square.e4));
 		model.unmakeMove();
 	}
 

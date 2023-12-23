@@ -1,6 +1,6 @@
 package model.move;
 
-import model.Square;
+import model.board.Square;
 
 public interface IMove {
 	Square getSource();

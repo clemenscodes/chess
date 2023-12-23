@@ -27,7 +27,7 @@ public class Bitboard implements Serializable {
 		var stringBuilder = new StringBuilder();
 		for (int rank = 7; rank >= 0; rank--) {
 			for (int file = 0; file < Board.SIZE; file++) {
-				int index = rank * Board.SIZE + file;
+				int index = Board.getSquareIndex(rank, file);
 				long mask = 1L << index;
 				long bit = (getBits() & mask) >> index;
 				stringBuilder.append(bit == -1 ? 1 : bit);

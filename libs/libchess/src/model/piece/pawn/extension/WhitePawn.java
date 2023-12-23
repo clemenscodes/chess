@@ -1,8 +1,8 @@
 package model.piece.pawn.extension;
 
 import java.io.Serializable;
-import model.Square;
 import model.board.IBoard;
+import model.board.Square;
 import model.piece.Pieces;
 import model.piece.pawn.Pawn;
 

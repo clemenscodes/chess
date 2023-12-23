@@ -41,10 +41,8 @@ public class Board implements IBoard, Serializable {
 	public static final Bitboard lastFile = new Bitboard(0x8080808080808080L);
 	public static final Bitboard firstRank = new Bitboard(0x00000000000000FFL);
 	public static final Bitboard lastRank = new Bitboard(0xFF00000000000000L);
-	public static final Bitboard firstDiagonal = new Bitboard(
-		0x8040201008040201L
-	);
-	public static final Bitboard lastDiagonal = new Bitboard(
+	public static final Bitboard diagonal = new Bitboard(0x8040201008040201L);
+	public static final Bitboard antiDiagonal = new Bitboard(
 		0x0102040810204080L
 	);
 	public static final Bitboard lightSquares = new Bitboard(
@@ -53,6 +51,18 @@ public class Board implements IBoard, Serializable {
 	public static final Bitboard darkSquares = new Bitboard(
 		0xAA55AA55AA55AA55L
 	);
+
+	public static int getSquareIndex(int rank, int file) {
+		return SIZE * rank + file;
+	}
+
+	public static int getFileIndex(int squareIndex) {
+		return squareIndex % SIZE;
+	}
+
+	public static int getRankIndex(int squareIndex) {
+		return squareIndex / SIZE;
+	}
 
 	private WhiteKing whiteKing;
 	private WhiteQueen whiteQueen;
@@ -281,7 +291,10 @@ public class Board implements IBoard, Serializable {
 		var stringBuilder = new StringBuilder();
 		for (int rank = 7; rank >= 0; rank--) {
 			for (int file = 0; file < SIZE; file++) {
-				char pieceSymbol = getPieceSymbol(rank * SIZE + file, pieces);
+				char pieceSymbol = getPieceSymbol(
+					getSquareIndex(rank, file),
+					pieces
+				);
 				stringBuilder
 					.append('[')
 					.append(pieceSymbol)

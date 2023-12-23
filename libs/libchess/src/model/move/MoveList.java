@@ -1,8 +1,8 @@
 package model.move;
 
 import java.io.Serializable;
-import model.Square;
 import model.board.IBoard;
+import model.board.Square;
 import model.piece.Pieces;
 
 public class MoveList implements IMoveList, Serializable {
