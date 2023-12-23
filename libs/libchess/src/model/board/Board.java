@@ -37,14 +37,22 @@ public class Board implements IBoard, Serializable {
 	public static final byte EAST_EAST_SOUTH = EAST + SOUTH_EAST;
 	public static final byte WEST_WEST_NORTH = WEST + NORTH_WEST;
 	public static final byte WEST_WEST_SOUTH = WEST + SOUTH_WEST;
-	public static final long firstFile = 0x0101010101010101L;
-	public static final long lastFile = 0x8080808080808080L;
-	public static final long firstRank = 0x00000000000000FFL;
-	public static final long lastRank = 0xFF00000000000000L;
-	public static final long firstDiagonal = 0x8040201008040201L;
-	public static final long lastDiagonal = 0x0102040810204080L;
-	public static final long lightSquares = 0x55AA55AA55AA55AAL;
-	public static final long darkSquares = 0xAA55AA55AA55AA55L;
+	public static final Bitboard firstFile = new Bitboard(0x0101010101010101L);
+	public static final Bitboard lastFile = new Bitboard(0x8080808080808080L);
+	public static final Bitboard firstRank = new Bitboard(0x00000000000000FFL);
+	public static final Bitboard lastRank = new Bitboard(0xFF00000000000000L);
+	public static final Bitboard firstDiagonal = new Bitboard(
+		0x8040201008040201L
+	);
+	public static final Bitboard lastDiagonal = new Bitboard(
+		0x0102040810204080L
+	);
+	public static final Bitboard lightSquares = new Bitboard(
+		0x55AA55AA55AA55AAL
+	);
+	public static final Bitboard darkSquares = new Bitboard(
+		0xAA55AA55AA55AA55L
+	);
 
 	private WhiteKing whiteKing;
 	private WhiteQueen whiteQueen;
@@ -59,19 +67,6 @@ public class Board implements IBoard, Serializable {
 	private BlackBishop blackBishop;
 	private BlackPawn blackPawn;
 
-	public static void printBitboard(long l) {
-		for (int rank = 7; rank >= 0; rank--) {
-			for (int file = 0; file < Board.SIZE; file++) {
-				int index = rank * Board.SIZE + file;
-				long mask = 1L << index;
-				long bit = (l & mask) >> index;
-				System.out.print(bit == -1 ? 1 : bit);
-			}
-			System.out.println();
-		}
-		System.out.println();
-	}
-
 	public Board() {
 		setBlackRook(new BlackRook());
 		setBlackKnight(new BlackKnight());
@@ -85,14 +80,6 @@ public class Board implements IBoard, Serializable {
 		setWhiteQueen(new WhiteQueen());
 		setWhiteKing(new WhiteKing());
 		setWhitePawn(new WhitePawn());
-		printBitboard(firstFile);
-		printBitboard(lastFile);
-		printBitboard(firstRank);
-		printBitboard(lastRank);
-		printBitboard(firstDiagonal);
-		printBitboard(lastDiagonal);
-		printBitboard(lightSquares);
-		printBitboard(darkSquares);
 	}
 
 	public void initializePieces(String[] ppd) {
@@ -112,18 +99,18 @@ public class Board implements IBoard, Serializable {
 
 	public long[] getAllPieces() {
 		return new long[] {
-			getBlackRook().getBits(),
-			getBlackKnight().getBits(),
-			getBlackBishop().getBits(),
-			getBlackQueen().getBits(),
-			getBlackKing().getBits(),
-			getBlackPawn().getBits(),
-			getWhiteRook().getBits(),
-			getWhiteKnight().getBits(),
-			getWhiteBishop().getBits(),
-			getWhiteQueen().getBits(),
-			getWhiteKing().getBits(),
-			getWhitePawn().getBits(),
+			getBlackRook().getBitboard().getBits(),
+			getBlackKnight().getBitboard().getBits(),
+			getBlackBishop().getBitboard().getBits(),
+			getBlackQueen().getBitboard().getBits(),
+			getBlackKing().getBitboard().getBits(),
+			getBlackPawn().getBitboard().getBits(),
+			getWhiteRook().getBitboard().getBits(),
+			getWhiteKnight().getBitboard().getBits(),
+			getWhiteBishop().getBitboard().getBits(),
+			getWhiteQueen().getBitboard().getBits(),
+			getWhiteKing().getBitboard().getBits(),
+			getWhitePawn().getBitboard().getBits(),
 		};
 	}
 
@@ -237,11 +224,11 @@ public class Board implements IBoard, Serializable {
 	private void initializePiece(char symbol, int rank, int file) {
 		Pieces kind = Pieces.fromSymbol(symbol);
 		Piece piece = getPiece(kind);
-		long bits = piece.getBits();
+		long bits = piece.getBitboard().getBits();
 		int index = rank * SIZE + file;
 		long newBit = 1L << (index);
 		long newBits = bits | newBit;
-		piece.setBits(newBits);
+		piece.getBitboard().setBits(newBits);
 		setPiece(piece);
 	}
 

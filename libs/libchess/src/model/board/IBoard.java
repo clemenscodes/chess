@@ -1,6 +1,5 @@
 package model.board;
 
-import model.piece.Piece;
 import model.piece.Pieces;
 import model.piece.bishop.extension.BlackBishop;
 import model.piece.bishop.extension.WhiteBishop;
