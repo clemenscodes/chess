@@ -12,7 +12,11 @@ public class ChessModel implements IChessModel {
 
 	public static void main(String[] args) {
 		var model = new ChessModel();
-		model.setFen(new ForsythEdwardsNotation());
+		model.setFen(
+			new ForsythEdwardsNotation(
+				"8/5k2/3p4/1p1Pp2p/pP2Pp1P/P4P1K/8/8 b - - 99 50"
+			)
+		);
 		model.setBoard(new Board(model.getFen()));
 		System.out.println(model.getBoard());
 		model.startGame();

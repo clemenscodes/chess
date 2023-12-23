@@ -31,20 +31,22 @@ public class Board implements Serializable {
 	private BlackKnight blackKnight;
 	private BlackBishop blackBishop;
 	private BlackPawn blackPawn;
-	private long occupiedSquares;
 
 	public Board(ForsythEdwardsNotation fen) {
+		setBlackRook(new BlackRook());
+		setBlackKnight(new BlackKnight());
+		setBlackBishop(new BlackBishop());
+		setBlackQueen(new BlackQueen());
+		setBlackKing(new BlackKing());
+		setBlackPawn(new BlackPawn());
+		setWhiteRook(new WhiteRook());
+		setWhiteKnight(new WhiteKnight());
+		setWhiteBishop(new WhiteBishop());
+		setWhiteQueen(new WhiteQueen());
+		setWhiteKing(new WhiteKing());
+		setWhitePawn(new WhitePawn());
 		String[] ppd = fen.getPiecePlacementData();
 		initializePieces(ppd);
-		calculateBoard();
-	}
-
-	public long getOccupiedSquares() {
-		return occupiedSquares;
-	}
-
-	public long getEmptySquares() {
-		return ~occupiedSquares;
 	}
 
 	public WhiteKing getWhiteKing() {
@@ -143,13 +145,9 @@ public class Board implements Serializable {
 		this.whiteBishop = whiteBishop;
 	}
 
-	private void setOccupiedSquares(long occupiedSquares) {
-		this.occupiedSquares = occupiedSquares;
-	}
-
 	private void initializePiece(char symbol, int rank, int file) {
 		Pieces kind = Pieces.fromSymbol(symbol);
-		Piece piece = getPieceFromKind(kind);
+		Piece piece = getPiece(kind);
 		long bits = piece.getBits();
 		long newBit = 1L << (rank * DIMENSION + file);
 		piece.setBits(bits | newBit);
@@ -169,44 +167,20 @@ public class Board implements Serializable {
 		}
 	}
 
-	private Piece getPieceFromKind(Pieces kind) {
+	private Piece getPiece(Pieces kind) {
 		return switch (kind) {
-			case BlackRook -> getBlackRook() != null
-				? getBlackRook()
-				: new BlackRook();
-			case BlackKnight -> getBlackKnight() != null
-				? getBlackKnight()
-				: new BlackKnight();
-			case BlackBishop -> getBlackBishop() != null
-				? getBlackBishop()
-				: new BlackBishop();
-			case BlackQueen -> getBlackQueen() != null
-				? getBlackQueen()
-				: new BlackQueen();
-			case BlackKing -> getBlackKing() != null
-				? getBlackKing()
-				: new BlackKing();
-			case BlackPawn -> getBlackPawn() != null
-				? getBlackPawn()
-				: new BlackPawn();
-			case WhiteRook -> getWhiteRook() != null
-				? getWhiteRook()
-				: new WhiteRook();
-			case WhiteKnight -> getWhiteKnight() != null
-				? getWhiteKnight()
-				: new WhiteKnight();
-			case WhiteBishop -> getWhiteBishop() != null
-				? getWhiteBishop()
-				: new WhiteBishop();
-			case WhiteQueen -> getWhiteQueen() != null
-				? getWhiteQueen()
-				: new WhiteQueen();
-			case WhiteKing -> getWhiteKing() != null
-				? getWhiteKing()
-				: new WhiteKing();
-			case WhitePawn -> getWhitePawn() != null
-				? getWhitePawn()
-				: new WhitePawn();
+			case BlackRook -> getBlackRook();
+			case BlackKnight -> getBlackKnight();
+			case BlackBishop -> getBlackBishop();
+			case BlackQueen -> getBlackQueen();
+			case BlackKing -> getBlackKing();
+			case BlackPawn -> getBlackPawn();
+			case WhiteRook -> getWhiteRook();
+			case WhiteKnight -> getWhiteKnight();
+			case WhiteBishop -> getWhiteBishop();
+			case WhiteQueen -> getWhiteQueen();
+			case WhiteKing -> getWhiteKing();
+			case WhitePawn -> getWhitePawn();
 		};
 	}
 
@@ -225,15 +199,6 @@ public class Board implements Serializable {
 			case WhiteKing -> setWhiteKing((WhiteKing) piece);
 			case WhitePawn -> setWhitePawn((WhitePawn) piece);
 		}
-	}
-
-	private void calculateBoard() {
-		var occupiedSquares = 0L;
-		var pieces = getAllPieces();
-		for (long piece : pieces) {
-			occupiedSquares |= piece;
-		}
-		setOccupiedSquares(occupiedSquares);
 	}
 
 	private long[] getAllPieces() {
