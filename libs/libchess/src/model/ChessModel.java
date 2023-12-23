@@ -1,34 +1,38 @@
 package model;
 
-import model.enums.GameState;
+import model.board.Board;
+import model.board.IBoard;
+import model.fen.ForsythEdwardsNotation;
+import model.fen.IForsythEdwardsNotation;
+import model.move.IMoveList;
 import model.move.MoveList;
 
 public class ChessModel implements IChessModel {
 
-	private GameState state;
-	private ForsythEdwardsNotation fen;
-	private MoveList moveList;
-	private Board board;
+	private State state;
+	private IForsythEdwardsNotation fen;
+	private IBoard board;
+	private IMoveList moveList;
 
 	public static void main(String[] args) {
 		var model = new ChessModel();
 		model.startGame();
 	}
 
-	public GameState getGameState() {
+	public State getGameState() {
 		return state;
 	}
 
-	public MoveList getMoveList() {
-		return moveList;
-	}
-
-	public ForsythEdwardsNotation getFen() {
+	public IForsythEdwardsNotation getFen() {
 		return fen;
 	}
 
-	public Board getBoard() {
+	public IBoard getBoard() {
 		return board;
+	}
+
+	public IMoveList getMoveList() {
+		return moveList;
 	}
 
 	public void startGame() {
@@ -36,28 +40,28 @@ public class ChessModel implements IChessModel {
 		setBoard(new Board());
 		getBoard().initializePieces(getFen().getPiecePlacementData());
 		setMoveList(new MoveList());
-		setGameState(GameState.Start);
+		setGameState(State.Start);
 		printGame();
 	}
 
 	public void startNewGame() {
 		startGame();
-		setGameState(GameState.Playing);
+		setGameState(State.Playing);
 	}
 
-	private void setGameState(GameState state) {
+	private void setGameState(State state) {
 		this.state = state;
 	}
 
-	private void setFen(ForsythEdwardsNotation fen) {
+	private void setFen(IForsythEdwardsNotation fen) {
 		this.fen = fen;
 	}
 
-	private void setMoveList(MoveList moveList) {
+	private void setMoveList(IMoveList moveList) {
 		this.moveList = moveList;
 	}
 
-	private void setBoard(Board board) {
+	private void setBoard(IBoard board) {
 		this.board = board;
 	}
 

@@ -1,7 +1,7 @@
 package controller;
 
 import model.IChessModel;
-import model.enums.GameState;
+import model.State;
 import tcp.IConnectionManager;
 import tcp.IDataManager;
 import view.IChessView;
@@ -52,7 +52,7 @@ public class ChessController implements IChessController {
 		}
 	}
 
-	public GameState getGameState() {
+	public State getGameState() {
 		return model.getGameState();
 	}
 

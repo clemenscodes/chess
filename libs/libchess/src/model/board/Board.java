@@ -1,4 +1,4 @@
-package model;
+package model.board;
 
 import static model.piece.Pieces.SYMBOLS;
 
@@ -18,7 +18,7 @@ import model.piece.queen.extension.WhiteQueen;
 import model.piece.rook.extension.BlackRook;
 import model.piece.rook.extension.WhiteRook;
 
-public class Board implements Serializable {
+public class Board implements IBoard, Serializable {
 
 	public static final byte SIZE = 8;
 	public static final byte NORTH = SIZE;

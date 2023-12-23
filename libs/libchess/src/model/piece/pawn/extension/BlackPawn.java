@@ -1,7 +1,7 @@
 package model.piece.pawn.extension;
 
 import java.io.Serializable;
-import model.Board;
+import model.board.Board;
 import model.piece.Pieces;
 import model.piece.pawn.Pawn;
 

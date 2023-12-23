@@ -1,9 +1,9 @@
 package model.move;
 
 import java.io.Serializable;
-import model.enums.Square;
+import model.Square;
 
-public class Move implements Serializable {
+public class Move implements IMove, Serializable {
 
 	private Square source;
 	private Square destination;

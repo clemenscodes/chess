@@ -1,12 +1,12 @@
 package model.move;
 
 import java.io.Serializable;
-import model.enums.Square;
+import model.Square;
 
-public class MoveList implements Serializable {
+public class MoveList implements IMoveList, Serializable {
 
 	public static final int MOVE_LIMIT = 17697;
-	private final Move[] moves;
+	private final IMove[] moves;
 	private int playedMoves;
 
 	public MoveList() {
@@ -30,7 +30,7 @@ public class MoveList implements Serializable {
 		return playedMoves;
 	}
 
-	public Move[] getMoves() {
+	public IMove[] getMoves() {
 		return moves;
 	}
 }

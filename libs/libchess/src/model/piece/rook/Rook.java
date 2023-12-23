@@ -1,7 +1,7 @@
 package model.piece.rook;
 
 import java.io.Serializable;
-import model.Board;
+import model.board.Board;
 import model.piece.Piece;
 import model.piece.Pieces;
 

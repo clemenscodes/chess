@@ -1,8 +1,10 @@
-package model;
+package model.fen;
 
 import java.io.Serializable;
+import model.board.Board;
 
-public class ForsythEdwardsNotation implements Serializable {
+public class ForsythEdwardsNotation
+	implements IForsythEdwardsNotation, Serializable {
 
 	public static final int MAX_HALF_MOVE_CLOCK = 150;
 	public static final int MIN_HALF_MOVE_CLOCK = 0;
@@ -16,10 +18,6 @@ public class ForsythEdwardsNotation implements Serializable {
 
 	public ForsythEdwardsNotation() {
 		parse("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-	}
-
-	public ForsythEdwardsNotation(String fen) {
-		parse(fen);
 	}
 
 	public String[] getPiecePlacementData() {
