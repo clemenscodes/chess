@@ -4,6 +4,7 @@ import model.board.Board;
 import model.board.IBoard;
 import model.fen.ForsythEdwardsNotation;
 import model.fen.IForsythEdwardsNotation;
+import model.move.IMove;
 import model.move.IMoveList;
 import model.move.MoveList;
 
@@ -47,6 +48,18 @@ public class ChessModel implements IChessModel {
 	public void startNewGame() {
 		startGame();
 		setGameState(State.Playing);
+	}
+
+	public void makeMove(IMove move) {
+		var board = getMoveList().makeMove(move, getBoard());
+		setBoard(board);
+		printGame();
+	}
+
+	public void unmakeMove() {
+		var board = getMoveList().unmakeMove(getBoard());
+		setBoard(board);
+		printGame();
 	}
 
 	private void setGameState(State state) {

@@ -1,11 +1,11 @@
 package model.move;
 
-import model.Square;
+import model.board.IBoard;
 
 public interface IMoveList {
-	void move(Square source, Square destination);
+	IBoard makeMove(IMove move, IBoard board);
 
-	void unmove();
+	IBoard unmakeMove(IBoard board);
 
 	int getPlayedMoves();
 
