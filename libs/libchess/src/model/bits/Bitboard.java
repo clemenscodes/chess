@@ -21,14 +21,34 @@ public class Bitboard implements IBitboard, Serializable {
 	public static final byte EAST_EAST_SOUTH = EAST + SOUTH_EAST;
 	public static final byte WEST_WEST_NORTH = WEST + NORTH_WEST;
 	public static final byte WEST_WEST_SOUTH = WEST + SOUTH_WEST;
-	public static final Bitboard firstFile = new Bitboard(0x0101010101010101L);
-	public static final Bitboard lastFile = new Bitboard(0x8080808080808080L);
-	public static final Bitboard firstRank = new Bitboard(0x00000000000000FFL);
-	public static final Bitboard lastRank = new Bitboard(0xFF00000000000000L);
-	public static final Bitboard diagonal = new Bitboard(0x8040201008040201L);
-	public static final Bitboard antiDiagonal = new Bitboard(0x0102040810204080L);
-	public static final Bitboard lightSquares = new Bitboard(0x55AA55AA55AA55AAL);
-	public static final Bitboard darkSquares = new Bitboard(0xAA55AA55AA55AA55L);
+	public static final IBitboard firstFile = new Bitboard(0x0101010101010101L);
+	public static final IBitboard lastFile = new Bitboard(0x8080808080808080L);
+	public static final IBitboard firstRank = new Bitboard(0x00000000000000FFL);
+	public static final IBitboard lastRank = new Bitboard(0xFF00000000000000L);
+	public static final IBitboard diagonal = new Bitboard(0x8040201008040201L);
+	public static final IBitboard antiDiagonal = new Bitboard(0x0102040810204080L);
+	public static final IBitboard lightSquares = new Bitboard(0x55AA55AA55AA55AAL);
+	public static final IBitboard darkSquares = new Bitboard(0xAA55AA55AA55AA55L);
+
+	public static IBitboard negate(IBitboard board) {
+		return new Bitboard(~board.getBits());
+	}
+
+	public static boolean isSubset(IBitboard a, IBitboard b) {
+		return (a.getBits() & b.getBits()) == a.getBits();
+	}
+
+	public static IBitboard getSuperset(IBitboard a, IBitboard b) {
+		return new Bitboard(a.getBits() | b.getBits());
+	}
+
+	public static IBitboard merge(IBitboard[] bitboards) {
+		long mergedBits = 0L;
+		for (var board : bitboards) {
+			mergedBits |= board.getBits();
+		}
+		return new Bitboard(mergedBits);
+	}
 
 	private long bits;
 

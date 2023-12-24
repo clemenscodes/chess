@@ -61,4 +61,6 @@ public enum Pieces {
 		WhiteKing,
 		WhitePawn,
 	};
+
+	public static final char EMPTY_SYMBOL = ' ';
 }

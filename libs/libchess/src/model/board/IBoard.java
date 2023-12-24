@@ -1,5 +1,6 @@
 package model.board;
 
+import model.bits.IBitboard;
 import model.piece.Pieces;
 import model.piece.bishop.extension.BlackBishop;
 import model.piece.bishop.extension.WhiteBishop;
@@ -15,12 +16,6 @@ import model.piece.rook.extension.BlackRook;
 import model.piece.rook.extension.WhiteRook;
 
 public interface IBoard {
-	void initializePieces(String[] ppd);
-
-	long[] getAllPieces();
-
-	Pieces getPieceByIndex(int index);
-
 	WhiteKing getWhiteKing();
 
 	WhiteQueen getWhiteQueen();
@@ -44,4 +39,18 @@ public interface IBoard {
 	BlackBishop getBlackBishop();
 
 	BlackPawn getBlackPawn();
+
+	IBitboard[] getAllPieces();
+
+	IBitboard getWhitePieces();
+
+	IBitboard getBlackPieces();
+
+	IBitboard getOccupiedSquares();
+
+	IBitboard getEmptySquares();
+
+	Pieces getPieceByIndex(int index);
+
+	void initializePieces(String[] ppd);
 }

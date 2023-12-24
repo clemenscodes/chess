@@ -17,6 +17,8 @@ public interface IChessModel {
 	void startGame();
 
 	void startNewGame();
+
 	void makeMove(IMove move);
+
 	void unmakeMove();
 }

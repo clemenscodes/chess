@@ -1,8 +1,8 @@
 package model.board;
 
-import static model.piece.Pieces.SYMBOLS;
-
 import java.io.Serializable;
+import model.bits.Bitboard;
+import model.bits.IBitboard;
 import model.piece.Piece;
 import model.piece.Pieces;
 import model.piece.bishop.extension.BlackBishop;
@@ -38,63 +38,13 @@ public class Board implements IBoard, Serializable {
 	private BlackKnight blackKnight;
 	private BlackBishop blackBishop;
 	private BlackPawn blackPawn;
+	private IBitboard whitePieces;
+	private IBitboard blackPieces;
+	private IBitboard occupiedSquares;
+	private IBitboard emptySquares;
 
 	public Board() {
-		setBlackRook(new BlackRook());
-		setBlackKnight(new BlackKnight());
-		setBlackBishop(new BlackBishop());
-		setBlackQueen(new BlackQueen());
-		setBlackKing(new BlackKing());
-		setBlackPawn(new BlackPawn());
-		setWhiteRook(new WhiteRook());
-		setWhiteKnight(new WhiteKnight());
-		setWhiteBishop(new WhiteBishop());
-		setWhiteQueen(new WhiteQueen());
-		setWhiteKing(new WhiteKing());
-		setWhitePawn(new WhitePawn());
-	}
-
-	public void initializePieces(String[] ppd) {
-		int reverseRank = 0;
-		for (int rank = 7; rank >= 0; rank--) {
-			int file = 0;
-			for (char pieceChar : ppd[reverseRank].toCharArray()) {
-				if (Character.isDigit(pieceChar)) {
-					file += Character.getNumericValue(pieceChar);
-				} else {
-					initializePiece(pieceChar, rank, file++);
-				}
-			}
-			reverseRank++;
-		}
-	}
-
-	public long[] getAllPieces() {
-		return new long[] {
-			getBlackRook().getBitboard().getBits(),
-			getBlackKnight().getBitboard().getBits(),
-			getBlackBishop().getBitboard().getBits(),
-			getBlackQueen().getBitboard().getBits(),
-			getBlackKing().getBitboard().getBits(),
-			getBlackPawn().getBitboard().getBits(),
-			getWhiteRook().getBitboard().getBits(),
-			getWhiteKnight().getBitboard().getBits(),
-			getWhiteBishop().getBitboard().getBits(),
-			getWhiteQueen().getBitboard().getBits(),
-			getWhiteKing().getBitboard().getBits(),
-			getWhitePawn().getBitboard().getBits(),
-		};
-	}
-
-	public Pieces getPieceByIndex(int index) {
-		long[] allPieces = getAllPieces();
-		long mask = 1L << index;
-		for (int i = 0; i < allPieces.length; i++) {
-			if ((allPieces[i] & mask) != 0) {
-				return Pieces.PIECE_BY_INDEX[i];
-			}
-		}
-		throw new Error("No piece is set on the square");
+		initializeBoard();
 	}
 
 	public WhiteKing getWhiteKing() {
@@ -145,6 +95,85 @@ public class Board implements IBoard, Serializable {
 		return blackPawn;
 	}
 
+	public IBitboard getWhitePieces() {
+		updateWhitePieces();
+		return whitePieces;
+	}
+
+	public IBitboard getBlackPieces() {
+		updateBlackPieces();
+		return blackPieces;
+	}
+
+	public IBitboard getOccupiedSquares() {
+		return occupiedSquares;
+	}
+
+	public IBitboard getEmptySquares() {
+		return emptySquares;
+	}
+
+	public IBitboard[] getAllPieces() {
+		updateAllPieces();
+		var whitePieces = getAllWhitePieces();
+		var blackPieces = getAllBlackPieces();
+		IBitboard[] allPieces = new IBitboard[whitePieces.length + blackPieces.length];
+		System.arraycopy(whitePieces, 0, allPieces, 0, whitePieces.length);
+		System.arraycopy(blackPieces, 0, allPieces, whitePieces.length, blackPieces.length);
+		return allPieces;
+	}
+
+	public Pieces getPieceByIndex(int index) {
+		IBitboard[] allPieces = getAllPieces();
+		long mask = 1L << index;
+		for (int i = 0; i < allPieces.length; i++) {
+			if ((allPieces[i].getBits() & mask) != 0) {
+				return Pieces.PIECE_BY_INDEX[i];
+			}
+		}
+		throw new Error("No piece is set on the square");
+	}
+
+	public void initializePieces(String[] ppd) {
+		int reverseRank = 0;
+		for (int rank = 7; rank >= 0; rank--) {
+			int file = 0;
+			for (char pieceChar : ppd[reverseRank].toCharArray()) {
+				if (Character.isDigit(pieceChar)) {
+					file += Character.getNumericValue(pieceChar);
+				} else {
+					initializePiece(pieceChar, rank, file++);
+				}
+			}
+			reverseRank++;
+		}
+		updateOccupiedSquares();
+		updateEmptySquares();
+	}
+
+	private void initializeBoard() {
+		setBlackRook(new BlackRook());
+		setBlackKnight(new BlackKnight());
+		setBlackBishop(new BlackBishop());
+		setBlackQueen(new BlackQueen());
+		setBlackKing(new BlackKing());
+		setBlackPawn(new BlackPawn());
+		setWhiteRook(new WhiteRook());
+		setWhiteKnight(new WhiteKnight());
+		setWhiteBishop(new WhiteBishop());
+		setWhiteQueen(new WhiteQueen());
+		setWhiteKing(new WhiteKing());
+		setWhitePawn(new WhitePawn());
+	}
+
+	private void updateOccupiedSquares() {
+		setOccupiedSquares(Bitboard.merge(getAllPieces()));
+	}
+
+	private void updateEmptySquares() {
+		setEmptySquares(Bitboard.negate(getOccupiedSquares()));
+	}
+
 	private void setBlackPawn(BlackPawn blackPawn) {
 		this.blackPawn = blackPawn;
 	}
@@ -193,6 +222,59 @@ public class Board implements IBoard, Serializable {
 		this.whiteBishop = whiteBishop;
 	}
 
+	private void setWhitePieces(IBitboard whitePieces) {
+		this.whitePieces = whitePieces;
+	}
+
+	private void setBlackPieces(IBitboard blackPieces) {
+		this.blackPieces = blackPieces;
+	}
+
+	private void setOccupiedSquares(IBitboard occupiedSquares) {
+		this.occupiedSquares = occupiedSquares;
+	}
+
+	private void setEmptySquares(IBitboard emptySquares) {
+		this.emptySquares = emptySquares;
+	}
+
+	private void updateWhitePieces() {
+		IBitboard[] pieces = getAllWhitePieces();
+		setWhitePieces(Bitboard.merge(pieces));
+	}
+
+	private void updateAllPieces() {
+		updateWhitePieces();
+		updateBlackPieces();
+	}
+
+	private IBitboard[] getAllWhitePieces() {
+		return new IBitboard[] {
+			getWhiteRook().getBitboard(),
+			getWhiteKnight().getBitboard(),
+			getWhiteBishop().getBitboard(),
+			getWhiteQueen().getBitboard(),
+			getWhiteKing().getBitboard(),
+			getWhitePawn().getBitboard(),
+		};
+	}
+
+	private void updateBlackPieces() {
+		IBitboard[] pieces = getAllBlackPieces();
+		setBlackPieces(Bitboard.merge(pieces));
+	}
+
+	private IBitboard[] getAllBlackPieces() {
+		return new IBitboard[] {
+			getBlackRook().getBitboard(),
+			getBlackKnight().getBitboard(),
+			getBlackBishop().getBitboard(),
+			getBlackQueen().getBitboard(),
+			getBlackKing().getBitboard(),
+			getBlackPawn().getBitboard(),
+		};
+	}
+
 	private void initializePiece(char symbol, int rank, int file) {
 		Pieces kind = Pieces.fromSymbol(symbol);
 		Piece piece = getPiece(kind);
@@ -238,13 +320,13 @@ public class Board implements IBoard, Serializable {
 		}
 	}
 
-	private char getPieceSymbol(int squareIndex, long[] pieces) {
+	private char getPieceSymbol(int squareIndex, IBitboard[] pieces) {
 		for (int i = 0; i < pieces.length; i++) {
-			if ((pieces[i] & (1L << squareIndex)) != 0) {
-				return SYMBOLS[i];
+			if ((pieces[i].getBits() & (1L << squareIndex)) != 0) {
+				return Pieces.SYMBOLS[i];
 			}
 		}
-		return ' ';
+		return Pieces.EMPTY_SYMBOL;
 	}
 
 	@Override
