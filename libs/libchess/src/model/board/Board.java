@@ -106,10 +106,12 @@ public class Board implements IBoard, Serializable {
 	}
 
 	public IBitboard getOccupiedSquares() {
+        updateOccupiedSquares();
 		return occupiedSquares;
 	}
 
 	public IBitboard getEmptySquares() {
+        updateEmptySquares();
 		return emptySquares;
 	}
 
@@ -125,9 +127,8 @@ public class Board implements IBoard, Serializable {
 
 	public Pieces getPieceByIndex(int index) {
 		IBitboard[] allPieces = getAllPieces();
-		IBitboard mask = new Bitboard(1L << index);
 		for (int i = 0; i < allPieces.length; i++) {
-			if (allPieces[i].contains(mask)) {
+			if (allPieces[i].contains(new Bitboard(1L << index))) {
 				return Pieces.PIECE_BY_INDEX[i];
 			}
 		}
@@ -277,8 +278,7 @@ public class Board implements IBoard, Serializable {
 
 	private void initializePiece(char symbol, int rank, int file) {
 		Piece piece = getPiece(Pieces.fromSymbol(symbol));
-		IBitboard mask = new Bitboard(1L << (getSquareIndex(rank, file)));
-		piece.getBitboard().merge(mask);
+		piece.getBitboard().merge(new Bitboard(1L << (getSquareIndex(rank, file))));
 		setPiece(piece);
 	}
 

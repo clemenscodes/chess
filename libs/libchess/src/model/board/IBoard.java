@@ -40,7 +40,6 @@ public interface IBoard {
 
 	BlackPawn getBlackPawn();
 
-	IBitboard[] getAllPieces();
 
 	IBitboard getWhitePieces();
 
@@ -50,6 +49,7 @@ public interface IBoard {
 
 	IBitboard getEmptySquares();
 
+    IBitboard[] getAllPieces();
 	Pieces getPieceByIndex(int index);
 
 	void setPieces(String[] ppd);
