@@ -46,6 +46,14 @@ public class Bitboard implements IBitboard, Serializable {
 		return new Bitboard(a.getBits() | b.getBits());
 	}
 
+	public static boolean contains(IBitboard a, IBitboard b) {
+		return (a.getBits() & b.getBits()) != 0;
+	}
+
+	public static IBitboard leftShiftMask(int bits) {
+		return new Bitboard(1L << bits);
+	}
+
 	public static boolean isSubset(IBitboard a, IBitboard b) {
 		return (a.getBits() & b.getBits()) == a.getBits();
 	}
@@ -73,11 +81,23 @@ public class Bitboard implements IBitboard, Serializable {
 	}
 
 	public boolean contains(IBitboard board) {
-		return (getBits() & board.getBits()) != 0;
+		return Bitboard.contains(this, board);
 	}
 
 	public void merge(IBitboard board) {
 		setBits(Bitboard.merge(this, board).getBits());
+	}
+
+	public void leftShift(int bits) {
+		setBits(getBits() << bits);
+	}
+
+	public void rightShift(int bits) {
+		setBits(getBits() >>> bits);
+	}
+
+	public void negateBits() {
+		setBits(Bitboard.negate(this).getBits());
 	}
 
 	@Override

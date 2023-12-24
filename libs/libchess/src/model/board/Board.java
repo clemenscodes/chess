@@ -106,12 +106,12 @@ public class Board implements IBoard, Serializable {
 	}
 
 	public IBitboard getOccupiedSquares() {
-        updateOccupiedSquares();
+		updateOccupiedSquares();
 		return occupiedSquares;
 	}
 
 	public IBitboard getEmptySquares() {
-        updateEmptySquares();
+		updateEmptySquares();
 		return emptySquares;
 	}
 
@@ -128,7 +128,7 @@ public class Board implements IBoard, Serializable {
 	public Pieces getPieceByIndex(int index) {
 		IBitboard[] allPieces = getAllPieces();
 		for (int i = 0; i < allPieces.length; i++) {
-			if (allPieces[i].contains(new Bitboard(1L << index))) {
+			if (allPieces[i].contains(Bitboard.leftShiftMask(index))) {
 				return Pieces.PIECE_BY_INDEX[i];
 			}
 		}
@@ -278,7 +278,7 @@ public class Board implements IBoard, Serializable {
 
 	private void initializePiece(char symbol, int rank, int file) {
 		Piece piece = getPiece(Pieces.fromSymbol(symbol));
-		piece.getBitboard().merge(new Bitboard(1L << (getSquareIndex(rank, file))));
+		piece.getBitboard().merge(Bitboard.leftShiftMask(getSquareIndex(rank, file)));
 		setPiece(piece);
 	}
 
@@ -316,11 +316,9 @@ public class Board implements IBoard, Serializable {
 		}
 	}
 
-	private char getPieceSymbol(int squareIndex, IBitboard[] pieces) {
+	private char getPieceSymbol(int index, IBitboard[] pieces) {
 		for (int i = 0; i < pieces.length; i++) {
-			IBitboard board = pieces[i];
-			IBitboard mask = new Bitboard(1L << squareIndex);
-			if (board.contains(mask)) {
+			if (pieces[i].contains(Bitboard.leftShiftMask(index))) {
 				return Pieces.SYMBOLS[i];
 			}
 		}
