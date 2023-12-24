@@ -9,8 +9,11 @@ public interface IBitboard {
 
 	void merge(IBitboard board);
 
+	void intersect(IBitboard board);
+
 	void leftShift(int bits);
 
 	void rightShift(int bits);
+
 	void negateBits();
 }

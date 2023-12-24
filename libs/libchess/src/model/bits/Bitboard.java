@@ -22,13 +22,17 @@ public class Bitboard implements IBitboard, Serializable {
 	public static final byte WEST_WEST_NORTH = WEST + NORTH_WEST;
 	public static final byte WEST_WEST_SOUTH = WEST + SOUTH_WEST;
 	public static final IBitboard firstFile = new Bitboard(0x0101010101010101L);
+	public static final IBitboard notFirstFile = Bitboard.negate(firstFile);
 	public static final IBitboard lastFile = new Bitboard(0x8080808080808080L);
+	public static final IBitboard notLastFile = Bitboard.negate(lastFile);
 	public static final IBitboard firstRank = new Bitboard(0x00000000000000FFL);
+	public static final IBitboard notFirstRank = Bitboard.negate(firstRank);
 	public static final IBitboard lastRank = new Bitboard(0xFF00000000000000L);
+	public static final IBitboard notLastRank = Bitboard.negate(lastRank);
 	public static final IBitboard diagonal = new Bitboard(0x8040201008040201L);
 	public static final IBitboard antiDiagonal = new Bitboard(0x0102040810204080L);
 	public static final IBitboard lightSquares = new Bitboard(0x55AA55AA55AA55AAL);
-	public static final IBitboard darkSquares = new Bitboard(0xAA55AA55AA55AA55L);
+	public static final IBitboard darkSquares = Bitboard.negate(lightSquares);
 
 	public static IBitboard negate(IBitboard board) {
 		return new Bitboard(~board.getBits());
@@ -46,20 +50,89 @@ public class Bitboard implements IBitboard, Serializable {
 		return new Bitboard(a.getBits() | b.getBits());
 	}
 
+	public static IBitboard intersect(IBitboard a, IBitboard b) {
+		return new Bitboard(a.getBits() & b.getBits());
+	}
+
 	public static boolean contains(IBitboard a, IBitboard b) {
-		return (a.getBits() & b.getBits()) != 0;
+		return Bitboard.intersect(a, b).getBits() != 0;
 	}
 
 	public static IBitboard leftShiftMask(int bits) {
 		return new Bitboard(1L << bits);
 	}
 
-	public static boolean isSubset(IBitboard a, IBitboard b) {
-		return (a.getBits() & b.getBits()) == a.getBits();
+	public static IBitboard rightShiftMask(IBitboard board, int bits) {
+		return new Bitboard(board.getBits() >>> bits);
 	}
 
-	public static IBitboard getSuperset(IBitboard a, IBitboard b) {
-		return new Bitboard(a.getBits() | b.getBits());
+	public static IBitboard shift(IBitboard board, int index) {
+		long bits = board.getBits();
+		return new Bitboard(index < 0 ? bits >>> (index * (-1)) : bits << index);
+	}
+
+	public static IBitboard shiftNorth(IBitboard board) {
+		return Bitboard.shift(board, NORTH);
+	}
+
+	public static IBitboard shiftNorthEast(IBitboard board) {
+		return Bitboard.intersect(Bitboard.shift(board, NORTH_EAST), notFirstFile);
+	}
+
+	public static IBitboard shiftNorthWest(IBitboard board) {
+		return Bitboard.intersect(Bitboard.shift(board, NORTH_WEST), notLastFile);
+	}
+
+	public static IBitboard shiftNorthNorthEast(IBitboard board) {
+		return Bitboard.intersect(Bitboard.shift(board, NORTH_NORTH_EAST), notFirstFile);
+	}
+
+	public static IBitboard shiftNorthNorthWest(IBitboard board) {
+		return Bitboard.intersect(Bitboard.shift(board, NORTH_NORTH_WEST), notLastFile);
+	}
+
+	public static IBitboard shiftEast(IBitboard board) {
+		return Bitboard.intersect(Bitboard.shift(board, EAST), notFirstFile);
+	}
+
+	public static IBitboard shiftEastEastNorth(IBitboard board) {
+		return Bitboard.intersect(Bitboard.shift(board, EAST_EAST_NORTH), notFirstFile);
+	}
+
+	public static IBitboard shiftEastEastSouth(IBitboard board) {
+		return Bitboard.intersect(Bitboard.shift(board, EAST_EAST_SOUTH), notFirstFile);
+	}
+
+	public static IBitboard shiftSouth(IBitboard board) {
+		return Bitboard.shift(board, SOUTH);
+	}
+
+	public static IBitboard shiftSouthEast(IBitboard board) {
+		return Bitboard.intersect(Bitboard.shift(board, SOUTH_EAST), notFirstFile);
+	}
+
+	public static IBitboard shiftSouthWest(IBitboard board) {
+		return Bitboard.intersect(Bitboard.shift(board, SOUTH_WEST), notLastFile);
+	}
+
+	public static IBitboard shiftSouthSouthEast(IBitboard board) {
+		return Bitboard.intersect(Bitboard.shift(board, SOUTH_SOUTH_EAST), notFirstFile);
+	}
+
+	public static IBitboard shiftSouthSouthWest(IBitboard board) {
+		return Bitboard.intersect(Bitboard.shift(board, SOUTH_SOUTH_WEST), notLastFile);
+	}
+
+	public static IBitboard shiftWest(IBitboard board) {
+		return Bitboard.intersect(Bitboard.shift(board, WEST), notLastFile);
+	}
+
+	public static IBitboard shiftWestWestNorth(IBitboard board) {
+		return Bitboard.intersect(Bitboard.shift(board, WEST_WEST_NORTH), notLastFile);
+	}
+
+	public static IBitboard shiftWestWestSouth(IBitboard board) {
+		return Bitboard.intersect(Bitboard.shift(board, WEST_WEST_SOUTH), notLastFile);
 	}
 
 	private long bits;
@@ -88,6 +161,10 @@ public class Bitboard implements IBitboard, Serializable {
 		setBits(Bitboard.merge(this, board).getBits());
 	}
 
+	public void intersect(IBitboard board) {
+		setBits(Bitboard.intersect(this, board).getBits());
+	}
+
 	public void leftShift(int bits) {
 		setBits(getBits() << bits);
 	}
@@ -106,8 +183,9 @@ public class Bitboard implements IBitboard, Serializable {
 		for (int rank = 7; rank >= 0; rank--) {
 			for (int file = 0; file < Board.SIZE; file++) {
 				int index = Board.getSquareIndex(rank, file);
-				long mask = 1L << index;
-				long bit = (getBits() & mask) >> index;
+				IBitboard mask = Bitboard.leftShiftMask(index);
+				IBitboard intersection = Bitboard.intersect(this, mask);
+				long bit = Bitboard.rightShiftMask(intersection, index).getBits();
 				stringBuilder.append(bit == -1 ? 1 : bit);
 			}
 			stringBuilder.append("\n");
