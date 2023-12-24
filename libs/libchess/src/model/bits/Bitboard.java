@@ -35,7 +35,7 @@ public class Bitboard implements IBitboard, Serializable {
 	public static final IBitboard antiDiagonal = new Bitboard(0x0102040810204080L);
 	public static final IBitboard lightSquares = new Bitboard(0x55AA55AA55AA55AAL);
 	public static final IBitboard darkSquares = Bitboard.negate(lightSquares);
-	public static final IBitboard[] singleBits = new IBitboard[Board.SIZE * Board.SIZE];
+	private static final IBitboard[] singleBits = new IBitboard[Board.SIZE * Board.SIZE];
 
 	static {
 		for (int rank = 7; rank >= 0; rank--) {
@@ -51,6 +51,26 @@ public class Bitboard implements IBitboard, Serializable {
 			throw new Error("Invalid index " + index);
 		}
 		return singleBits[index];
+	}
+
+	public static boolean checkBit(IBitboard board, int index) {
+		return Bitboard.intersect(board, Bitboard.getSingleBit(index)).getBits() != 0;
+	}
+
+	public static IBitboard setBit(IBitboard board, int index) {
+		return Bitboard.merge(board, Bitboard.getSingleBit(index));
+	}
+
+	public static IBitboard toggleBit(IBitboard board, int index) {
+		return Bitboard.toggle(board, Bitboard.getSingleBit(index));
+	}
+
+	public static IBitboard toggle(IBitboard a, IBitboard b) {
+		return new Bitboard(a.getBits() ^ b.getBits());
+	}
+
+	public static IBitboard unsetBit(IBitboard board, int index) {
+		return Bitboard.toggle(Bitboard.setBit(board, index), Bitboard.getSingleBit(index));
 	}
 
 	public static IBitboard negate(IBitboard board) {
@@ -75,10 +95,6 @@ public class Bitboard implements IBitboard, Serializable {
 
 	public static boolean overlap(IBitboard a, IBitboard b) {
 		return Bitboard.intersect(a, b).getBits() != 0;
-	}
-
-	public static IBitboard leftShiftMask(int bits) {
-		return new Bitboard(1L << bits);
 	}
 
 	public static IBitboard rightShiftMask(IBitboard board, int bits) {
@@ -152,6 +168,10 @@ public class Bitboard implements IBitboard, Serializable {
 
 	public static IBitboard shiftWestWestSouth(IBitboard board) {
 		return Bitboard.intersect(Bitboard.shift(board, WEST_WEST_SOUTH), Bitboard.negate(Bitboard.merge(lastFile, secondLastFile)));
+	}
+
+	private static IBitboard leftShiftMask(int bits) {
+		return new Bitboard(1L << bits);
 	}
 
 	private long bits;

@@ -27,6 +27,47 @@ public class BitboardTest {
 	}
 
 	@Test
+	void shouldCheckBit() {
+		IBitboard board = Bitboard.getSingleBit(3);
+		assertTrue(Bitboard.checkBit(board, 3));
+		assertFalse(Bitboard.checkBit(board, 2));
+	}
+
+	@Test
+	void shouldSetBit() {
+		IBitboard board = Bitboard.getSingleBit(1);
+		IBitboard result = Bitboard.setBit(board, 3);
+		assertTrue(Bitboard.checkBit(result, 1));
+		assertTrue(Bitboard.checkBit(result, 3));
+	}
+
+	@Test
+	void shouldToggleBit() {
+		IBitboard board = Bitboard.getSingleBit(2);
+		IBitboard result = Bitboard.toggleBit(board, 2);
+		assertFalse(Bitboard.checkBit(result, 2));
+		result = Bitboard.toggleBit(result, 2);
+		assertTrue(Bitboard.checkBit(result, 2));
+	}
+
+	@Test
+	void shouldToggleBits() {
+		IBitboard a = Bitboard.getSingleBit(1);
+		IBitboard b = Bitboard.getSingleBit(3);
+		IBitboard result = Bitboard.toggle(a, b);
+		assertTrue(Bitboard.checkBit(result, 1));
+		result = Bitboard.toggle(result, b);
+		assertFalse(Bitboard.checkBit(result, 3));
+	}
+
+	@Test
+	void shouldUnsetBit() {
+		IBitboard board = Bitboard.getSingleBit(0);
+		IBitboard result = Bitboard.unsetBit(board, 0);
+		assertFalse(Bitboard.checkBit(result, 0));
+	}
+
+	@Test
 	void shouldNegateBitboard() {
 		IBitboard originalBoard = new Bitboard(0x123456789ABCDEF0L);
 		IBitboard negatedBoard = Bitboard.negate(originalBoard);
@@ -57,13 +98,6 @@ public class BitboardTest {
 		assertTrue(Bitboard.overlap(b, a));
 		assertFalse(Bitboard.overlap(b, new Bitboard()));
 		assertFalse(Bitboard.overlap(a, new Bitboard()));
-	}
-
-	@Test
-	void shouldCreateLeftShiftMask() {
-		int bits = 5;
-		IBitboard leftShiftMask = Bitboard.leftShiftMask(bits);
-		assertEquals(1L << bits, leftShiftMask.getBits());
 	}
 
 	@Test
@@ -229,7 +263,7 @@ public class BitboardTest {
 		IBitboard a = new Bitboard(0x0000000000000010L);
 		IBitboard b = new Bitboard(0x0000000000000030L);
 		assertTrue(a.overlap(b));
-		assertFalse(a.overlap(Bitboard.leftShiftMask(10)));
+		assertFalse(a.overlap(Bitboard.getSingleBit(10)));
 	}
 
 	@Test
