@@ -9,7 +9,21 @@ public class BitboardTest {
 	@Test
 	void shouldInitialize() {
 		assertDoesNotThrow(() -> new Bitboard());
-		assertDoesNotThrow(() -> new Bitboard(0xFFL));
+		assertDoesNotThrow(() -> new Bitboard(-1));
+	}
+
+	@Test
+	void shouldCreateSingleBits() {
+		for (int i = 0; i < 64; i++) {
+			IBitboard singleBit = Bitboard.getSingleBit(i);
+			assertEquals(1L << i, singleBit.getBits());
+		}
+	}
+
+	@Test
+	void shouldThrowErrorForInvalidIndex() {
+		assertThrows(Error.class, () -> Bitboard.getSingleBit(-1));
+		assertThrows(Error.class, () -> Bitboard.getSingleBit(64));
 	}
 
 	@Test

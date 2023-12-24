@@ -35,6 +35,23 @@ public class Bitboard implements IBitboard, Serializable {
 	public static final IBitboard antiDiagonal = new Bitboard(0x0102040810204080L);
 	public static final IBitboard lightSquares = new Bitboard(0x55AA55AA55AA55AAL);
 	public static final IBitboard darkSquares = Bitboard.negate(lightSquares);
+	public static final IBitboard[] singleBits = new IBitboard[Board.SIZE * Board.SIZE];
+
+	static {
+		for (int rank = 7; rank >= 0; rank--) {
+			for (int file = 0; file < Board.SIZE; file++) {
+				int index = Board.getSquareIndex(rank, file);
+				singleBits[index] = Bitboard.leftShiftMask(index);
+			}
+		}
+	}
+
+	public static IBitboard getSingleBit(int index) {
+		if (index < 0 || index >= singleBits.length) {
+			throw new Error("Invalid index " + index);
+		}
+		return singleBits[index];
+	}
 
 	public static IBitboard negate(IBitboard board) {
 		return new Bitboard(~board.getBits());
@@ -189,7 +206,7 @@ public class Bitboard implements IBitboard, Serializable {
 		for (int rank = 7; rank >= 0; rank--) {
 			for (int file = 0; file < Board.SIZE; file++) {
 				int index = Board.getSquareIndex(rank, file);
-				IBitboard mask = Bitboard.leftShiftMask(index);
+				IBitboard mask = Bitboard.getSingleBit(index);
 				IBitboard intersection = Bitboard.intersect(this, mask);
 				long bit = Bitboard.rightShiftMask(intersection, index).getBits();
 				stringBuilder.append(bit == -1 ? 1 : bit);

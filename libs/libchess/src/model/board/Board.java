@@ -128,7 +128,7 @@ public class Board implements IBoard, Serializable {
 	public Pieces getPieceByIndex(int index) {
 		IBitboard[] allPieces = getAllPieces();
 		for (int i = 0; i < allPieces.length; i++) {
-			if (allPieces[i].overlap(Bitboard.leftShiftMask(index))) {
+			if (allPieces[i].overlap(Bitboard.getSingleBit(index))) {
 				return Pieces.PIECE_BY_INDEX[i];
 			}
 		}
@@ -278,7 +278,7 @@ public class Board implements IBoard, Serializable {
 
 	private void initializePiece(char symbol, int rank, int file) {
 		Piece piece = getPiece(Pieces.fromSymbol(symbol));
-		piece.getBitboard().merge(Bitboard.leftShiftMask(getSquareIndex(rank, file)));
+		piece.getBitboard().merge(Bitboard.getSingleBit(getSquareIndex(rank, file)));
 		setPiece(piece);
 	}
 
@@ -318,7 +318,7 @@ public class Board implements IBoard, Serializable {
 
 	private char getPieceSymbol(int index, IBitboard[] pieces) {
 		for (int i = 0; i < pieces.length; i++) {
-			if (pieces[i].overlap(Bitboard.leftShiftMask(index))) {
+			if (pieces[i].overlap(Bitboard.getSingleBit(index))) {
 				return Pieces.SYMBOLS[i];
 			}
 		}
