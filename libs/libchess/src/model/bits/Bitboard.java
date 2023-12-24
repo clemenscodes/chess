@@ -22,9 +22,11 @@ public class Bitboard implements IBitboard, Serializable {
 	public static final byte WEST_WEST_NORTH = WEST + NORTH_WEST;
 	public static final byte WEST_WEST_SOUTH = WEST + SOUTH_WEST;
 	public static final IBitboard firstFile = new Bitboard(0x0101010101010101L);
+	public static final IBitboard secondFile = new Bitboard(0x0202020202020202L);
 	public static final IBitboard notFirstFile = Bitboard.negate(firstFile);
 	public static final IBitboard lastFile = new Bitboard(0x8080808080808080L);
 	public static final IBitboard notLastFile = Bitboard.negate(lastFile);
+	public static final IBitboard secondLastFile = new Bitboard(0x4040404040404040L);
 	public static final IBitboard firstRank = new Bitboard(0x00000000000000FFL);
 	public static final IBitboard notFirstRank = Bitboard.negate(firstRank);
 	public static final IBitboard lastRank = new Bitboard(0xFF00000000000000L);
@@ -54,7 +56,7 @@ public class Bitboard implements IBitboard, Serializable {
 		return new Bitboard(a.getBits() & b.getBits());
 	}
 
-	public static boolean contains(IBitboard a, IBitboard b) {
+	public static boolean overlap(IBitboard a, IBitboard b) {
 		return Bitboard.intersect(a, b).getBits() != 0;
 	}
 
@@ -68,7 +70,7 @@ public class Bitboard implements IBitboard, Serializable {
 
 	public static IBitboard shift(IBitboard board, int index) {
 		long bits = board.getBits();
-		return new Bitboard(index < 0 ? bits >>> (index * (-1)) : bits << index);
+		return new Bitboard(index < 0 ? bits >>> -index : bits << index);
 	}
 
 	public static IBitboard shiftNorth(IBitboard board) {
@@ -96,11 +98,11 @@ public class Bitboard implements IBitboard, Serializable {
 	}
 
 	public static IBitboard shiftEastEastNorth(IBitboard board) {
-		return Bitboard.intersect(Bitboard.shift(board, EAST_EAST_NORTH), notFirstFile);
+		return Bitboard.intersect(Bitboard.shift(board, EAST_EAST_NORTH), Bitboard.negate(Bitboard.merge(firstFile, secondFile)));
 	}
 
 	public static IBitboard shiftEastEastSouth(IBitboard board) {
-		return Bitboard.intersect(Bitboard.shift(board, EAST_EAST_SOUTH), notFirstFile);
+		return Bitboard.intersect(Bitboard.shift(board, EAST_EAST_SOUTH), Bitboard.negate(Bitboard.merge(firstFile, secondFile)));
 	}
 
 	public static IBitboard shiftSouth(IBitboard board) {
@@ -128,11 +130,11 @@ public class Bitboard implements IBitboard, Serializable {
 	}
 
 	public static IBitboard shiftWestWestNorth(IBitboard board) {
-		return Bitboard.intersect(Bitboard.shift(board, WEST_WEST_NORTH), notLastFile);
+		return Bitboard.intersect(Bitboard.shift(board, WEST_WEST_NORTH), Bitboard.negate(Bitboard.merge(lastFile, secondLastFile)));
 	}
 
 	public static IBitboard shiftWestWestSouth(IBitboard board) {
-		return Bitboard.intersect(Bitboard.shift(board, WEST_WEST_SOUTH), notLastFile);
+		return Bitboard.intersect(Bitboard.shift(board, WEST_WEST_SOUTH), Bitboard.negate(Bitboard.merge(lastFile, secondLastFile)));
 	}
 
 	private long bits;
@@ -153,8 +155,8 @@ public class Bitboard implements IBitboard, Serializable {
 		this.bits = bits;
 	}
 
-	public boolean contains(IBitboard board) {
-		return Bitboard.contains(this, board);
+	public boolean overlap(IBitboard board) {
+		return Bitboard.overlap(this, board);
 	}
 
 	public void merge(IBitboard board) {
@@ -175,6 +177,10 @@ public class Bitboard implements IBitboard, Serializable {
 
 	public void negateBits() {
 		setBits(Bitboard.negate(this).getBits());
+	}
+
+	public IBitboard copy() {
+		return new Bitboard(getBits());
 	}
 
 	@Override

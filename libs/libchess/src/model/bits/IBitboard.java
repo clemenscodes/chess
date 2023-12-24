@@ -5,7 +5,7 @@ public interface IBitboard {
 
 	void setBits(long bits);
 
-	boolean contains(IBitboard board);
+	boolean overlap(IBitboard board);
 
 	void merge(IBitboard board);
 
@@ -16,4 +16,5 @@ public interface IBitboard {
 	void rightShift(int bits);
 
 	void negateBits();
+	IBitboard copy();
 }
