@@ -28,9 +28,7 @@ public enum Pieces {
 			case 'Q' -> WhiteQueen;
 			case 'K' -> WhiteKing;
 			case 'P' -> WhitePawn;
-			default -> throw new IllegalStateException(
-				"Unexpected symbol: " + symbol
-			);
+			default -> throw new IllegalStateException("Unexpected symbol: " + symbol);
 		};
 	}
 

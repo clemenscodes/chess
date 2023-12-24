@@ -35,15 +35,9 @@
 				<directory>${project.basedir}/assets</directory>
 			</testResource>
 		</testResources>
-		<directory>
-			${project.basedir}/../../dist/${project.artifactId}
-		</directory>
-		<outputDirectory>
-			${project.basedir}/../../dist/${project.artifactId}
-		</outputDirectory>
-		<testOutputDirectory>
-			${project.basedir}/../../dist/${project.artifactId}/test
-		</testOutputDirectory>
+		<directory>${project.basedir}/../../dist/${project.artifactId}</directory>
+		<outputDirectory>${project.basedir}/../../dist/${project.artifactId}</outputDirectory>
+		<testOutputDirectory>${project.basedir}/../../dist/${project.artifactId}/test</testOutputDirectory>
 	</build>
 
 	<modules>

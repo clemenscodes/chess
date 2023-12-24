@@ -10,9 +10,7 @@ public class DataManager implements IDataManager {
 
 	public void setStreams(ConnectionManager connection) {
 		try {
-			Socket socket = connection.getIsClient()
-				? connection.getClientSocket()
-				: connection.getServerSocket();
+			Socket socket = connection.getIsClient() ? connection.getClientSocket() : connection.getServerSocket();
 			in = socket.getInputStream();
 			out = socket.getOutputStream();
 		} catch (IOException e) {
@@ -27,8 +25,7 @@ public class DataManager implements IDataManager {
 		oos.flush();
 	}
 
-	public <T extends Serializable> T receiveData(Class<T> type)
-		throws IOException {
+	public <T extends Serializable> T receiveData(Class<T> type) throws IOException {
 		try {
 			ObjectInputStream ois = new ObjectInputStream(getInputStream());
 			Object data = ois.readObject();
@@ -38,9 +35,7 @@ public class DataManager implements IDataManager {
 			System.err.println("[client] Received unexpected data type");
 			return null;
 		} catch (ClassNotFoundException e) {
-			System.err.println(
-				"[client] Failed to receive data: " + e.getMessage()
-			);
+			System.err.println("[client] Failed to receive data: " + e.getMessage());
 			return null;
 		}
 	}

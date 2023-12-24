@@ -46,9 +46,7 @@ public class ChessController implements IChessController {
 			case Start -> view.drawStart();
 			case Playing -> view.drawPlaying();
 			case GameOver -> view.drawGameOver();
-			default -> throw new IllegalStateException(
-				"Unexpected value: " + state
-			);
+			default -> throw new IllegalStateException("Unexpected value: " + state);
 		}
 	}
 
@@ -61,9 +59,7 @@ public class ChessController implements IChessController {
 		switch (state) {
 			case Start, GameOver -> handleStartOrGameOverInput(key);
 			case Playing -> handlePlayingInput(key, keyCode);
-			default -> throw new IllegalStateException(
-				"Unexpected value: " + state
-			);
+			default -> throw new IllegalStateException("Unexpected value: " + state);
 		}
 	}
 

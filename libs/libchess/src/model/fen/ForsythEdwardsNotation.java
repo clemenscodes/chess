@@ -3,8 +3,7 @@ package model.fen;
 import java.io.Serializable;
 import model.board.Board;
 
-public class ForsythEdwardsNotation
-	implements IForsythEdwardsNotation, Serializable {
+public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializable {
 
 	public static final int MAX_HALF_MOVE_CLOCK = 150;
 	public static final int MIN_HALF_MOVE_CLOCK = 0;
@@ -47,9 +46,7 @@ public class ForsythEdwardsNotation
 	public void parse(String fen) {
 		String[] parts = fen.split(" ");
 		if (parts.length != 6) {
-			throw new IllegalArgumentException(
-				"Invalid FEN: It should consist of 6 space-separated parts"
-			);
+			throw new IllegalArgumentException("Invalid FEN: It should consist of 6 space-separated parts");
 		}
 		setPiecePlacementData(parts[0]);
 		setActiveColor(parts[1]);
@@ -66,11 +63,7 @@ public class ForsythEdwardsNotation
 		}
 		for (var rank : ppd) {
 			if (rank.length() > Board.SIZE) {
-				throw new IllegalArgumentException(
-					"Invalid piece placement data: Each rank should have at most " +
-					Board.SIZE +
-					" files"
-				);
+				throw new IllegalArgumentException("Invalid piece placement data: Each rank should have at most " + Board.SIZE + " files");
 			}
 		}
 		piecePlacementData = ppd;
@@ -80,9 +73,7 @@ public class ForsythEdwardsNotation
 		try {
 			var ac = color.charAt(0);
 			if (ac != 'w' && ac != 'b') {
-				throw new IllegalArgumentException(
-					"Active color must be either 'w' or 'b'"
-				);
+				throw new IllegalArgumentException("Active color must be either 'w' or 'b'");
 			}
 			activeColor = ac;
 		} catch (IndexOutOfBoundsException e) {
@@ -95,9 +86,7 @@ public class ForsythEdwardsNotation
 			if (!castlingInfo.equals("-")) {
 				for (char c : castlingInfo.toCharArray()) {
 					if (c != 'K' && c != 'Q' && c != 'k' && c != 'q') {
-						throw new IllegalArgumentException(
-							"Invalid castling information: Use 'K', 'Q', 'k', 'q', or '-'"
-						);
+						throw new IllegalArgumentException("Invalid castling information: Use 'K', 'Q', 'k', 'q', or '-'");
 					}
 				}
 			}
@@ -110,20 +99,13 @@ public class ForsythEdwardsNotation
 	private void setEnPassant(String enPassantInfo) {
 		try {
 			if (!enPassantInfo.equals("-")) {
-				if (
-					enPassantInfo.length() != 2 ||
-					!isValidEnPassantSquare(enPassantInfo)
-				) {
-					throw new IllegalArgumentException(
-						"Invalid en passant target square"
-					);
+				if (enPassantInfo.length() != 2 || !isValidEnPassantSquare(enPassantInfo)) {
+					throw new IllegalArgumentException("Invalid en passant target square");
 				}
 			}
 			enPassant = enPassantInfo;
 		} catch (IndexOutOfBoundsException e) {
-			throw new IllegalArgumentException(
-				"Invalid en passant information"
-			);
+			throw new IllegalArgumentException("Invalid en passant information");
 		}
 	}
 
@@ -137,9 +119,7 @@ public class ForsythEdwardsNotation
 		try {
 			int halfMoveClockValue = Integer.parseInt(halfMoveClockStr);
 			if (halfMoveClockValue < MIN_HALF_MOVE_CLOCK) {
-				throw new IllegalArgumentException(
-					"Invalid half-move clock: It cannot be negative"
-				);
+				throw new IllegalArgumentException("Invalid half-move clock: It cannot be negative");
 			}
 			if (halfMoveClockValue > MAX_HALF_MOVE_CLOCK) {
 				throw new IllegalArgumentException(
@@ -156,9 +136,7 @@ public class ForsythEdwardsNotation
 		try {
 			int fullMoveNumberValue = Integer.parseInt(fullMoveNumberStr);
 			if (fullMoveNumberValue < MIN_FULL_MOVE_CLOCK) {
-				throw new IllegalArgumentException(
-					"Invalid full-move number: It must be greater than or equal to 1"
-				);
+				throw new IllegalArgumentException("Invalid full-move number: It must be greater than or equal to 1");
 			}
 			fullMoveNumber = fullMoveNumberValue;
 		} catch (NumberFormatException e) {

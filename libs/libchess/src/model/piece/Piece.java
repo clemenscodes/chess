@@ -1,12 +1,13 @@
 package model.piece;
 
 import java.io.Serializable;
-import model.board.Bitboard;
+import model.bits.Bitboard;
+import model.bits.IBitboard;
 
 public abstract class Piece implements Movable, Serializable {
 
 	private Pieces variant;
-	private Bitboard bitboard;
+	private IBitboard bitboard;
 
 	public Piece(Pieces variant) {
 		setVariant(variant);
@@ -17,11 +18,11 @@ public abstract class Piece implements Movable, Serializable {
 		return variant;
 	}
 
-	public Bitboard getBitboard() {
+	public IBitboard getBitboard() {
 		return bitboard;
 	}
 
-	public void setBitboard(Bitboard bitboard) {
+	public void setBitboard(IBitboard bitboard) {
 		this.bitboard = bitboard;
 	}
 
