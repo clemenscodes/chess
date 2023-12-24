@@ -21,7 +21,6 @@ public class ChessModel implements IChessModel {
 		var model = new ChessModel();
 		model.startGame();
 		model.makeMove(new Move(Square.e2, Square.e4));
-		model.unmakeMove();
 	}
 
 	public State getGameState() {
@@ -43,7 +42,7 @@ public class ChessModel implements IChessModel {
 	public void startGame() {
 		setFen(new ForsythEdwardsNotation());
 		setBoard(new Board());
-		getBoard().initializePieces(getFen().getPiecePlacementData());
+		getBoard().setPieces(getFen().getPiecePlacementData());
 		setMoveList(new MoveList());
 		setGameState(State.Start);
 		printGame();

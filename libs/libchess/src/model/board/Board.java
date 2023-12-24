@@ -115,26 +115,26 @@ public class Board implements IBoard, Serializable {
 
 	public IBitboard[] getAllPieces() {
 		updateAllPieces();
-		var whitePieces = getAllWhitePieces();
-		var blackPieces = getAllBlackPieces();
-		IBitboard[] allPieces = new IBitboard[whitePieces.length + blackPieces.length];
-		System.arraycopy(whitePieces, 0, allPieces, 0, whitePieces.length);
-		System.arraycopy(blackPieces, 0, allPieces, whitePieces.length, blackPieces.length);
+		IBitboard[] blackPieces = getAllBlackPieces();
+		IBitboard[] whitePieces = getAllWhitePieces();
+		IBitboard[] allPieces = new IBitboard[blackPieces.length + whitePieces.length];
+		System.arraycopy(blackPieces, 0, allPieces, 0, blackPieces.length);
+		System.arraycopy(whitePieces, 0, allPieces, blackPieces.length, whitePieces.length);
 		return allPieces;
 	}
 
 	public Pieces getPieceByIndex(int index) {
 		IBitboard[] allPieces = getAllPieces();
-		long mask = 1L << index;
+		IBitboard mask = new Bitboard(1L << index);
 		for (int i = 0; i < allPieces.length; i++) {
-			if ((allPieces[i].getBits() & mask) != 0) {
+			if (allPieces[i].contains(mask)) {
 				return Pieces.PIECE_BY_INDEX[i];
 			}
 		}
 		throw new Error("No piece is set on the square");
 	}
 
-	public void initializePieces(String[] ppd) {
+	public void setPieces(String[] ppd) {
 		int reverseRank = 0;
 		for (int rank = 7; rank >= 0; rank--) {
 			int file = 0;
@@ -167,7 +167,7 @@ public class Board implements IBoard, Serializable {
 	}
 
 	private void updateOccupiedSquares() {
-		setOccupiedSquares(Bitboard.merge(getAllPieces()));
+		setOccupiedSquares(Bitboard.mergeMany(getAllPieces()));
 	}
 
 	private void updateEmptySquares() {
@@ -240,7 +240,7 @@ public class Board implements IBoard, Serializable {
 
 	private void updateWhitePieces() {
 		IBitboard[] pieces = getAllWhitePieces();
-		setWhitePieces(Bitboard.merge(pieces));
+		setWhitePieces(Bitboard.mergeMany(pieces));
 	}
 
 	private void updateAllPieces() {
@@ -261,7 +261,7 @@ public class Board implements IBoard, Serializable {
 
 	private void updateBlackPieces() {
 		IBitboard[] pieces = getAllBlackPieces();
-		setBlackPieces(Bitboard.merge(pieces));
+		setBlackPieces(Bitboard.mergeMany(pieces));
 	}
 
 	private IBitboard[] getAllBlackPieces() {
@@ -276,13 +276,9 @@ public class Board implements IBoard, Serializable {
 	}
 
 	private void initializePiece(char symbol, int rank, int file) {
-		Pieces kind = Pieces.fromSymbol(symbol);
-		Piece piece = getPiece(kind);
-		long bits = piece.getBitboard().getBits();
-		int index = rank * SIZE + file;
-		long newBit = 1L << (index);
-		long newBits = bits | newBit;
-		piece.getBitboard().setBits(newBits);
+		Piece piece = getPiece(Pieces.fromSymbol(symbol));
+		IBitboard mask = new Bitboard(1L << (getSquareIndex(rank, file)));
+		piece.getBitboard().merge(mask);
 		setPiece(piece);
 	}
 
@@ -322,7 +318,9 @@ public class Board implements IBoard, Serializable {
 
 	private char getPieceSymbol(int squareIndex, IBitboard[] pieces) {
 		for (int i = 0; i < pieces.length; i++) {
-			if ((pieces[i].getBits() & (1L << squareIndex)) != 0) {
+			IBitboard board = pieces[i];
+			IBitboard mask = new Bitboard(1L << squareIndex);
+			if (board.contains(mask)) {
 				return Pieces.SYMBOLS[i];
 			}
 		}

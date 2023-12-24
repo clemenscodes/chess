@@ -34,20 +34,24 @@ public class Bitboard implements IBitboard, Serializable {
 		return new Bitboard(~board.getBits());
 	}
 
+	public static IBitboard mergeMany(IBitboard[] bitboards) {
+		long mergedBits = 0L;
+		for (var board : bitboards) {
+			mergedBits |= board.getBits();
+		}
+		return new Bitboard(mergedBits);
+	}
+
+	public static IBitboard merge(IBitboard a, IBitboard b) {
+		return new Bitboard(a.getBits() | b.getBits());
+	}
+
 	public static boolean isSubset(IBitboard a, IBitboard b) {
 		return (a.getBits() & b.getBits()) == a.getBits();
 	}
 
 	public static IBitboard getSuperset(IBitboard a, IBitboard b) {
 		return new Bitboard(a.getBits() | b.getBits());
-	}
-
-	public static IBitboard merge(IBitboard[] bitboards) {
-		long mergedBits = 0L;
-		for (var board : bitboards) {
-			mergedBits |= board.getBits();
-		}
-		return new Bitboard(mergedBits);
 	}
 
 	private long bits;
@@ -66,6 +70,14 @@ public class Bitboard implements IBitboard, Serializable {
 
 	public void setBits(long bits) {
 		this.bits = bits;
+	}
+
+	public boolean contains(IBitboard board) {
+		return (getBits() & board.getBits()) != 0;
+	}
+
+	public void merge(IBitboard board) {
+		setBits(Bitboard.merge(this, board).getBits());
 	}
 
 	@Override

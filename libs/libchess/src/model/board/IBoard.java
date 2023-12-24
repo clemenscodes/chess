@@ -52,5 +52,5 @@ public interface IBoard {
 
 	Pieces getPieceByIndex(int index);
 
-	void initializePieces(String[] ppd);
+	void setPieces(String[] ppd);
 }
