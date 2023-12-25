@@ -168,7 +168,7 @@ public class Board implements IBoard, Serializable {
 				return Pieces.PIECE_BY_INDEX[i];
 			}
 		}
-		throw new Error("No piece is set on the square");
+		throw new Error("No piece is set on the square " + Square.getSquare(index));
 	}
 
 	public void setPieces(String[] ppd) {

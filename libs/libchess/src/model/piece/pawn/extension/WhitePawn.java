@@ -20,11 +20,12 @@ public class WhitePawn extends Pawn implements Serializable {
 	public boolean isInvalidMove(int source, int destination, IBoard board) {
 		IBitboard emptySquares = board.getEmptySquares();
 		if (!Bitboard.checkBit(getPushablePawns(emptySquares), source)) {
-			System.err.println("Pawn on " + Square.getSquare(source) + " can not move");
+			System.err.println("Pawn on " + Square.getSquare(source) + " can not push");
 			return true;
 		}
-		if (!Bitboard.checkBit(getPushTargets(emptySquares), destination)) {
-			System.err.println("Can not move pawn to " + Square.getSquare(destination));
+		IBitboard pawn = Bitboard.getSingleBit(source);
+		if (!Bitboard.checkBit(getPushTargets(pawn, emptySquares), destination)) {
+			System.err.println("Can not push pawn to " + Square.getSquare(destination));
 			return true;
 		}
 		return false;
@@ -38,22 +39,21 @@ public class WhitePawn extends Pawn implements Serializable {
 		System.out.print(Square.getSquare(source));
 		System.out.print(" to ");
 		System.out.println(Square.getSquare(destination));
-		IBitboard moveMask = Bitboard.merge(Bitboard.getSingleBit(source), Bitboard.getSingleBit(destination));
-		getBitboard().toggleBits(moveMask);
+		getBitboard().toggleBits(getMoveMask(source, destination));
 	}
 
-	private IBitboard getPushTargets(IBitboard emptySquares) {
-		IBitboard singlePushTargets = getSinglePushTargets(emptySquares);
-		IBitboard doublePushTargets = getDoublePushTargets(emptySquares);
+	private IBitboard getPushTargets(IBitboard pawn, IBitboard emptySquares) {
+		IBitboard singlePushTargets = getSinglePushTargets(pawn, emptySquares);
+		IBitboard doublePushTargets = getDoublePushTargets(pawn, emptySquares);
 		return Bitboard.merge(singlePushTargets, doublePushTargets);
 	}
 
-	private IBitboard getSinglePushTargets(IBitboard emptySquares) {
-		return Bitboard.intersect(Bitboard.shiftNorth(getBitboard()), emptySquares);
+	private IBitboard getSinglePushTargets(IBitboard pawn, IBitboard emptySquares) {
+		return Bitboard.intersect(Bitboard.shiftNorth(pawn), emptySquares);
 	}
 
-	private IBitboard getDoublePushTargets(IBitboard emptySquares) {
-		IBitboard singlePushTargets = getSinglePushTargets(emptySquares);
+	private IBitboard getDoublePushTargets(IBitboard pawn, IBitboard emptySquares) {
+		IBitboard singlePushTargets = getSinglePushTargets(pawn, emptySquares);
 		IBitboard doublePushMask = Bitboard.intersect(emptySquares, Board.fourthRank);
 		return Bitboard.intersect(Bitboard.shiftNorth(singlePushTargets), doublePushMask);
 	}

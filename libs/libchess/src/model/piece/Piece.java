@@ -29,4 +29,8 @@ public abstract class Piece implements IPiece, Movable, Serializable {
 	private void setVariant(Pieces variant) {
 		this.variant = variant;
 	}
+
+	protected IBitboard getMoveMask(int source, int destination) {
+		return Bitboard.merge(Bitboard.getSingleBit(source), Bitboard.getSingleBit(destination));
+	}
 }
