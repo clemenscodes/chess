@@ -28,6 +28,6 @@ public abstract class AbstractChess extends ChessView {
 		controller.setDataManager(dataManager);
 
 		view.setController(controller);
-		PApplet.runSketch(new String[] { "PokePongView" }, view);
+		PApplet.runSketch(new String[] { "ChessView" }, view);
 	}
 }

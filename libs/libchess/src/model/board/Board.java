@@ -3,7 +3,7 @@ package model.board;
 import java.io.Serializable;
 import model.bits.Bitboard;
 import model.bits.IBitboard;
-import model.piece.Piece;
+import model.piece.IPiece;
 import model.piece.Pieces;
 import model.piece.bishop.extension.BlackBishop;
 import model.piece.bishop.extension.WhiteBishop;
@@ -21,6 +21,42 @@ import model.piece.rook.extension.WhiteRook;
 public class Board implements IBoard, Serializable {
 
 	public static final byte SIZE = 8;
+	public static final byte NORTH = SIZE;
+	public static final byte EAST = 1;
+	public static final byte SOUTH = -SIZE;
+	public static final byte WEST = -1;
+	public static final byte NORTH_EAST = NORTH + EAST;
+	public static final byte SOUTH_EAST = SOUTH + EAST;
+	public static final byte SOUTH_WEST = SOUTH + WEST;
+	public static final byte NORTH_WEST = NORTH + WEST;
+	public static final byte NORTH_NORTH_EAST = NORTH + NORTH_EAST;
+	public static final byte NORTH_NORTH_WEST = NORTH + NORTH_WEST;
+	public static final byte SOUTH_SOUTH_EAST = SOUTH + SOUTH_EAST;
+	public static final byte SOUTH_SOUTH_WEST = SOUTH + SOUTH_WEST;
+	public static final byte EAST_EAST_NORTH = EAST + NORTH_EAST;
+	public static final byte EAST_EAST_SOUTH = EAST + SOUTH_EAST;
+	public static final byte WEST_WEST_NORTH = WEST + NORTH_WEST;
+	public static final byte WEST_WEST_SOUTH = WEST + SOUTH_WEST;
+	public static final IBitboard firstFile = new Bitboard(0x0101010101010101L);
+	public static final IBitboard secondFile = new Bitboard(0x0202020202020202L);
+	public static final IBitboard notFirstFile = Bitboard.negate(firstFile);
+	public static final IBitboard lastFile = new Bitboard(0x8080808080808080L);
+	public static final IBitboard notLastFile = Bitboard.negate(lastFile);
+	public static final IBitboard secondLastFile = new Bitboard(0x4040404040404040L);
+	public static final IBitboard firstRank = new Bitboard(0x00000000000000FFL);
+	public static final IBitboard notFirstRank = Bitboard.negate(firstRank);
+	public static final IBitboard secondRank = new Bitboard(0x000000000000FF00L);
+	public static final IBitboard thirdRank = new Bitboard(0x0000000000FF0000L);
+	public static final IBitboard fourthRank = new Bitboard(0x0000000FF000000L);
+	public static final IBitboard fifthRank = new Bitboard(0x000000FF00000000L);
+	public static final IBitboard sixthRank = new Bitboard(0x0000FF0000000000L);
+	public static final IBitboard seventhRank = new Bitboard(0x00FF000000000000L);
+	public static final IBitboard eighthRank = new Bitboard(0xFF00000000000000L);
+	public static final IBitboard notEighthRank = Bitboard.negate(eighthRank);
+	public static final IBitboard diagonal = new Bitboard(0x8040201008040201L);
+	public static final IBitboard antiDiagonal = new Bitboard(0x0102040810204080L);
+	public static final IBitboard lightSquares = new Bitboard(0x55AA55AA55AA55AAL);
+	public static final IBitboard darkSquares = Bitboard.negate(lightSquares);
 
 	public static int getSquareIndex(int rank, int file) {
 		return SIZE * rank + file;
@@ -277,12 +313,12 @@ public class Board implements IBoard, Serializable {
 	}
 
 	private void initializePiece(char symbol, int rank, int file) {
-		Piece piece = getPiece(Pieces.fromSymbol(symbol));
+		IPiece piece = getPiece(Pieces.fromSymbol(symbol));
 		piece.getBitboard().merge(Bitboard.getSingleBit(getSquareIndex(rank, file)));
 		setPiece(piece);
 	}
 
-	private Piece getPiece(Pieces kind) {
+	private IPiece getPiece(Pieces kind) {
 		return switch (kind) {
 			case BlackRook -> getBlackRook();
 			case BlackKnight -> getBlackKnight();
@@ -299,7 +335,7 @@ public class Board implements IBoard, Serializable {
 		};
 	}
 
-	private void setPiece(Piece piece) {
+	private void setPiece(IPiece piece) {
 		switch (piece.getVariant()) {
 			case BlackRook -> setBlackRook((BlackRook) piece);
 			case BlackKnight -> setBlackKnight((BlackKnight) piece);

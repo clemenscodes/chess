@@ -5,36 +5,6 @@ import model.board.Board;
 
 public class Bitboard implements IBitboard, Serializable {
 
-	public static final byte NORTH = Board.SIZE;
-	public static final byte EAST = 1;
-	public static final byte SOUTH = -Board.SIZE;
-	public static final byte WEST = -1;
-	public static final byte NORTH_EAST = NORTH + EAST;
-	public static final byte SOUTH_EAST = SOUTH + EAST;
-	public static final byte SOUTH_WEST = SOUTH + WEST;
-	public static final byte NORTH_WEST = NORTH + WEST;
-	public static final byte NORTH_NORTH_EAST = NORTH + NORTH_EAST;
-	public static final byte NORTH_NORTH_WEST = NORTH + NORTH_WEST;
-	public static final byte SOUTH_SOUTH_EAST = SOUTH + SOUTH_EAST;
-	public static final byte SOUTH_SOUTH_WEST = SOUTH + SOUTH_WEST;
-	public static final byte EAST_EAST_NORTH = EAST + NORTH_EAST;
-	public static final byte EAST_EAST_SOUTH = EAST + SOUTH_EAST;
-	public static final byte WEST_WEST_NORTH = WEST + NORTH_WEST;
-	public static final byte WEST_WEST_SOUTH = WEST + SOUTH_WEST;
-	public static final IBitboard firstFile = new Bitboard(0x0101010101010101L);
-	public static final IBitboard secondFile = new Bitboard(0x0202020202020202L);
-	public static final IBitboard notFirstFile = negate(firstFile);
-	public static final IBitboard lastFile = new Bitboard(0x8080808080808080L);
-	public static final IBitboard notLastFile = negate(lastFile);
-	public static final IBitboard secondLastFile = new Bitboard(0x4040404040404040L);
-	public static final IBitboard firstRank = new Bitboard(0x00000000000000FFL);
-	public static final IBitboard notFirstRank = negate(firstRank);
-	public static final IBitboard lastRank = new Bitboard(0xFF00000000000000L);
-	public static final IBitboard notLastRank = negate(lastRank);
-	public static final IBitboard diagonal = new Bitboard(0x8040201008040201L);
-	public static final IBitboard antiDiagonal = new Bitboard(0x0102040810204080L);
-	public static final IBitboard lightSquares = new Bitboard(0x55AA55AA55AA55AAL);
-	public static final IBitboard darkSquares = negate(lightSquares);
 	private static final IBitboard[] singleBits = new IBitboard[Board.SIZE * Board.SIZE];
 
 	static {
@@ -107,67 +77,67 @@ public class Bitboard implements IBitboard, Serializable {
 	}
 
 	public static IBitboard shiftNorth(IBitboard board) {
-		return shift(board, NORTH);
+		return shift(board, Board.NORTH);
 	}
 
 	public static IBitboard shiftNorthEast(IBitboard board) {
-		return intersect(shift(board, NORTH_EAST), notFirstFile);
+		return intersect(shift(board, Board.NORTH_EAST), Board.notFirstFile);
 	}
 
 	public static IBitboard shiftNorthWest(IBitboard board) {
-		return intersect(shift(board, NORTH_WEST), notLastFile);
+		return intersect(shift(board, Board.NORTH_WEST), Board.notLastFile);
 	}
 
 	public static IBitboard shiftNorthNorthEast(IBitboard board) {
-		return intersect(shift(board, NORTH_NORTH_EAST), notFirstFile);
+		return intersect(shift(board, Board.NORTH_NORTH_EAST), Board.notFirstFile);
 	}
 
 	public static IBitboard shiftNorthNorthWest(IBitboard board) {
-		return intersect(shift(board, NORTH_NORTH_WEST), notLastFile);
+		return intersect(shift(board, Board.NORTH_NORTH_WEST), Board.notLastFile);
 	}
 
 	public static IBitboard shiftEast(IBitboard board) {
-		return intersect(shift(board, EAST), notFirstFile);
+		return intersect(shift(board, Board.EAST), Board.notFirstFile);
 	}
 
 	public static IBitboard shiftEastEastNorth(IBitboard board) {
-		return intersect(shift(board, EAST_EAST_NORTH), negate(merge(firstFile, secondFile)));
+		return intersect(shift(board, Board.EAST_EAST_NORTH), negate(merge(Board.firstFile, Board.secondFile)));
 	}
 
 	public static IBitboard shiftEastEastSouth(IBitboard board) {
-		return intersect(shift(board, EAST_EAST_SOUTH), negate(merge(firstFile, secondFile)));
+		return intersect(shift(board, Board.EAST_EAST_SOUTH), negate(merge(Board.firstFile, Board.secondFile)));
 	}
 
 	public static IBitboard shiftSouth(IBitboard board) {
-		return shift(board, SOUTH);
+		return shift(board, Board.SOUTH);
 	}
 
 	public static IBitboard shiftSouthEast(IBitboard board) {
-		return intersect(shift(board, SOUTH_EAST), notFirstFile);
+		return intersect(shift(board, Board.SOUTH_EAST), Board.notFirstFile);
 	}
 
 	public static IBitboard shiftSouthWest(IBitboard board) {
-		return intersect(shift(board, SOUTH_WEST), notLastFile);
+		return intersect(shift(board, Board.SOUTH_WEST), Board.notLastFile);
 	}
 
 	public static IBitboard shiftSouthSouthEast(IBitboard board) {
-		return intersect(shift(board, SOUTH_SOUTH_EAST), notFirstFile);
+		return intersect(shift(board, Board.SOUTH_SOUTH_EAST), Board.notFirstFile);
 	}
 
 	public static IBitboard shiftSouthSouthWest(IBitboard board) {
-		return intersect(shift(board, SOUTH_SOUTH_WEST), notLastFile);
+		return intersect(shift(board, Board.SOUTH_SOUTH_WEST), Board.notLastFile);
 	}
 
 	public static IBitboard shiftWest(IBitboard board) {
-		return intersect(shift(board, WEST), notLastFile);
+		return intersect(shift(board, Board.WEST), Board.notLastFile);
 	}
 
 	public static IBitboard shiftWestWestNorth(IBitboard board) {
-		return intersect(shift(board, WEST_WEST_NORTH), negate(merge(lastFile, secondLastFile)));
+		return intersect(shift(board, Board.WEST_WEST_NORTH), negate(merge(Board.lastFile, Board.secondLastFile)));
 	}
 
 	public static IBitboard shiftWestWestSouth(IBitboard board) {
-		return intersect(shift(board, WEST_WEST_SOUTH), negate(merge(lastFile, secondLastFile)));
+		return intersect(shift(board, Board.WEST_WEST_SOUTH), negate(merge(Board.lastFile, Board.secondLastFile)));
 	}
 
 	private static IBitboard leftShiftMask(int bits) {

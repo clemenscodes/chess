@@ -23,7 +23,7 @@ public abstract class Queen extends Piece implements Serializable {
 		return board;
 	}
 
-	public IMove[] generateMoves() {
+	public IMove[] generateMoves(IBoard board) {
 		return new IMove[0];
 	}
 }
