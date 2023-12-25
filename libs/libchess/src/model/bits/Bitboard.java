@@ -186,6 +186,10 @@ public class Bitboard implements IBitboard, Serializable {
 		setBits(negate(this).getBits());
 	}
 
+	public void toggleBits(IBitboard board) {
+		setBits(toggle(this, board).getBits());
+	}
+
 	public IBitboard copy() {
 		return new Bitboard(getBits());
 	}

@@ -24,30 +24,28 @@ public class MoveList implements IMoveList, Serializable {
 		return moves;
 	}
 
-	public IBoard makeMove(IMove move, IBoard board) {
+	public void makeMove(IMove move, IBoard board) {
 		if (playedMoves >= MOVE_LIMIT) {
-			return board;
+			return;
 		}
 		Moves kind = getMoveKind(move, board);
-		IBoard updatedBoard = move(kind, move, board);
+		move(kind, move, board);
 		moves[playedMoves++] = move;
-		return updatedBoard;
 	}
 
-	public IBoard unmakeMove(IBoard board) {
+	public void unmakeMove(IBoard board) {
 		if (playedMoves <= 0) {
-			return board;
+			return;
 		}
 		moves[--playedMoves] = null;
-		return board;
 	}
 
 	private Moves getMoveKind(IMove move, IBoard board) {
 		return Moves.Quiet;
 	}
 
-	private IBoard move(Moves kind, IMove move, IBoard board) {
-		return switch (kind) {
+	private void move(Moves kind, IMove move, IBoard board) {
+		switch (kind) {
 			case Quiet -> quietMove(move, board);
 			case DoublePawnPush -> doublePawnPush(move, board);
 			case KingCastle -> kingCastle(move, board);
@@ -62,14 +60,14 @@ public class MoveList implements IMoveList, Serializable {
 			case BishopPromotionCapture -> bishopPromotionCapture(move, board);
 			case RookPromotionCapture -> rookPromotionCapture(move, board);
 			case QueenPromotionCapture -> queenPromotionCapture(move, board);
-		};
+		}
 	}
 
-	private IBoard quietMove(IMove move, IBoard board) {
+	private void quietMove(IMove move, IBoard board) {
 		int src = Square.getIndex(move.getSource());
 		int dst = Square.getIndex(move.getDestination());
 		Pieces piece = board.getPieceByIndex(src);
-		return switch (piece) {
+		switch (piece) {
 			case WhitePawn -> board.getWhitePawn().move(src, dst, board);
 			case WhiteBishop -> board.getWhiteBishop().move(src, dst, board);
 			case WhiteKnight -> board.getWhiteKnight().move(src, dst, board);
@@ -82,7 +80,7 @@ public class MoveList implements IMoveList, Serializable {
 			case BlackRook -> board.getBlackRook().move(src, dst, board);
 			case BlackQueen -> board.getBlackQueen().move(src, dst, board);
 			case BlackKing -> board.getBlackKing().move(src, dst, board);
-		};
+		}
 	}
 
 	private IBoard doublePawnPush(IMove move, IBoard board) {

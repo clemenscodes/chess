@@ -16,11 +16,10 @@ public abstract class Rook extends Piece implements Serializable {
 		return false;
 	}
 
-	public IBoard move(int source, int destination, IBoard board) {
+	public void move(int source, int destination, IBoard board) {
 		if (isInvalidMove(source, destination, board)) {
 			throw new Error("Invalid move");
 		}
-		return board;
 	}
 
 	public IMove[] generateMoves(IBoard board) {

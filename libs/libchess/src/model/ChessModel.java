@@ -54,14 +54,12 @@ public class ChessModel implements IChessModel {
 	}
 
 	public void makeMove(IMove move) {
-		var board = getMoveList().makeMove(move, getBoard());
-		setBoard(board);
+		getMoveList().makeMove(move, getBoard());
 		printGame();
 	}
 
 	public void unmakeMove() {
-		var board = getMoveList().unmakeMove(getBoard());
-		setBoard(board);
+		getMoveList().unmakeMove(getBoard());
 		printGame();
 	}
 
