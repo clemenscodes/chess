@@ -2,6 +2,7 @@ package model.piece.pawn.extension;
 
 import java.io.Serializable;
 import model.board.IBoard;
+import model.move.IMove;
 import model.piece.Pieces;
 import model.piece.pawn.Pawn;
 
@@ -22,5 +23,9 @@ public class BlackPawn extends Pawn implements Serializable {
 			throw new Error("Invalid move");
 		}
 		return board;
+	}
+
+	public IMove[] generateMoves() {
+		return new IMove[0];
 	}
 }

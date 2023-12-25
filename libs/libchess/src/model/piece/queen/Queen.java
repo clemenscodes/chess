@@ -2,6 +2,7 @@ package model.piece.queen;
 
 import java.io.Serializable;
 import model.board.IBoard;
+import model.move.IMove;
 import model.piece.Piece;
 import model.piece.Pieces;
 
@@ -20,5 +21,9 @@ public abstract class Queen extends Piece implements Serializable {
 			throw new Error("Invalid move");
 		}
 		return board;
+	}
+
+	public IMove[] generateMoves() {
+		return new IMove[0];
 	}
 }

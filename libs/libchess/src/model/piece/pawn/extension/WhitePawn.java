@@ -3,6 +3,7 @@ package model.piece.pawn.extension;
 import java.io.Serializable;
 import model.board.IBoard;
 import model.board.Square;
+import model.move.IMove;
 import model.piece.Pieces;
 import model.piece.pawn.Pawn;
 
@@ -27,5 +28,9 @@ public class WhitePawn extends Pawn implements Serializable {
 		System.out.print(" to ");
 		System.out.println(Square.getSquare(destination));
 		return board;
+	}
+
+	public IMove[] generateMoves() {
+		return new IMove[0];
 	}
 }
