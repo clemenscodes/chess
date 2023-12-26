@@ -21,7 +21,7 @@ public class ChessModel implements IChessModel {
 		var model = new ChessModel();
 		model.startGame();
 		model.makeMove(new Move(Square.e2, Square.e4));
-		model.makeMove(new Move(Square.d2, Square.d4));
+		model.makeMove(new Move(Square.d7, Square.d5));
 	}
 
 	public State getGameState() {

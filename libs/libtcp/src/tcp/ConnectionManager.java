@@ -75,7 +75,11 @@ public class ConnectionManager implements IConnectionManager {
 	}
 
 	public void startClient() {
-		System.out.printf("[client] Connecting with server socket [host: %s, port: %d]\n", host, port);
+		System.out.printf(
+			"[client] Connecting with server socket [host: %s, port: %d]\n",
+			host,
+			port
+		);
 		try {
 			setClientSocket(new Socket(host, port));
 			setIsClient(true);
