@@ -2,7 +2,7 @@ package model.bits;
 
 import java.io.Serializable;
 import model.board.Board;
-import model.printer.Printer;
+import model.util.io.writer.Writer;
 
 public class Bitboard implements IBitboard, Serializable {
 
@@ -209,7 +209,7 @@ public class Bitboard implements IBitboard, Serializable {
 
 	@Override
 	public String toString() {
-		return Printer.loopOver(this::appendRank, null).toString();
+		return Writer.loopOver(this::appendRank, null).toString();
 	}
 
 	private void appendRank(int rank, int file, StringBuilder stringBuilder, IBitboard[] pieces) {

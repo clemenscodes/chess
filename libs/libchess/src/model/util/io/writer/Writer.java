@@ -1,9 +1,9 @@
-package model.printer;
+package model.util.io.writer;
 
 import model.bits.IBitboard;
 import model.board.Board;
 
-public class Printer {
+public class Writer {
 
 	public static StringBuilder loopOver(LoopBody body, IBitboard[] pieces) {
 		StringBuilder stringBuilder = new StringBuilder();

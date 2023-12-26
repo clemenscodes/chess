@@ -1,7 +1,7 @@
 package model.piece.pawn;
 
+import java.io.InputStream;
 import java.io.Serializable;
-import java.util.Scanner;
 import model.bits.Bitboard;
 import model.bits.IBitboard;
 import model.board.Board;
@@ -10,6 +10,7 @@ import model.board.Square;
 import model.piece.Piece;
 import model.piece.Pieces;
 import model.piece.pawn.extension.WhitePawn;
+import model.util.io.reader.Reader;
 
 public abstract class Pawn extends Piece implements Serializable {
 
@@ -47,16 +48,18 @@ public abstract class Pawn extends Piece implements Serializable {
 		System.out.println(
 			"Pawn promotion! Select the piece you want: Q (Queen), R (Rook), N (Knight), B (Bishop)"
 		);
-		board.getPiece(getSelectedPiece(getSelection())).getBitboard().merge(destinationBit);
+		board
+			.getPiece(getSelectedPiece(getSelection(System.in)))
+			.getBitboard()
+			.merge(destinationBit);
 		getBitboard().toggleBits(sourceBit);
 	}
 
-	private String getSelection() {
-		Scanner scanner = new Scanner(System.in);
-		String userInput = scanner.nextLine();
+	private String getSelection(InputStream input) {
+		String userInput = Reader.readLine(input);
 		while (!userInput.matches("[QRNB]")) {
 			System.err.println("Invalid selection");
-			userInput = scanner.nextLine();
+			userInput = Reader.readLine(input);
 		}
 		return userInput;
 	}

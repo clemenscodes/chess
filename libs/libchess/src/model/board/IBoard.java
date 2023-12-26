@@ -50,7 +50,9 @@ public interface IBoard {
 	IBitboard getEmptySquares();
 
 	IBitboard[] getAllPieces();
+
 	Pieces getPieceByIndex(int index);
+
 	IPiece getPiece(Pieces kind);
 
 	void setPieces(String[] ppd);

@@ -16,8 +16,7 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 	private int fullMoveNumber;
 
 	public ForsythEdwardsNotation() {
-		// parse("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-		parse("8/8/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+		parse("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 	}
 
 	public String[] getPiecePlacementData() {

@@ -17,7 +17,7 @@ import model.piece.queen.extension.BlackQueen;
 import model.piece.queen.extension.WhiteQueen;
 import model.piece.rook.extension.BlackRook;
 import model.piece.rook.extension.WhiteRook;
-import model.printer.Printer;
+import model.util.io.writer.Writer;
 
 public class Board implements IBoard, Serializable {
 
@@ -364,7 +364,7 @@ public class Board implements IBoard, Serializable {
 
 	@Override
 	public String toString() {
-		return Printer.loopOver(this::appendRank, getAllPieces()).toString();
+		return Writer.loopOver(this::appendRank, getAllPieces()).toString();
 	}
 
 	private void appendRank(int rank, int file, StringBuilder stringBuilder, IBitboard[] pieces) {
