@@ -3,9 +3,23 @@ package model.util.io.reader;
 import java.io.InputStream;
 import java.util.Scanner;
 
-public class Reader {
+public class Reader implements Readable {
 
-	public static String readLine(InputStream input) {
-		return new Scanner(input).nextLine();
+	private Scanner scanner;
+
+	public Reader(InputStream input) {
+		setScanner(input);
+	}
+
+	public String readLine() {
+		return getScanner().nextLine();
+	}
+
+	private void setScanner(InputStream input) {
+		this.scanner = new Scanner(input);
+	}
+
+	private Scanner getScanner() {
+		return scanner;
 	}
 }

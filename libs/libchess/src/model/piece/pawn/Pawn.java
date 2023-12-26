@@ -10,7 +10,8 @@ import model.board.Square;
 import model.piece.Piece;
 import model.piece.Pieces;
 import model.piece.pawn.extension.WhitePawn;
-import model.util.io.reader.Reader;
+import model.util.io.reader.*;
+import model.util.io.reader.Readable;
 
 public abstract class Pawn extends Piece implements Serializable {
 
@@ -56,10 +57,11 @@ public abstract class Pawn extends Piece implements Serializable {
 	}
 
 	private String getSelection(InputStream input) {
-		String userInput = Reader.readLine(input);
+		Readable reader = new Reader(input);
+		String userInput = reader.readLine();
 		while (!userInput.matches("[QRNB]")) {
 			System.err.println("Invalid selection");
-			userInput = Reader.readLine(input);
+			userInput = reader.readLine();
 		}
 		return userInput;
 	}
