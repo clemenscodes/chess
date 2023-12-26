@@ -1,6 +1,7 @@
 package model.piece.pawn;
 
 import java.io.Serializable;
+import java.util.Scanner;
 import model.bits.Bitboard;
 import model.bits.IBitboard;
 import model.board.Board;
@@ -33,7 +34,64 @@ public abstract class Pawn extends Piece implements Serializable {
 		if (isInvalidMove(source, destination, board)) {
 			throw new Error("Invalid move");
 		}
-		getBitboard().toggleBits(getMoveMask(source, destination));
+		IBitboard destinationBit = Bitboard.getSingleBit(destination);
+		IBitboard promotionMask = this instanceof WhitePawn ? Board.eighthRank : Board.firstRank;
+		if (Bitboard.overlap(destinationBit, promotionMask)) {
+			promotePawn(board, Bitboard.getSingleBit(source), destinationBit);
+		} else {
+			getBitboard().toggleBits(getMoveMask(source, destination));
+		}
+	}
+
+	private void promotePawn(IBoard board, IBitboard sourceBit, IBitboard destinationBit) {
+		System.out.println(
+			"Pawn promotion! Select the piece you want: Q (Queen), R (Rook), N (Knight), B (Bishop)"
+		);
+		board.getPiece(getSelectedPiece(getSelection())).getBitboard().merge(destinationBit);
+		getBitboard().toggleBits(sourceBit);
+	}
+
+	private String getSelection() {
+		Scanner scanner = new Scanner(System.in);
+		String userInput = scanner.nextLine();
+		while (!userInput.matches("[QRNB]")) {
+			System.err.println("Invalid selection");
+			userInput = scanner.nextLine();
+		}
+		return userInput;
+	}
+
+	private Pieces[] getPromotionPieces() {
+		return this instanceof WhitePawn ? getWhitePromotionPieces() : getBlackPromotionPieces();
+	}
+
+	private Pieces[] getWhitePromotionPieces() {
+		return new Pieces[] {
+			Pieces.WhiteQueen,
+			Pieces.WhiteRook,
+			Pieces.WhiteKnight,
+			Pieces.WhiteBishop,
+		};
+	}
+
+	private Pieces[] getBlackPromotionPieces() {
+		return new Pieces[] {
+			Pieces.BlackQueen,
+			Pieces.BlackRook,
+			Pieces.BlackKnight,
+			Pieces.BlackBishop,
+		};
+	}
+
+	private Pieces getSelectedPiece(String userInput) {
+		Pieces[] pieces = getPromotionPieces();
+		return switch (userInput) {
+			case "Q" -> pieces[0];
+			case "R" -> pieces[1];
+			case "N" -> pieces[2];
+			case "B" -> pieces[3];
+			default -> throw new Error("Invalid input");
+		};
 	}
 
 	private IBitboard getMovablePawns(IBoard board) {

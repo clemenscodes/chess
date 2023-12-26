@@ -171,6 +171,23 @@ public class Board implements IBoard, Serializable {
 		throw new Error("No piece is set on the square " + Square.getSquare(index));
 	}
 
+	public IPiece getPiece(Pieces kind) {
+		return switch (kind) {
+			case BlackRook -> getBlackRook();
+			case BlackKnight -> getBlackKnight();
+			case BlackBishop -> getBlackBishop();
+			case BlackQueen -> getBlackQueen();
+			case BlackKing -> getBlackKing();
+			case BlackPawn -> getBlackPawn();
+			case WhiteRook -> getWhiteRook();
+			case WhiteKnight -> getWhiteKnight();
+			case WhiteBishop -> getWhiteBishop();
+			case WhiteQueen -> getWhiteQueen();
+			case WhiteKing -> getWhiteKing();
+			case WhitePawn -> getWhitePawn();
+		};
+	}
+
 	public void setPieces(String[] ppd) {
 		int reverseRank = 0;
 		for (int rank = 7; rank >= 0; rank--) {
@@ -316,23 +333,6 @@ public class Board implements IBoard, Serializable {
 		IPiece piece = getPiece(Pieces.fromSymbol(symbol));
 		piece.getBitboard().merge(Bitboard.getSingleBit(getSquareIndex(rank, file)));
 		setPiece(piece);
-	}
-
-	private IPiece getPiece(Pieces kind) {
-		return switch (kind) {
-			case BlackRook -> getBlackRook();
-			case BlackKnight -> getBlackKnight();
-			case BlackBishop -> getBlackBishop();
-			case BlackQueen -> getBlackQueen();
-			case BlackKing -> getBlackKing();
-			case BlackPawn -> getBlackPawn();
-			case WhiteRook -> getWhiteRook();
-			case WhiteKnight -> getWhiteKnight();
-			case WhiteBishop -> getWhiteBishop();
-			case WhiteQueen -> getWhiteQueen();
-			case WhiteKing -> getWhiteKing();
-			case WhitePawn -> getWhitePawn();
-		};
 	}
 
 	private void setPiece(IPiece piece) {

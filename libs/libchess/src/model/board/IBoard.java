@@ -1,6 +1,7 @@
 package model.board;
 
 import model.bits.IBitboard;
+import model.piece.IPiece;
 import model.piece.Pieces;
 import model.piece.bishop.extension.BlackBishop;
 import model.piece.bishop.extension.WhiteBishop;
@@ -50,6 +51,7 @@ public interface IBoard {
 
 	IBitboard[] getAllPieces();
 	Pieces getPieceByIndex(int index);
+	IPiece getPiece(Pieces kind);
 
 	void setPieces(String[] ppd);
 }
