@@ -209,7 +209,7 @@ public class Bitboard implements IBitboard, Serializable {
 
 	@Override
 	public String toString() {
-		return Printer.loopOverBitboard(this::appendRank).toString();
+		return Printer.loopOver(this::appendRank, null).toString();
 	}
 
 	private void appendRank(int rank, int file, StringBuilder stringBuilder, IBitboard[] pieces) {

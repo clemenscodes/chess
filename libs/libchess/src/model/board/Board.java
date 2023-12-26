@@ -364,7 +364,7 @@ public class Board implements IBoard, Serializable {
 
 	@Override
 	public String toString() {
-		return Printer.loopOverBoard(this::appendRank, getAllPieces()).toString();
+		return Printer.loopOver(this::appendRank, getAllPieces()).toString();
 	}
 
 	private void appendRank(int rank, int file, StringBuilder stringBuilder, IBitboard[] pieces) {

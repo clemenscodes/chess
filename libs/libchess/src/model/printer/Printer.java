@@ -5,19 +5,8 @@ import model.board.Board;
 
 public class Printer {
 
-	public static StringBuilder loopOverBoard(BoardBody body, IBitboard[] pieces) {
-		return loopOver(body, new StringBuilder(), pieces);
-	}
-
-	public static StringBuilder loopOverBitboard(BitboardBody body) {
-		return loopOver(body, new StringBuilder(), null);
-	}
-
-	private static StringBuilder loopOver(
-		LoopBody body,
-		StringBuilder stringBuilder,
-		IBitboard[] pieces
-	) {
+	public static StringBuilder loopOver(LoopBody body, IBitboard[] pieces) {
+		StringBuilder stringBuilder = new StringBuilder();
 		for (int rank = 7; rank >= 0; rank--) {
 			for (int file = 0; file < Board.SIZE; file++) {
 				body.apply(rank, file, stringBuilder, pieces);
