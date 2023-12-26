@@ -17,6 +17,7 @@ import model.piece.queen.extension.BlackQueen;
 import model.piece.queen.extension.WhiteQueen;
 import model.piece.rook.extension.BlackRook;
 import model.piece.rook.extension.WhiteRook;
+import model.printer.Printer;
 
 public class Board implements IBoard, Serializable {
 
@@ -363,15 +364,11 @@ public class Board implements IBoard, Serializable {
 
 	@Override
 	public String toString() {
-		var pieces = getAllPieces();
-		var stringBuilder = new StringBuilder();
-		for (int rank = 7; rank >= 0; rank--) {
-			for (int file = 0; file < SIZE; file++) {
-				char pieceSymbol = getPieceSymbol(getSquareIndex(rank, file), pieces);
-				stringBuilder.append('[').append(pieceSymbol).append(']').append(' ');
-			}
-			stringBuilder.append("\n");
-		}
-		return stringBuilder.toString();
+		return Printer.loopOverBoard(this::appendRank, getAllPieces()).toString();
+	}
+
+	private void appendRank(int rank, int file, StringBuilder stringBuilder, IBitboard[] pieces) {
+		char pieceSymbol = getPieceSymbol(getSquareIndex(rank, file), pieces);
+		stringBuilder.append('[').append(pieceSymbol).append(']').append(' ');
 	}
 }

@@ -2,6 +2,7 @@ package model.bits;
 
 import java.io.Serializable;
 import model.board.Board;
+import model.printer.Printer;
 
 public class Bitboard implements IBitboard, Serializable {
 
@@ -208,17 +209,14 @@ public class Bitboard implements IBitboard, Serializable {
 
 	@Override
 	public String toString() {
-		var stringBuilder = new StringBuilder();
-		for (int rank = 7; rank >= 0; rank--) {
-			for (int file = 0; file < Board.SIZE; file++) {
-				int index = Board.getSquareIndex(rank, file);
-				IBitboard mask = getSingleBit(index);
-				IBitboard intersection = intersect(this, mask);
-				long bit = rightShiftMask(intersection, index).getBits();
-				stringBuilder.append(bit == -1 ? 1 : bit);
-			}
-			stringBuilder.append("\n");
-		}
-		return stringBuilder.toString();
+		return Printer.loopOverBitboard(this::appendRank).toString();
+	}
+
+	private void appendRank(int rank, int file, StringBuilder stringBuilder, IBitboard[] pieces) {
+		int index = Board.getSquareIndex(rank, file);
+		IBitboard mask = getSingleBit(index);
+		IBitboard intersection = intersect(this, mask);
+		long bit = rightShiftMask(intersection, index).getBits();
+		stringBuilder.append(bit == -1 ? 1 : bit);
 	}
 }
