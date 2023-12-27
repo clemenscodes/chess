@@ -3,7 +3,6 @@ package model;
 import model.board.IBoard;
 import model.board.Square;
 import model.fen.IForsythEdwardsNotation;
-import model.move.IMove;
 import model.move.IMoveList;
 import model.util.io.reader.IReader;
 
@@ -23,6 +22,4 @@ public interface IChessModel {
 	void startNewGame();
 
 	void makeMove(Square source, Square destination);
-
-	void unmakeMove();
 }

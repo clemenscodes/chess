@@ -1,15 +1,12 @@
 package model;
 
 import java.io.InputStream;
-import java.util.Arrays;
 import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
 import model.fen.ForsythEdwardsNotation;
 import model.fen.IForsythEdwardsNotation;
-import model.move.IMove;
 import model.move.IMoveList;
-import model.move.Move;
 import model.move.MoveList;
 import model.util.io.reader.IReader;
 import model.util.io.reader.Reader;
@@ -76,11 +73,6 @@ public class ChessModel implements IChessModel {
 
 	public void makeMove(Square source, Square destination) {
 		getMoveList().makeMove(source, destination, getBoard(), getReader());
-		printGame();
-	}
-
-	public void unmakeMove() {
-		getMoveList().unmakeMove(getBoard());
 		printGame();
 	}
 

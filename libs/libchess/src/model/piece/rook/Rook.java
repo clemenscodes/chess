@@ -2,12 +2,10 @@ package model.piece.rook;
 
 import java.io.Serializable;
 import model.board.IBoard;
-import model.move.IMove;
 import model.move.Moves;
 import model.piece.Movable;
 import model.piece.Piece;
 import model.piece.Pieces;
-import model.util.io.reader.IReader;
 
 public abstract class Rook extends Piece implements Movable, Serializable {
 
@@ -24,9 +22,5 @@ public abstract class Rook extends Piece implements Movable, Serializable {
 			throw new Error("Invalid move");
 		}
 		return Moves.Quiet;
-	}
-
-	public IMove[] generateMoves(IBoard board) {
-		return new IMove[0];
 	}
 }

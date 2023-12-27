@@ -7,12 +7,10 @@ public abstract class Move implements IMove, Serializable {
 
 	private Square source;
 	private Square destination;
-	private Moves kind;
 
-	public Move(Square source, Square destination, Moves kind) {
+	public Move(Square source, Square destination) {
 		setSource(source);
 		setDestination(destination);
-		setKind(kind);
 	}
 
 	public Square getSource() {
@@ -23,20 +21,12 @@ public abstract class Move implements IMove, Serializable {
 		return destination;
 	}
 
-	public Moves getKind() {
-		return kind;
-	}
-
 	private void setSource(Square source) {
 		this.source = source;
 	}
 
 	private void setDestination(Square destination) {
 		this.destination = destination;
-	}
-
-	private void setKind(Moves kind) {
-		this.kind = kind;
 	}
 
 	@Override

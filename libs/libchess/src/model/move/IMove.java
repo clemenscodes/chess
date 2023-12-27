@@ -6,6 +6,4 @@ public interface IMove {
 	Square getSource();
 
 	Square getDestination();
-
-	Moves getKind();
 }

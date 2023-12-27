@@ -143,4 +143,22 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 			throw new IllegalArgumentException("Invalid full-move number");
 		}
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder stringBuilder = new StringBuilder();
+		String[] ppd = getPiecePlacementData();
+		for (int i = 0; i < ppd.length; i++) {
+			stringBuilder.append(ppd[i]);
+			if (i < ppd.length - 1) {
+				stringBuilder.append("/");
+			}
+		}
+		stringBuilder.append(" ").append(getActiveColor());
+		stringBuilder.append(" ").append(getCastling());
+		stringBuilder.append(" ").append(getEnPassant());
+		stringBuilder.append(" ").append(getHalfMoveClock());
+		stringBuilder.append(" ").append(getFullMoveNumber());
+		return stringBuilder.toString();
+	}
 }
