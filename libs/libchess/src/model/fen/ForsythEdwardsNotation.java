@@ -46,7 +46,9 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 	public void parse(String fen) {
 		String[] parts = fen.split(" ");
 		if (parts.length != 6) {
-			throw new IllegalArgumentException("Invalid FEN: It should consist of 6 space-separated parts");
+			throw new IllegalArgumentException(
+				"Invalid FEN: It should consist of 6 space-separated parts"
+			);
 		}
 		setPiecePlacementData(parts[0]);
 		setActiveColor(parts[1]);
@@ -63,7 +65,11 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 		}
 		for (var rank : ppd) {
 			if (rank.length() > Board.SIZE) {
-				throw new IllegalArgumentException("Invalid piece placement data: Each rank should have at most " + Board.SIZE + " files");
+				throw new IllegalArgumentException(
+					"Invalid piece placement data: Each rank should have at most " +
+					Board.SIZE +
+					" files"
+				);
 			}
 		}
 		piecePlacementData = ppd;
@@ -86,7 +92,9 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 			if (!castlingInfo.equals("-")) {
 				for (char c : castlingInfo.toCharArray()) {
 					if (c != 'K' && c != 'Q' && c != 'k' && c != 'q') {
-						throw new IllegalArgumentException("Invalid castling information: Use 'K', 'Q', 'k', 'q', or '-'");
+						throw new IllegalArgumentException(
+							"Invalid castling information: Use 'K', 'Q', 'k', 'q', or '-'"
+						);
 					}
 				}
 			}
@@ -112,14 +120,16 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 	private boolean isValidEnPassantSquare(String square) {
 		char file = square.charAt(0);
 		char rank = square.charAt(1);
-		return (file >= 'a' && file <= 'h') && ((rank == '3') || (rank == '6'));
+		return ((file >= 'a' && file <= 'h') && ((rank == '3') || (rank == '6')));
 	}
 
 	private void setHalfMoveClock(String halfMoveClockStr) {
 		try {
 			int halfMoveClockValue = Integer.parseInt(halfMoveClockStr);
 			if (halfMoveClockValue < MIN_HALF_MOVE_CLOCK) {
-				throw new IllegalArgumentException("Invalid half-move clock: It cannot be negative");
+				throw new IllegalArgumentException(
+					"Invalid half-move clock: It cannot be negative"
+				);
 			}
 			if (halfMoveClockValue > MAX_HALF_MOVE_CLOCK) {
 				throw new IllegalArgumentException(
@@ -136,7 +146,9 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 		try {
 			int fullMoveNumberValue = Integer.parseInt(fullMoveNumberStr);
 			if (fullMoveNumberValue < MIN_FULL_MOVE_CLOCK) {
-				throw new IllegalArgumentException("Invalid full-move number: It must be greater than or equal to 1");
+				throw new IllegalArgumentException(
+					"Invalid full-move number: It must be greater than or equal to 1"
+				);
 			}
 			fullMoveNumber = fullMoveNumberValue;
 		} catch (NumberFormatException e) {

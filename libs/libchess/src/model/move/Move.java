@@ -31,6 +31,6 @@ public abstract class Move implements IMove, Serializable {
 
 	@Override
 	public String toString() {
-		return String.valueOf(getSource()) + getDestination();
+		return (String.valueOf(getSource()) + getDestination());
 	}
 }

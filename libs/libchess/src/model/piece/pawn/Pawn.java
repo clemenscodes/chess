@@ -43,8 +43,15 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 			: determineMove(source, destination);
 	}
 
-	private Moves promotePawn(IBoard board, IBitboard sourceBit, IBitboard destinationBit, IReader reader) {
-		System.out.println("Pawn promotion! Select the piece you want: Q (Queen), R (Rook), N (Knight), B (Bishop)");
+	private Moves promotePawn(
+		IBoard board,
+		IBitboard sourceBit,
+		IBitboard destinationBit,
+		IReader reader
+	) {
+		System.out.println(
+			"Pawn promotion! Select the piece you want: Q (Queen), R (Rook), N (Knight), B (Bishop)"
+		);
 		Pieces piece = getSelectedPiece(getSelection(reader));
 		board.getPiece(piece).getBitboard().merge(destinationBit);
 		getBitboard().toggleBits(sourceBit);
@@ -71,11 +78,21 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 	}
 
 	private Pieces[] getWhitePromotionPieces() {
-		return new Pieces[] { Pieces.WhiteQueen, Pieces.WhiteRook, Pieces.WhiteKnight, Pieces.WhiteBishop };
+		return new Pieces[] {
+			Pieces.WhiteQueen,
+			Pieces.WhiteRook,
+			Pieces.WhiteKnight,
+			Pieces.WhiteBishop,
+		};
 	}
 
 	private Pieces[] getBlackPromotionPieces() {
-		return new Pieces[] { Pieces.BlackQueen, Pieces.BlackRook, Pieces.BlackKnight, Pieces.BlackBishop };
+		return new Pieces[] {
+			Pieces.BlackQueen,
+			Pieces.BlackRook,
+			Pieces.BlackKnight,
+			Pieces.BlackBishop,
+		};
 	}
 
 	private Pieces getSelectedPiece(String userInput) {
@@ -96,7 +113,9 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 	}
 
 	private IBitboard getAttackingPawns(IBoard board) {
-		IBitboard opponentPieces = this instanceof WhitePawn ? board.getBlackPieces() : board.getWhitePieces();
+		IBitboard opponentPieces = this instanceof WhitePawn
+			? board.getBlackPieces()
+			: board.getWhitePieces();
 		return new Bitboard();
 	}
 
@@ -107,7 +126,9 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 	}
 
 	private IBitboard getAttackTargets(IBoard board) {
-		IBitboard opponentPieces = this instanceof WhitePawn ? board.getBlackPieces() : board.getWhitePieces();
+		IBitboard opponentPieces = this instanceof WhitePawn
+			? board.getBlackPieces()
+			: board.getWhitePieces();
 		return new Bitboard();
 	}
 
@@ -118,7 +139,9 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 	}
 
 	private IBitboard getSinglePushTargets(IBitboard pawn, IBitboard emptySquares) {
-		IBitboard pushTargets = this instanceof WhitePawn ? Bitboard.shiftNorth(pawn) : Bitboard.shiftSouth(pawn);
+		IBitboard pushTargets = this instanceof WhitePawn
+			? Bitboard.shiftNorth(pawn)
+			: Bitboard.shiftSouth(pawn);
 		return Bitboard.intersect(pushTargets, emptySquares);
 	}
 
@@ -139,7 +162,9 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 	}
 
 	private IBitboard getSinglePushablePawns(IBitboard emptySquares) {
-		IBitboard singlePushablePawns = this instanceof WhitePawn ? Bitboard.shiftSouth(emptySquares) : Bitboard.shiftNorth(emptySquares);
+		IBitboard singlePushablePawns = this instanceof WhitePawn
+			? Bitboard.shiftSouth(emptySquares)
+			: Bitboard.shiftNorth(emptySquares);
 		return Bitboard.intersect(singlePushablePawns, getBitboard());
 	}
 

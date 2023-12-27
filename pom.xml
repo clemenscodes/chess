@@ -37,7 +37,9 @@
 		</testResources>
 		<directory>${project.basedir}/../../dist/${project.artifactId}</directory>
 		<outputDirectory>${project.basedir}/../../dist/${project.artifactId}</outputDirectory>
-		<testOutputDirectory>${project.basedir}/../../dist/${project.artifactId}/test</testOutputDirectory>
+		<testOutputDirectory>
+			${project.basedir}/../../dist/${project.artifactId}/test
+		</testOutputDirectory>
 	</build>
 
 	<modules>

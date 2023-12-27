@@ -25,7 +25,7 @@ public class Bitboard implements IBitboard, Serializable {
 	}
 
 	public static boolean checkBit(IBitboard board, int index) {
-		return intersect(board, getSingleBit(index)).getBits() != 0;
+		return (intersect(board, getSingleBit(index)).getBits() != 0);
 	}
 
 	public static IBitboard setBit(IBitboard board, int index) {
@@ -65,7 +65,7 @@ public class Bitboard implements IBitboard, Serializable {
 	}
 
 	public static boolean overlap(IBitboard a, IBitboard b) {
-		return intersect(a, b).getBits() != 0;
+		return (intersect(a, b).getBits() != 0);
 	}
 
 	public static IBitboard rightShiftMask(IBitboard board, int bits) {
@@ -102,11 +102,17 @@ public class Bitboard implements IBitboard, Serializable {
 	}
 
 	public static IBitboard shiftEastEastNorth(IBitboard board) {
-		return intersect(shift(board, Board.EAST_EAST_NORTH), negate(merge(Board.firstFile, Board.secondFile)));
+		return intersect(
+			shift(board, Board.EAST_EAST_NORTH),
+			negate(merge(Board.firstFile, Board.secondFile))
+		);
 	}
 
 	public static IBitboard shiftEastEastSouth(IBitboard board) {
-		return intersect(shift(board, Board.EAST_EAST_SOUTH), negate(merge(Board.firstFile, Board.secondFile)));
+		return intersect(
+			shift(board, Board.EAST_EAST_SOUTH),
+			negate(merge(Board.firstFile, Board.secondFile))
+		);
 	}
 
 	public static IBitboard shiftSouth(IBitboard board) {
@@ -134,11 +140,17 @@ public class Bitboard implements IBitboard, Serializable {
 	}
 
 	public static IBitboard shiftWestWestNorth(IBitboard board) {
-		return intersect(shift(board, Board.WEST_WEST_NORTH), negate(merge(Board.lastFile, Board.secondLastFile)));
+		return intersect(
+			shift(board, Board.WEST_WEST_NORTH),
+			negate(merge(Board.lastFile, Board.secondLastFile))
+		);
 	}
 
 	public static IBitboard shiftWestWestSouth(IBitboard board) {
-		return intersect(shift(board, Board.WEST_WEST_SOUTH), negate(merge(Board.lastFile, Board.secondLastFile)));
+		return intersect(
+			shift(board, Board.WEST_WEST_SOUTH),
+			negate(merge(Board.lastFile, Board.secondLastFile))
+		);
 	}
 
 	private static IBitboard leftShiftMask(int bits) {

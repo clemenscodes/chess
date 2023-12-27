@@ -15,7 +15,10 @@
 	<artifactId>libtcp</artifactId>
 	<version>0.0.1</version>
 	<name>libtcp</name>
-	<description>This project was generated with @jnxplus/nx-maven</description>
+	<description>
+		This project was generated
+		with @jnxplus/nx-maven
+	</description>
 
 	<properties>
 		<maven.compiler.source>${java.version}</maven.compiler.source>

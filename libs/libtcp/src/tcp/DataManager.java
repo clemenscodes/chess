@@ -10,7 +10,9 @@ public class DataManager implements IDataManager {
 
 	public void setStreams(ConnectionManager connection) {
 		try {
-			Socket socket = connection.getIsClient() ? connection.getClientSocket() : connection.getServerSocket();
+			Socket socket = connection.getIsClient()
+				? connection.getClientSocket()
+				: connection.getServerSocket();
 			in = socket.getInputStream();
 			out = socket.getOutputStream();
 		} catch (IOException e) {
