@@ -102,17 +102,11 @@ public class Bitboard implements IBitboard, Serializable {
 	}
 
 	public static IBitboard shiftEastEastNorth(IBitboard board) {
-		return intersect(
-			shift(board, Board.EAST_EAST_NORTH),
-			negate(merge(Board.firstFile, Board.secondFile))
-		);
+		return intersect(shift(board, Board.EAST_EAST_NORTH), negate(merge(Board.firstFile, Board.secondFile)));
 	}
 
 	public static IBitboard shiftEastEastSouth(IBitboard board) {
-		return intersect(
-			shift(board, Board.EAST_EAST_SOUTH),
-			negate(merge(Board.firstFile, Board.secondFile))
-		);
+		return intersect(shift(board, Board.EAST_EAST_SOUTH), negate(merge(Board.firstFile, Board.secondFile)));
 	}
 
 	public static IBitboard shiftSouth(IBitboard board) {
@@ -140,17 +134,11 @@ public class Bitboard implements IBitboard, Serializable {
 	}
 
 	public static IBitboard shiftWestWestNorth(IBitboard board) {
-		return intersect(
-			shift(board, Board.WEST_WEST_NORTH),
-			negate(merge(Board.lastFile, Board.secondLastFile))
-		);
+		return intersect(shift(board, Board.WEST_WEST_NORTH), negate(merge(Board.lastFile, Board.secondLastFile)));
 	}
 
 	public static IBitboard shiftWestWestSouth(IBitboard board) {
-		return intersect(
-			shift(board, Board.WEST_WEST_SOUTH),
-			negate(merge(Board.lastFile, Board.secondLastFile))
-		);
+		return intersect(shift(board, Board.WEST_WEST_SOUTH), negate(merge(Board.lastFile, Board.secondLastFile)));
 	}
 
 	private static IBitboard leftShiftMask(int bits) {

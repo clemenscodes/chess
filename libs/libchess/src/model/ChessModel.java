@@ -1,5 +1,6 @@
 package model;
 
+import java.io.InputStream;
 import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
@@ -9,6 +10,8 @@ import model.move.IMove;
 import model.move.IMoveList;
 import model.move.Move;
 import model.move.MoveList;
+import model.util.io.reader.IReader;
+import model.util.io.reader.Reader;
 
 public class ChessModel implements IChessModel {
 
@@ -16,6 +19,15 @@ public class ChessModel implements IChessModel {
 	private IForsythEdwardsNotation fen;
 	private IBoard board;
 	private IMoveList moveList;
+	private IReader reader;
+
+	public ChessModel(InputStream input) {
+		setReader(input);
+	}
+
+	public ChessModel() {
+		setReader(System.in);
+	}
 
 	public static void main(String[] args) {
 		var model = new ChessModel();
@@ -40,6 +52,10 @@ public class ChessModel implements IChessModel {
 		return moveList;
 	}
 
+	public IReader getReader() {
+		return reader;
+	}
+
 	public void startGame() {
 		setFen(new ForsythEdwardsNotation());
 		setBoard(new Board());
@@ -55,7 +71,7 @@ public class ChessModel implements IChessModel {
 	}
 
 	public void makeMove(IMove move) {
-		getMoveList().makeMove(move, getBoard());
+		getMoveList().makeMove(move, getBoard(), getReader());
 		printGame();
 	}
 
@@ -88,5 +104,9 @@ public class ChessModel implements IChessModel {
 	private void printGame() {
 		System.out.println(getBoard());
 		printNext();
+	}
+
+	private void setReader(InputStream input) {
+		this.reader = new Reader(input);
 	}
 }

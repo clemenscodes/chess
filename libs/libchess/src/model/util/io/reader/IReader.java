@@ -1,5 +1,5 @@
 package model.util.io.reader;
 
-public interface Readable {
+public interface IReader {
 	String readLine();
 }

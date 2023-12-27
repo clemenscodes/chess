@@ -3,10 +3,12 @@ package model.piece.bishop;
 import java.io.Serializable;
 import model.board.IBoard;
 import model.move.IMove;
+import model.piece.Movable;
 import model.piece.Piece;
 import model.piece.Pieces;
+import model.util.io.reader.IReader;
 
-public abstract class Bishop extends Piece implements Serializable {
+public abstract class Bishop extends Piece implements Movable, Serializable {
 
 	public Bishop(Pieces variant) {
 		super(variant);

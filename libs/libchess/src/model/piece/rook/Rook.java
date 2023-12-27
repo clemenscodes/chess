@@ -3,10 +3,12 @@ package model.piece.rook;
 import java.io.Serializable;
 import model.board.IBoard;
 import model.move.IMove;
+import model.piece.Movable;
 import model.piece.Piece;
 import model.piece.Pieces;
+import model.util.io.reader.IReader;
 
-public abstract class Rook extends Piece implements Serializable {
+public abstract class Rook extends Piece implements Movable, Serializable {
 
 	public Rook(Pieces variant) {
 		super(variant);

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import model.bits.Bitboard;
 import model.bits.IBitboard;
 
-public abstract class Piece implements IPiece, Movable, Serializable {
+public abstract class Piece implements IPiece, Serializable {
 
 	private Pieces variant;
 	private IBitboard bitboard;

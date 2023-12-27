@@ -8,6 +8,7 @@ public class ChessModelTest {
 
 	@Test
 	void shouldInitialize() {
-		assertDoesNotThrow(ChessModel::new);
+		assertDoesNotThrow(() -> new ChessModel());
+		assertDoesNotThrow(() -> new ChessModel(System.in));
 	}
 }

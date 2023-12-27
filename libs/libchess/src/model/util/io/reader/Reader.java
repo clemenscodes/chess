@@ -3,7 +3,7 @@ package model.util.io.reader;
 import java.io.InputStream;
 import java.util.Scanner;
 
-public class Reader implements Readable {
+public class Reader implements IReader {
 
 	private Scanner scanner;
 
@@ -15,11 +15,11 @@ public class Reader implements Readable {
 		return getScanner().nextLine();
 	}
 
-	private void setScanner(InputStream input) {
-		this.scanner = new Scanner(input);
-	}
-
 	private Scanner getScanner() {
 		return scanner;
+	}
+
+	private void setScanner(InputStream input) {
+		this.scanner = new Scanner(input);
 	}
 }

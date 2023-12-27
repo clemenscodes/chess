@@ -1,6 +1,7 @@
 package model.piece;
 
 import model.bits.IBitboard;
+import model.board.IBoard;
 
 public interface IPiece {
 	Pieces getVariant();
@@ -8,4 +9,6 @@ public interface IPiece {
 	IBitboard getBitboard();
 
 	void setBitboard(IBitboard bitboard);
+
+	boolean isInvalidMove(int source, int destination, IBoard board);
 }
