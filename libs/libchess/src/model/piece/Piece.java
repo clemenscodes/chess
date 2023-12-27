@@ -3,6 +3,7 @@ package model.piece;
 import java.io.Serializable;
 import model.bits.Bitboard;
 import model.bits.IBitboard;
+import model.move.Moves;
 
 public abstract class Piece implements IPiece, Serializable {
 
@@ -30,7 +31,12 @@ public abstract class Piece implements IPiece, Serializable {
 		this.variant = variant;
 	}
 
-	protected IBitboard getMoveMask(int source, int destination) {
+	private IBitboard getMoveMask(int source, int destination) {
 		return Bitboard.merge(Bitboard.getSingleBit(source), Bitboard.getSingleBit(destination));
+	}
+
+	protected Moves determineMove(int source, int destination) {
+		getBitboard().toggleBits(getMoveMask(source, destination));
+		return Moves.Quiet;
 	}
 }

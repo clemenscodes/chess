@@ -6,6 +6,7 @@ import model.bits.IBitboard;
 import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
+import model.move.Moves;
 import model.piece.MovableWithReader;
 import model.piece.Piece;
 import model.piece.Pieces;
@@ -31,23 +32,29 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 		return false;
 	}
 
-	public void move(int source, int destination, IBoard board, IReader reader) {
+	public Moves move(int source, int destination, IBoard board, IReader reader) {
 		if (isInvalidMove(source, destination, board)) {
 			throw new Error("Invalid move");
 		}
 		IBitboard destinationBit = Bitboard.getSingleBit(destination);
 		IBitboard promotionMask = this instanceof WhitePawn ? Board.eighthRank : Board.firstRank;
-		if (Bitboard.overlap(destinationBit, promotionMask)) {
-			promotePawn(board, Bitboard.getSingleBit(source), destinationBit, reader);
-		} else {
-			getBitboard().toggleBits(getMoveMask(source, destination));
-		}
+		return Bitboard.overlap(destinationBit, promotionMask)
+			? promotePawn(board, Bitboard.getSingleBit(source), destinationBit, reader)
+			: determineMove(source, destination);
 	}
 
-	private void promotePawn(IBoard board, IBitboard sourceBit, IBitboard destinationBit, IReader reader) {
+	private Moves promotePawn(IBoard board, IBitboard sourceBit, IBitboard destinationBit, IReader reader) {
 		System.out.println("Pawn promotion! Select the piece you want: Q (Queen), R (Rook), N (Knight), B (Bishop)");
-		board.getPiece(getSelectedPiece(getSelection(reader))).getBitboard().merge(destinationBit);
+		Pieces piece = getSelectedPiece(getSelection(reader));
+		board.getPiece(piece).getBitboard().merge(destinationBit);
 		getBitboard().toggleBits(sourceBit);
+		return switch (piece) {
+			case BlackRook, WhiteRook -> Moves.RookPromotion;
+			case BlackKnight, WhiteKnight -> Moves.KnightPromotion;
+			case BlackBishop, WhiteBishop -> Moves.BishopPromotion;
+			case BlackQueen, WhiteQueen -> Moves.QueenPromotion;
+			default -> throw new Error("Invalid promotion piece");
+		};
 	}
 
 	private String getSelection(IReader reader) {

@@ -3,6 +3,7 @@ package model.piece.knight;
 import java.io.Serializable;
 import model.board.IBoard;
 import model.move.IMove;
+import model.move.Moves;
 import model.piece.Movable;
 import model.piece.Piece;
 import model.piece.Pieces;
@@ -18,10 +19,12 @@ public abstract class Knight extends Piece implements Movable, Serializable {
 		return false;
 	}
 
-	public void move(int source, int destination, IBoard board) {
+	public Moves move(int source, int destination, IBoard board) {
 		if (isInvalidMove(source, destination, board)) {
 			throw new Error("Invalid move");
 		}
+
+		return Moves.Quiet;
 	}
 
 	public IMove[] generateMoves(IBoard board) {

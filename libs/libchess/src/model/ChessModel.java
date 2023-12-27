@@ -33,10 +33,10 @@ public class ChessModel implements IChessModel {
 	public static void main(String[] args) {
 		var model = new ChessModel();
 		model.startGame();
-		model.makeMove(new Move(Square.e2, Square.e4));
-		model.makeMove(new Move(Square.d7, Square.d5));
-		model.makeMove(new Move(Square.d2, Square.d4));
-		model.makeMove(new Move(Square.e7, Square.e5));
+		model.makeMove(Square.e2, Square.e4);
+		model.makeMove(Square.d7, Square.d5);
+		model.makeMove(Square.d2, Square.d4);
+		model.makeMove(Square.e7, Square.e5);
 		System.out.println(model.getMoveList());
 	}
 
@@ -74,8 +74,8 @@ public class ChessModel implements IChessModel {
 		setGameState(State.Playing);
 	}
 
-	public void makeMove(IMove move) {
-		getMoveList().makeMove(move, getBoard(), getReader());
+	public void makeMove(Square source, Square destination) {
+		getMoveList().makeMove(source, destination, getBoard(), getReader());
 		printGame();
 	}
 

@@ -1,7 +1,8 @@
 package model.piece;
 
 import model.board.IBoard;
+import model.move.Moves;
 
 public interface Movable {
-	void move(int source, int destination, IBoard board);
+	Moves move(int source, int destination, IBoard board);
 }

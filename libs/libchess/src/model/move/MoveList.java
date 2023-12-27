@@ -3,6 +3,7 @@ package model.move;
 import java.io.Serializable;
 import model.board.IBoard;
 import model.board.Square;
+import model.move.extension.*;
 import model.piece.Pieces;
 import model.util.io.reader.IReader;
 
@@ -25,12 +26,12 @@ public class MoveList implements IMoveList, Serializable {
 		return moves;
 	}
 
-	public void makeMove(IMove move, IBoard board, IReader reader) {
+	public void makeMove(Square source, Square destination, IBoard board, IReader reader) {
 		if (playedMoves >= MOVE_LIMIT) {
 			return;
 		}
-		move(move, board, reader);
-		moves[playedMoves++] = move;
+		Moves kind = move(source, destination, board, reader);
+		moves[playedMoves++] = createMove(source, destination, kind);
 	}
 
 	public void unmakeMove(IBoard board) {
@@ -40,11 +41,11 @@ public class MoveList implements IMoveList, Serializable {
 		moves[--playedMoves] = null;
 	}
 
-	private void move(IMove move, IBoard board, IReader reader) {
-		int src = Square.getIndex(move.getSource());
-		int dst = Square.getIndex(move.getDestination());
+	private Moves move(Square source, Square destination, IBoard board, IReader reader) {
+		int src = Square.getIndex(source);
+		int dst = Square.getIndex(destination);
 		Pieces piece = board.getPieceByIndex(src);
-		switch (piece) {
+		return switch (piece) {
 			case WhitePawn -> board.getWhitePawn().move(src, dst, board, reader);
 			case WhiteBishop -> board.getWhiteBishop().move(src, dst, board);
 			case WhiteKnight -> board.getWhiteKnight().move(src, dst, board);
@@ -57,7 +58,26 @@ public class MoveList implements IMoveList, Serializable {
 			case BlackRook -> board.getBlackRook().move(src, dst, board);
 			case BlackQueen -> board.getBlackQueen().move(src, dst, board);
 			case BlackKing -> board.getBlackKing().move(src, dst, board);
-		}
+		};
+	}
+
+	private Move createMove(Square source, Square destination, Moves kind) {
+		return switch (kind) {
+			case Quiet -> new QuietMove(source, destination);
+			case DoublePawnPush -> new DoublePawnPushMove(source, destination);
+			case KingCastle -> new KingCastleMove(source, destination);
+			case QueenCastle -> new QueenCastleMove(source, destination);
+			case Capture -> new CaptureMove(source, destination);
+			case EnPassantCapture -> new EnPassantCaptureMove(source, destination);
+			case KnightPromotion -> new KnightPromotionMove(source, destination);
+			case BishopPromotion -> new BishopPromotionMove(source, destination);
+			case RookPromotion -> new RookPromotionMove(source, destination);
+			case QueenPromotion -> new QueenPromotionMove(source, destination);
+			case KnightPromotionCapture -> new KnightPromotionCaptureMove(source, destination);
+			case BishopPromotionCapture -> new BishopPromotionCaptureMove(source, destination);
+			case RookPromotionCapture -> new RookPromotionCaptureMove(source, destination);
+			case QueenPromotionCapture -> new QueenPromotionCaptureMove(source, destination);
+		};
 	}
 
 	@Override
