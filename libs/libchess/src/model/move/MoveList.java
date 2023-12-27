@@ -59,4 +59,23 @@ public class MoveList implements IMoveList, Serializable {
 			case BlackKing -> board.getBlackKing().move(src, dst, board);
 		}
 	}
+
+	@Override
+	public String toString() {
+		IMove[] moves = getMoves();
+		StringBuilder stringBuilder = new StringBuilder();
+		for (int i = 0; i < moves.length; i++) {
+			if (moves[i] == null) {
+				continue;
+			}
+			if (i % 2 == 0) {
+				stringBuilder.append((i / 2) + 1).append(". ");
+			}
+			stringBuilder.append(moves[i]).append(" ");
+			if (i % 2 != 0) {
+				stringBuilder.append("\n");
+			}
+		}
+		return stringBuilder.toString();
+	}
 }

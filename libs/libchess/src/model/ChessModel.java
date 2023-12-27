@@ -1,6 +1,7 @@
 package model;
 
 import java.io.InputStream;
+import java.util.Arrays;
 import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
@@ -34,6 +35,9 @@ public class ChessModel implements IChessModel {
 		model.startGame();
 		model.makeMove(new Move(Square.e2, Square.e4));
 		model.makeMove(new Move(Square.d7, Square.d5));
+		model.makeMove(new Move(Square.d2, Square.d4));
+		model.makeMove(new Move(Square.e7, Square.e5));
+		System.out.println(model.getMoveList());
 	}
 
 	public State getGameState() {
