@@ -2,6 +2,7 @@ package model.move;
 
 import java.io.Serializable;
 import model.board.Square;
+import model.piece.Pieces;
 
 public abstract class Move implements IMove, Serializable {
 

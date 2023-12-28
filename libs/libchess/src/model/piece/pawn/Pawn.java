@@ -6,6 +6,7 @@ import model.bits.IBitboard;
 import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
+import model.move.Move;
 import model.move.Moves;
 import model.piece.MovableWithReader;
 import model.piece.Piece;
@@ -52,16 +53,10 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 		System.out.println(
 			"Pawn promotion! Select the piece you want: Q (Queen), R (Rook), N (Knight), B (Bishop)"
 		);
-		Pieces piece = getSelectedPiece(getSelection(reader));
+		Pieces piece = Pieces.getSelectedPiece(getPromotionPieces(), getSelection(reader));
 		board.getPiece(piece).getBitboard().merge(destinationBit);
 		getBitboard().toggleBits(sourceBit);
-		return switch (piece) {
-			case BlackRook, WhiteRook -> Moves.RookPromotion;
-			case BlackKnight, WhiteKnight -> Moves.KnightPromotion;
-			case BlackBishop, WhiteBishop -> Moves.BishopPromotion;
-			case BlackQueen, WhiteQueen -> Moves.QueenPromotion;
-			default -> throw new Error("Invalid promotion piece");
-		};
+		return Moves.getPromotionMove(piece);
 	}
 
 	private String getSelection(IReader reader) {
@@ -74,36 +69,9 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 	}
 
 	private Pieces[] getPromotionPieces() {
-		return this instanceof WhitePawn ? getWhitePromotionPieces() : getBlackPromotionPieces();
-	}
-
-	private Pieces[] getWhitePromotionPieces() {
-		return new Pieces[] {
-			Pieces.WhiteQueen,
-			Pieces.WhiteRook,
-			Pieces.WhiteKnight,
-			Pieces.WhiteBishop,
-		};
-	}
-
-	private Pieces[] getBlackPromotionPieces() {
-		return new Pieces[] {
-			Pieces.BlackQueen,
-			Pieces.BlackRook,
-			Pieces.BlackKnight,
-			Pieces.BlackBishop,
-		};
-	}
-
-	private Pieces getSelectedPiece(String userInput) {
-		Pieces[] pieces = getPromotionPieces();
-		return switch (userInput) {
-			case "Q" -> pieces[0];
-			case "R" -> pieces[1];
-			case "N" -> pieces[2];
-			case "B" -> pieces[3];
-			default -> throw new Error("Invalid input");
-		};
+		return this instanceof model.piece.pawn.extension.WhitePawn
+			? Pieces.getWhitePromotionPieces()
+			: Pieces.getBlackPromotionPieces();
 	}
 
 	private IBitboard getMovablePawns(IBoard board) {

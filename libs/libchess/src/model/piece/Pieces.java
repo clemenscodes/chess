@@ -47,6 +47,34 @@ public enum Pieces {
 		model.piece.pawn.extension.WhitePawn.SYMBOL,
 	};
 
+	public static Pieces[] getWhitePromotionPieces() {
+		return new Pieces[] {
+			Pieces.WhiteQueen,
+			Pieces.WhiteRook,
+			Pieces.WhiteKnight,
+			Pieces.WhiteBishop,
+		};
+	}
+
+	public static Pieces[] getBlackPromotionPieces() {
+		return new Pieces[] {
+			Pieces.BlackQueen,
+			Pieces.BlackRook,
+			Pieces.BlackKnight,
+			Pieces.BlackBishop,
+		};
+	}
+
+	public static Pieces getSelectedPiece(Pieces[] pieces, String userInput) {
+		return switch (userInput) {
+			case "Q" -> pieces[0];
+			case "R" -> pieces[1];
+			case "N" -> pieces[2];
+			case "B" -> pieces[3];
+			default -> throw new Error("Invalid input");
+		};
+	}
+
 	public static final Pieces[] PIECE_BY_INDEX = {
 		BlackRook,
 		BlackKnight,
