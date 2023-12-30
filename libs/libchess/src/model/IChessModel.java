@@ -22,4 +22,6 @@ public interface IChessModel {
 	void startNewGame();
 
 	void makeMove(Square source, Square destination);
+
+	void initUci();
 }

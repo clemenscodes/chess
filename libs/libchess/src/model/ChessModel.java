@@ -1,5 +1,7 @@
 package model;
 
+import static model.board.Square.*;
+
 import java.io.InputStream;
 import model.board.Board;
 import model.board.IBoard;
@@ -8,6 +10,8 @@ import model.fen.ForsythEdwardsNotation;
 import model.fen.IForsythEdwardsNotation;
 import model.move.IMoveList;
 import model.move.MoveList;
+import model.uci.IUniversalChessInterface;
+import model.uci.UniversalChessInterface;
 import model.util.io.reader.IReader;
 import model.util.io.reader.Reader;
 
@@ -18,22 +22,27 @@ public class ChessModel implements IChessModel {
 	private IBoard board;
 	private IMoveList moveList;
 	private IReader reader;
+	private IUniversalChessInterface uci;
 
 	public ChessModel(InputStream input) {
 		setReader(input);
+		setUci(new UniversalChessInterface(input));
 	}
 
 	public ChessModel() {
-		setReader(System.in);
+		InputStream in = System.in;
+		setReader(in);
+		setUci(new UniversalChessInterface(in));
 	}
 
 	public static void main(String[] args) {
 		var model = new ChessModel();
+		model.initUci();
 		model.startGame();
-		model.makeMove(Square.e2, Square.e4);
-		model.makeMove(Square.d7, Square.d5);
-		model.makeMove(Square.d2, Square.d4);
-		model.makeMove(Square.e7, Square.e5);
+		model.makeMove(e2, e4);
+		model.makeMove(d7, d5);
+		model.makeMove(d2, d4);
+		model.makeMove(e7, e5);
 		System.out.println(model.getMoveList());
 	}
 
@@ -74,6 +83,18 @@ public class ChessModel implements IChessModel {
 	public void makeMove(Square source, Square destination) {
 		getMoveList().makeMove(source, destination, getBoard(), getReader());
 		printGame();
+	}
+
+	public void initUci() {
+		new Thread(getUci()).start();
+	}
+
+	private IUniversalChessInterface getUci() {
+		return uci;
+	}
+
+	private void setUci(IUniversalChessInterface uci) {
+		this.uci = uci;
 	}
 
 	private void setGameState(State state) {
