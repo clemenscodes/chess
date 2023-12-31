@@ -1,27 +1,21 @@
 package model.uci;
 
-import java.io.InputStream;
 import model.util.io.reader.IReader;
-import model.util.io.reader.Reader;
 
 public class UniversalChessInterface implements IUniversalChessInterface {
 
 	private IReader reader;
 
-	public UniversalChessInterface(InputStream input) {
-		setReader(input);
-	}
-
-	public UniversalChessInterface() {
-		setReader(System.in);
+	public UniversalChessInterface(IReader reader) {
+		setReader(reader);
 	}
 
 	private IReader getReader() {
 		return reader;
 	}
 
-	private void setReader(InputStream input) {
-		this.reader = new Reader(input);
+	private void setReader(IReader reader) {
+		this.reader = reader;
 	}
 
 	@Override
@@ -29,6 +23,9 @@ public class UniversalChessInterface implements IUniversalChessInterface {
 		while (true) {
 			String input = getReader().readLine();
 			if (input == null) {
+				continue;
+			}
+			if (input.equals("stop")) {
 				break;
 			}
 			System.out.println("Received: " + input);

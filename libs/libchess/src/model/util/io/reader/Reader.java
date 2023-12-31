@@ -1,25 +1,24 @@
 package model.util.io.reader;
 
-import java.io.InputStream;
-import java.util.Scanner;
+import java.util.concurrent.BlockingQueue;
 
 public class Reader implements IReader {
 
-	private Scanner scanner;
+	private BlockingQueue<String> queue;
 
-	public Reader(InputStream input) {
-		setScanner(input);
+	public Reader(BlockingQueue<String> queue) {
+		setQueue(queue);
 	}
 
 	public String readLine() {
-		return getScanner().nextLine();
+		return getQueue().poll();
 	}
 
-	private Scanner getScanner() {
-		return scanner;
+	private BlockingQueue<String> getQueue() {
+		return queue;
 	}
 
-	private void setScanner(InputStream input) {
-		this.scanner = new Scanner(input);
+	private void setQueue(BlockingQueue<String> queue) {
+		this.queue = queue;
 	}
 }
