@@ -11,4 +11,5 @@ public interface IPiece {
 	void setBitboard(IBitboard bitboard);
 
 	boolean isInvalidMove(int source, int destination, IBoard board);
+    IBitboard getAttacks(IBoard board);
 }

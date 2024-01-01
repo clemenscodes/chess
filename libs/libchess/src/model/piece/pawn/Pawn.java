@@ -43,6 +43,10 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 			: determineMove(source, destination);
 	}
 
+    public IBitboard getAttacks(IBoard board) {
+        return new Bitboard();
+    }
+
 	private Moves promotePawn(
 		IBoard board,
 		IBitboard sourceBit,
