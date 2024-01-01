@@ -1,4 +1,4 @@
-package model.util.io.writer;
+package model.writer;
 
 import model.bits.IBitboard;
 

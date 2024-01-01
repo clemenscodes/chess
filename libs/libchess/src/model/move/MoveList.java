@@ -5,7 +5,7 @@ import model.board.IBoard;
 import model.board.Square;
 import model.move.extension.*;
 import model.piece.Pieces;
-import model.util.io.reader.IReader;
+import model.reader.IReader;
 
 public class MoveList implements IMoveList, Serializable {
 

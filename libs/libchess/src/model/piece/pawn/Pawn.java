@@ -11,7 +11,7 @@ import model.piece.MovableWithReader;
 import model.piece.Piece;
 import model.piece.Pieces;
 import model.piece.pawn.extension.WhitePawn;
-import model.util.io.reader.*;
+import model.reader.IReader;
 
 public abstract class Pawn extends Piece implements MovableWithReader, Serializable {
 

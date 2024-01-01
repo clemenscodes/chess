@@ -17,7 +17,7 @@ import model.piece.queen.extension.BlackQueen;
 import model.piece.queen.extension.WhiteQueen;
 import model.piece.rook.extension.BlackRook;
 import model.piece.rook.extension.WhiteRook;
-import model.util.io.writer.Writer;
+import model.writer.Writer;
 
 public class Board implements IBoard, Serializable {
 

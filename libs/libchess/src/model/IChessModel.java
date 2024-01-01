@@ -4,7 +4,7 @@ import model.board.IBoard;
 import model.board.Square;
 import model.fen.IForsythEdwardsNotation;
 import model.move.IMoveList;
-import model.util.io.reader.IReader;
+import model.reader.IReader;
 
 public interface IChessModel {
 	State getGameState();
@@ -22,6 +22,4 @@ public interface IChessModel {
 	void startNewGame();
 
 	void makeMove(Square source, Square destination);
-
-	void initUci();
 }

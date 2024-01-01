@@ -10,6 +10,6 @@ public class ChessModelTest {
 	@Test
 	void shouldInitialize() {
 		assertDoesNotThrow(() -> new ChessModel());
-		assertDoesNotThrow(() -> new ChessModel(new LinkedBlockingQueue<>()));
+		assertDoesNotThrow(() -> new ChessModel(System.in));
 	}
 }

@@ -1,4 +1,4 @@
-package model.util.io.reader;
+package model.reader;
 
 public interface IReader {
 	String readLine();

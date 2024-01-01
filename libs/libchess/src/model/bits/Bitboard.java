@@ -2,7 +2,7 @@ package model.bits;
 
 import java.io.Serializable;
 import model.board.Board;
-import model.util.io.writer.Writer;
+import model.writer.Writer;
 
 public class Bitboard implements IBitboard, Serializable {
 
