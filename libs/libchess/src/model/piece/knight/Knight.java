@@ -27,7 +27,7 @@ public abstract class Knight extends Piece implements Movable, Serializable {
 		return Moves.Quiet;
 	}
 
-	public IBitboard getAttacks(IBoard board) {
+	public IBitboard getAttacks(IBitboard piece, IBoard board) {
 		return new Bitboard();
 	}
 }

@@ -61,16 +61,15 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 	private Moves quietMove(int source, int destination, IBoard board) {
 		System.out.println("Quiet!");
 		var fen = board.getFen();
-		fen.incrementHalfMoveClock();
+		fen.resetHalfMoveClock();
 		fen.incrementFullMoveNumber();
 		getBitboard().toggleBits(getMoveMask(source, destination));
 		return Moves.Quiet;
 	}
 
-	public IBitboard getAttacks(IBoard board) {
-		IBitboard pawns = getBitboard();
-		IBitboard maskedWestAttacks = getWestAttacks(pawns);
-		IBitboard maskedEastAttacks = getEastAttacks(pawns);
+	public IBitboard getAttacks(IBitboard piece, IBoard board) {
+		IBitboard maskedWestAttacks = getWestAttacks(piece);
+		IBitboard maskedEastAttacks = getEastAttacks(piece);
 		IBitboard attacks = Bitboard.merge(maskedWestAttacks, maskedEastAttacks);
 		IBitboard opponentPieces = getOpponentPieces(board);
 		return Bitboard.intersect(attacks, opponentPieces);
@@ -108,6 +107,9 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 		Pieces piece = Pieces.getSelectedPiece(getPromotionPieces(), getSelection(reader));
 		board.getPiece(piece).getBitboard().merge(destinationBit);
 		getBitboard().toggleBits(sourceBit);
+		var fen = board.getFen();
+		fen.incrementFullMoveNumber();
+		fen.resetHalfMoveClock();
 		return Moves.getPromotionMove(piece);
 	}
 
@@ -137,7 +139,7 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 	}
 
 	private IBitboard getAttackingPawns(IBoard board) {
-		IBitboard attacks = getAttacks(board);
+		IBitboard attacks = getAttacks(getBitboard(), board);
 		IBitboard westAttackingPawns = this instanceof WhitePawn
 			? Bitboard.shiftSouthEast(attacks)
 			: Bitboard.shiftNorthWest(attacks);
@@ -149,7 +151,7 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 
 	private IBitboard getTargets(IBitboard pawn, IBoard board) {
 		IBitboard pushTargets = getPushTargets(pawn, board.getEmptySquares());
-		IBitboard attackTargets = getAttacks(board);
+		IBitboard attackTargets = getAttacks(pawn, board);
 		return Bitboard.merge(pushTargets, attackTargets);
 	}
 
