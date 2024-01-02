@@ -53,7 +53,6 @@ public class ChessModel implements IChessModel {
 
 	public void startGame() {
 		setBoard(new Board());
-		getBoard().setPieces();
 		setMoveList(new MoveList());
 		setGameState(State.Start);
 		printGame();

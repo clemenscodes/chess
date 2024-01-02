@@ -86,11 +86,13 @@ public class Board implements IBoard, Serializable {
 	public Board() {
 		initializeBoard();
 		setFen(new ForsythEdwardsNotation());
+		setPieces();
 	}
 
 	public Board(ForsythEdwardsNotation fen) {
 		initializeBoard();
 		setFen(fen);
+		setPieces();
 	}
 
 	public IForsythEdwardsNotation getFen() {
