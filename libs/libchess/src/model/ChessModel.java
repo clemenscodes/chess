@@ -6,8 +6,6 @@ import java.io.InputStream;
 import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
-import model.fen.ForsythEdwardsNotation;
-import model.fen.IForsythEdwardsNotation;
 import model.move.IMoveList;
 import model.move.MoveList;
 import model.reader.IReader;
@@ -16,7 +14,6 @@ import model.reader.Reader;
 public class ChessModel implements IChessModel {
 
 	private State state;
-	private IForsythEdwardsNotation fen;
 	private IBoard board;
 	private IMoveList moveList;
 	private IReader reader;
@@ -33,14 +30,12 @@ public class ChessModel implements IChessModel {
 		var model = new ChessModel();
 		model.startGame();
 		model.makeMove(e2, e4);
+		model.makeMove(d7, d5);
+		model.makeMove(e4, d5);
 	}
 
 	public State getGameState() {
 		return state;
-	}
-
-	public IForsythEdwardsNotation getFen() {
-		return fen;
 	}
 
 	public IBoard getBoard() {
@@ -56,9 +51,8 @@ public class ChessModel implements IChessModel {
 	}
 
 	public void startGame() {
-		setFen(new ForsythEdwardsNotation());
 		setBoard(new Board());
-		getBoard().setPieces(getFen().getPiecePlacementData());
+		getBoard().setPieces();
 		setMoveList(new MoveList());
 		setGameState(State.Start);
 		printGame();
@@ -78,10 +72,6 @@ public class ChessModel implements IChessModel {
 		this.state = state;
 	}
 
-	private void setFen(IForsythEdwardsNotation fen) {
-		this.fen = fen;
-	}
-
 	private void setMoveList(IMoveList moveList) {
 		this.moveList = moveList;
 	}
@@ -92,7 +82,7 @@ public class ChessModel implements IChessModel {
 
 	private void printNext() {
 		System.out.print("Next turn: ");
-		System.out.println(fen.getActiveColor() == 'w' ? "White" : "Black");
+		System.out.println(getBoard().getFen().getActiveColor() == 'w' ? "White" : "Black");
 	}
 
 	private void printGame() {

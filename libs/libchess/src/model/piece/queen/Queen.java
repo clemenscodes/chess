@@ -1,7 +1,6 @@
 package model.piece.queen;
 
 import java.io.Serializable;
-
 import model.bits.Bitboard;
 import model.bits.IBitboard;
 import model.board.IBoard;
@@ -27,7 +26,7 @@ public abstract class Queen extends Piece implements Movable, Serializable {
 		return Moves.Quiet;
 	}
 
-    public IBitboard getAttacks(IBoard board) {
-        return new Bitboard();
-    }
+	public IBitboard getAttacks(IBoard board) {
+		return new Bitboard();
+	}
 }

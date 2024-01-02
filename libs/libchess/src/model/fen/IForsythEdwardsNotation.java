@@ -13,5 +13,11 @@ public interface IForsythEdwardsNotation {
 
 	int getFullMoveNumber();
 
+	void incrementFullMoveNumber();
+
+	void incrementHalfMoveClock();
+
+	void resetHalfMoveClock();
+
 	void parse(String fen);
 }

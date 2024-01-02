@@ -1,6 +1,7 @@
 package model.board;
 
 import model.bits.IBitboard;
+import model.fen.IForsythEdwardsNotation;
 import model.piece.IPiece;
 import model.piece.Pieces;
 import model.piece.bishop.extension.BlackBishop;
@@ -17,6 +18,8 @@ import model.piece.rook.extension.BlackRook;
 import model.piece.rook.extension.WhiteRook;
 
 public interface IBoard {
+	IForsythEdwardsNotation getFen();
+
 	WhiteKing getWhiteKing();
 
 	WhiteQueen getWhiteQueen();
@@ -55,5 +58,5 @@ public interface IBoard {
 
 	IPiece getPiece(Pieces kind);
 
-	void setPieces(String[] ppd);
+	void setPieces();
 }

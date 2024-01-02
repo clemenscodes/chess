@@ -58,7 +58,7 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 		setFullMoveNumber(parts[5]);
 	}
 
-	private void setPiecePlacementData(String piecePlacement) {
+	public void setPiecePlacementData(String piecePlacement) {
 		var ppd = piecePlacement.split("/");
 		if (ppd.length != Board.SIZE) {
 			throw new IllegalArgumentException("Invalid piece placement data");
@@ -75,7 +75,7 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 		piecePlacementData = ppd;
 	}
 
-	private void setActiveColor(String color) {
+	public void setActiveColor(String color) {
 		try {
 			var ac = color.charAt(0);
 			if (ac != 'w' && ac != 'b') {
@@ -87,7 +87,7 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 		}
 	}
 
-	private void setCastling(String castlingInfo) {
+	public void setCastling(String castlingInfo) {
 		try {
 			if (!castlingInfo.equals("-")) {
 				for (char c : castlingInfo.toCharArray()) {
@@ -104,7 +104,7 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 		}
 	}
 
-	private void setEnPassant(String enPassantInfo) {
+	public void setEnPassant(String enPassantInfo) {
 		try {
 			if (!enPassantInfo.equals("-")) {
 				if (enPassantInfo.length() != 2 || !isValidEnPassantSquare(enPassantInfo)) {
@@ -123,7 +123,7 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 		return ((file >= 'a' && file <= 'h') && ((rank == '3') || (rank == '6')));
 	}
 
-	private void setHalfMoveClock(String halfMoveClockStr) {
+	public void setHalfMoveClock(String halfMoveClockStr) {
 		try {
 			int halfMoveClockValue = Integer.parseInt(halfMoveClockStr);
 			if (halfMoveClockValue < MIN_HALF_MOVE_CLOCK) {
@@ -142,7 +142,7 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 		}
 	}
 
-	private void setFullMoveNumber(String fullMoveNumberStr) {
+	public void setFullMoveNumber(String fullMoveNumberStr) {
 		try {
 			int fullMoveNumberValue = Integer.parseInt(fullMoveNumberStr);
 			if (fullMoveNumberValue < MIN_FULL_MOVE_CLOCK) {
@@ -154,6 +154,18 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 		} catch (NumberFormatException e) {
 			throw new IllegalArgumentException("Invalid full-move number");
 		}
+	}
+
+	public void incrementFullMoveNumber() {
+		setFullMoveNumber(String.valueOf(getFullMoveNumber() + 1));
+	}
+
+	public void incrementHalfMoveClock() {
+		setHalfMoveClock(String.valueOf(getHalfMoveClock() + 1));
+	}
+
+	public void resetHalfMoveClock() {
+		setHalfMoveClock("0");
 	}
 
 	@Override

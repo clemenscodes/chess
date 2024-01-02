@@ -2,14 +2,11 @@ package model;
 
 import model.board.IBoard;
 import model.board.Square;
-import model.fen.IForsythEdwardsNotation;
 import model.move.IMoveList;
 import model.reader.IReader;
 
 public interface IChessModel {
 	State getGameState();
-
-	IForsythEdwardsNotation getFen();
 
 	IBoard getBoard();
 

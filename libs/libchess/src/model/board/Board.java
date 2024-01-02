@@ -3,6 +3,8 @@ package model.board;
 import java.io.Serializable;
 import model.bits.Bitboard;
 import model.bits.IBitboard;
+import model.fen.ForsythEdwardsNotation;
+import model.fen.IForsythEdwardsNotation;
 import model.piece.IPiece;
 import model.piece.Pieces;
 import model.piece.bishop.extension.BlackBishop;
@@ -63,6 +65,7 @@ public class Board implements IBoard, Serializable {
 		return SIZE * rank + file;
 	}
 
+	private IForsythEdwardsNotation fen;
 	private WhiteKing whiteKing;
 	private WhiteQueen whiteQueen;
 	private WhiteRook whiteRook;
@@ -82,6 +85,16 @@ public class Board implements IBoard, Serializable {
 
 	public Board() {
 		initializeBoard();
+		setFen(new ForsythEdwardsNotation());
+	}
+
+	public Board(ForsythEdwardsNotation fen) {
+		initializeBoard();
+		setFen(fen);
+	}
+
+	public IForsythEdwardsNotation getFen() {
+		return fen;
 	}
 
 	public WhiteKing getWhiteKing() {
@@ -189,11 +202,11 @@ public class Board implements IBoard, Serializable {
 		};
 	}
 
-	public void setPieces(String[] ppd) {
+	public void setPieces() {
 		int reverseRank = 0;
 		for (int rank = 7; rank >= 0; rank--) {
 			int file = 0;
-			for (char pieceChar : ppd[reverseRank].toCharArray()) {
+			for (char pieceChar : getFen().getPiecePlacementData()[reverseRank].toCharArray()) {
 				if (Character.isDigit(pieceChar)) {
 					file += Character.getNumericValue(pieceChar);
 				} else {
@@ -204,6 +217,10 @@ public class Board implements IBoard, Serializable {
 		}
 		updateOccupiedSquares();
 		updateEmptySquares();
+	}
+
+	private void setFen(IForsythEdwardsNotation fen) {
+		this.fen = fen;
 	}
 
 	private void initializeBoard() {
