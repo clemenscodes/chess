@@ -1,5 +1,6 @@
 package model.fen;
 
+import model.bits.IBitboard;
 import model.board.Square;
 
 public interface IForsythEdwardsNotation {
@@ -10,6 +11,8 @@ public interface IForsythEdwardsNotation {
 	String getCastling();
 
 	String getEnPassant();
+
+	IBitboard getEnPassantMask();
 
 	int getHalfMoveClock();
 
@@ -24,6 +27,7 @@ public interface IForsythEdwardsNotation {
 	void switchActiveColor();
 
 	void setEnPassantTargetSquare(Square square);
+
 	void unsetEnPassantTargetSquare();
 
 	void parse(String fen);

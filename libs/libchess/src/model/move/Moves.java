@@ -2,6 +2,7 @@ package model.move;
 
 import model.bits.Bitboard;
 import model.bits.IBitboard;
+import model.board.IBoard;
 import model.piece.Pieces;
 
 public enum Moves {
@@ -35,7 +36,11 @@ public enum Moves {
 		return Bitboard.overlap(destination, promotionMask);
 	}
 
-	public static boolean isCapture(IBitboard destination, IBitboard opponent) {
-		return Bitboard.overlap(destination, opponent);
+	public static boolean isCapture(IBitboard destination, IBoard board) {
+		return Bitboard.overlap(destination, board.getOpponentPieces());
+	}
+
+	public static boolean isEnPassant(IBitboard destination, IBoard board) {
+		return Bitboard.overlap(destination, board.getFen().getEnPassantMask());
 	}
 }

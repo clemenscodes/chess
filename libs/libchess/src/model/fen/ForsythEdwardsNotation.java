@@ -1,6 +1,8 @@
 package model.fen;
 
 import java.io.Serializable;
+import model.bits.Bitboard;
+import model.bits.IBitboard;
 import model.board.Board;
 import model.board.Square;
 
@@ -13,6 +15,7 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 	private char activeColor;
 	private String castling;
 	private String enPassant;
+	private IBitboard enPassantMask;
 	private int halfMoveClock;
 	private int fullMoveNumber;
 
@@ -27,6 +30,7 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 				"Invalid FEN: It should consist of 6 space-separated parts"
 			);
 		}
+		unsetEnPassantMask();
 		setPiecePlacementData(parts[0]);
 		setActiveColor(parts[1]);
 		setCastling(parts[2]);
@@ -49,6 +53,10 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 
 	public String getEnPassant() {
 		return enPassant;
+	}
+
+	public IBitboard getEnPassantMask() {
+		return enPassantMask;
 	}
 
 	public int getHalfMoveClock() {
@@ -80,10 +88,12 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 
 	public void setEnPassantTargetSquare(Square square) {
 		setEnPassant(square.name());
+		setEnPassantMask(square);
 	}
 
 	public void unsetEnPassantTargetSquare() {
 		setEnPassant("-");
+		unsetEnPassantMask();
 	}
 
 	private void setPiecePlacementData(String piecePlacement) {
@@ -143,6 +153,14 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 		} catch (IndexOutOfBoundsException e) {
 			throw new IllegalArgumentException("Invalid en passant information");
 		}
+	}
+
+	private void setEnPassantMask(Square square) {
+		enPassantMask = Bitboard.getSingleBit(Square.getIndex(square));
+	}
+
+	private void unsetEnPassantMask() {
+		enPassantMask = new Bitboard();
 	}
 
 	private boolean isValidEnPassantSquare(String square) {

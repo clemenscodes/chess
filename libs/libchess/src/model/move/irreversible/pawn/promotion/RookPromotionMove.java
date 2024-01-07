@@ -1,6 +1,5 @@
 package model.move.irreversible.pawn.promotion;
 
-import model.bits.IBitboard;
 import model.board.IBoard;
 import model.board.Square;
 import model.piece.IPiece;

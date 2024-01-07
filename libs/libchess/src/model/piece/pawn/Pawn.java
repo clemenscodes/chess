@@ -40,7 +40,10 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 		if (Moves.isPromotion(destinationBit, promotionMask)) {
 			return promotePawn(src, dst, board, reader);
 		}
-		if (Moves.isCapture(destinationBit, board.getOpponentPieces())) {
+		if (Moves.isEnPassant(destinationBit, board)) {
+			return new EnPassantCaptureMove(src, dst, board, this);
+		}
+		if (Moves.isCapture(destinationBit, board)) {
 			return new CaptureMove(src, dst, board, this);
 		}
 		return pawnPush(src, dst, board, this);
@@ -49,8 +52,9 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 	public IBitboard getAttacks(IBitboard piece, IBoard board) {
 		IBitboard maskedWestAttacks = getWestAttacks(piece);
 		IBitboard maskedEastAttacks = getEastAttacks(piece);
-		IBitboard attacks = Bitboard.merge(maskedWestAttacks, maskedEastAttacks);
-		return Bitboard.intersect(attacks, board.getOpponentPieces());
+		IBitboard regularAttacks = Bitboard.merge(maskedWestAttacks, maskedEastAttacks);
+		IBitboard directAttacks = Bitboard.intersect(regularAttacks, board.getOpponentPieces());
+		return Bitboard.merge(directAttacks, board.getFen().getEnPassantMask());
 	}
 
 	private IBitboard getWestAttacks(IBitboard pawns) {
@@ -168,7 +172,7 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 		);
 		Pieces piece = Pieces.getSelectedPiece(getPromotionPieces(), getSelection(reader));
 		IBitboard destinationBit = Bitboard.getSingleBit(Square.getIndex(dst));
-		return Moves.isCapture(destinationBit, board.getOpponentPieces())
+		return Moves.isCapture(destinationBit, board)
 			? makePromotionCapture(src, dst, piece, board)
 			: makePromotion(src, dst, piece, board);
 	}

@@ -1,6 +1,5 @@
 package model.move.irreversible.pawn.promotion.capturing;
 
-import model.bits.IBitboard;
 import model.board.IBoard;
 import model.board.Square;
 import model.move.irreversible.pawn.promotion.PromotionMove;
