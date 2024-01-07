@@ -11,6 +11,7 @@ public enum Moves {
 	DoublePawnPush,
 	KingCastle,
 	QueenCastle,
+	PawnCapture,
 	Capture,
 	EnPassantCapture,
 	KnightPromotion,

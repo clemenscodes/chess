@@ -17,7 +17,9 @@ public abstract class PromotionMove extends PawnMove {
 		Pieces chosenPromotion
 	) {
 		super(source, destination, board, pawn);
-		var src = Square.getIndex(source);
-		board.getPiece(chosenPromotion).getBitboard().merge(Bitboard.getSingleBit(src));
+		board
+			.getPiece(chosenPromotion)
+			.getBitboard()
+			.merge(Bitboard.getSingleBit(Square.getIndex(source)));
 	}
 }
