@@ -16,6 +16,11 @@ public interface IBitboard {
 	void rightShift(int bits);
 
 	void negateBits();
+
 	void toggleBits(IBitboard board);
+
+	void unsetBitByIndex(int index);
+	void setBitByIndex(int index);
+
 	IBitboard copy();
 }

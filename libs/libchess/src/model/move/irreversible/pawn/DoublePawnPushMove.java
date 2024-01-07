@@ -12,6 +12,7 @@ public class DoublePawnPushMove extends PawnMove {
 		super(source, destination, board, pawn);
 		Square enPassantTargetSquare = getEnPassantTargetSquare(destination, pawn);
 		board.getFen().setEnPassantTargetSquare(enPassantTargetSquare);
+		pawn.getBitboard().setBitByIndex(Square.getIndex(destination));
 	}
 
 	private Square getEnPassantTargetSquare(Square destination, IPiece pawn) {

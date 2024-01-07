@@ -9,8 +9,6 @@ public abstract class PawnMove extends IrreversibleMove {
 
 	public PawnMove(Square source, Square destination, IBoard board, IPiece pawn) {
 		super(source, destination, board);
-		int src = Square.getIndex(source);
-		int dst = Square.getIndex(destination);
-		pawn.getBitboard().toggleBits(pawn.getMoveMask(src, dst));
+		pawn.getBitboard().unsetBitByIndex(Square.getIndex(source));
 	}
 }

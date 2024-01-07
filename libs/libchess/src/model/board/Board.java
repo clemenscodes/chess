@@ -232,6 +232,7 @@ public class Board implements IBoard, Serializable {
 
 	public void capturePiece(int index) {
 		Pieces capturedPiece = getPieceByIndex(index);
+		System.out.println(capturedPiece);
 		getPiece(capturedPiece).getBitboard().toggleBits(Bitboard.getSingleBit(index));
 	}
 

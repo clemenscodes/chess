@@ -203,6 +203,14 @@ public class Bitboard implements IBitboard, Serializable {
 		setBits(toggle(this, board).getBits());
 	}
 
+	public void unsetBitByIndex(int index) {
+		setBits(unsetBit(this, index).getBits());
+	}
+
+	public void setBitByIndex(int index) {
+		setBits(setBit(this, index).getBits());
+	}
+
 	public IBitboard copy() {
 		return new Bitboard(getBits());
 	}

@@ -4,7 +4,6 @@ import java.io.Serializable;
 import model.bits.*;
 import model.board.*;
 import model.move.*;
-import model.move.irreversible.capturing.*;
 import model.move.irreversible.pawn.*;
 import model.move.irreversible.pawn.promotion.*;
 import model.move.irreversible.pawn.promotion.capturing.*;
@@ -44,7 +43,7 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 			return new EnPassantCaptureMove(src, dst, board, this);
 		}
 		if (Moves.isCapture(destinationBit, board)) {
-			return new CaptureMove(src, dst, board, this);
+			return new PawnCaptureMove(src, dst, board, this);
 		}
 		return pawnPush(src, dst, board, this);
 	}
