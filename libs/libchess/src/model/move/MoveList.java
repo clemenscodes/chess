@@ -26,17 +26,26 @@ public class MoveList implements IMoveList, Serializable {
 	}
 
 	public void makeMove(Square source, Square destination, IBoard board, IReader reader) {
-		if (playedMoves >= MOVE_LIMIT) {
-			return;
+		if (getPlayedMoves() >= MOVE_LIMIT) {
+			throw new Error("Making another move is impossible");
 		}
-		moves[playedMoves++] = move(source, destination, board, reader);
+		incrementPlayedMoves();
+		moves[getNextMoveIndex()] = move(source, destination, board, reader);
 	}
 
-	public void unmakeMove(IBoard board) {
-		if (playedMoves <= 0) {
-			return;
+	private void incrementPlayedMoves() {
+		setPlayedMoves(getPlayedMoves() + 1);
+	}
+
+	private int getNextMoveIndex() {
+		return getPlayedMoves() - 1;
+	}
+
+	private void setPlayedMoves(int playedMoves) {
+		if (playedMoves > MOVE_LIMIT) {
+			throw new Error("Can not set played moves higher than the allowed maximum");
 		}
-		moves[--playedMoves] = null;
+		this.playedMoves = playedMoves;
 	}
 
 	private IMove move(Square source, Square destination, IBoard board, IReader reader) {

@@ -20,6 +20,7 @@ public interface IBitboard {
 	void toggleBits(IBitboard board);
 
 	void unsetBitByIndex(int index);
+
 	void setBitByIndex(int index);
 
 	IBitboard copy();

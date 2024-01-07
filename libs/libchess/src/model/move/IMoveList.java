@@ -7,8 +7,6 @@ import model.reader.IReader;
 public interface IMoveList {
 	void makeMove(Square source, Square destination, IBoard board, IReader reader);
 
-	void unmakeMove(IBoard board);
-
 	int getPlayedMoves();
 
 	IMove[] getMoves();

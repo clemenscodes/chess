@@ -61,5 +61,6 @@ public interface IBoard {
 	IPiece getPiece(Pieces kind);
 
 	void capturePiece(int index);
+
 	void setPieces();
 }
