@@ -49,8 +49,10 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 		}
 		IBitboard destinationBit = Bitboard.getSingleBit(destination);
 		IBitboard promotionMask = this instanceof WhitePawn ? Board.eighthRank : Board.firstRank;
+		Square src = Square.getSquare(source);
+		Square dst = Square.getSquare(destination);
 		if (Moves.isPromotion(destinationBit, promotionMask)) {
-			return promotePawn(source, destination, board, reader);
+			return promotePawn(src, dst, board, reader);
 		}
 		if (Moves.isCapture(destinationBit, board.getOpponentPieces())) {
 			return new CaptureMove(
@@ -60,16 +62,7 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 				this
 			);
 		}
-		return pawnPush(source, destination, board, this);
-	}
-
-	private IMove pawnPush(int source, int destination, IBoard board, IPiece pawn) {
-		Square src = Square.getSquare(source);
-		Square dst = Square.getSquare(destination);
-		int moveIndexDifference = Math.abs(destination - source);
-		return (moveIndexDifference == Board.SIZE)
-			? new SinglePawnPushMove(src, dst, board, pawn)
-			: new DoublePawnPushMove(src, dst, board, pawn);
+		return pawnPush(src, dst, board, this);
 	}
 
 	public IBitboard getAttacks(IBitboard piece, IBoard board) {
@@ -166,6 +159,13 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 		return getSinglePushablePawns(emptySkippedRank);
 	}
 
+	private IMove pawnPush(Square source, Square destination, IBoard board, IPiece pawn) {
+		int moveIndexDifference = Math.abs(Square.getIndex(destination) - Square.getIndex(source));
+		return (moveIndexDifference == Board.SIZE)
+			? new SinglePawnPushMove(source, destination, board, pawn)
+			: new DoublePawnPushMove(source, destination, board, pawn);
+	}
+
 	private String getSelection(IReader reader) {
 		String userInput = reader.readLine();
 		while (!userInput.matches("[QRNB]")) {
@@ -181,45 +181,49 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 			: Pieces.getBlackPromotionPieces();
 	}
 
-	private IMove promotePawn(int source, int destination, IBoard board, IReader reader) {
+	private IMove promotePawn(Square source, Square destination, IBoard board, IReader reader) {
 		System.out.println(
 			"Pawn promotion! Select the piece you want: Q (Queen), R (Rook), N (Knight), B (Bishop)"
 		);
 		Pieces piece = Pieces.getSelectedPiece(getPromotionPieces(), getSelection(reader));
-		return Moves.isCapture(Bitboard.getSingleBit(destination), board.getOpponentPieces())
+		return Moves.isCapture(
+				Bitboard.getSingleBit(Square.getIndex(destination)),
+				board.getOpponentPieces()
+			)
 			? makePromotionCapture(source, destination, piece, board)
 			: makePromotion(source, destination, piece, board);
 	}
 
-	private IMove makePromotion(int source, int destination, Pieces piece, IBoard board) {
+	private IMove makePromotion(Square source, Square destination, Pieces piece, IBoard board) {
 		Pieces[] pieces = getPromotionPieces();
-		Square src = Square.getSquare(source);
-		Square dst = Square.getSquare(destination);
 		if (piece == pieces[0]) {
-			return new QueenPromotionMove(src, dst, board, this, piece);
+			return new QueenPromotionMove(source, destination, board, this, piece);
 		}
 		if (piece == pieces[1]) {
-			return new RookPromotionMove(src, dst, board, this, piece);
+			return new RookPromotionMove(source, destination, board, this, piece);
 		}
 		if (piece == pieces[2]) {
-			return new KnightPromotionMove(src, dst, board, this, piece);
+			return new KnightPromotionMove(source, destination, board, this, piece);
 		}
-		return new BishopPromotionMove(src, dst, board, this, piece);
+		return new BishopPromotionMove(source, destination, board, this, piece);
 	}
 
-	private IMove makePromotionCapture(int source, int destination, Pieces piece, IBoard board) {
+	private IMove makePromotionCapture(
+		Square source,
+		Square destination,
+		Pieces piece,
+		IBoard board
+	) {
 		Pieces[] pieces = getPromotionPieces();
-		Square src = Square.getSquare(source);
-		Square dst = Square.getSquare(destination);
 		if (piece == pieces[0]) {
-			return new QueenPromotionCaptureMove(src, dst, board, this, piece);
+			return new QueenPromotionCaptureMove(source, destination, board, this, piece);
 		}
 		if (piece == pieces[1]) {
-			return new RookPromotionCaptureMove(src, dst, board, this, piece);
+			return new RookPromotionCaptureMove(source, destination, board, this, piece);
 		}
 		if (piece == pieces[2]) {
-			return new KnightPromotionCaptureMove(src, dst, board, this, piece);
+			return new KnightPromotionCaptureMove(source, destination, board, this, piece);
 		}
-		return new BishopPromotionCaptureMove(src, dst, board, this, piece);
+		return new BishopPromotionCaptureMove(source, destination, board, this, piece);
 	}
 }
