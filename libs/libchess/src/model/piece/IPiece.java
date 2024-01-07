@@ -14,7 +14,5 @@ public interface IPiece {
 
 	IBitboard getMoveMask(int source, int destination);
 
-	IBitboard getMovablePieces(IBoard board);
-
-	IBitboard getTargets(IBitboard piece, IBoard board);
+	boolean isInvalidMove(int source, int destination, IBoard board);
 }

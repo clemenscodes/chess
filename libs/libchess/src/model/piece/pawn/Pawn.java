@@ -16,6 +16,13 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 		super(variant);
 	}
 
+	public boolean isInvalidMove(int source, int destination, IBoard board) {
+		return !(
+			Bitboard.checkBit(getMovablePieces(board), source) &&
+			Bitboard.checkBit(getTargets(Bitboard.getSingleBit(source), board), destination)
+		);
+	}
+
 	public IMove move(int source, int destination, IBoard board, IReader reader) {
 		if (isInvalidMove(source, destination, board)) {
 			throw new Error("Invalid move");
@@ -36,18 +43,6 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 		return pawnPush(src, dst, board, this);
 	}
 
-	public IBitboard getMovablePieces(IBoard board) {
-		IBitboard pushablePawns = getPushablePawns(board.getEmptySquares());
-		IBitboard attackingPawns = getAttackingPawns(board);
-		return Bitboard.merge(pushablePawns, attackingPawns);
-	}
-
-	public IBitboard getTargets(IBitboard piece, IBoard board) {
-		IBitboard pushTargets = getPushTargets(piece, board.getEmptySquares());
-		IBitboard attackTargets = getAttacks(piece, board);
-		return Bitboard.merge(pushTargets, attackTargets);
-	}
-
 	public IBitboard getAttacks(IBitboard piece, IBoard board) {
 		IBitboard maskedWestAttacks = getWestAttacks(piece);
 		IBitboard maskedEastAttacks = getEastAttacks(piece);
@@ -58,6 +53,18 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 			directAttacks.merge(enPassantMask);
 		}
 		return directAttacks;
+	}
+
+	private IBitboard getMovablePieces(IBoard board) {
+		IBitboard pushablePawns = getPushablePawns(board.getEmptySquares());
+		IBitboard attackingPawns = getAttackingPawns(board);
+		return Bitboard.merge(pushablePawns, attackingPawns);
+	}
+
+	private IBitboard getTargets(IBitboard piece, IBoard board) {
+		IBitboard pushTargets = getPushTargets(piece, board.getEmptySquares());
+		IBitboard attackTargets = getAttacks(piece, board);
+		return Bitboard.merge(pushTargets, attackTargets);
 	}
 
 	private IBitboard getWestAttacks(IBitboard pawns) {

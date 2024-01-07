@@ -6,7 +6,6 @@ import model.bits.IBitboard;
 import model.board.IBoard;
 import model.board.Square;
 import model.move.IMove;
-import model.move.Move;
 import model.move.reversible.QuietMove;
 import model.piece.Movable;
 import model.piece.Piece;
@@ -18,12 +17,8 @@ public abstract class Bishop extends Piece implements Movable, Serializable {
 		super(variant);
 	}
 
-	public IBitboard getMovablePieces(IBoard board) {
-		return new Bitboard();
-	}
-
-	public IBitboard getTargets(IBitboard piece, IBoard board) {
-		return new Bitboard();
+	public boolean isInvalidMove(int source, int destination, IBoard board) {
+		return true;
 	}
 
 	public IBitboard getAttacks(IBitboard piece, IBoard board) {

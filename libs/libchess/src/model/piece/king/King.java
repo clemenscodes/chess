@@ -17,12 +17,8 @@ public abstract class King extends Piece implements Movable, Serializable {
 		super(variant);
 	}
 
-	public IBitboard getMovablePieces(IBoard board) {
-		return new Bitboard();
-	}
-
-	public IBitboard getTargets(IBitboard piece, IBoard board) {
-		return new Bitboard();
+	public boolean isInvalidMove(int source, int destination, IBoard board) {
+		return true;
 	}
 
 	public IBitboard getAttacks(IBitboard piece, IBoard board) {

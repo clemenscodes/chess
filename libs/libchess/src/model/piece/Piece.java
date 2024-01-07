@@ -32,13 +32,6 @@ public abstract class Piece implements IPiece, Serializable {
 		return Bitboard.merge(Bitboard.getSingleBit(source), Bitboard.getSingleBit(destination));
 	}
 
-	protected boolean isInvalidMove(int source, int destination, IBoard board) {
-		return !(
-			Bitboard.checkBit(getMovablePieces(board), source) &&
-			Bitboard.checkBit(getTargets(Bitboard.getSingleBit(source), board), destination)
-		);
-	}
-
 	private void setVariant(Pieces variant) {
 		this.variant = variant;
 	}
