@@ -4,6 +4,7 @@ import model.bits.IBitboard;
 import model.board.IBoard;
 import model.board.Square;
 import model.move.irreversible.pawn.promotion.PromotionMove;
+import model.piece.IPiece;
 import model.piece.Pieces;
 
 public abstract class PromotionCaptureMove extends PromotionMove {
@@ -12,7 +13,7 @@ public abstract class PromotionCaptureMove extends PromotionMove {
 		Square source,
 		Square destination,
 		IBoard board,
-		IBitboard pawn,
+		IPiece pawn,
 		Pieces chosenPromotion
 	) {
 		super(source, destination, board, pawn, chosenPromotion);

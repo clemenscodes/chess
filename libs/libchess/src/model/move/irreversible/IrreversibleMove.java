@@ -3,6 +3,7 @@ package model.move.irreversible;
 import model.board.IBoard;
 import model.board.Square;
 import model.move.Move;
+import model.piece.IPiece;
 
 public abstract class IrreversibleMove extends Move {
 

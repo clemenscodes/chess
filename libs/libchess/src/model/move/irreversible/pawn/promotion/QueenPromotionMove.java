@@ -12,7 +12,7 @@ public class QueenPromotionMove extends PromotionMove {
 		Square source,
 		Square destination,
 		IBoard board,
-		IBitboard pawn,
+		IPiece pawn,
 		Pieces chosenPromotion
 	) {
 		super(source, destination, board, pawn, chosenPromotion);

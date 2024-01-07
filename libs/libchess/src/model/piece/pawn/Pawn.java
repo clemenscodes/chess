@@ -9,6 +9,8 @@ import model.board.Square;
 import model.move.IMove;
 import model.move.Moves;
 import model.move.irreversible.capturing.CaptureMove;
+import model.move.irreversible.pawn.DoublePawnPushMove;
+import model.move.irreversible.pawn.SinglePawnPushMove;
 import model.move.irreversible.pawn.promotion.BishopPromotionMove;
 import model.move.irreversible.pawn.promotion.KnightPromotionMove;
 import model.move.irreversible.pawn.promotion.QueenPromotionMove;
@@ -17,7 +19,7 @@ import model.move.irreversible.pawn.promotion.capturing.BishopPromotionCaptureMo
 import model.move.irreversible.pawn.promotion.capturing.KnightPromotionCaptureMove;
 import model.move.irreversible.pawn.promotion.capturing.QueenPromotionCaptureMove;
 import model.move.irreversible.pawn.promotion.capturing.RookPromotionCaptureMove;
-import model.move.reversible.QuietMove;
+import model.piece.IPiece;
 import model.piece.MovableWithReader;
 import model.piece.Piece;
 import model.piece.Pieces;
@@ -34,9 +36,7 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 			System.err.println("Pawn on " + Square.getSquare(source) + " can not push");
 			return true;
 		}
-		IBitboard pawn = Bitboard.getSingleBit(source);
-		System.out.println(getTargets(pawn, board));
-		if (!Bitboard.checkBit(getTargets(pawn, board), destination)) {
+		if (!Bitboard.checkBit(getTargets(Bitboard.getSingleBit(source), board), destination)) {
 			System.err.println("Can not push pawn to " + Square.getSquare(destination));
 			return true;
 		}
@@ -60,7 +60,16 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 				this
 			);
 		}
-		return new QuietMove(Square.getSquare(source), Square.getSquare(destination), board, this);
+		return pawnPush(source, destination, board, this);
+	}
+
+	private IMove pawnPush(int source, int destination, IBoard board, IPiece pawn) {
+		Square src = Square.getSquare(source);
+		Square dst = Square.getSquare(destination);
+		int moveIndexDifference = Math.abs(destination - source);
+		return (moveIndexDifference == Board.SIZE)
+			? new SinglePawnPushMove(src, dst, board, pawn)
+			: new DoublePawnPushMove(src, dst, board, pawn);
 	}
 
 	public IBitboard getAttacks(IBitboard piece, IBoard board) {
@@ -184,77 +193,33 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 
 	private IMove makePromotion(int source, int destination, Pieces piece, IBoard board) {
 		Pieces[] pieces = getPromotionPieces();
+		Square src = Square.getSquare(source);
+		Square dst = Square.getSquare(destination);
 		if (piece == pieces[0]) {
-			return new QueenPromotionMove(
-				Square.getSquare(source),
-				Square.getSquare(destination),
-				board,
-				getBitboard(),
-				piece
-			);
+			return new QueenPromotionMove(src, dst, board, this, piece);
 		}
 		if (piece == pieces[1]) {
-			return new RookPromotionMove(
-				Square.getSquare(source),
-				Square.getSquare(destination),
-				board,
-				getBitboard(),
-				piece
-			);
+			return new RookPromotionMove(src, dst, board, this, piece);
 		}
 		if (piece == pieces[2]) {
-			return new KnightPromotionMove(
-				Square.getSquare(source),
-				Square.getSquare(destination),
-				board,
-				getBitboard(),
-				piece
-			);
+			return new KnightPromotionMove(src, dst, board, this, piece);
 		}
-		return new BishopPromotionMove(
-			Square.getSquare(source),
-			Square.getSquare(destination),
-			board,
-			getBitboard(),
-			piece
-		);
+		return new BishopPromotionMove(src, dst, board, this, piece);
 	}
 
 	private IMove makePromotionCapture(int source, int destination, Pieces piece, IBoard board) {
 		Pieces[] pieces = getPromotionPieces();
+		Square src = Square.getSquare(source);
+		Square dst = Square.getSquare(destination);
 		if (piece == pieces[0]) {
-			return new QueenPromotionCaptureMove(
-				Square.getSquare(source),
-				Square.getSquare(destination),
-				board,
-				getBitboard(),
-				piece
-			);
+			return new QueenPromotionCaptureMove(src, dst, board, this, piece);
 		}
 		if (piece == pieces[1]) {
-			return new RookPromotionCaptureMove(
-				Square.getSquare(source),
-				Square.getSquare(destination),
-				board,
-				getBitboard(),
-				piece
-			);
+			return new RookPromotionCaptureMove(src, dst, board, this, piece);
 		}
 		if (piece == pieces[2]) {
-			return new KnightPromotionCaptureMove(
-				Square.getSquare(source),
-				Square.getSquare(destination),
-				board,
-				getBitboard(),
-				piece
-			);
+			return new KnightPromotionCaptureMove(src, dst, board, this, piece);
 		}
-		return new BishopPromotionCaptureMove(
-			Square.getSquare(source),
-			Square.getSquare(destination),
-			board,
-			getBitboard(),
-			piece
-		);
+		return new BishopPromotionCaptureMove(src, dst, board, this, piece);
 	}
 }

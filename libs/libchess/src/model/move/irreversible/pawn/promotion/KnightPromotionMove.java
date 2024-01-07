@@ -3,6 +3,7 @@ package model.move.irreversible.pawn.promotion;
 import model.bits.IBitboard;
 import model.board.IBoard;
 import model.board.Square;
+import model.piece.IPiece;
 import model.piece.Pieces;
 
 public class KnightPromotionMove extends PromotionMove {
@@ -11,7 +12,7 @@ public class KnightPromotionMove extends PromotionMove {
 		Square source,
 		Square destination,
 		IBoard board,
-		IBitboard pawn,
+		IPiece pawn,
 		Pieces chosenPromotion
 	) {
 		super(source, destination, board, pawn, chosenPromotion);
