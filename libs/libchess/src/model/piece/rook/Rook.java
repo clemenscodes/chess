@@ -17,8 +17,16 @@ public abstract class Rook extends Piece implements Movable, Serializable {
 		super(variant);
 	}
 
-	public boolean isInvalidMove(int source, int destination, IBoard board) {
-		return false;
+	public IBitboard getMovablePieces(IBoard board) {
+		return new Bitboard();
+	}
+
+	public IBitboard getTargets(IBitboard piece, IBoard board) {
+		return new Bitboard();
+	}
+
+	public IBitboard getAttacks(IBitboard piece, IBoard board) {
+		return new Bitboard();
 	}
 
 	public IMove move(int source, int destination, IBoard board) {
@@ -26,9 +34,5 @@ public abstract class Rook extends Piece implements Movable, Serializable {
 			throw new Error("Invalid move");
 		}
 		return new QuietMove(Square.getSquare(source), Square.getSquare(destination), board, this);
-	}
-
-	public IBitboard getAttacks(IBitboard piece, IBoard board) {
-		return new Bitboard();
 	}
 }

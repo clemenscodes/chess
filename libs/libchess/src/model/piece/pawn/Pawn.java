@@ -16,18 +16,6 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 		super(variant);
 	}
 
-	public boolean isInvalidMove(int source, int destination, IBoard board) {
-		if (!Bitboard.checkBit(getMovablePawns(board), source)) {
-			System.err.println("Pawn on " + Square.getSquare(source) + " can not push");
-			return true;
-		}
-		if (!Bitboard.checkBit(getTargets(Bitboard.getSingleBit(source), board), destination)) {
-			System.err.println("Can not push pawn to " + Square.getSquare(destination));
-			return true;
-		}
-		return false;
-	}
-
 	public IMove move(int source, int destination, IBoard board, IReader reader) {
 		if (isInvalidMove(source, destination, board)) {
 			throw new Error("Invalid move");
@@ -46,6 +34,18 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 			return new PawnCaptureMove(src, dst, board, this);
 		}
 		return pawnPush(src, dst, board, this);
+	}
+
+	public IBitboard getMovablePieces(IBoard board) {
+		IBitboard pushablePawns = getPushablePawns(board.getEmptySquares());
+		IBitboard attackingPawns = getAttackingPawns(board);
+		return Bitboard.merge(pushablePawns, attackingPawns);
+	}
+
+	public IBitboard getTargets(IBitboard piece, IBoard board) {
+		IBitboard pushTargets = getPushTargets(piece, board.getEmptySquares());
+		IBitboard attackTargets = getAttacks(piece, board);
+		return Bitboard.merge(pushTargets, attackTargets);
 	}
 
 	public IBitboard getAttacks(IBitboard piece, IBoard board) {
@@ -80,12 +80,6 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 		return Bitboard.intersect(eastAttack, eastAttackMask);
 	}
 
-	private IBitboard getMovablePawns(IBoard board) {
-		IBitboard pushablePawns = getPushablePawns(board.getEmptySquares());
-		IBitboard attackingPawns = getAttackingPawns(board);
-		return Bitboard.merge(pushablePawns, attackingPawns);
-	}
-
 	private IBitboard getAttackingPawns(IBoard board) {
 		IBitboard attacks = getAttacks(getBitboard(), board);
 		IBitboard westAttackingPawns = this instanceof WhitePawn
@@ -95,12 +89,6 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 			? Bitboard.shiftSouthWest(attacks)
 			: Bitboard.shiftNorthEast(attacks);
 		return Bitboard.merge(westAttackingPawns, eastAttackingPawns);
-	}
-
-	private IBitboard getTargets(IBitboard pawn, IBoard board) {
-		IBitboard pushTargets = getPushTargets(pawn, board.getEmptySquares());
-		IBitboard attackTargets = getAttacks(pawn, board);
-		return Bitboard.merge(pushTargets, attackTargets);
 	}
 
 	private IBitboard getPushTargets(IBitboard pawn, IBitboard emptySquares) {
