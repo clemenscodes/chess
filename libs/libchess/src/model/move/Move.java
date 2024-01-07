@@ -1,10 +1,12 @@
 package model.move;
 
 import java.io.Serializable;
+import java.util.Objects;
 import model.bits.Bitboard;
 import model.bits.IBitboard;
 import model.board.IBoard;
 import model.board.Square;
+import model.move.irreversible.pawn.DoublePawnPushMove;
 
 public abstract class Move implements IMove, Serializable {
 
@@ -15,9 +17,12 @@ public abstract class Move implements IMove, Serializable {
 		if (!isPlayersPiece(board, source)) {
 			throw new Error("Can not move opponents piece");
 		}
+		var fen = board.getFen();
+		if (!(this instanceof DoublePawnPushMove) && !Objects.equals(fen.getEnPassant(), "-")) {
+			board.getFen().unsetEnPassantTargetSquare();
+		}
 		setSource(source);
 		setDestination(destination);
-		var fen = board.getFen();
 		fen.incrementFullMoveNumber();
 		fen.switchActiveColor();
 	}

@@ -1,5 +1,7 @@
 package model.fen;
 
+import model.board.Square;
+
 public interface IForsythEdwardsNotation {
 	String[] getPiecePlacementData();
 
@@ -18,7 +20,11 @@ public interface IForsythEdwardsNotation {
 	void incrementHalfMoveClock();
 
 	void resetHalfMoveClock();
+
 	void switchActiveColor();
+
+	void setEnPassantTargetSquare(Square square);
+	void unsetEnPassantTargetSquare();
 
 	void parse(String fen);
 }

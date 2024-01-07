@@ -2,6 +2,7 @@ package model.fen;
 
 import java.io.Serializable;
 import model.board.Board;
+import model.board.Square;
 
 public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializable {
 
@@ -17,6 +18,21 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 
 	public ForsythEdwardsNotation() {
 		parse("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+	}
+
+	public void parse(String fen) {
+		String[] parts = fen.split(" ");
+		if (parts.length != 6) {
+			throw new IllegalArgumentException(
+				"Invalid FEN: It should consist of 6 space-separated parts"
+			);
+		}
+		setPiecePlacementData(parts[0]);
+		setActiveColor(parts[1]);
+		setCastling(parts[2]);
+		setEnPassant(parts[3]);
+		setHalfMoveClock(parts[4]);
+		setFullMoveNumber(parts[5]);
 	}
 
 	public String[] getPiecePlacementData() {
@@ -43,22 +59,34 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 		return fullMoveNumber;
 	}
 
-	public void parse(String fen) {
-		String[] parts = fen.split(" ");
-		if (parts.length != 6) {
-			throw new IllegalArgumentException(
-				"Invalid FEN: It should consist of 6 space-separated parts"
-			);
-		}
-		setPiecePlacementData(parts[0]);
-		setActiveColor(parts[1]);
-		setCastling(parts[2]);
-		setEnPassant(parts[3]);
-		setHalfMoveClock(parts[4]);
-		setFullMoveNumber(parts[5]);
+	public void incrementFullMoveNumber() {
+		setFullMoveNumber(String.valueOf(getFullMoveNumber() + 1));
 	}
 
-	public void setPiecePlacementData(String piecePlacement) {
+	public void incrementHalfMoveClock() {
+		setHalfMoveClock(String.valueOf(getHalfMoveClock() + 1));
+	}
+
+	public void resetHalfMoveClock() {
+		setHalfMoveClock("0");
+	}
+
+	public void switchActiveColor() {
+		switch (getActiveColor()) {
+			case 'w' -> setActiveColor("b");
+			case 'b' -> setActiveColor("w");
+		}
+	}
+
+	public void setEnPassantTargetSquare(Square square) {
+		setEnPassant(square.name());
+	}
+
+	public void unsetEnPassantTargetSquare() {
+		setEnPassant("-");
+	}
+
+	private void setPiecePlacementData(String piecePlacement) {
 		var ppd = piecePlacement.split("/");
 		if (ppd.length != Board.SIZE) {
 			throw new IllegalArgumentException("Invalid piece placement data");
@@ -75,7 +103,7 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 		piecePlacementData = ppd;
 	}
 
-	public void setActiveColor(String color) {
+	private void setActiveColor(String color) {
 		try {
 			var ac = color.charAt(0);
 			if (ac != 'w' && ac != 'b') {
@@ -87,7 +115,7 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 		}
 	}
 
-	public void setCastling(String castlingInfo) {
+	private void setCastling(String castlingInfo) {
 		try {
 			if (!castlingInfo.equals("-")) {
 				for (char c : castlingInfo.toCharArray()) {
@@ -104,7 +132,7 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 		}
 	}
 
-	public void setEnPassant(String enPassantInfo) {
+	private void setEnPassant(String enPassantInfo) {
 		try {
 			if (!enPassantInfo.equals("-")) {
 				if (enPassantInfo.length() != 2 || !isValidEnPassantSquare(enPassantInfo)) {
@@ -123,7 +151,7 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 		return ((file >= 'a' && file <= 'h') && ((rank == '3') || (rank == '6')));
 	}
 
-	public void setHalfMoveClock(String halfMoveClockStr) {
+	private void setHalfMoveClock(String halfMoveClockStr) {
 		try {
 			int halfMoveClockValue = Integer.parseInt(halfMoveClockStr);
 			if (halfMoveClockValue < MIN_HALF_MOVE_CLOCK) {
@@ -142,7 +170,7 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 		}
 	}
 
-	public void setFullMoveNumber(String fullMoveNumberStr) {
+	private void setFullMoveNumber(String fullMoveNumberStr) {
 		try {
 			int fullMoveNumberValue = Integer.parseInt(fullMoveNumberStr);
 			if (fullMoveNumberValue < MIN_FULL_MOVE_CLOCK) {
@@ -153,26 +181,6 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 			fullMoveNumber = fullMoveNumberValue;
 		} catch (NumberFormatException e) {
 			throw new IllegalArgumentException("Invalid full-move number");
-		}
-	}
-
-	public void incrementFullMoveNumber() {
-		setFullMoveNumber(String.valueOf(getFullMoveNumber() + 1));
-	}
-
-	public void incrementHalfMoveClock() {
-		setHalfMoveClock(String.valueOf(getHalfMoveClock() + 1));
-	}
-
-	public void resetHalfMoveClock() {
-		setHalfMoveClock("0");
-	}
-
-	public void switchActiveColor() {
-		char color = getActiveColor();
-		switch (color) {
-			case 'w' -> setActiveColor("b");
-			case 'b' -> setActiveColor("w");
 		}
 	}
 
