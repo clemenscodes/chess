@@ -54,9 +54,12 @@ public interface IBoard {
 
 	IBitboard[] getAllPieces();
 
+	IBitboard getOpponentPieces();
+
 	Pieces getPieceByIndex(int index);
 
 	IPiece getPiece(Pieces kind);
 
+	void capturePiece(int index);
 	void setPieces();
 }

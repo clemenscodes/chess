@@ -18,6 +18,7 @@ public interface IForsythEdwardsNotation {
 	void incrementHalfMoveClock();
 
 	void resetHalfMoveClock();
+	void switchActiveColor();
 
 	void parse(String fen);
 }

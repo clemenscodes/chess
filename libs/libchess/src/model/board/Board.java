@@ -177,6 +177,15 @@ public class Board implements IBoard, Serializable {
 		return allPieces;
 	}
 
+	public IBitboard getOpponentPieces() {
+		char color = getFen().getActiveColor();
+		return switch (color) {
+			case 'w' -> getBlackPieces();
+			case 'b' -> getWhitePieces();
+			default -> throw new IllegalStateException("Unexpected value: " + color);
+		};
+	}
+
 	public Pieces getPieceByIndex(int index) {
 		IBitboard[] allPieces = getAllPieces();
 		for (int i = 0; i < allPieces.length; i++) {
@@ -219,6 +228,11 @@ public class Board implements IBoard, Serializable {
 		}
 		updateOccupiedSquares();
 		updateEmptySquares();
+	}
+
+	public void capturePiece(int index) {
+		Pieces capturedPiece = getPieceByIndex(index);
+		getPiece(capturedPiece).getBitboard().toggleBits(Bitboard.getSingleBit(index));
 	}
 
 	private void setFen(IForsythEdwardsNotation fen) {

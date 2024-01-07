@@ -12,7 +12,9 @@ public abstract class Move implements IMove, Serializable {
 	public Move(Square source, Square destination, IBoard board) {
 		setSource(source);
 		setDestination(destination);
-		board.getFen().incrementFullMoveNumber();
+		var fen = board.getFen();
+		fen.incrementFullMoveNumber();
+		fen.switchActiveColor();
 	}
 
 	public Square getSource() {

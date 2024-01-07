@@ -168,6 +168,14 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 		setHalfMoveClock("0");
 	}
 
+	public void switchActiveColor() {
+		char color = getActiveColor();
+		switch (color) {
+			case 'w' -> setActiveColor("b");
+			case 'b' -> setActiveColor("w");
+		}
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder stringBuilder = new StringBuilder();

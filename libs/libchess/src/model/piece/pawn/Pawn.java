@@ -9,6 +9,14 @@ import model.board.Square;
 import model.move.IMove;
 import model.move.Moves;
 import model.move.irreversible.capturing.CaptureMove;
+import model.move.irreversible.pawn.promotion.BishopPromotionMove;
+import model.move.irreversible.pawn.promotion.KnightPromotionMove;
+import model.move.irreversible.pawn.promotion.QueenPromotionMove;
+import model.move.irreversible.pawn.promotion.RookPromotionMove;
+import model.move.irreversible.pawn.promotion.capturing.BishopPromotionCaptureMove;
+import model.move.irreversible.pawn.promotion.capturing.KnightPromotionCaptureMove;
+import model.move.irreversible.pawn.promotion.capturing.QueenPromotionCaptureMove;
+import model.move.irreversible.pawn.promotion.capturing.RookPromotionCaptureMove;
 import model.move.reversible.QuietMove;
 import model.piece.MovableWithReader;
 import model.piece.Piece;
@@ -39,53 +47,27 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 		if (isInvalidMove(source, destination, board)) {
 			throw new Error("Invalid move");
 		}
-		IBitboard sourceBit = Bitboard.getSingleBit(source);
 		IBitboard destinationBit = Bitboard.getSingleBit(destination);
 		IBitboard promotionMask = this instanceof WhitePawn ? Board.eighthRank : Board.firstRank;
-		Pieces capturedPiece = this instanceof WhitePawn ? Pieces.BlackPawn : Pieces.WhitePawn;
-		boolean promotes = Moves.isPromotion(destinationBit, promotionMask);
-		boolean captures = Moves.isCapture(destinationBit, getOpponentPieces(board));
-		if (promotes) {
-			return promotePawn(board, sourceBit, destinationBit, reader);
+		if (Moves.isPromotion(destinationBit, promotionMask)) {
+			return promotePawn(source, destination, board, reader);
 		}
-		if (captures) {
+		if (Moves.isCapture(destinationBit, board.getOpponentPieces())) {
 			return new CaptureMove(
 				Square.getSquare(source),
 				Square.getSquare(destination),
 				board,
-				this,
-				capturedPiece
+				this
 			);
 		}
 		return new QuietMove(Square.getSquare(source), Square.getSquare(destination), board, this);
 	}
 
-	private IMove promotePawn(
-		IBoard board,
-		IBitboard sourceBit,
-		IBitboard destinationBit,
-		IReader reader
-	) {
-		System.out.println(
-			"Pawn promotion! Select the piece you want: Q (Queen), R (Rook), N (Knight), B (Bishop)"
-		);
-		Pieces piece = Pieces.getSelectedPiece(getPromotionPieces(), getSelection(reader));
-
-		board.getPiece(piece).getBitboard().merge(destinationBit);
-		getBitboard().toggleBits(sourceBit);
-		var fen = board.getFen();
-		fen.incrementFullMoveNumber();
-		fen.resetHalfMoveClock();
-	}
-
-	private IMove makePromotionCapture() {}
-
 	public IBitboard getAttacks(IBitboard piece, IBoard board) {
 		IBitboard maskedWestAttacks = getWestAttacks(piece);
 		IBitboard maskedEastAttacks = getEastAttacks(piece);
 		IBitboard attacks = Bitboard.merge(maskedWestAttacks, maskedEastAttacks);
-		IBitboard opponentPieces = getOpponentPieces(board);
-		return Bitboard.intersect(attacks, opponentPieces);
+		return Bitboard.intersect(attacks, board.getOpponentPieces());
 	}
 
 	private IBitboard getWestAttacks(IBitboard pawns) {
@@ -108,29 +90,10 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 		return Bitboard.intersect(eastAttack, eastAttackMask);
 	}
 
-	private String getSelection(IReader reader) {
-		String userInput = reader.readLine();
-		while (!userInput.matches("[QRNB]")) {
-			System.err.println("Invalid selection");
-			userInput = reader.readLine();
-		}
-		return userInput;
-	}
-
-	private Pieces[] getPromotionPieces() {
-		return this instanceof WhitePawn
-			? Pieces.getWhitePromotionPieces()
-			: Pieces.getBlackPromotionPieces();
-	}
-
 	private IBitboard getMovablePawns(IBoard board) {
 		IBitboard pushablePawns = getPushablePawns(board.getEmptySquares());
 		IBitboard attackingPawns = getAttackingPawns(board);
 		return Bitboard.merge(pushablePawns, attackingPawns);
-	}
-
-	private IBitboard getOpponentPieces(IBoard board) {
-		return this instanceof WhitePawn ? board.getBlackPieces() : board.getWhitePieces();
 	}
 
 	private IBitboard getAttackingPawns(IBoard board) {
@@ -192,5 +155,106 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 			: Bitboard.shiftNorth(Bitboard.intersect(emptySquares, Board.fifthRank));
 		IBitboard emptySkippedRank = Bitboard.intersect(skippedRank, emptySquares);
 		return getSinglePushablePawns(emptySkippedRank);
+	}
+
+	private String getSelection(IReader reader) {
+		String userInput = reader.readLine();
+		while (!userInput.matches("[QRNB]")) {
+			System.err.println("Invalid selection");
+			userInput = reader.readLine();
+		}
+		return userInput;
+	}
+
+	private Pieces[] getPromotionPieces() {
+		return this instanceof WhitePawn
+			? Pieces.getWhitePromotionPieces()
+			: Pieces.getBlackPromotionPieces();
+	}
+
+	private IMove promotePawn(int source, int destination, IBoard board, IReader reader) {
+		System.out.println(
+			"Pawn promotion! Select the piece you want: Q (Queen), R (Rook), N (Knight), B (Bishop)"
+		);
+		Pieces piece = Pieces.getSelectedPiece(getPromotionPieces(), getSelection(reader));
+		return Moves.isCapture(Bitboard.getSingleBit(destination), board.getOpponentPieces())
+			? makePromotionCapture(source, destination, piece, board)
+			: makePromotion(source, destination, piece, board);
+	}
+
+	private IMove makePromotion(int source, int destination, Pieces piece, IBoard board) {
+		Pieces[] pieces = getPromotionPieces();
+		if (piece == pieces[0]) {
+			return new QueenPromotionMove(
+				Square.getSquare(source),
+				Square.getSquare(destination),
+				board,
+				getBitboard(),
+				piece
+			);
+		}
+		if (piece == pieces[1]) {
+			return new RookPromotionMove(
+				Square.getSquare(source),
+				Square.getSquare(destination),
+				board,
+				getBitboard(),
+				piece
+			);
+		}
+		if (piece == pieces[2]) {
+			return new KnightPromotionMove(
+				Square.getSquare(source),
+				Square.getSquare(destination),
+				board,
+				getBitboard(),
+				piece
+			);
+		}
+		return new BishopPromotionMove(
+			Square.getSquare(source),
+			Square.getSquare(destination),
+			board,
+			getBitboard(),
+			piece
+		);
+	}
+
+	private IMove makePromotionCapture(int source, int destination, Pieces piece, IBoard board) {
+		Pieces[] pieces = getPromotionPieces();
+		if (piece == pieces[0]) {
+			return new QueenPromotionCaptureMove(
+				Square.getSquare(source),
+				Square.getSquare(destination),
+				board,
+				getBitboard(),
+				piece
+			);
+		}
+		if (piece == pieces[1]) {
+			return new RookPromotionCaptureMove(
+				Square.getSquare(source),
+				Square.getSquare(destination),
+				board,
+				getBitboard(),
+				piece
+			);
+		}
+		if (piece == pieces[2]) {
+			return new KnightPromotionCaptureMove(
+				Square.getSquare(source),
+				Square.getSquare(destination),
+				board,
+				getBitboard(),
+				piece
+			);
+		}
+		return new BishopPromotionCaptureMove(
+			Square.getSquare(source),
+			Square.getSquare(destination),
+			board,
+			getBitboard(),
+			piece
+		);
 	}
 }
