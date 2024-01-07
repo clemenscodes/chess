@@ -6,11 +6,11 @@ import model.bits.IBitboard;
 import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
+import model.move.IMove;
 import model.move.Moves;
 import model.piece.MovableWithReader;
 import model.piece.Piece;
 import model.piece.Pieces;
-import model.piece.pawn.extension.WhitePawn;
 import model.reader.IReader;
 
 public abstract class Pawn extends Piece implements MovableWithReader, Serializable {
@@ -33,39 +33,50 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 		return false;
 	}
 
-	public Moves move(int source, int destination, IBoard board, IReader reader) {
+	public IMove move(int source, int destination, IBoard board, IReader reader) {
 		if (isInvalidMove(source, destination, board)) {
 			throw new Error("Invalid move");
 		}
+		IBitboard sourceBit = Bitboard.getSingleBit(source);
 		IBitboard destinationBit = Bitboard.getSingleBit(destination);
 		IBitboard promotionMask = this instanceof WhitePawn ? Board.eighthRank : Board.firstRank;
-		if (Bitboard.overlap(destinationBit, promotionMask)) {
-			return promotePawn(board, Bitboard.getSingleBit(source), destinationBit, reader);
+		Pieces capturedPiece = this instanceof WhitePawn ? Pieces.BlackPawn : Pieces.WhitePawn;
+		boolean promotes = Moves.isPromotion(destinationBit, promotionMask);
+		boolean captures = Moves.isCapture(destinationBit, getOpponentPieces(board));
+		if (promotes) {
+			return promotePawn(board, sourceBit, destinationBit, reader);
 		}
-		if (Bitboard.overlap(destinationBit, getOpponentPieces(board))) {
-			return captureMove(source, destination, board);
+		if (captures) {
+			return new CaptureMove(
+				Square.getSquare(source),
+				Square.getSquare(destination),
+				board,
+				this,
+				capturedPiece
+			);
 		}
-		return quietMove(source, destination, board);
+		return new QuietMove(Square.getSquare(source), Square.getSquare(destination), board, this);
 	}
 
-	private Moves captureMove(int source, int destination, IBoard board) {
+	private IMove promotePawn(
+		IBoard board,
+		IBitboard sourceBit,
+		IBitboard destinationBit,
+		IReader reader
+	) {
+		System.out.println(
+			"Pawn promotion! Select the piece you want: Q (Queen), R (Rook), N (Knight), B (Bishop)"
+		);
+		Pieces piece = Pieces.getSelectedPiece(getPromotionPieces(), getSelection(reader));
+
+		board.getPiece(piece).getBitboard().merge(destinationBit);
+		getBitboard().toggleBits(sourceBit);
 		var fen = board.getFen();
-		fen.resetHalfMoveClock();
 		fen.incrementFullMoveNumber();
-		Pieces piece = this instanceof WhitePawn ? Pieces.BlackPawn : Pieces.WhitePawn;
-		board.getPiece(piece).getBitboard().toggleBits(Bitboard.getSingleBit(destination));
-		getBitboard().toggleBits(getMoveMask(source, destination));
-		return Moves.Capture;
+		fen.resetHalfMoveClock();
 	}
 
-	private Moves quietMove(int source, int destination, IBoard board) {
-		System.out.println("Quiet!");
-		var fen = board.getFen();
-		fen.resetHalfMoveClock();
-		fen.incrementFullMoveNumber();
-		getBitboard().toggleBits(getMoveMask(source, destination));
-		return Moves.Quiet;
-	}
+	private IMove makePromotionCapture() {}
 
 	public IBitboard getAttacks(IBitboard piece, IBoard board) {
 		IBitboard maskedWestAttacks = getWestAttacks(piece);
@@ -95,24 +106,6 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 		return Bitboard.intersect(eastAttack, eastAttackMask);
 	}
 
-	private Moves promotePawn(
-		IBoard board,
-		IBitboard sourceBit,
-		IBitboard destinationBit,
-		IReader reader
-	) {
-		System.out.println(
-			"Pawn promotion! Select the piece you want: Q (Queen), R (Rook), N (Knight), B (Bishop)"
-		);
-		Pieces piece = Pieces.getSelectedPiece(getPromotionPieces(), getSelection(reader));
-		board.getPiece(piece).getBitboard().merge(destinationBit);
-		getBitboard().toggleBits(sourceBit);
-		var fen = board.getFen();
-		fen.incrementFullMoveNumber();
-		fen.resetHalfMoveClock();
-		return Moves.getPromotionMove(piece);
-	}
-
 	private String getSelection(IReader reader) {
 		String userInput = reader.readLine();
 		while (!userInput.matches("[QRNB]")) {
@@ -123,7 +116,7 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 	}
 
 	private Pieces[] getPromotionPieces() {
-		return this instanceof model.piece.pawn.extension.WhitePawn
+		return this instanceof WhitePawn
 			? Pieces.getWhitePromotionPieces()
 			: Pieces.getBlackPromotionPieces();
 	}

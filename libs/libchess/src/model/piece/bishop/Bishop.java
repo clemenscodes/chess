@@ -4,7 +4,8 @@ import java.io.Serializable;
 import model.bits.Bitboard;
 import model.bits.IBitboard;
 import model.board.IBoard;
-import model.move.Moves;
+import model.board.Square;
+import model.move.Move;
 import model.piece.Movable;
 import model.piece.Piece;
 import model.piece.Pieces;
@@ -19,11 +20,11 @@ public abstract class Bishop extends Piece implements Movable, Serializable {
 		return false;
 	}
 
-	public Moves move(int source, int destination, IBoard board) {
+	public Move move(int source, int destination, IBoard board) {
 		if (isInvalidMove(source, destination, board)) {
 			throw new Error("Invalid move");
 		}
-		return Moves.Quiet;
+		return new QuietMove(Square.getSquare(source), Square.getSquare(destination), board, this);
 	}
 
 	public IBitboard getAttacks(IBitboard piece, IBoard board) {

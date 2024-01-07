@@ -1,9 +1,12 @@
 package model.move;
 
+import model.bits.Bitboard;
+import model.bits.IBitboard;
 import model.piece.Pieces;
 
 public enum Moves {
 	Quiet,
+	SinglePawnPush,
 	DoublePawnPush,
 	KingCastle,
 	QueenCastle,
@@ -26,5 +29,13 @@ public enum Moves {
 			case BlackQueen, WhiteQueen -> Moves.QueenPromotion;
 			default -> throw new Error("Invalid promotion piece");
 		};
+	}
+
+	public static boolean isPromotion(IBitboard destination, IBitboard promotionMask) {
+		return Bitboard.overlap(destination, promotionMask);
+	}
+
+	public static boolean isCapture(IBitboard destination, IBitboard opponent) {
+		return Bitboard.overlap(destination, opponent);
 	}
 }
