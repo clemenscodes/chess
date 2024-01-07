@@ -44,11 +44,11 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 	}
 
 	public IBitboard getAttacks(IBitboard piece, IBoard board) {
+		IBitboard enPassantMask = board.getFen().getEnPassantMask();
 		IBitboard maskedWestAttacks = getWestAttacks(piece);
 		IBitboard maskedEastAttacks = getEastAttacks(piece);
 		IBitboard regularAttacks = Bitboard.merge(maskedWestAttacks, maskedEastAttacks);
 		IBitboard directAttacks = Bitboard.intersect(regularAttacks, board.getOpponentPieces());
-		IBitboard enPassantMask = board.getFen().getEnPassantMask();
 		if (Bitboard.overlap(regularAttacks, enPassantMask)) {
 			directAttacks.merge(enPassantMask);
 		}

@@ -43,7 +43,7 @@ public class MoveList implements IMoveList, Serializable {
 
 	private void setPlayedMoves(int playedMoves) {
 		if (playedMoves > MOVE_LIMIT) {
-			throw new Error("Can not set played moves higher than the allowed maximum");
+			throw new Error("Can not set played moves higher than the most possible moves");
 		}
 		this.playedMoves = playedMoves;
 	}

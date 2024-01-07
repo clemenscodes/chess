@@ -19,7 +19,7 @@ public abstract class Move implements IMove, Serializable {
 		}
 		var fen = board.getFen();
 		if (!(this instanceof DoublePawnPushMove) && !Objects.equals(fen.getEnPassant(), "-")) {
-			board.getFen().unsetEnPassantTargetSquare();
+			fen.unsetEnPassantTargetSquare();
 		}
 		setSource(source);
 		setDestination(destination);
