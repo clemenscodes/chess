@@ -6,6 +6,7 @@ import model.bits.IBitboard;
 import model.board.IBoard;
 import model.board.Square;
 import model.move.IMove;
+import model.move.reversible.QuietMove;
 import model.piece.Movable;
 import model.piece.Piece;
 import model.piece.Pieces;

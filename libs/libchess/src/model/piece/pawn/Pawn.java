@@ -8,6 +8,8 @@ import model.board.IBoard;
 import model.board.Square;
 import model.move.IMove;
 import model.move.Moves;
+import model.move.irreversible.capturing.CaptureMove;
+import model.move.reversible.QuietMove;
 import model.piece.MovableWithReader;
 import model.piece.Piece;
 import model.piece.Pieces;
