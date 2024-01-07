@@ -33,15 +33,10 @@ public abstract class Piece implements IPiece, Serializable {
 	}
 
 	protected boolean isInvalidMove(int source, int destination, IBoard board) {
-		if (!Bitboard.checkBit(getMovablePieces(board), source)) {
-			System.err.println("Piece on " + Square.getSquare(source) + " can not move");
-			return true;
-		}
-		if (!Bitboard.checkBit(getTargets(Bitboard.getSingleBit(source), board), destination)) {
-			System.err.println("Can not move piece to " + Square.getSquare(destination));
-			return true;
-		}
-		return false;
+		return !(
+			Bitboard.checkBit(getMovablePieces(board), source) &&
+			Bitboard.checkBit(getTargets(Bitboard.getSingleBit(source), board), destination)
+		);
 	}
 
 	private void setVariant(Pieces variant) {

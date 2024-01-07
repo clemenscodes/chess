@@ -8,21 +8,21 @@ import model.reader.IReader;
 
 public class MoveList implements IMoveList, Serializable {
 
-	public static final int MOVE_LIMIT = 17697;
-	private int playedMoves;
+	private static final int MOVE_LIMIT = 17697;
 	private final IMove[] moves;
+	private int playedMoves;
 
 	public MoveList() {
 		playedMoves = 0;
 		moves = new Move[MOVE_LIMIT];
 	}
 
-	public int getPlayedMoves() {
-		return playedMoves;
-	}
-
 	public IMove[] getMoves() {
 		return moves;
+	}
+
+	public int getPlayedMoves() {
+		return playedMoves;
 	}
 
 	public void makeMove(Square source, Square destination, IBoard board, IReader reader) {
