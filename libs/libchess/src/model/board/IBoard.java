@@ -55,6 +55,7 @@ public interface IBoard {
 	IBitboard[] getAllPieces();
 
 	IBitboard getOpponentPieces();
+	IBitboard getFriendlyPieces();
 
 	Pieces getPieceByIndex(int index);
 

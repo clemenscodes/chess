@@ -27,7 +27,7 @@ public abstract class Knight extends Piece implements Movable, Serializable {
 	}
 
 	public IBitboard getAttacks(IBitboard piece, IBoard board) {
-		return Bitboard.mergeMany(
+		IBitboard directions = Bitboard.mergeMany(
 			new IBitboard[] {
 				Bitboard.shiftEastEastNorth(piece),
 				Bitboard.shiftEastEastSouth(piece),
@@ -39,6 +39,8 @@ public abstract class Knight extends Piece implements Movable, Serializable {
 				Bitboard.shiftSouthSouthWest(piece),
 			}
 		);
+		directions.toggleBits(board.getFriendlyPieces());
+		return directions;
 	}
 
 	public IMove move(int source, int destination, IBoard board) {
