@@ -32,8 +32,7 @@ public abstract class Knight extends Piece implements Movable, Serializable {
 				Bitboard.shiftSouthSouthWest(piece),
 			}
 		);
-		directions.intersect(Bitboard.negate(board.getFriendlyPieces()));
-		return directions;
+		return removeFriendlyPieces(directions, board);
 	}
 
 	public IMove move(int source, int destination, IBoard board) {

@@ -35,6 +35,10 @@ public abstract class Piece implements IPiece, Serializable {
 		return getAttacks(getBitboard(), board);
 	}
 
+	public IBitboard removeFriendlyPieces(IBitboard piece, IBoard board) {
+		return Bitboard.intersect(piece, Bitboard.negate(board.getFriendlyPieces()));
+	}
+
 	public boolean isInvalidMove(int source, int destination, IBoard board) {
 		return !(
 			Bitboard.checkBit(getBitboard(), source) &&

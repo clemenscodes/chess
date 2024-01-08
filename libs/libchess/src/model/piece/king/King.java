@@ -18,7 +18,17 @@ public abstract class King extends Piece implements Movable, Serializable {
 	}
 
 	public IBitboard getAttacks(IBitboard piece, IBoard board) {
-		return new Bitboard();
+		IBitboard eastAttack = Bitboard.shiftEast(piece);
+		IBitboard westAttack = Bitboard.shiftWest(piece);
+		IBitboard horizontalAttack = Bitboard.mergeMany(
+			new IBitboard[] { piece, eastAttack, westAttack }
+		);
+		IBitboard northAttack = Bitboard.shiftNorth(horizontalAttack);
+		IBitboard southAttack = Bitboard.shiftSouth(horizontalAttack);
+		IBitboard allAttacks = Bitboard.mergeMany(
+			new IBitboard[] { horizontalAttack, northAttack, southAttack }
+		);
+		return removeFriendlyPieces(allAttacks, board);
 	}
 
 	public IMove move(int source, int destination, IBoard board) {
