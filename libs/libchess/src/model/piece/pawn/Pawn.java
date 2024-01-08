@@ -24,6 +24,7 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 		);
 	}
 
+	@Override
 	public IMove move(int source, int destination, IBoard board, IReader reader) {
 		if (isInvalidMove(source, destination, board)) {
 			throw new Error("Invalid move");
