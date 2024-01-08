@@ -12,6 +12,8 @@ public interface IPiece {
 
 	IBitboard getAttacks(IBitboard piece, IBoard board);
 
+	IBitboard getAllAttacks(IBoard board);
+
 	IBitboard getMoveMask(int source, int destination);
 
 	boolean isInvalidMove(int source, int destination, IBoard board);

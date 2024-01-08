@@ -16,6 +16,7 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 		super(variant);
 	}
 
+	@Override
 	public boolean isInvalidMove(int source, int destination, IBoard board) {
 		return !(
 			Bitboard.checkBit(getMovablePieces(board), source) &&
