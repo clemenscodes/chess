@@ -69,6 +69,29 @@ public abstract class Piece implements IPiece, Serializable {
 		);
 	}
 
+	protected IBitboard getDiagonalRays(IBitboard piece, IBoard board) {
+		return Bitboard.mergeMany(
+			new IBitboard[] {
+				getNorthEastRay(piece, board),
+				getNorthWestRay(piece, board),
+				getSouthWestRay(piece, board),
+				getSouthEastRay(piece, board),
+			}
+		);
+	}
+
+	protected IBitboard getHorizontalRays(IBitboard piece, IBoard board) {
+		return Bitboard.mergeMany(
+			new IBitboard[] { getEastRay(piece, board), getWestRay(piece, board) }
+		);
+	}
+
+	protected IBitboard getVerticalRays(IBitboard piece, IBoard board) {
+		return Bitboard.mergeMany(
+			new IBitboard[] { getNorthRay(piece, board), getSouthRay(piece, board) }
+		);
+	}
+
 	protected IBitboard getNorthWestRay(IBitboard piece, IBoard board) {
 		IBitboard northWestRay = new Bitboard();
 		IBitboard northWestShift = piece.copy();
