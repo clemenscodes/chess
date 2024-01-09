@@ -8,11 +8,9 @@ public interface IPiece {
 
 	IBitboard getBitboard();
 
-	void setBitboard(IBitboard bitboard);
+	IBitboard getMoveMask(int source, int destination);
 
 	IBitboard getAttacks(IBitboard piece, IBoard board);
 
 	IBitboard getAllAttacks(IBoard board);
-
-	IBitboard getMoveMask(int source, int destination);
 }

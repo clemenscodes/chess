@@ -32,6 +32,10 @@ public class Bitboard implements IBitboard, Serializable {
 		return merge(board, getSingleBit(index));
 	}
 
+	public static IBitboard subtract(IBitboard a, IBitboard b) {
+		return new Bitboard(a.getBits() - b.getBits());
+	}
+
 	public static IBitboard toggleBit(IBitboard board, int index) {
 		return toggle(board, getSingleBit(index));
 	}
@@ -173,6 +177,10 @@ public class Bitboard implements IBitboard, Serializable {
 
 	public void setBits(long bits) {
 		this.bits = bits;
+	}
+
+	public void subtract(IBitboard board) {
+		setBits(subtract(this, board).getBits());
 	}
 
 	public boolean overlap(IBitboard board) {

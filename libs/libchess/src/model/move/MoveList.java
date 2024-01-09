@@ -26,6 +26,9 @@ public class MoveList implements IMoveList, Serializable {
 	}
 
 	public void makeMove(Square source, Square destination, IBoard board, IReader reader) {
+		if (source == destination) {
+			throw new Error("Source and destination must be different");
+		}
 		if (getPlayedMoves() >= MOVE_LIMIT) {
 			throw new Error("Making another move is impossible");
 		}

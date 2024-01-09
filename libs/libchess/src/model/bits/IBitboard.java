@@ -5,6 +5,8 @@ public interface IBitboard {
 
 	void setBits(long bits);
 
+	void subtract(IBitboard board);
+
 	boolean overlap(IBitboard board);
 
 	void merge(IBitboard board);

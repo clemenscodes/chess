@@ -15,13 +15,13 @@ public abstract class Bishop extends Piece implements Movable, Serializable {
 	}
 
 	public IBitboard getAttacks(IBitboard piece, IBoard board) {
-		IBitboard occupiedSquares = board.getOccupiedSquares();
-		IBitboard northEastRay = getNorthEastRay(piece, occupiedSquares);
-		IBitboard northWestRay = getNorthWestRay(piece, occupiedSquares);
-		IBitboard southWestRay = getSouthWestRay(piece, occupiedSquares);
-		IBitboard southEastRay = getSouthEastRay(piece, occupiedSquares);
 		return Bitboard.mergeMany(
-			new IBitboard[] { northEastRay, northWestRay, southWestRay, southEastRay }
+			new IBitboard[] {
+				getNorthEastRay(piece, board),
+				getNorthWestRay(piece, board),
+				getSouthWestRay(piece, board),
+				getSouthEastRay(piece, board),
+			}
 		);
 	}
 }
