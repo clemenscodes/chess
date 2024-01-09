@@ -21,6 +21,14 @@ public abstract class Move implements IMove, Serializable {
 		return Bitboard.overlap(destination, board.getFen().getEnPassantMask());
 	}
 
+	public static boolean isKingCastle(IBitboard destination, IBoard board) {
+		return false;
+	}
+
+	public static boolean isQueenCastle(IBitboard destination, IBoard board) {
+		return false;
+	}
+
 	private Square source;
 	private Square destination;
 
