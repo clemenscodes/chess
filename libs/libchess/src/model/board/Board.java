@@ -221,6 +221,15 @@ public class Board implements IBoard, Serializable {
 		};
 	}
 
+	public IBitboard getOpponentKing() {
+		char color = getFen().getActiveColor();
+		return switch (color) {
+			case 'w' -> getBlackKing().getBitboard();
+			case 'b' -> getWhiteKing().getBitboard();
+			default -> throw new IllegalStateException("Unexpected value: " + color);
+		};
+	}
+
 	public Pieces getPieceByIndex(int index) {
 		IBitboard[] allPieces = getAllPieces();
 		for (int i = 0; i < allPieces.length; i++) {

@@ -139,13 +139,11 @@ public enum Square implements Serializable {
 	};
 
 	private static final Map<Square, Integer> SQUARE_TO_INDEX = new HashMap<>();
-	private static final Map<Integer, Integer> INDEX_TO_INDEX = new HashMap<>();
 
 	static {
 		for (int i = 0; i < SQUARES.length; i++) {
 			SQUARE_TO_INDEX.put(getSquare(i), i);
 		}
-		INDEX_TO_INDEX.get(99);
 	}
 
 	public static Square getSquare(int index) {

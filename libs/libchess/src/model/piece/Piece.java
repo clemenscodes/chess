@@ -87,11 +87,11 @@ public abstract class Piece implements IPiece, Serializable {
 
 	protected boolean kingSafe(int source, int destination, IBoard board) {
 		IBoard simulatedBoard = simulateMove(source, destination, board);
-		boolean kingSafety = !Bitboard.overlap(
+		boolean kingAttacked = Bitboard.overlap(
 			board.getOwnKing(),
 			simulatedBoard.getAllFriendlyAttacks()
 		);
-		if (!kingSafety) {
+		if (kingAttacked) {
 			throw new Error("Piece is pinned to the king");
 		}
 		return true;

@@ -65,6 +65,8 @@ public interface IBoard {
 
 	IBitboard getOwnKing();
 
+	IBitboard getOpponentKing();
+
 	Pieces getPieceByIndex(int index);
 
 	IPiece getPiece(Pieces kind);

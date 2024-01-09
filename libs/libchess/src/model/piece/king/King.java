@@ -1,5 +1,6 @@
 package model.piece.king;
 
+import java.io.IOException;
 import java.io.Serializable;
 import model.bits.Bitboard;
 import model.bits.IBitboard;
@@ -24,6 +25,19 @@ public abstract class King extends Piece implements Movable, Serializable {
 		IBitboard[] all = new IBitboard[] { horizontalAttack, northAttack, southAttack };
 		IBitboard allAttacks = Bitboard.mergeMany(all);
 		return removeFriendlyPieces(allAttacks, board);
+	}
+
+	@Override
+	protected boolean kingSafe(int source, int destination, IBoard board) {
+		IBoard simulatedBoard = simulateMove(source, destination, board);
+		boolean kingAttacked = Bitboard.overlap(
+			simulatedBoard.getOpponentKing(),
+			simulatedBoard.getAllFriendlyAttacks()
+		);
+		if (kingAttacked) {
+			throw new Error("King can not move into an attack");
+		}
+		return true;
 	}
 
 	@Override
