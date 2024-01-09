@@ -310,4 +310,11 @@ public class BitboardTest {
 		assertEquals(original.getBits(), copy.getBits());
 		assertNotSame(original, copy);
 	}
+
+	@Test
+	void shouldSplit() {
+		IBitboard original = new Bitboard(0x0000000000000001L);
+		var split = Bitboard.split(original);
+		assertEquals(original.getBits(), split.getFirst().getBits());
+	}
 }

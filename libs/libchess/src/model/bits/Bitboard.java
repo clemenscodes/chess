@@ -1,10 +1,13 @@
 package model.bits;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import model.board.Board;
 import model.writer.Writer;
 
 public class Bitboard implements IBitboard, Serializable {
+
+	private static final int BITS = 64;
 
 	private static final IBitboard[] singleBits = new IBitboard[Board.SIZE * Board.SIZE];
 
@@ -30,10 +33,6 @@ public class Bitboard implements IBitboard, Serializable {
 
 	public static IBitboard setBit(IBitboard board, int index) {
 		return merge(board, getSingleBit(index));
-	}
-
-	public static IBitboard subtract(IBitboard a, IBitboard b) {
-		return new Bitboard(a.getBits() - b.getBits());
 	}
 
 	public static IBitboard toggleBit(IBitboard board, int index) {
@@ -157,6 +156,17 @@ public class Bitboard implements IBitboard, Serializable {
 		);
 	}
 
+	public static ArrayList<IBitboard> split(IBitboard board) {
+		ArrayList<IBitboard> boards = new ArrayList<>();
+		for (int i = 0; i < BITS; i++) {
+			IBitboard singleBit = getSingleBit(i);
+			if (Bitboard.overlap(board, singleBit)) {
+				boards.add(singleBit);
+			}
+		}
+		return boards;
+	}
+
 	private static IBitboard leftShiftMask(int bits) {
 		return new Bitboard(1L << bits);
 	}
@@ -177,10 +187,6 @@ public class Bitboard implements IBitboard, Serializable {
 
 	public void setBits(long bits) {
 		this.bits = bits;
-	}
-
-	public void subtract(IBitboard board) {
-		setBits(subtract(this, board).getBits());
 	}
 
 	public boolean overlap(IBitboard board) {

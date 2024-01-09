@@ -55,7 +55,16 @@ public abstract class Piece implements IPiece, Serializable {
 	}
 
 	public IBitboard getAllAttacks(IBoard board) {
-		return getAttacks(getBitboard(), board);
+		return getAllSlidingAttacks(board);
+	}
+
+	protected IBitboard getAllSlidingAttacks(IBoard board) {
+		return Bitboard
+			.split(getBitboard())
+			.stream()
+			.map(slider -> getAttacks(slider, board))
+			.reduce(Bitboard::merge)
+			.orElse(new Bitboard());
 	}
 
 	protected IBitboard removeFriendlyPieces(IBitboard piece, IBoard board) {
@@ -63,6 +72,7 @@ public abstract class Piece implements IPiece, Serializable {
 	}
 
 	protected boolean isInvalidMove(int source, int destination, IBoard board) {
+		System.out.println(board.getAllOpponentAttacks());
 		return !(
 			Bitboard.checkBit(getBitboard(), source) &&
 			Bitboard.checkBit(getAttacks(Bitboard.getSingleBit(source), board), destination)
@@ -92,7 +102,7 @@ public abstract class Piece implements IPiece, Serializable {
 		);
 	}
 
-	protected IBitboard getNorthWestRay(IBitboard piece, IBoard board) {
+	private IBitboard getNorthWestRay(IBitboard piece, IBoard board) {
 		IBitboard northWestRay = new Bitboard();
 		IBitboard northWestShift = piece.copy();
 		while (canSlideNorthWest(northWestShift, board)) {
@@ -106,7 +116,7 @@ public abstract class Piece implements IPiece, Serializable {
 		return northWestRay;
 	}
 
-	protected IBitboard getNorthRay(IBitboard piece, IBoard board) {
+	private IBitboard getNorthRay(IBitboard piece, IBoard board) {
 		IBitboard northRay = new Bitboard();
 		IBitboard northShift = piece.copy();
 		while (canSlideNorth(northShift, board)) {
@@ -120,7 +130,7 @@ public abstract class Piece implements IPiece, Serializable {
 		return northRay;
 	}
 
-	protected IBitboard getNorthEastRay(IBitboard piece, IBoard board) {
+	private IBitboard getNorthEastRay(IBitboard piece, IBoard board) {
 		IBitboard northEastRay = new Bitboard();
 		IBitboard northEastShift = piece.copy();
 		while (canSlideNorthEast(northEastShift, board)) {
@@ -134,7 +144,7 @@ public abstract class Piece implements IPiece, Serializable {
 		return northEastRay;
 	}
 
-	protected IBitboard getEastRay(IBitboard piece, IBoard board) {
+	private IBitboard getEastRay(IBitboard piece, IBoard board) {
 		IBitboard eastRay = new Bitboard();
 		IBitboard eastShift = piece.copy();
 		while (canSlideEast(eastShift, board)) {
@@ -148,7 +158,7 @@ public abstract class Piece implements IPiece, Serializable {
 		return eastRay;
 	}
 
-	protected IBitboard getSouthEastRay(IBitboard piece, IBoard board) {
+	private IBitboard getSouthEastRay(IBitboard piece, IBoard board) {
 		IBitboard southEastRay = new Bitboard();
 		IBitboard southEastShift = piece.copy();
 		while (canSlideSouthEast(southEastShift, board)) {
@@ -162,7 +172,7 @@ public abstract class Piece implements IPiece, Serializable {
 		return southEastRay;
 	}
 
-	protected IBitboard getSouthRay(IBitboard piece, IBoard board) {
+	private IBitboard getSouthRay(IBitboard piece, IBoard board) {
 		IBitboard southRay = new Bitboard();
 		IBitboard southShift = piece.copy();
 		while (canSlideSouth(southShift, board)) {
@@ -176,7 +186,7 @@ public abstract class Piece implements IPiece, Serializable {
 		return southRay;
 	}
 
-	protected IBitboard getSouthWestRay(IBitboard piece, IBoard board) {
+	private IBitboard getSouthWestRay(IBitboard piece, IBoard board) {
 		IBitboard southWestRay = new Bitboard();
 		IBitboard southWestShift = piece.copy();
 		while (canSlideSouthWest(southWestShift, board)) {
@@ -190,7 +200,7 @@ public abstract class Piece implements IPiece, Serializable {
 		return southWestRay;
 	}
 
-	protected IBitboard getWestRay(IBitboard piece, IBoard board) {
+	private IBitboard getWestRay(IBitboard piece, IBoard board) {
 		IBitboard westRay = new Bitboard();
 		IBitboard westShift = piece.copy();
 		while (canSlideWest(westShift, board)) {

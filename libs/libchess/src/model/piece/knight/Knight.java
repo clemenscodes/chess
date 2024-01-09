@@ -29,4 +29,9 @@ public abstract class Knight extends Piece implements Movable, Serializable {
 		);
 		return removeFriendlyPieces(directions, board);
 	}
+
+	@Override
+	public IBitboard getAllAttacks(IBoard board) {
+		return getAttacks(getBitboard(), board);
+	}
 }

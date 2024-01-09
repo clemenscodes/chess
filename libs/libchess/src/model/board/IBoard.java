@@ -58,6 +58,8 @@ public interface IBoard {
 
 	IBitboard getFriendlyPieces();
 
+	IBitboard getAllOpponentAttacks();
+
 	Pieces getPieceByIndex(int index);
 
 	IPiece getPiece(Pieces kind);
@@ -65,4 +67,6 @@ public interface IBoard {
 	void capturePiece(int index);
 
 	void setPieces();
+
+	boolean isSquareAttacked(Square square);
 }

@@ -1,6 +1,7 @@
 package model.board;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import model.bits.Bitboard;
 import model.bits.IBitboard;
 import model.fen.ForsythEdwardsNotation;
@@ -169,8 +170,8 @@ public class Board implements IBoard, Serializable {
 
 	public IBitboard[] getAllPieces() {
 		updateAllPieces();
-		IBitboard[] blackPieces = getAllBlackPieces();
-		IBitboard[] whitePieces = getAllWhitePieces();
+		IBitboard[] blackPieces = getAllBlackBitboards();
+		IBitboard[] whitePieces = getAllWhiteBitboards();
 		IBitboard[] allPieces = new IBitboard[blackPieces.length + whitePieces.length];
 		System.arraycopy(blackPieces, 0, allPieces, 0, blackPieces.length);
 		System.arraycopy(whitePieces, 0, allPieces, blackPieces.length, whitePieces.length);
@@ -193,6 +194,14 @@ public class Board implements IBoard, Serializable {
 			case 'b' -> getBlackPieces();
 			default -> throw new IllegalStateException("Unexpected value: " + color);
 		};
+	}
+
+	public IBitboard getAllOpponentAttacks() {
+		return Arrays
+			.stream(getAllOpponentPieces())
+			.map(piece -> piece.getAllAttacks(this))
+			.reduce(Bitboard::merge)
+			.orElse(new Bitboard());
 	}
 
 	public Pieces getPieceByIndex(int index) {
@@ -239,9 +248,15 @@ public class Board implements IBoard, Serializable {
 		updateEmptySquares();
 	}
 
+	public boolean isSquareAttacked(Square square) {
+		return Bitboard.overlap(
+			Bitboard.getSingleBit(Square.getIndex(square)),
+			getAllOpponentAttacks()
+		);
+	}
+
 	public void capturePiece(int index) {
-		Pieces capturedPiece = getPieceByIndex(index);
-		getPiece(capturedPiece).getBitboard().toggleBits(Bitboard.getSingleBit(index));
+		getPiece(getPieceByIndex(index)).getBitboard().toggleBits(Bitboard.getSingleBit(index));
 	}
 
 	private void setFen(IForsythEdwardsNotation fen) {
@@ -336,7 +351,7 @@ public class Board implements IBoard, Serializable {
 	}
 
 	private void updateWhitePieces() {
-		IBitboard[] pieces = getAllWhitePieces();
+		IBitboard[] pieces = getAllWhiteBitboards();
 		setWhitePieces(Bitboard.mergeMany(pieces));
 	}
 
@@ -345,30 +360,51 @@ public class Board implements IBoard, Serializable {
 		updateBlackPieces();
 	}
 
-	private IBitboard[] getAllWhitePieces() {
-		return new IBitboard[] {
-			getWhiteRook().getBitboard(),
-			getWhiteKnight().getBitboard(),
-			getWhiteBishop().getBitboard(),
-			getWhiteQueen().getBitboard(),
-			getWhiteKing().getBitboard(),
-			getWhitePawn().getBitboard(),
+	private IPiece[] getAllWhitePieces() {
+		return new IPiece[] {
+			getWhiteRook(),
+			getWhiteKnight(),
+			getWhiteBishop(),
+			getWhiteQueen(),
+			getWhiteKing(),
+			getWhitePawn(),
 		};
 	}
 
+	private IBitboard[] getAllWhiteBitboards() {
+		return getAllBitboards(getAllWhitePieces());
+	}
+
 	private void updateBlackPieces() {
-		IBitboard[] pieces = getAllBlackPieces();
+		IBitboard[] pieces = getAllBlackBitboards();
 		setBlackPieces(Bitboard.mergeMany(pieces));
 	}
 
-	private IBitboard[] getAllBlackPieces() {
-		return new IBitboard[] {
-			getBlackRook().getBitboard(),
-			getBlackKnight().getBitboard(),
-			getBlackBishop().getBitboard(),
-			getBlackQueen().getBitboard(),
-			getBlackKing().getBitboard(),
-			getBlackPawn().getBitboard(),
+	private IPiece[] getAllBlackPieces() {
+		return new IPiece[] {
+			getBlackRook(),
+			getBlackKnight(),
+			getBlackBishop(),
+			getBlackQueen(),
+			getBlackKing(),
+			getBlackPawn(),
+		};
+	}
+
+	private IBitboard[] getAllBitboards(IPiece[] pieces) {
+		return Arrays.stream(pieces).map(IPiece::getBitboard).toArray(IBitboard[]::new);
+	}
+
+	private IBitboard[] getAllBlackBitboards() {
+		return getAllBitboards(getAllBlackPieces());
+	}
+
+	private IPiece[] getAllOpponentPieces() {
+		char color = getFen().getActiveColor();
+		return switch (color) {
+			case 'w' -> getAllBlackPieces();
+			case 'b' -> getAllWhitePieces();
+			default -> throw new IllegalStateException("Unexpected value: " + color);
 		};
 	}
 

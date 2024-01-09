@@ -25,4 +25,9 @@ public abstract class King extends Piece implements Movable, Serializable {
 		IBitboard allAttacks = Bitboard.mergeMany(all);
 		return removeFriendlyPieces(allAttacks, board);
 	}
+
+	@Override
+	public IBitboard getAllAttacks(IBoard board) {
+		return getAttacks(getBitboard(), board);
+	}
 }

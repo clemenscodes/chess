@@ -18,6 +18,7 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 
 	@Override
 	public boolean isInvalidMove(int source, int destination, IBoard board) {
+		System.out.println(board.getAllOpponentAttacks());
 		return !(
 			Bitboard.checkBit(getMovablePieces(board), source) &&
 			Bitboard.checkBit(getTargets(Bitboard.getSingleBit(source), board), destination)
@@ -55,6 +56,11 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 			directAttacks.merge(enPassantMask);
 		}
 		return directAttacks;
+	}
+
+	@Override
+	public IBitboard getAllAttacks(IBoard board) {
+		return getAttacks(getBitboard(), board);
 	}
 
 	private IBitboard getMovablePieces(IBoard board) {

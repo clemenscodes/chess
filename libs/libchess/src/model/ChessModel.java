@@ -42,6 +42,10 @@ public class ChessModel implements IChessModel {
 		model.makeMove(e5, f3);
 		model.makeMove(a8, b8);
 		model.makeMove(e1, f1);
+		model.makeMove(c5, b6);
+		model.makeMove(d2, d3);
+		model.makeMove(d7, d5);
+		model.makeMove(c1, g5);
 		System.out.println(model.getMoveList());
 	}
 
