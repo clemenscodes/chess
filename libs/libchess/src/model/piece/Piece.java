@@ -8,7 +8,7 @@ import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
 import model.move.IMove;
-import model.move.Moves;
+import model.move.Move;
 import model.move.irreversible.capturing.CaptureMove;
 import model.move.reversible.QuietMove;
 
@@ -123,7 +123,7 @@ public abstract class Piece implements IPiece, Serializable {
 	protected IMove unsafeMove(int source, int destination, IBoard board) {
 		Square src = Square.getSquare(source);
 		Square dst = Square.getSquare(destination);
-		if (Moves.isCapture(Bitboard.getSingleBit(destination), board)) {
+		if (Move.isCapture(Bitboard.getSingleBit(destination), board)) {
 			return new CaptureMove(src, dst, board);
 		}
 		return new QuietMove(src, dst, board);

@@ -1,7 +1,6 @@
 package model.move;
 
 import java.io.Serializable;
-import java.util.Objects;
 import model.bits.Bitboard;
 import model.bits.IBitboard;
 import model.board.IBoard;
@@ -9,6 +8,18 @@ import model.board.Square;
 import model.move.irreversible.pawn.DoublePawnPushMove;
 
 public abstract class Move implements IMove, Serializable {
+
+	public static boolean isPromotion(IBitboard destination, IBitboard promotionMask) {
+		return Bitboard.overlap(destination, promotionMask);
+	}
+
+	public static boolean isCapture(IBitboard destination, IBoard board) {
+		return Bitboard.overlap(destination, board.getOpponentPieces());
+	}
+
+	public static boolean isEnPassant(IBitboard destination, IBoard board) {
+		return Bitboard.overlap(destination, board.getFen().getEnPassantMask());
+	}
 
 	private Square source;
 	private Square destination;
@@ -18,13 +29,13 @@ public abstract class Move implements IMove, Serializable {
 			throw new Error("Can not move opponents piece");
 		}
 		var fen = board.getFen();
-		if (!(this instanceof DoublePawnPushMove) && !Objects.equals(fen.getEnPassant(), "-")) {
+		if (!(this instanceof DoublePawnPushMove) && !fen.getEnPassant().equals("-")) {
 			fen.unsetEnPassantTargetSquare();
 		}
-		setSource(source);
-		setDestination(destination);
 		fen.incrementFullMoveNumber();
 		fen.switchActiveColor();
+		setSource(source);
+		setDestination(destination);
 	}
 
 	public Square getSource() {

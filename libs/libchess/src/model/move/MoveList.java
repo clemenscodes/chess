@@ -83,7 +83,6 @@ public class MoveList implements IMoveList, Serializable {
 				stringBuilder.append((i / 2) + 1).append(". ");
 			}
 			stringBuilder.append(moves[i]).append(" ");
-			stringBuilder.append(moves[i].getClass());
 			if (i % 2 != 0) {
 				stringBuilder.append("\n");
 			}

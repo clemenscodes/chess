@@ -187,7 +187,7 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 		);
 		Pieces piece = Pieces.getSelectedPiece(getPromotionPieces(), getSelection(reader));
 		IBitboard destinationBit = Bitboard.getSingleBit(Square.getIndex(dst));
-		return Moves.isCapture(destinationBit, board)
+		return Move.isCapture(destinationBit, board)
 			? makePromotionCapture(src, dst, piece, board)
 			: makePromotion(src, dst, piece, board);
 	}
@@ -226,13 +226,13 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 		IBitboard destinationBit = Bitboard.getSingleBit(destination);
 		IBitboard promotionMask = this instanceof WhitePawn ? Board.eighthRank : Board.firstRank;
 		IPiece pawn = board.getPiece(board.getPieceByIndex(source));
-		if (Moves.isPromotion(destinationBit, promotionMask)) {
+		if (Move.isPromotion(destinationBit, promotionMask)) {
 			return promotePawn(src, dst, board, reader);
 		}
-		if (Moves.isEnPassant(destinationBit, board)) {
+		if (Move.isEnPassant(destinationBit, board)) {
 			return new EnPassantCaptureMove(src, dst, board, pawn);
 		}
-		if (Moves.isCapture(destinationBit, board)) {
+		if (Move.isCapture(destinationBit, board)) {
 			return new PawnCaptureMove(src, dst, board, pawn);
 		}
 		return pawnPush(src, dst, board);
