@@ -4,16 +4,22 @@ import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
 import model.piece.IPiece;
+import model.piece.pawn.Pawn;
 import model.piece.pawn.WhitePawn;
 
 public class EnPassantCaptureMove extends PawnMove {
 
-	public EnPassantCaptureMove(Square source, Square destination, IBoard board, IPiece pawn) {
-		super(source, destination, board, pawn);
+	public EnPassantCaptureMove(
+		Square source,
+		Square destination,
+		IBoard board,
+		IPiece capturingPawn
+	) {
+		super(source, destination, board);
 		int dst = Square.getIndex(destination);
-		int passedSquareIndex = getPassedSquareIndex(dst, pawn);
+		int passedSquareIndex = getPassedSquareIndex(dst, capturingPawn);
 		board.capturePiece(passedSquareIndex);
-		pawn.getBitboard().setBitByIndex(dst);
+		capturingPawn.getBitboard().setBitByIndex(dst);
 	}
 
 	private int getPassedSquareIndex(int destination, IPiece pawn) {

@@ -11,9 +11,8 @@ public class BishopPromotionMove extends PromotionMove {
 		Square source,
 		Square destination,
 		IBoard board,
-		IPiece pawn,
 		Pieces chosenPromotion
 	) {
-		super(source, destination, board, pawn, chosenPromotion);
+		super(source, destination, board, chosenPromotion);
 	}
 }

@@ -7,11 +7,12 @@ import model.piece.IPiece;
 
 public class CaptureMove extends IrreversibleMove {
 
-	public CaptureMove(Square source, Square destination, IBoard board, IPiece capturingPiece) {
+	public CaptureMove(Square source, Square destination, IBoard board) {
 		super(source, destination, board);
 		int src = Square.getIndex(source);
 		int dst = Square.getIndex(destination);
 		board.capturePiece(Square.getIndex(destination));
-		capturingPiece.getBitboard().toggleBits(capturingPiece.getMoveMask(src, dst));
+		IPiece piece = board.getPiece(board.getPieceByIndex(Square.getIndex(source)));
+		piece.getBitboard().toggleBits(piece.getMoveMask(src, dst));
 	}
 }

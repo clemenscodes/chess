@@ -1,6 +1,6 @@
 package model.board;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.Arrays;
 import model.bits.Bitboard;
 import model.bits.IBitboard;
@@ -204,6 +204,23 @@ public class Board implements IBoard, Serializable {
 			.orElse(new Bitboard());
 	}
 
+	public IBitboard getAllFriendlyAttacks() {
+		return Arrays
+			.stream(getAllFriendlyPieces())
+			.map(piece -> piece.getAllAttacks(this))
+			.reduce(Bitboard::merge)
+			.orElse(new Bitboard());
+	}
+
+	public IBitboard getOwnKing() {
+		char color = getFen().getActiveColor();
+		return switch (color) {
+			case 'w' -> getWhiteKing().getBitboard();
+			case 'b' -> getBlackKing().getBitboard();
+			default -> throw new IllegalStateException("Unexpected value: " + color);
+		};
+	}
+
 	public Pieces getPieceByIndex(int index) {
 		IBitboard[] allPieces = getAllPieces();
 		for (int i = 0; i < allPieces.length; i++) {
@@ -246,6 +263,15 @@ public class Board implements IBoard, Serializable {
 		}
 		updateOccupiedSquares();
 		updateEmptySquares();
+	}
+
+	public IBoard deepCopy() throws IOException, ClassNotFoundException {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ObjectOutputStream out = new ObjectOutputStream(bos);
+		out.writeObject(this);
+		ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
+		ObjectInputStream in = new ObjectInputStream(bis);
+		return (IBoard) in.readObject();
 	}
 
 	public boolean isSquareAttacked(Square square) {
@@ -404,6 +430,15 @@ public class Board implements IBoard, Serializable {
 		return switch (color) {
 			case 'w' -> getAllBlackPieces();
 			case 'b' -> getAllWhitePieces();
+			default -> throw new IllegalStateException("Unexpected value: " + color);
+		};
+	}
+
+	private IPiece[] getAllFriendlyPieces() {
+		char color = getFen().getActiveColor();
+		return switch (color) {
+			case 'w' -> getAllWhitePieces();
+			case 'b' -> getAllBlackPieces();
 			default -> throw new IllegalStateException("Unexpected value: " + color);
 		};
 	}

@@ -1,5 +1,6 @@
 package model.piece;
 
+import java.io.IOException;
 import java.io.Serializable;
 import model.bits.Bitboard;
 import model.bits.IBitboard;
@@ -42,12 +43,7 @@ public abstract class Piece implements IPiece, Serializable {
 		if (isInvalidMove(source, destination, board)) {
 			throw new Error("Invalid move");
 		}
-		Square src = Square.getSquare(source);
-		Square dst = Square.getSquare(destination);
-		if (Moves.isCapture(Bitboard.getSingleBit(destination), board)) {
-			return new CaptureMove(src, dst, board, this);
-		}
-		return new QuietMove(src, dst, board, this);
+		return unsafeMove(source, destination, board);
 	}
 
 	public IBitboard getMoveMask(int source, int destination) {
@@ -72,11 +68,33 @@ public abstract class Piece implements IPiece, Serializable {
 	}
 
 	protected boolean isInvalidMove(int source, int destination, IBoard board) {
-		System.out.println(board.getAllOpponentAttacks());
 		return !(
 			Bitboard.checkBit(getBitboard(), source) &&
-			Bitboard.checkBit(getAttacks(Bitboard.getSingleBit(source), board), destination)
+			Bitboard.checkBit(getAttacks(Bitboard.getSingleBit(source), board), destination) &&
+			kingSafe(source, destination, board)
 		);
+	}
+
+	protected IBoard simulateMove(int source, int destination, IBoard board) {
+		try {
+			IBoard copiedBoard = board.deepCopy();
+			unsafeMove(source, destination, copiedBoard);
+			return copiedBoard;
+		} catch (IOException | ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected boolean kingSafe(int source, int destination, IBoard board) {
+		IBoard simulatedBoard = simulateMove(source, destination, board);
+		boolean kingSafety = !Bitboard.overlap(
+			board.getOwnKing(),
+			simulatedBoard.getAllFriendlyAttacks()
+		);
+		if (!kingSafety) {
+			throw new Error("Piece is pinned to the king");
+		}
+		return true;
 	}
 
 	protected IBitboard getDiagonalRays(IBitboard piece, IBoard board) {
@@ -100,6 +118,15 @@ public abstract class Piece implements IPiece, Serializable {
 		return Bitboard.mergeMany(
 			new IBitboard[] { getNorthRay(piece, board), getSouthRay(piece, board) }
 		);
+	}
+
+	protected IMove unsafeMove(int source, int destination, IBoard board) {
+		Square src = Square.getSquare(source);
+		Square dst = Square.getSquare(destination);
+		if (Moves.isCapture(Bitboard.getSingleBit(destination), board)) {
+			return new CaptureMove(src, dst, board);
+		}
+		return new QuietMove(src, dst, board);
 	}
 
 	private IBitboard getNorthWestRay(IBitboard piece, IBoard board) {
@@ -219,7 +246,8 @@ public abstract class Piece implements IPiece, Serializable {
 	}
 
 	private boolean isEnemyCollision(IBitboard piece, IBoard board) {
-		return Bitboard.overlap(piece, board.getOpponentPieces());
+		IBitboard op = board.getOpponentPieces();
+		return Bitboard.overlap(piece, op);
 	}
 
 	private boolean pathFree(IBitboard slided, IBoard board) {

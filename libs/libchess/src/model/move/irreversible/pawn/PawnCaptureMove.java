@@ -6,9 +6,9 @@ import model.piece.IPiece;
 
 public class PawnCaptureMove extends PawnMove {
 
-	public PawnCaptureMove(Square source, Square destination, IBoard board, IPiece pawn) {
-		super(source, destination, board, pawn);
+	public PawnCaptureMove(Square source, Square destination, IBoard board, IPiece capturingPawn) {
+		super(source, destination, board);
 		board.capturePiece(Square.getIndex(destination));
-		pawn.getBitboard().setBitByIndex(Square.getIndex(destination));
+		capturingPawn.getBitboard().setBitByIndex(Square.getIndex(destination));
 	}
 }

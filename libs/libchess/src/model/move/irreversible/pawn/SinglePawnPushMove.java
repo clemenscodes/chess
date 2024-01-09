@@ -7,7 +7,7 @@ import model.piece.IPiece;
 public class SinglePawnPushMove extends PawnMove {
 
 	public SinglePawnPushMove(Square source, Square destination, IBoard board, IPiece pawn) {
-		super(source, destination, board, pawn);
+		super(source, destination, board);
 		pawn.getBitboard().setBitByIndex(Square.getIndex(destination));
 	}
 }

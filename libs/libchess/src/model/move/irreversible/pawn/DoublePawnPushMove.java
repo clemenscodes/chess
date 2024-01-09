@@ -9,7 +9,7 @@ import model.piece.pawn.WhitePawn;
 public class DoublePawnPushMove extends PawnMove {
 
 	public DoublePawnPushMove(Square source, Square destination, IBoard board, IPiece pawn) {
-		super(source, destination, board, pawn);
+		super(source, destination, board);
 		Square enPassantTargetSquare = getEnPassantTargetSquare(destination, pawn);
 		board.getFen().setEnPassantTargetSquare(enPassantTargetSquare);
 		pawn.getBitboard().setBitByIndex(Square.getIndex(destination));

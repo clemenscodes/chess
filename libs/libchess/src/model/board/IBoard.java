@@ -1,5 +1,6 @@
 package model.board;
 
+import java.io.IOException;
 import model.bits.IBitboard;
 import model.fen.IForsythEdwardsNotation;
 import model.piece.IPiece;
@@ -60,6 +61,10 @@ public interface IBoard {
 
 	IBitboard getAllOpponentAttacks();
 
+	IBitboard getAllFriendlyAttacks();
+
+	IBitboard getOwnKing();
+
 	Pieces getPieceByIndex(int index);
 
 	IPiece getPiece(Pieces kind);
@@ -67,6 +72,8 @@ public interface IBoard {
 	void capturePiece(int index);
 
 	void setPieces();
+
+	IBoard deepCopy() throws IOException, ClassNotFoundException;
 
 	boolean isSquareAttacked(Square square);
 }

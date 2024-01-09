@@ -9,14 +9,8 @@ import model.piece.Pieces;
 
 public abstract class PromotionMove extends PawnMove {
 
-	public PromotionMove(
-		Square source,
-		Square destination,
-		IBoard board,
-		IPiece pawn,
-		Pieces chosenPromotion
-	) {
-		super(source, destination, board, pawn);
+	public PromotionMove(Square source, Square destination, IBoard board, Pieces chosenPromotion) {
+		super(source, destination, board);
 		board
 			.getPiece(chosenPromotion)
 			.getBitboard()
