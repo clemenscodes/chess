@@ -22,4 +22,11 @@ public class DoublePawnPushMove extends PawnMove {
 			: destinationIndex + Board.NORTH;
 		return Square.getSquare(enPassantTargetIndex);
 	}
+
+	@Override
+	public String toString() {
+		Square source = getSource();
+		Square destination = getDestination();
+		return String.valueOf(source) + destination;
+	}
 }

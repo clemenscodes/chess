@@ -10,4 +10,11 @@ public class SinglePawnPushMove extends PawnMove {
 		super(source, destination, board);
 		pawn.getBitboard().setBitByIndex(Square.getIndex(destination));
 	}
+
+	@Override
+	public String toString() {
+		Square source = getSource();
+		Square destination = getDestination();
+		return String.valueOf(source) + destination;
+	}
 }

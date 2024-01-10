@@ -18,4 +18,9 @@ public class KingCastleMove extends CastleMove {
 	protected Square getCastledRookSquare(IBoard board) {
 		return board.getFen().getActiveColor() == 'w' ? g1 : g8;
 	}
+
+	@Override
+	public String toString() {
+		return "O-O";
+	}
 }

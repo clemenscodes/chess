@@ -44,6 +44,7 @@ public class ChessModel implements IChessModel {
 		model.makeMove(c1, g5);
 		model.makeMove(g8, f6);
 		System.out.println(model.getMoveList());
+		System.out.println(model.getBoard().getFen());
 	}
 
 	public State getGameState() {

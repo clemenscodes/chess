@@ -14,4 +14,11 @@ public class KnightPromotionMove extends PromotionMove {
 	) {
 		super(source, destination, board, chosenPromotion);
 	}
+
+	@Override
+	public String toString() {
+		Square source = getSource();
+		Square destination = getDestination();
+		return String.valueOf(source) + destination;
+	}
 }

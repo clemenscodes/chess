@@ -19,7 +19,6 @@ public abstract class CastleMove extends IrreversibleMove {
 	}
 
 	protected boolean canCastleOverSquare(Square square, IBoard board) {
-		System.out.println(square);
 		return board.isSquareEmpty(square) && !board.isSquareAttacked(square);
 	}
 

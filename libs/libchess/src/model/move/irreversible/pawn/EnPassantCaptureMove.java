@@ -19,4 +19,11 @@ public class EnPassantCaptureMove extends PawnMove {
 	private int getPassedSquareIndex(int destination, IPiece pawn) {
 		return pawn instanceof WhitePawn ? destination + Board.SOUTH : destination + Board.NORTH;
 	}
+
+	@Override
+	public String toString() {
+		Square source = getSource();
+		Square destination = getDestination();
+		return String.valueOf(source) + destination;
+	}
 }
