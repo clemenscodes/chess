@@ -6,6 +6,7 @@ import model.bits.IBitboard;
 import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
+import model.fen.IForsythEdwardsNotation;
 import model.move.irreversible.pawn.DoublePawnPushMove;
 import model.piece.rook.Rook;
 
@@ -114,11 +115,16 @@ public abstract class Move implements IMove, Serializable {
 		if (!isPlayersPiece(board, source)) {
 			throw new Error("Can not move opponents piece");
 		}
-		var fen = board.getFen();
+		IForsythEdwardsNotation fen = board.getFen();
 		if (!(this instanceof DoublePawnPushMove) && !fen.getEnPassant().equals("-")) {
 			fen.unsetEnPassantTargetSquare();
 		}
-		if (board.getPiece(source) instanceof Rook) {}
+		if (board.getPiece(source) instanceof Rook && !fen.getCastling().equals("-")) {
+			switch (source) {
+				case a1, h1 -> fen.kingRookMove();
+				case a8, h8 -> fen.queenRookMove();
+			}
+		}
 		fen.incrementFullMoveNumber();
 		fen.switchActiveColor();
 		setSource(source);

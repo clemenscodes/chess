@@ -5,6 +5,7 @@ import model.bits.Bitboard;
 import model.bits.IBitboard;
 import model.board.IBoard;
 import model.board.Square;
+import model.fen.IForsythEdwardsNotation;
 import model.move.IMove;
 import model.move.Move;
 import model.move.irreversible.capturing.CaptureMove;
@@ -62,11 +63,15 @@ public abstract class King extends Piece implements Movable, Serializable {
 	protected IMove unsafeMove(int source, int destination, IBoard board) {
 		Square src = Square.getSquare(source);
 		Square dst = Square.getSquare(destination);
+		IForsythEdwardsNotation fen = board.getFen();
 		if (Move.isKingCastle(src, dst, board)) {
 			return new KingCastleMove(src, dst, board);
 		}
 		if (Move.isQueenCastle(src, dst, board)) {
 			return new QueenCastleMove(src, dst, board);
+		}
+		if (!fen.getCastling().equals("_")) {
+			fen.kingMove();
 		}
 		if (Move.isCapture(Bitboard.getSingleBit(destination), board)) {
 			return new CaptureMove(src, dst, board);
