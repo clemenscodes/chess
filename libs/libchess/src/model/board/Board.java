@@ -307,6 +307,11 @@ public class Board implements IBoard, Serializable {
 		);
 	}
 
+	public boolean isSquareEmpty(Square square) {
+		IBitboard bit = Bitboard.getSingleBit(Square.getIndex(square));
+		return !Bitboard.overlap(bit, getOccupiedSquares());
+	}
+
 	public void capturePiece(int index) {
 		getPiece(Square.getSquare(index)).getBitboard().toggleBits(Bitboard.getSingleBit(index));
 	}

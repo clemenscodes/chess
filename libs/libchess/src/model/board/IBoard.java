@@ -82,4 +82,6 @@ public interface IBoard {
 	boolean kingUnsafe();
 
 	boolean isSquareAttacked(Square square);
+
+	boolean isSquareEmpty(Square square);
 }
