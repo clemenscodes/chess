@@ -205,11 +205,15 @@ public class Board implements IBoard, Serializable {
 	}
 
 	public IBitboard getAllOpponentAttacks() {
-		return Arrays
-			.stream(getAllOpponentPieces())
+		IForsythEdwardsNotation fen = getFen();
+		fen.switchActiveColor();
+		IBitboard attacks = Arrays
+			.stream(getAllFriendlyPieces())
 			.map(piece -> piece.getAllAttacks(this))
 			.reduce(Bitboard::merge)
 			.orElse(new Bitboard());
+		fen.switchActiveColor();
+		return attacks;
 	}
 
 	public IBitboard getOwnKing() {
@@ -280,7 +284,12 @@ public class Board implements IBoard, Serializable {
 	}
 
 	public boolean kingUnsafe() {
-		return Bitboard.overlap(getOwnKing(), getAllOpponentAttacks());
+		System.out.println("Checking king safety");
+		IBitboard king = getOwnKing();
+		IBitboard attacks = getAllOpponentAttacks();
+		IBitboard bAttacks = getBlackBishop().getAllAttacks(this);
+		System.out.println(bAttacks);
+		return Bitboard.overlap(king, attacks);
 	}
 
 	public boolean isSquareAttacked(Square square) {
@@ -437,15 +446,6 @@ public class Board implements IBoard, Serializable {
 
 	private IBitboard[] getAllBlackBitboards() {
 		return getAllBitboards(getAllBlackPieces());
-	}
-
-	private IPiece[] getAllOpponentPieces() {
-		char color = getFen().getActiveColor();
-		return switch (color) {
-			case 'w' -> getAllBlackPieces();
-			case 'b' -> getAllWhitePieces();
-			default -> throw new IllegalStateException("Unexpected value: " + color);
-		};
 	}
 
 	private IPiece[] getAllFriendlyPieces() {

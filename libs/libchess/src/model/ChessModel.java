@@ -29,22 +29,13 @@ public class ChessModel implements IChessModel {
 	public static void main(String[] args) {
 		var model = new ChessModel();
 		model.startGame();
-		model.makeMove(e2, e4);
-		model.makeMove(g7, g6);
-		model.makeMove(f1, b5);
-		model.makeMove(e7, e6);
-		model.makeMove(g1, f3);
-		model.makeMove(e8, e7);
 		model.makeMove(d2, d4);
-		model.makeMove(d7, d6);
-		model.makeMove(b1, c3);
-		model.makeMove(b8, c6);
-		model.makeMove(e1, h1);
-		model.makeMove(c8, d7);
-		model.makeMove(c1, g5);
+		model.makeMove(d7, d5);
+		model.makeMove(g1, f3);
 		model.makeMove(g8, f6);
+		model.makeMove(e2, e3);
+		model.makeMove(e7, e6);
 		System.out.println(model.getMoveList());
-		System.out.println(model.getBoard().getFen());
 	}
 
 	public State getGameState() {
@@ -92,14 +83,9 @@ public class ChessModel implements IChessModel {
 		this.board = board;
 	}
 
-	private void printNext() {
-		System.out.print("Next turn: ");
-		System.out.println(getBoard().getFen().getActiveColor() == 'w' ? "White" : "Black");
-	}
-
 	private void printGame() {
 		System.out.println(getBoard());
-		printNext();
+		System.out.println(getBoard().getFen());
 	}
 
 	private void setReader(InputStream in) {

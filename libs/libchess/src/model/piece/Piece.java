@@ -254,8 +254,7 @@ public abstract class Piece implements IPiece, Serializable {
 	}
 
 	private boolean isEnemyCollision(IBitboard piece, IBoard board) {
-		IBitboard op = board.getOpponentPieces();
-		return Bitboard.overlap(piece, op);
+		return Bitboard.overlap(piece, board.getOpponentPieces());
 	}
 
 	private boolean pathFree(IBitboard slided, IBoard board) {

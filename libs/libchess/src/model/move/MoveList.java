@@ -9,12 +9,12 @@ import model.reader.IReader;
 public class MoveList implements IMoveList, Serializable {
 
 	private static final int MOVE_LIMIT = 17697;
-	private final IMove[] moves;
+	private IMove[] moves;
 	private int playedMoves;
 
 	public MoveList() {
-		playedMoves = 0;
-		moves = new Move[MOVE_LIMIT];
+		setPlayedMoves(0);
+		setMoves(new Move[MOVE_LIMIT]);
 	}
 
 	public IMove[] getMoves() {
@@ -33,8 +33,16 @@ public class MoveList implements IMoveList, Serializable {
 			throw new Error("Making another move is impossible");
 		}
 		incrementPlayedMoves();
-		moves[getNextMoveIndex()] = move(source, destination, board, reader);
+		addMove(source, destination, board, reader);
 		board.getFen().switchActiveColor();
+	}
+
+	private void addMove(Square source, Square destination, IBoard board, IReader reader) {
+		moves[getNextMoveIndex()] = move(source, destination, board, reader);
+	}
+
+	private void setMoves(IMove[] moves) {
+		this.moves = moves;
 	}
 
 	private void incrementPlayedMoves() {
@@ -76,16 +84,13 @@ public class MoveList implements IMoveList, Serializable {
 	public String toString() {
 		IMove[] moves = getMoves();
 		StringBuilder stringBuilder = new StringBuilder();
-		for (int i = 0; i < moves.length; i++) {
-			if (moves[i] == null) {
-				continue;
-			}
+		for (int i = 0; i < getPlayedMoves(); i++) {
 			if (i % 2 == 0) {
 				stringBuilder.append((i / 2) + 1).append(". ");
+				stringBuilder.append(moves[i]).append(" ");
 			}
-			stringBuilder.append(moves[i]).append(" ");
 			if (i % 2 != 0) {
-				stringBuilder.append("\n");
+				stringBuilder.append(moves[i]).append("\n");
 			}
 		}
 		return stringBuilder.toString();

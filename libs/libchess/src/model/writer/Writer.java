@@ -11,7 +11,9 @@ public class Writer {
 			for (int file = 0; file < Board.SIZE; file++) {
 				body.apply(rank, file, stringBuilder, pieces);
 			}
-			appendLine(stringBuilder);
+			if (rank != 0) {
+				appendLine(stringBuilder);
+			}
 		}
 		return stringBuilder;
 	}
