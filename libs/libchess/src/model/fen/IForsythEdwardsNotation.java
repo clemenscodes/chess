@@ -31,4 +31,20 @@ public interface IForsythEdwardsNotation {
 	void unsetEnPassantTargetSquare();
 
 	void parse(String fen);
+
+	void whiteCastle();
+
+	void whiteKingMove();
+
+	void whiteKingRookMove();
+
+	void whiteQueenRookMove();
+
+	void blackCastle();
+
+	void blackKingMove();
+
+	void blackKingRookMove();
+
+	void blackQueenRookMove();
 }

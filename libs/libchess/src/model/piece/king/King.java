@@ -34,14 +34,6 @@ public abstract class King extends Piece implements Movable, Serializable {
 	}
 
 	@Override
-	public IMove move(int source, int destination, IBoard board) {
-		if (isInvalidMove(source, destination, board)) {
-			throw new Error("Invalid move");
-		}
-		return unsafeMove(source, destination, board);
-	}
-
-	@Override
 	protected IMove unsafeMove(int source, int destination, IBoard board) {
 		Square src = Square.getSquare(source);
 		Square dst = Square.getSquare(destination);

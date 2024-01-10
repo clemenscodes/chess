@@ -8,16 +8,20 @@ import model.board.Square;
 
 public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializable {
 
-	public static final int MAX_HALF_MOVE_CLOCK = 150;
-	public static final int MIN_HALF_MOVE_CLOCK = 0;
-	public static final int MIN_FULL_MOVE_CLOCK = 1;
+	private static final int MAX_HALF_MOVE_CLOCK = 150;
+	private static final int MIN_HALF_MOVE_CLOCK = 0;
+	private static final int MIN_FULL_MOVE_CLOCK = 1;
 	private String[] piecePlacementData;
 	private char activeColor;
 	private String castling;
 	private String enPassant;
-	private IBitboard enPassantMask;
 	private int halfMoveClock;
 	private int fullMoveNumber;
+	private IBitboard enPassantMask;
+	private boolean whiteKingCastle;
+	private boolean whiteQueenCastle;
+	private boolean blackKingCastle;
+	private boolean blackQueenCastle;
 
 	public ForsythEdwardsNotation() {
 		parse("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
@@ -96,6 +100,50 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 		unsetEnPassantMask();
 	}
 
+	public void whiteCastle() {
+		setWhiteKingCastle(false);
+		setWhiteQueenCastle(false);
+		updateCastlingInfo();
+	}
+
+	public void whiteKingMove() {
+		setWhiteKingCastle(false);
+		setWhiteQueenCastle(false);
+		updateCastlingInfo();
+	}
+
+	public void whiteKingRookMove() {
+		setWhiteKingCastle(false);
+		updateCastlingInfo();
+	}
+
+	public void whiteQueenRookMove() {
+		setWhiteQueenCastle(false);
+		updateCastlingInfo();
+	}
+
+	public void blackCastle() {
+		setBlackKingCastle(false);
+		setBlackQueenCastle(false);
+		updateCastlingInfo();
+	}
+
+	public void blackKingMove() {
+		setBlackKingCastle(false);
+		setBlackQueenCastle(false);
+		updateCastlingInfo();
+	}
+
+	public void blackKingRookMove() {
+		setBlackKingCastle(false);
+		updateCastlingInfo();
+	}
+
+	public void blackQueenRookMove() {
+		setBlackQueenCastle(false);
+		updateCastlingInfo();
+	}
+
 	private void setPiecePlacementData(String piecePlacement) {
 		var ppd = piecePlacement.split("/");
 		if (ppd.length != Board.SIZE) {
@@ -122,23 +170,6 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 			activeColor = ac;
 		} catch (IndexOutOfBoundsException e) {
 			throw new IllegalArgumentException("Invalid active color");
-		}
-	}
-
-	private void setCastling(String castlingInfo) {
-		try {
-			if (!castlingInfo.equals("-")) {
-				for (char c : castlingInfo.toCharArray()) {
-					if (c != 'K' && c != 'Q' && c != 'k' && c != 'q') {
-						throw new IllegalArgumentException(
-							"Invalid castling information: Use 'K', 'Q', 'k', 'q', or '-'"
-						);
-					}
-				}
-			}
-			castling = castlingInfo;
-		} catch (IndexOutOfBoundsException e) {
-			throw new IllegalArgumentException("Invalid castling information");
 		}
 	}
 
@@ -200,6 +231,73 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 		} catch (NumberFormatException e) {
 			throw new IllegalArgumentException("Invalid full-move number");
 		}
+	}
+
+	private void setCastling(String castlingInfo) {
+		try {
+			if (!castlingInfo.matches("^[-KQkq]*$")) {
+				throw new IllegalArgumentException(
+					"Invalid castling information: Use 'K', 'Q', 'k', 'q', or '-'"
+				);
+			}
+			castling = castlingInfo;
+			parseCastlingInfo();
+		} catch (IndexOutOfBoundsException e) {
+			throw new IllegalArgumentException("Invalid castling information");
+		}
+	}
+
+	private void updateCastlingInfo() {
+		String whiteKingCastle = getWhiteKingCastle() ? "K" : "";
+		String whiteQueenCastle = getWhiteQueenCastle() ? "Q" : "";
+		String blackKingCastle = getBlackKingCastle() ? "k" : "";
+		String blackQueenCastle = getBlackQueenCastle() ? "q" : "";
+		String castlingInfo =
+			whiteKingCastle + whiteQueenCastle + blackKingCastle + blackQueenCastle;
+		if (castlingInfo.isEmpty()) {
+			castlingInfo = "-";
+		}
+		setCastling(castlingInfo);
+	}
+
+	private void parseCastlingInfo() {
+		String castling = getCastling();
+		setWhiteKingCastle(castling.contains("K"));
+		setWhiteQueenCastle(castling.contains("Q"));
+		setBlackKingCastle(castling.contains("k"));
+		setBlackQueenCastle(castling.contains("q"));
+	}
+
+	private boolean getWhiteKingCastle() {
+		return whiteKingCastle;
+	}
+
+	private void setWhiteKingCastle(boolean whiteKingCastle) {
+		this.whiteKingCastle = whiteKingCastle;
+	}
+
+	private boolean getWhiteQueenCastle() {
+		return whiteQueenCastle;
+	}
+
+	private void setWhiteQueenCastle(boolean whiteQueenCastle) {
+		this.whiteQueenCastle = whiteQueenCastle;
+	}
+
+	private boolean getBlackKingCastle() {
+		return blackKingCastle;
+	}
+
+	private void setBlackKingCastle(boolean blackKingCastle) {
+		this.blackKingCastle = blackKingCastle;
+	}
+
+	private boolean getBlackQueenCastle() {
+		return blackQueenCastle;
+	}
+
+	private void setBlackQueenCastle(boolean blackQueenCastle) {
+		this.blackQueenCastle = blackQueenCastle;
 	}
 
 	@Override
