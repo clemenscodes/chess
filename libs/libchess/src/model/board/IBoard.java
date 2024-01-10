@@ -79,5 +79,7 @@ public interface IBoard {
 
 	IBoard deepCopy() throws IOException, ClassNotFoundException;
 
+	boolean kingUnsafe();
+
 	boolean isSquareAttacked(Square square);
 }

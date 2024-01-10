@@ -100,7 +100,7 @@ public abstract class Piece implements IPiece, Serializable {
 			simulatedBoard.getAllFriendlyAttacks()
 		);
 		if (kingAttacked) {
-			throw new Error("Piece is pinned to the king");
+			throw new Error("King is in check");
 		}
 		return true;
 	}

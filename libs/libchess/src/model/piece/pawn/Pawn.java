@@ -75,7 +75,7 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 			simulatedBoard.getAllFriendlyAttacks()
 		);
 		if (!kingSafety) {
-			throw new Error("Pawn is pinned to king");
+			throw new Error("King is in check");
 		}
 		return true;
 	}

@@ -296,6 +296,10 @@ public class Board implements IBoard, Serializable {
 		return (IBoard) in.readObject();
 	}
 
+	public boolean kingUnsafe() {
+		return Bitboard.overlap(getOwnKing(), getAllOpponentAttacks());
+	}
+
 	public boolean isSquareAttacked(Square square) {
 		return Bitboard.overlap(
 			Bitboard.getSingleBit(Square.getIndex(square)),
