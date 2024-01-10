@@ -34,6 +34,31 @@ public abstract class King extends Piece implements Movable, Serializable {
 	}
 
 	@Override
+	protected boolean isInvalidMove(int source, int destination, IBoard board) {
+		Square src = Square.getSquare(source);
+		Square dst = Square.getSquare(destination);
+		if (isInvalidKingCastle(src, dst, board)) {
+			return false;
+		}
+		if (isInvalidQueenCastle(src, dst, board)) {
+			return false;
+		}
+		return !(
+			sourceSquareHasPiece(source) &&
+			pieceCanMoveToDestination(source, destination, board) &&
+			kingSafe(source, destination, board)
+		);
+	}
+
+	private boolean isInvalidKingCastle(Square src, Square dst, IBoard board) {
+		return Move.isKingCastle(src, dst, board) && !Move.canKingCastle(src, dst, board);
+	}
+
+	private boolean isInvalidQueenCastle(Square src, Square dst, IBoard board) {
+		return Move.isQueenCastle(src, dst, board) && !Move.canQueenCastle(src, dst, board);
+	}
+
+	@Override
 	protected IMove unsafeMove(int source, int destination, IBoard board) {
 		Square src = Square.getSquare(source);
 		Square dst = Square.getSquare(destination);

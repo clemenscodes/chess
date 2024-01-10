@@ -25,13 +25,31 @@ public abstract class Move implements IMove, Serializable {
 	public static boolean isKingCastle(Square source, Square destination, IBoard board) {
 		char color = board.getFen().getActiveColor();
 		return switch (color) {
+			case 'w' -> isWhiteKingCastle(source, destination);
+			case 'b' -> isBlackKingCastle(source, destination);
+			default -> throw new IllegalStateException("Unexpected value: " + color);
+		};
+	}
+
+	public static boolean isQueenCastle(Square source, Square destination, IBoard board) {
+		char color = board.getFen().getActiveColor();
+		return switch (color) {
+			case 'w' -> isWhiteQueenCastle(source, destination);
+			case 'b' -> isBlackQueenCastle(source, destination);
+			default -> throw new IllegalStateException("Unexpected value: " + color);
+		};
+	}
+
+	public static boolean canKingCastle(Square source, Square destination, IBoard board) {
+		char color = board.getFen().getActiveColor();
+		return switch (color) {
 			case 'w' -> whiteCanKingCastle(source, destination, board);
 			case 'b' -> blackCanKingCastle(source, destination, board);
 			default -> throw new IllegalStateException("Unexpected value: " + color);
 		};
 	}
 
-	public static boolean isQueenCastle(Square source, Square destination, IBoard board) {
+	public static boolean canQueenCastle(Square source, Square destination, IBoard board) {
 		char color = board.getFen().getActiveColor();
 		return switch (color) {
 			case 'w' -> whiteCanQueenCastle(source, destination, board);

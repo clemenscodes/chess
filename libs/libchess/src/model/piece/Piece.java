@@ -69,10 +69,18 @@ public abstract class Piece implements IPiece, Serializable {
 
 	protected boolean isInvalidMove(int source, int destination, IBoard board) {
 		return !(
-			Bitboard.checkBit(getBitboard(), source) &&
-			Bitboard.checkBit(getAttacks(Bitboard.getSingleBit(source), board), destination) &&
+			sourceSquareHasPiece(source) &&
+			pieceCanMoveToDestination(source, destination, board) &&
 			kingSafe(source, destination, board)
 		);
+	}
+
+	protected boolean pieceCanMoveToDestination(int source, int destination, IBoard board) {
+		return Bitboard.checkBit(getAttacks(Bitboard.getSingleBit(source), board), destination);
+	}
+
+	protected boolean sourceSquareHasPiece(int source) {
+		return Bitboard.checkBit(getBitboard(), source);
 	}
 
 	protected IBoard simulateMove(int source, int destination, IBoard board) {
