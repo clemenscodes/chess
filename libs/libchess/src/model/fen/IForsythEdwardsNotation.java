@@ -33,23 +33,18 @@ public interface IForsythEdwardsNotation {
 	void parse(String fen);
 
 	boolean getWhiteKingCastle();
+
 	boolean getWhiteQueenCastle();
+
 	boolean getBlackKingCastle();
+
 	boolean getBlackQueenCastle();
 
-	void whiteCastle();
+	void castle();
 
-	void whiteKingMove();
+	void kingMove();
 
-	void whiteKingRookMove();
+	void kingRookMove();
 
-	void whiteQueenRookMove();
-
-	void blackCastle();
-
-	void blackKingMove();
-
-	void blackKingRookMove();
-
-	void blackQueenRookMove();
+	void queenRookMove();
 }

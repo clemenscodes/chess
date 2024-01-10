@@ -248,7 +248,12 @@ public class Board implements IBoard, Serializable {
 		throw new Error("No piece is set on the square " + Square.getSquare(index));
 	}
 
-	public IPiece getPiece(Pieces kind) {
+	public IPiece getPiece(Square square) {
+		Pieces kind = getPieceByIndex(Square.getIndex(square));
+		return getPieceByKind(kind);
+	}
+
+	public IPiece getPieceByKind(Pieces kind) {
 		return switch (kind) {
 			case BlackRook -> getBlackRook();
 			case BlackKnight -> getBlackKnight();
@@ -299,7 +304,7 @@ public class Board implements IBoard, Serializable {
 	}
 
 	public void capturePiece(int index) {
-		getPiece(getPieceByIndex(index)).getBitboard().toggleBits(Bitboard.getSingleBit(index));
+		getPiece(Square.getSquare(index)).getBitboard().toggleBits(Bitboard.getSingleBit(index));
 	}
 
 	private void setFen(IForsythEdwardsNotation fen) {
@@ -461,7 +466,7 @@ public class Board implements IBoard, Serializable {
 	}
 
 	private void initializePiece(char symbol, int rank, int file) {
-		IPiece piece = getPiece(Pieces.fromSymbol(symbol));
+		IPiece piece = getPieceByKind(Pieces.fromSymbol(symbol));
 		piece.getBitboard().merge(Bitboard.getSingleBit(getSquareIndex(rank, file)));
 		setPiece(piece);
 	}

@@ -10,7 +10,7 @@ public class QuietMove extends ReversibleMove {
 		super(source, destination, board);
 		int src = Square.getIndex(source);
 		int dst = Square.getIndex(destination);
-		IPiece piece = board.getPiece(board.getPieceByIndex(Square.getIndex(source)));
+		IPiece piece = board.getPiece(source);
 		piece.getBitboard().toggleBits(piece.getMoveMask(src, dst));
 	}
 }

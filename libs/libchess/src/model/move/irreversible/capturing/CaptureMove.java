@@ -12,7 +12,7 @@ public class CaptureMove extends IrreversibleMove {
 		int src = Square.getIndex(source);
 		int dst = Square.getIndex(destination);
 		board.capturePiece(Square.getIndex(destination));
-		IPiece piece = board.getPiece(board.getPieceByIndex(Square.getIndex(source)));
+		IPiece piece = board.getPiece(source);
 		piece.getBitboard().toggleBits(piece.getMoveMask(src, dst));
 	}
 }

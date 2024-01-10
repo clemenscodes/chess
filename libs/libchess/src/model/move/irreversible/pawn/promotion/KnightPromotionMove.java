@@ -2,7 +2,6 @@ package model.move.irreversible.pawn.promotion;
 
 import model.board.IBoard;
 import model.board.Square;
-import model.piece.IPiece;
 import model.piece.Pieces;
 
 public class KnightPromotionMove extends PromotionMove {

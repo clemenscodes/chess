@@ -7,6 +7,7 @@ import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
 import model.move.irreversible.pawn.DoublePawnPushMove;
+import model.piece.rook.Rook;
 
 public abstract class Move implements IMove, Serializable {
 
@@ -117,6 +118,7 @@ public abstract class Move implements IMove, Serializable {
 		if (!(this instanceof DoublePawnPushMove) && !fen.getEnPassant().equals("-")) {
 			fen.unsetEnPassantTargetSquare();
 		}
+		if (board.getPiece(source) instanceof Rook) {}
 		fen.incrementFullMoveNumber();
 		fen.switchActiveColor();
 		setSource(source);

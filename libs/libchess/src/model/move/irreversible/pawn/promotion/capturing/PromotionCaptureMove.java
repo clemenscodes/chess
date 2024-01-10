@@ -3,7 +3,6 @@ package model.move.irreversible.pawn.promotion.capturing;
 import model.board.IBoard;
 import model.board.Square;
 import model.move.irreversible.pawn.promotion.PromotionMove;
-import model.piece.IPiece;
 import model.piece.Pieces;
 
 public abstract class PromotionCaptureMove extends PromotionMove {

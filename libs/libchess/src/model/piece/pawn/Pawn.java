@@ -168,7 +168,7 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 	}
 
 	private IMove pawnPush(Square source, Square destination, IBoard board) {
-		IPiece pawn = board.getPiece(board.getPieceByIndex(Square.getIndex(source)));
+		IPiece pawn = board.getPiece(source);
 		int moveIndexDifference = Math.abs(Square.getIndex(destination) - Square.getIndex(source));
 		return (moveIndexDifference == Board.SIZE)
 			? new SinglePawnPushMove(source, destination, board, pawn)
@@ -234,7 +234,7 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 		Square dst = Square.getSquare(destination);
 		IBitboard destinationBit = Bitboard.getSingleBit(destination);
 		IBitboard promotionMask = this instanceof WhitePawn ? Board.eighthRank : Board.firstRank;
-		IPiece pawn = board.getPiece(board.getPieceByIndex(source));
+		IPiece pawn = board.getPiece(Square.getSquare(source));
 		if (Move.isPromotion(destinationBit, promotionMask)) {
 			return promotePawn(src, dst, board, reader);
 		}

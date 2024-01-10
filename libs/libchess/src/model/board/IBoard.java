@@ -67,9 +67,11 @@ public interface IBoard {
 
 	IBitboard getOpponentKing();
 
-	Pieces getPieceByIndex(int index);
+	IPiece getPiece(Square square);
 
-	IPiece getPiece(Pieces kind);
+	IPiece getPieceByKind(Pieces kind);
+
+	Pieces getPieceByIndex(int index);
 
 	void capturePiece(int index);
 

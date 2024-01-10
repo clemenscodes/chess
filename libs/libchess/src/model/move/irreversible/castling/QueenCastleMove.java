@@ -8,5 +8,6 @@ public class QueenCastleMove extends IrreversibleMove {
 
 	public QueenCastleMove(Square source, Square destination, IBoard board) {
 		super(source, destination, board);
+		board.getFen().castle();
 	}
 }

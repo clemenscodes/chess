@@ -12,7 +12,7 @@ public abstract class PromotionMove extends PawnMove {
 	public PromotionMove(Square source, Square destination, IBoard board, Pieces chosenPromotion) {
 		super(source, destination, board);
 		board
-			.getPiece(chosenPromotion)
+			.getPieceByKind(chosenPromotion)
 			.getBitboard()
 			.merge(Bitboard.getSingleBit(Square.getIndex(source)));
 	}

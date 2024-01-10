@@ -111,12 +111,40 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 		return blackQueenCastle;
 	}
 
+	public void castle() {
+		switch (getActiveColor()) {
+			case 'w' -> whiteCastle();
+			case 'b' -> blackCastle();
+		}
+	}
+
+	public void kingMove() {
+		switch (getActiveColor()) {
+			case 'w' -> whiteKingMove();
+			case 'b' -> blackKingMove();
+		}
+	}
+
+	public void kingRookMove() {
+		switch (getActiveColor()) {
+			case 'w' -> whiteKingRookMove();
+			case 'b' -> blackKingRookMove();
+		}
+	}
+
+	public void queenRookMove() {
+		switch (getActiveColor()) {
+			case 'w' -> whiteQueenRookMove();
+			case 'b' -> blackQueenRookMove();
+		}
+	}
+
 	public void unsetEnPassantTargetSquare() {
 		setEnPassant("-");
 		unsetEnPassantMask();
 	}
 
-	public void whiteCastle() {
+	private void whiteCastle() {
 		setWhiteKingCastle(false);
 		setWhiteQueenCastle(false);
 		updateCastlingInfo();
@@ -138,24 +166,24 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 		updateCastlingInfo();
 	}
 
-	public void blackCastle() {
+	private void blackCastle() {
 		setBlackKingCastle(false);
 		setBlackQueenCastle(false);
 		updateCastlingInfo();
 	}
 
-	public void blackKingMove() {
+	private void blackKingMove() {
 		setBlackKingCastle(false);
 		setBlackQueenCastle(false);
 		updateCastlingInfo();
 	}
 
-	public void blackKingRookMove() {
+	private void blackKingRookMove() {
 		setBlackKingCastle(false);
 		updateCastlingInfo();
 	}
 
-	public void blackQueenRookMove() {
+	private void blackQueenRookMove() {
 		setBlackQueenCastle(false);
 		updateCastlingInfo();
 	}

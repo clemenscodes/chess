@@ -37,10 +37,10 @@ public abstract class King extends Piece implements Movable, Serializable {
 	protected boolean isInvalidMove(int source, int destination, IBoard board) {
 		Square src = Square.getSquare(source);
 		Square dst = Square.getSquare(destination);
-		if (isInvalidKingCastle(src, dst, board)) {
+		if (isValidKingCastle(src, dst, board)) {
 			return false;
 		}
-		if (isInvalidQueenCastle(src, dst, board)) {
+		if (isValidQueenCastle(src, dst, board)) {
 			return false;
 		}
 		return !(
@@ -50,26 +50,26 @@ public abstract class King extends Piece implements Movable, Serializable {
 		);
 	}
 
-	private boolean isInvalidKingCastle(Square src, Square dst, IBoard board) {
-		return Move.isKingCastle(src, dst, board) && !Move.canKingCastle(src, dst, board);
+	private boolean isValidKingCastle(Square src, Square dst, IBoard board) {
+		return Move.isKingCastle(src, dst, board) && Move.canKingCastle(src, dst, board);
 	}
 
-	private boolean isInvalidQueenCastle(Square src, Square dst, IBoard board) {
-		return Move.isQueenCastle(src, dst, board) && !Move.canQueenCastle(src, dst, board);
+	private boolean isValidQueenCastle(Square src, Square dst, IBoard board) {
+		return Move.isQueenCastle(src, dst, board) && Move.canQueenCastle(src, dst, board);
 	}
 
 	@Override
 	protected IMove unsafeMove(int source, int destination, IBoard board) {
 		Square src = Square.getSquare(source);
 		Square dst = Square.getSquare(destination);
-		if (Move.isCapture(Bitboard.getSingleBit(destination), board)) {
-			return new CaptureMove(src, dst, board);
-		}
 		if (Move.isKingCastle(src, dst, board)) {
 			return new KingCastleMove(src, dst, board);
 		}
 		if (Move.isQueenCastle(src, dst, board)) {
 			return new QueenCastleMove(src, dst, board);
+		}
+		if (Move.isCapture(Bitboard.getSingleBit(destination), board)) {
+			return new CaptureMove(src, dst, board);
 		}
 		return new QuietMove(src, dst, board);
 	}
