@@ -97,7 +97,7 @@ public abstract class Piece implements IPiece, Serializable {
 		IBoard simulatedBoard = simulateMove(source, destination, board);
 		boolean kingAttacked = Bitboard.overlap(
 			board.getOwnKing(),
-			simulatedBoard.getAllFriendlyAttacks()
+			simulatedBoard.getAllOpponentAttacks()
 		);
 		if (kingAttacked) {
 			throw new Error("King is in check");

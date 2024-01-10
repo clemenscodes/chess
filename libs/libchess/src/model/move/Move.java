@@ -126,7 +126,6 @@ public abstract class Move implements IMove, Serializable {
 			}
 		}
 		fen.incrementFullMoveNumber();
-		fen.switchActiveColor();
 		setSource(source);
 		setDestination(destination);
 	}

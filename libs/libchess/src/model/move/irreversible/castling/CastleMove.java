@@ -13,29 +13,33 @@ public abstract class CastleMove extends IrreversibleMove {
 			throw new Error("Can not castle when king is in check");
 		}
 		if (invalidCastle(board)) {
-			throw new Error("Squares between king and rook must be safe and empty");
+			throw new Error("Squares the king walks while castling must be safe and empty");
 		}
-		board.getFen().castle();
 		castle(source, destination, board);
 	}
 
 	protected boolean canCastleOverSquare(Square square, IBoard board) {
+		System.out.println(square);
 		return board.isSquareEmpty(square) && !board.isSquareAttacked(square);
 	}
 
-	protected IBitboard unsetKing(Square source, IBoard board) {
+	protected boolean invalidCastle(IBoard board) {
+		boolean validKingSquare = canCastleOverSquare(getCastledKingSquare(board), board);
+		boolean validRookSquare = canCastleOverSquare(getCastledRookSquare(board), board);
+		return !(validKingSquare && validRookSquare);
+	}
+
+	protected void castle(Square source, Square destination, IBoard board) {
 		IBitboard king = board.getPiece(source).getBitboard();
-		king.unsetBitByIndex(Square.getIndex(source));
-		return king;
-	}
-
-	protected IBitboard unsetRook(Square destination, IBoard board) {
 		IBitboard rook = board.getPiece(destination).getBitboard();
+		king.unsetBitByIndex(Square.getIndex(source));
+		king.setBitByIndex(Square.getIndex(getCastledKingSquare(board)));
 		rook.unsetBitByIndex(Square.getIndex(destination));
-		return rook;
+		rook.setBitByIndex(Square.getIndex(getCastledRookSquare(board)));
+		board.getFen().castle();
 	}
 
-	protected abstract boolean invalidCastle(IBoard board);
+	protected abstract Square getCastledKingSquare(IBoard board);
 
-	protected abstract void castle(Square source, Square destination, IBoard board);
+	protected abstract Square getCastledRookSquare(IBoard board);
 }

@@ -212,28 +212,11 @@ public class Board implements IBoard, Serializable {
 			.orElse(new Bitboard());
 	}
 
-	public IBitboard getAllFriendlyAttacks() {
-		return Arrays
-			.stream(getAllFriendlyPieces())
-			.map(piece -> piece.getAllAttacks(this))
-			.reduce(Bitboard::merge)
-			.orElse(new Bitboard());
-	}
-
 	public IBitboard getOwnKing() {
 		char color = getFen().getActiveColor();
 		return switch (color) {
 			case 'w' -> getWhiteKing().getBitboard();
 			case 'b' -> getBlackKing().getBitboard();
-			default -> throw new IllegalStateException("Unexpected value: " + color);
-		};
-	}
-
-	public IBitboard getOpponentKing() {
-		char color = getFen().getActiveColor();
-		return switch (color) {
-			case 'w' -> getBlackKing().getBitboard();
-			case 'b' -> getWhiteKing().getBitboard();
 			default -> throw new IllegalStateException("Unexpected value: " + color);
 		};
 	}

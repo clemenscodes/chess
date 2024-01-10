@@ -34,6 +34,7 @@ public class MoveList implements IMoveList, Serializable {
 		}
 		incrementPlayedMoves();
 		moves[getNextMoveIndex()] = move(source, destination, board, reader);
+		board.getFen().switchActiveColor();
 	}
 
 	private void incrementPlayedMoves() {

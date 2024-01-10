@@ -61,11 +61,7 @@ public interface IBoard {
 
 	IBitboard getAllOpponentAttacks();
 
-	IBitboard getAllFriendlyAttacks();
-
 	IBitboard getOwnKing();
-
-	IBitboard getOpponentKing();
 
 	IPiece getPiece(Square square);
 

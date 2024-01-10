@@ -72,7 +72,7 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 		IBoard simulatedBoard = simulateMove(source, destination, board, reader);
 		boolean kingSafety = !Bitboard.overlap(
 			board.getOwnKing(),
-			simulatedBoard.getAllFriendlyAttacks()
+			simulatedBoard.getAllOpponentAttacks()
 		);
 		if (!kingSafety) {
 			throw new Error("King is in check");
