@@ -40,10 +40,10 @@ public abstract class King extends Piece implements Movable, Serializable {
 		if (Move.isCapture(Bitboard.getSingleBit(destination), board)) {
 			return new CaptureMove(src, dst, board);
 		}
-		if (Move.isKingCastle(Bitboard.getSingleBit(destination), board)) {
+		if (Move.isKingCastle(src, dst, board)) {
 			return new KingCastleMove(src, dst, board);
 		}
-		if (Move.isQueenCastle(Bitboard.getSingleBit(destination), board)) {
+		if (Move.isQueenCastle(src, dst, board)) {
 			return new QueenCastleMove(src, dst, board);
 		}
 		return new QuietMove(src, dst, board);

@@ -3,6 +3,7 @@ package model.move;
 import java.io.Serializable;
 import model.bits.Bitboard;
 import model.bits.IBitboard;
+import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
 import model.move.irreversible.pawn.DoublePawnPushMove;
@@ -21,12 +22,70 @@ public abstract class Move implements IMove, Serializable {
 		return Bitboard.overlap(destination, board.getFen().getEnPassantMask());
 	}
 
-	public static boolean isKingCastle(IBitboard destination, IBoard board) {
-		return false;
+	public static boolean isKingCastle(Square source, Square destination, IBoard board) {
+		char color = board.getFen().getActiveColor();
+		return switch (color) {
+			case 'w' -> whiteCanKingCastle(source, destination, board);
+			case 'b' -> blackCanKingCastle(source, destination, board);
+			default -> throw new IllegalStateException("Unexpected value: " + color);
+		};
 	}
 
-	public static boolean isQueenCastle(IBitboard destination, IBoard board) {
-		return false;
+	public static boolean isQueenCastle(Square source, Square destination, IBoard board) {
+		char color = board.getFen().getActiveColor();
+		return switch (color) {
+			case 'w' -> whiteCanQueenCastle(source, destination, board);
+			case 'b' -> blackCanQueenCastle(source, destination, board);
+			default -> throw new IllegalStateException("Unexpected value: " + color);
+		};
+	}
+
+	private static boolean whiteCanKingCastle(Square source, Square destination, IBoard board) {
+		return isWhiteKingCastle(source, destination) && validateWhiteKingCastleRights(board);
+	}
+
+	private static boolean blackCanKingCastle(Square source, Square destination, IBoard board) {
+		return isBlackKingCastle(source, destination) && validateBlackKingCastleRights(board);
+	}
+
+	private static boolean whiteCanQueenCastle(Square source, Square destination, IBoard board) {
+		return isWhiteQueenCastle(source, destination) && validateWhiteQueenCastleRights(board);
+	}
+
+	private static boolean blackCanQueenCastle(Square source, Square destination, IBoard board) {
+		return isBlackQueenCastle(source, destination) && validateBlackQueenCastleRights(board);
+	}
+
+	private static boolean validateWhiteKingCastleRights(IBoard board) {
+		return board.getFen().getWhiteKingCastle();
+	}
+
+	private static boolean validateBlackKingCastleRights(IBoard board) {
+		return board.getFen().getBlackKingCastle();
+	}
+
+	private static boolean validateWhiteQueenCastleRights(IBoard board) {
+		return board.getFen().getWhiteQueenCastle();
+	}
+
+	private static boolean validateBlackQueenCastleRights(IBoard board) {
+		return board.getFen().getBlackQueenCastle();
+	}
+
+	private static boolean isWhiteKingCastle(Square source, Square destination) {
+		return source == Board.whiteKingSquare && destination == Board.whiteKingRookSquare;
+	}
+
+	private static boolean isBlackKingCastle(Square source, Square destination) {
+		return source == Board.blackKingSquare && destination == Board.blackKingRookSquare;
+	}
+
+	private static boolean isWhiteQueenCastle(Square source, Square destination) {
+		return source == Board.whiteKingSquare && destination == Board.whiteQueenRookSquare;
+	}
+
+	private static boolean isBlackQueenCastle(Square source, Square destination) {
+		return source == Board.blackKingSquare && destination == Board.blackQueenRookSquare;
 	}
 
 	private Square source;

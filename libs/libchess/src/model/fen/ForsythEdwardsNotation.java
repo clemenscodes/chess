@@ -95,6 +95,22 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 		setEnPassantMask(square);
 	}
 
+	public boolean getWhiteKingCastle() {
+		return whiteKingCastle;
+	}
+
+	public boolean getWhiteQueenCastle() {
+		return whiteQueenCastle;
+	}
+
+	public boolean getBlackKingCastle() {
+		return blackKingCastle;
+	}
+
+	public boolean getBlackQueenCastle() {
+		return blackQueenCastle;
+	}
+
 	public void unsetEnPassantTargetSquare() {
 		setEnPassant("-");
 		unsetEnPassantMask();
@@ -268,32 +284,16 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 		setBlackQueenCastle(castling.contains("q"));
 	}
 
-	private boolean getWhiteKingCastle() {
-		return whiteKingCastle;
-	}
-
 	private void setWhiteKingCastle(boolean whiteKingCastle) {
 		this.whiteKingCastle = whiteKingCastle;
-	}
-
-	private boolean getWhiteQueenCastle() {
-		return whiteQueenCastle;
 	}
 
 	private void setWhiteQueenCastle(boolean whiteQueenCastle) {
 		this.whiteQueenCastle = whiteQueenCastle;
 	}
 
-	private boolean getBlackKingCastle() {
-		return blackKingCastle;
-	}
-
 	private void setBlackKingCastle(boolean blackKingCastle) {
 		this.blackKingCastle = blackKingCastle;
-	}
-
-	private boolean getBlackQueenCastle() {
-		return blackQueenCastle;
 	}
 
 	private void setBlackQueenCastle(boolean blackQueenCastle) {

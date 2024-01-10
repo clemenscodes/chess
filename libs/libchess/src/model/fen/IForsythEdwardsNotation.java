@@ -32,6 +32,11 @@ public interface IForsythEdwardsNotation {
 
 	void parse(String fen);
 
+	boolean getWhiteKingCastle();
+	boolean getWhiteQueenCastle();
+	boolean getBlackKingCastle();
+	boolean getBlackQueenCastle();
+
 	void whiteCastle();
 
 	void whiteKingMove();
