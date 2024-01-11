@@ -14,8 +14,37 @@ public class BoardTest {
 
 	@Test
 	void shouldInitialize() {
+		String fen = "r2qk2r/pppbbppp/2np4/1B2pn2/3PP3/2N2N2/PPPB1PPP/R2QK2R w KQkq - 0 1";
 		assertDoesNotThrow(() -> new Board());
 		assertDoesNotThrow(() -> new Board(new ForsythEdwardsNotation()));
+		assertDoesNotThrow(() -> new Board(new ForsythEdwardsNotation(fen)));
+	}
+
+	@Test
+	void shouldGetPiecePlacementData() {
+		String fen = "r2qk2r/pppbbppp/2np4/1B2pn2/3PP3/2N2N2/PPPB1PPP/R2QK2R w KQkq - 0 1";
+		IBoard board = new Board(new ForsythEdwardsNotation(fen));
+		assertEquals(
+			"r2qk2r/pppbbppp/2np4/1B2pn2/3PP3/2N2N2/PPPB1PPP/R2QK2R",
+			board.getPiecePlacementData()
+		);
+	}
+
+	@Test
+	void shouldPrintBoard() {
+		String fen = "r2qk2r/pppbbppp/2np4/1B2pn2/3PP3/2N2N2/PPPB1PPP/R2QK2R w KQkq - 0 1";
+		IBoard board = new Board(new ForsythEdwardsNotation(fen));
+		String expected =
+			"""
+			[♜] [ ] [ ] [♛] [♚] [ ] [ ] [♜]
+			[♟] [♟] [♟] [♝] [♝] [♟] [♟] [♟]
+			[ ] [ ] [♞] [♟] [ ] [ ] [ ] [ ]
+			[ ] [♗] [ ] [ ] [♟] [♞] [ ] [ ]
+			[ ] [ ] [ ] [♙] [♙] [ ] [ ] [ ]
+			[ ] [ ] [♘] [ ] [ ] [♘] [ ] [ ]
+			[♙] [♙] [♙] [♗] [ ] [♙] [♙] [♙]
+			[♖] [ ] [ ] [♕] [♔] [ ] [ ] [♖]""";
+		assertEquals(expected, board.toString());
 	}
 
 	@Test

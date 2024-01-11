@@ -13,6 +13,34 @@ public class BitboardTest {
 	}
 
 	@Test
+	void shouldPrintBitboard() {
+		IBitboard board = new Bitboard();
+		String expected =
+			"""
+			00000000
+			00000000
+			00000000
+			00000000
+			00000000
+			00000000
+			00000000
+			00000000""";
+		assertEquals(expected, board.toString());
+		board = new Bitboard(-1);
+		expected =
+			"""
+			11111111
+			11111111
+			11111111
+			11111111
+			11111111
+			11111111
+			11111111
+			11111111""";
+		assertEquals(expected, board.toString());
+	}
+
+	@Test
 	void shouldCreateSingleBits() {
 		for (int i = 0; i < 64; i++) {
 			IBitboard singleBit = Bitboard.getSingleBit(i);

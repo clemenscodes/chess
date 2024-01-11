@@ -270,36 +270,9 @@ public class Board implements IBoard, Serializable {
 	public String getPiecePlacementData() {
 		StringBuilder fenPiecePlacement = new StringBuilder();
 		for (int rank = 7; rank >= 0; rank--) {
-			int emptySquareCount = 0;
-			for (int file = 0; file < 8; file++) {
-				char pieceChar = getPieceChar(Board.getSquareIndex(rank, file));
-				if (pieceChar == ' ') {
-					emptySquareCount++;
-				} else {
-					if (emptySquareCount > 0) {
-						fenPiecePlacement.append(emptySquareCount);
-						emptySquareCount = 0;
-					}
-					fenPiecePlacement.append(pieceChar);
-				}
-			}
-			if (emptySquareCount > 0) {
-				fenPiecePlacement.append(emptySquareCount);
-			}
-			if (rank > 0) {
-				fenPiecePlacement.append('/');
-			}
+			processRank(fenPiecePlacement, rank);
 		}
 		return fenPiecePlacement.toString();
-	}
-
-	private char getPieceChar(int index) {
-		Square square = Square.getSquare(index);
-		IPiece piece = getPiece(square);
-		if (piece == null) {
-			return ' ';
-		}
-		return Pieces.fromKind(piece.getVariant());
 	}
 
 	public IBoard deepCopy() throws IOException, ClassNotFoundException {
@@ -512,6 +485,51 @@ public class Board implements IBoard, Serializable {
 		return Pieces.EMPTY_SYMBOL;
 	}
 
+	private void processRank(StringBuilder fenPiecePlacement, int rank) {
+		int emptySquareCount = 0;
+		for (int file = 0; file < 8; file++) {
+			char pieceChar = getPieceChar(Board.getSquareIndex(rank, file));
+			emptySquareCount = processFile(fenPiecePlacement, pieceChar, emptySquareCount);
+		}
+		if (emptySquareCount > 0) {
+			fenPiecePlacement.append(emptySquareCount);
+		}
+		if (rank > 0) {
+			fenPiecePlacement.append('/');
+		}
+	}
+
+	private int processFile(StringBuilder fenPiecePlacement, char pieceChar, int emptySquareCount) {
+		if (pieceChar == ' ') {
+			emptySquareCount++;
+		} else {
+			return handleNonEmptySquare(fenPiecePlacement, pieceChar, emptySquareCount);
+		}
+		return emptySquareCount;
+	}
+
+	private int handleNonEmptySquare(
+		StringBuilder fenPiecePlacement,
+		char pieceChar,
+		int emptySquareCount
+	) {
+		if (emptySquareCount > 0) {
+			fenPiecePlacement.append(emptySquareCount);
+			emptySquareCount = 0;
+		}
+		fenPiecePlacement.append(pieceChar);
+		return emptySquareCount;
+	}
+
+	private char getPieceChar(int index) {
+		Square square = Square.getSquare(index);
+		IPiece piece = getPiece(square);
+		if (piece == null) {
+			return ' ';
+		}
+		return Pieces.fromKind(piece.getVariant());
+	}
+
 	@Override
 	public String toString() {
 		return Writer.loopOver(this::appendRank, getAllPieces()).toString();
@@ -519,6 +537,9 @@ public class Board implements IBoard, Serializable {
 
 	private void appendRank(int rank, int file, StringBuilder stringBuilder, IBitboard[] pieces) {
 		char pieceSymbol = getPieceSymbol(getSquareIndex(rank, file), pieces);
-		stringBuilder.append('[').append(pieceSymbol).append(']').append(' ');
+		stringBuilder.append('[').append(pieceSymbol).append(']');
+		if (file != 7) {
+			stringBuilder.append(' ');
+		}
 	}
 }
