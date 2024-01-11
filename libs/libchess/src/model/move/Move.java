@@ -8,12 +8,13 @@ import model.board.IBoard;
 import model.board.Square;
 import model.fen.IForsythEdwardsNotation;
 import model.move.irreversible.pawn.DoublePawnPushMove;
+import model.piece.pawn.Pawn;
 import model.piece.rook.Rook;
 
 public abstract class Move implements IMove, Serializable {
 
-	public static boolean isPromotion(IBitboard destination, IBitboard promotionMask) {
-		return Bitboard.overlap(destination, promotionMask);
+	public static boolean isPromotion(IBitboard destination) {
+		return Bitboard.overlap(destination, Pawn.promotionMask);
 	}
 
 	public static boolean isCapture(IBitboard destination, IBoard board) {

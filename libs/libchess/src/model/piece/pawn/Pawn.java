@@ -13,6 +13,8 @@ import model.reader.IReader;
 
 public abstract class Pawn extends Piece implements MovableWithReader, Serializable {
 
+	public static final IBitboard promotionMask = Bitboard.merge(Board.firstRank, Board.eighthRank);
+
 	public Pawn(Pieces variant) {
 		super(variant);
 	}
@@ -236,9 +238,8 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 		Square src = Square.getSquare(source);
 		Square dst = Square.getSquare(destination);
 		IBitboard destinationBit = Bitboard.getSingleBit(destination);
-		IBitboard promotionMask = this instanceof WhitePawn ? Board.eighthRank : Board.firstRank;
 		IPiece pawn = board.getPiece(Square.getSquare(source));
-		if (Move.isPromotion(destinationBit, promotionMask)) {
+		if (Move.isPromotion(destinationBit)) {
 			return promotePawn(src, dst, board, reader);
 		}
 		if (Move.isEnPassant(destinationBit, board)) {
