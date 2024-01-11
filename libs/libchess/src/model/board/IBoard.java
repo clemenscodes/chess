@@ -55,13 +55,11 @@ public interface IBoard {
 
 	IBitboard[] getAllPieces();
 
-	IBitboard getOpponentPieces();
-
-	IBitboard getFriendlyPieces();
+	IBitboard getPieces(boolean getWhite);
 
 	IBitboard getAllOpponentAttacks();
 
-	IBitboard getOwnKing();
+	IBitboard getKing(boolean getWhite);
 
 	IPiece getPiece(Square square);
 

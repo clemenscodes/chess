@@ -176,29 +176,16 @@ public class Board implements IBoard, Serializable {
 		return allPieces;
 	}
 
-	public IBitboard getOpponentPieces() {
-		char color = getFen().getActiveColor();
-		return switch (color) {
-			case 'w' -> getBlackPieces();
-			case 'b' -> getWhitePieces();
-			default -> throw new IllegalStateException("Unexpected value: " + color);
-		};
-	}
-
-	public IBitboard getFriendlyPieces() {
-		char color = getFen().getActiveColor();
-		return switch (color) {
-			case 'w' -> getWhitePieces();
-			case 'b' -> getBlackPieces();
-			default -> throw new IllegalStateException("Unexpected value: " + color);
-		};
+	public IBitboard getPieces(boolean getWhite) {
+		return getWhite ? getWhitePieces() : getBlackPieces();
 	}
 
 	public IBitboard getAllOpponentAttacks() {
 		IForsythEdwardsNotation fen = getFen();
+		char color = fen.getActiveColor();
 		fen.switchActiveColor();
 		IBitboard attacks = Arrays
-			.stream(getAllFriendlyPieces())
+			.stream(getAllPieces(color != 'w'))
 			.map(piece -> piece.getAllAttacks(this))
 			.reduce(Bitboard::merge)
 			.orElse(new Bitboard());
@@ -206,13 +193,8 @@ public class Board implements IBoard, Serializable {
 		return attacks;
 	}
 
-	public IBitboard getOwnKing() {
-		char color = getFen().getActiveColor();
-		return switch (color) {
-			case 'w' -> getWhiteKing().getBitboard();
-			case 'b' -> getBlackKing().getBitboard();
-			default -> throw new IllegalStateException("Unexpected value: " + color);
-		};
+	public IBitboard getKing(boolean getWhite) {
+		return getWhite ? getWhiteKing().getBitboard() : getBlackKing().getBitboard();
 	}
 
 	public Pieces getPieceByIndex(int index) {
@@ -285,7 +267,8 @@ public class Board implements IBoard, Serializable {
 	}
 
 	public boolean kingUnsafe() {
-		return Bitboard.overlap(getOwnKing(), getAllOpponentAttacks());
+		boolean getWhite = getFen().getActiveColor() == 'w';
+		return Bitboard.overlap(getKing(getWhite), getAllOpponentAttacks());
 	}
 
 	public boolean isSquareAttacked(Square square) {
@@ -444,13 +427,8 @@ public class Board implements IBoard, Serializable {
 		return getAllBitboards(getAllBlackPieces());
 	}
 
-	private IPiece[] getAllFriendlyPieces() {
-		char color = getFen().getActiveColor();
-		return switch (color) {
-			case 'w' -> getAllWhitePieces();
-			case 'b' -> getAllBlackPieces();
-			default -> throw new IllegalStateException("Unexpected value: " + color);
-		};
+	private IPiece[] getAllPieces(boolean getWhite) {
+		return getWhite ? getAllWhitePieces() : getAllBlackPieces();
 	}
 
 	private void initializePiece(char symbol, int rank, int file) {

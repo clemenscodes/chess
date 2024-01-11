@@ -64,7 +64,9 @@ public abstract class Piece implements IPiece, Serializable {
 	}
 
 	protected IBitboard removeFriendlyPieces(IBitboard piece, IBoard board) {
-		return Bitboard.intersect(piece, Bitboard.negate(board.getFriendlyPieces()));
+		char color = board.getFen().getActiveColor();
+		boolean getWhite = color == 'w';
+		return Bitboard.intersect(piece, Bitboard.negate(board.getPieces(getWhite)));
 	}
 
 	protected boolean isInvalidMove(int source, int destination, IBoard board) {
@@ -95,8 +97,10 @@ public abstract class Piece implements IPiece, Serializable {
 
 	protected boolean kingSafe(int source, int destination, IBoard board) {
 		IBoard simulatedBoard = simulateMove(source, destination, board);
+		char color = board.getFen().getActiveColor();
+		boolean getWhite = color == 'w';
 		boolean kingAttacked = Bitboard.overlap(
-			board.getOwnKing(),
+			board.getKing(getWhite),
 			simulatedBoard.getAllOpponentAttacks()
 		);
 		if (kingAttacked) {
@@ -250,11 +254,15 @@ public abstract class Piece implements IPiece, Serializable {
 	}
 
 	private boolean isFriendlyCollision(IBitboard piece, IBoard board) {
-		return Bitboard.overlap(piece, board.getFriendlyPieces());
+		char color = board.getFen().getActiveColor();
+		boolean getWhite = color == 'w';
+		return Bitboard.overlap(piece, board.getPieces(getWhite));
 	}
 
 	private boolean isEnemyCollision(IBitboard piece, IBoard board) {
-		return Bitboard.overlap(piece, board.getOpponentPieces());
+		char color = board.getFen().getActiveColor();
+		boolean getWhite = color != 'w';
+		return Bitboard.overlap(piece, board.getPieces(getWhite));
 	}
 
 	private boolean pathFree(IBitboard slided, IBoard board) {

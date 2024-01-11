@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 import model.bits.Bitboard;
-import model.bits.IBitboard;
 import model.fen.ForsythEdwardsNotation;
 import model.piece.Pieces;
 import org.junit.jupiter.api.Test;
@@ -48,11 +47,11 @@ public class BoardTest {
 	}
 
 	@Test
-	void testGetOwnKing() {
+	void testGetKing() {
 		IBoard board = new Board();
-		assertEquals(board.getWhiteKing().getBitboard(), board.getOwnKing());
+		assertEquals(board.getWhiteKing().getBitboard(), board.getKing(true));
 		board.getFen().switchActiveColor();
-		assertEquals(board.getBlackKing().getBitboard(), board.getOwnKing());
+		assertEquals(board.getBlackKing().getBitboard(), board.getKing(false));
 	}
 
 	@Test
@@ -80,19 +79,11 @@ public class BoardTest {
 	}
 
 	@Test
-	void testGetOpponentPieces() {
+	void testGetPieces() {
 		IBoard board = new Board();
-		assertEquals(board.getBlackPieces().getBits(), board.getOpponentPieces().getBits());
+		assertEquals(board.getWhitePieces().getBits(), board.getPieces(true).getBits());
 		board.getFen().switchActiveColor();
-		assertEquals(board.getWhitePieces().getBits(), board.getOpponentPieces().getBits());
-	}
-
-	@Test
-	void testGetFriendlyPieces() {
-		IBoard board = new Board();
-		assertEquals(board.getWhitePieces().getBits(), board.getFriendlyPieces().getBits());
-		board.getFen().switchActiveColor();
-		assertEquals(board.getBlackPieces().getBits(), board.getFriendlyPieces().getBits());
+		assertEquals(board.getBlackPieces().getBits(), board.getPieces(false).getBits());
 	}
 
 	@Test
@@ -130,16 +121,6 @@ public class BoardTest {
 	void testIsSquareEmpty() {
 		IBoard board = new Board();
 		assertFalse(board.isSquareEmpty(a1));
-	}
-
-	@Test
-	void testGetAllFriendlyPieces() {
-		IBoard board = new Board();
-		IBitboard friendlyPieces = board.getFriendlyPieces();
-		assertEquals(friendlyPieces.getBits(), board.getWhitePieces().getBits());
-		board.getFen().switchActiveColor();
-		friendlyPieces = board.getFriendlyPieces();
-		assertEquals(friendlyPieces.getBits(), board.getBlackPieces().getBits());
 	}
 
 	@Test

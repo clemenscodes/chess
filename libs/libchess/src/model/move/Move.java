@@ -17,7 +17,10 @@ public abstract class Move implements IMove, Serializable {
 	}
 
 	public static boolean isCapture(IBitboard destination, IBoard board) {
-		return Bitboard.overlap(destination, board.getOpponentPieces());
+		return Bitboard.overlap(
+			destination,
+			board.getPieces(board.getFen().getActiveColor() == 'w')
+		);
 	}
 
 	public static boolean isEnPassant(IBitboard destination, IBoard board) {
