@@ -32,6 +32,23 @@ public enum Pieces {
 		};
 	}
 
+	public static char fromKind(Pieces kind) {
+		return switch (kind) {
+			case BlackRook -> 'r';
+			case BlackKnight -> 'n';
+			case BlackBishop -> 'b';
+			case BlackQueen -> 'q';
+			case BlackKing -> 'k';
+			case BlackPawn -> 'p';
+			case WhiteRook -> 'R';
+			case WhiteKnight -> 'N';
+			case WhiteBishop -> 'B';
+			case WhiteQueen -> 'Q';
+			case WhiteKing -> 'K';
+			case WhitePawn -> 'P';
+		};
+	}
+
 	public static final char[] SYMBOLS = {
 		model.piece.rook.BlackRook.SYMBOL,
 		model.piece.knight.BlackKnight.SYMBOL,

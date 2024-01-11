@@ -4,6 +4,7 @@ import java.io.Serializable;
 import model.bits.Bitboard;
 import model.bits.IBitboard;
 import model.board.Board;
+import model.board.IBoard;
 import model.board.Square;
 
 public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializable {
@@ -69,6 +70,10 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 
 	public int getFullMoveNumber() {
 		return fullMoveNumber;
+	}
+
+	public void updatePiecePlacementData(IBoard board) {
+		setPiecePlacementData(board.getPiecePlacementData());
 	}
 
 	public void incrementFullMoveNumber() {

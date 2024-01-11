@@ -1,6 +1,7 @@
 package model.fen;
 
 import model.bits.IBitboard;
+import model.board.IBoard;
 import model.board.Square;
 
 public interface IForsythEdwardsNotation {
@@ -17,6 +18,7 @@ public interface IForsythEdwardsNotation {
 	int getHalfMoveClock();
 
 	int getFullMoveNumber();
+	void updatePiecePlacementData(IBoard board);
 
 	void incrementFullMoveNumber();
 

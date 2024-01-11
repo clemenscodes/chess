@@ -222,7 +222,7 @@ public class Board implements IBoard, Serializable {
 				return Pieces.PIECE_BY_INDEX[i];
 			}
 		}
-		throw new Error("No piece is set on the square " + Square.getSquare(index));
+		return null;
 	}
 
 	public IPiece getPiece(Square square) {
@@ -231,6 +231,9 @@ public class Board implements IBoard, Serializable {
 	}
 
 	public IPiece getPieceByKind(Pieces kind) {
+		if (kind == null) {
+			return null;
+		}
 		return switch (kind) {
 			case BlackRook -> getBlackRook();
 			case BlackKnight -> getBlackKnight();
@@ -262,6 +265,41 @@ public class Board implements IBoard, Serializable {
 		}
 		updateOccupiedSquares();
 		updateEmptySquares();
+	}
+
+	public String getPiecePlacementData() {
+		StringBuilder fenPiecePlacement = new StringBuilder();
+		for (int rank = 7; rank >= 0; rank--) {
+			int emptySquareCount = 0;
+			for (int file = 0; file < 8; file++) {
+				char pieceChar = getPieceChar(Board.getSquareIndex(rank, file));
+				if (pieceChar == ' ') {
+					emptySquareCount++;
+				} else {
+					if (emptySquareCount > 0) {
+						fenPiecePlacement.append(emptySquareCount);
+						emptySquareCount = 0;
+					}
+					fenPiecePlacement.append(pieceChar);
+				}
+			}
+			if (emptySquareCount > 0) {
+				fenPiecePlacement.append(emptySquareCount);
+			}
+			if (rank > 0) {
+				fenPiecePlacement.append('/');
+			}
+		}
+		return fenPiecePlacement.toString();
+	}
+
+	private char getPieceChar(int index) {
+		Square square = Square.getSquare(index);
+		IPiece piece = getPiece(square);
+		if (piece == null) {
+			return ' ';
+		}
+		return Pieces.fromKind(piece.getVariant());
 	}
 
 	public IBoard deepCopy() throws IOException, ClassNotFoundException {

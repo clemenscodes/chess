@@ -80,4 +80,5 @@ public interface IBoard {
 	boolean isSquareAttacked(Square square);
 
 	boolean isSquareEmpty(Square square);
+	String getPiecePlacementData();
 }
