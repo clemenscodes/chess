@@ -284,12 +284,7 @@ public class Board implements IBoard, Serializable {
 	}
 
 	public boolean kingUnsafe() {
-		System.out.println("Checking king safety");
-		IBitboard king = getOwnKing();
-		IBitboard attacks = getAllOpponentAttacks();
-		IBitboard bAttacks = getBlackBishop().getAllAttacks(this);
-		System.out.println(bAttacks);
-		return Bitboard.overlap(king, attacks);
+		return Bitboard.overlap(getOwnKing(), getAllOpponentAttacks());
 	}
 
 	public boolean isSquareAttacked(Square square) {
