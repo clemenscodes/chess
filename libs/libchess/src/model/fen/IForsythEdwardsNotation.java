@@ -9,6 +9,8 @@ public interface IForsythEdwardsNotation {
 
 	char getActiveColor();
 
+	boolean isWhite();
+
 	String getCastling();
 
 	String getEnPassant();
@@ -18,6 +20,7 @@ public interface IForsythEdwardsNotation {
 	int getHalfMoveClock();
 
 	int getFullMoveNumber();
+
 	void updatePiecePlacementData(IBoard board);
 
 	void incrementFullMoveNumber();

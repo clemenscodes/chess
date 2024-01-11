@@ -29,39 +29,27 @@ public abstract class Move implements IMove, Serializable {
 	}
 
 	public static boolean isKingCastle(Square source, Square destination, IBoard board) {
-		char color = board.getFen().getActiveColor();
-		return switch (color) {
-			case 'w' -> isWhiteKingCastle(source, destination);
-			case 'b' -> isBlackKingCastle(source, destination);
-			default -> throw new IllegalStateException("Unexpected value: " + color);
-		};
+		return board.getFen().isWhite()
+			? isWhiteKingCastle(source, destination)
+			: isBlackKingCastle(source, destination);
 	}
 
 	public static boolean isQueenCastle(Square source, Square destination, IBoard board) {
-		char color = board.getFen().getActiveColor();
-		return switch (color) {
-			case 'w' -> isWhiteQueenCastle(source, destination);
-			case 'b' -> isBlackQueenCastle(source, destination);
-			default -> throw new IllegalStateException("Unexpected value: " + color);
-		};
+		return board.getFen().isWhite()
+			? isWhiteQueenCastle(source, destination)
+			: isBlackQueenCastle(source, destination);
 	}
 
 	public static boolean canKingCastle(Square source, Square destination, IBoard board) {
-		char color = board.getFen().getActiveColor();
-		return switch (color) {
-			case 'w' -> whiteCanKingCastle(source, destination, board);
-			case 'b' -> blackCanKingCastle(source, destination, board);
-			default -> throw new IllegalStateException("Unexpected value: " + color);
-		};
+		return board.getFen().isWhite()
+			? whiteCanKingCastle(source, destination, board)
+			: blackCanKingCastle(source, destination, board);
 	}
 
 	public static boolean canQueenCastle(Square source, Square destination, IBoard board) {
-		char color = board.getFen().getActiveColor();
-		return switch (color) {
-			case 'w' -> whiteCanQueenCastle(source, destination, board);
-			case 'b' -> blackCanQueenCastle(source, destination, board);
-			default -> throw new IllegalStateException("Unexpected value: " + color);
-		};
+		return board.getFen().isWhite()
+			? whiteCanQueenCastle(source, destination, board)
+			: blackCanQueenCastle(source, destination, board);
 	}
 
 	private static boolean whiteCanKingCastle(Square source, Square destination, IBoard board) {
@@ -113,45 +101,71 @@ public abstract class Move implements IMove, Serializable {
 	}
 
 	private Square source;
-	private Square destination;
-
-	public Move(Square source, Square destination, IBoard board) {
-		if (!isPlayersPiece(board, source)) {
-			throw new Error("Can not move opponents piece");
-		}
-		IForsythEdwardsNotation fen = board.getFen();
-		if (!(this instanceof DoublePawnPushMove) && !fen.getEnPassant().equals("-")) {
-			fen.unsetEnPassantTargetSquare();
-		}
-		if (board.getPiece(source) instanceof Rook && !fen.getCastling().equals("-")) {
-			switch (source) {
-				case a1, h1 -> fen.kingRookMove();
-				case a8, h8 -> fen.queenRookMove();
-			}
-		}
-		fen.incrementFullMoveNumber();
-		setSource(source);
-		setDestination(destination);
-	}
 
 	public Square getSource() {
 		return source;
-	}
-
-	public Square getDestination() {
-		return destination;
 	}
 
 	private void setSource(Square source) {
 		this.source = source;
 	}
 
+	private Square destination;
+
+	public Square getDestination() {
+		return destination;
+	}
+
 	private void setDestination(Square destination) {
 		this.destination = destination;
 	}
 
+	public Move(Square source, Square destination, IBoard board) {
+		checkValidMove(board, source);
+		handleEnPassant(board);
+		handleCastling(board, source);
+		updateForsythEdwardsNotation(board);
+		setSource(source);
+		setDestination(destination);
+	}
+
+	private void checkValidMove(IBoard board, Square source) {
+		if (!isPlayersPiece(board, source)) {
+			throw new Error("Cannot move opponent's piece");
+		}
+	}
+
+	private void handleEnPassant(IBoard board) {
+		IForsythEdwardsNotation fen = board.getFen();
+		if (!(this instanceof DoublePawnPushMove) && enPassantPossible(fen)) {
+			fen.unsetEnPassantTargetSquare();
+		}
+	}
+
+	private boolean enPassantPossible(IForsythEdwardsNotation fen) {
+		return !fen.getEnPassant().equals("-");
+	}
+
+	private boolean castlingPossible(IForsythEdwardsNotation fen) {
+		return !fen.getCastling().equals("-");
+	}
+
+	private void handleCastling(IBoard board, Square source) {
+		IForsythEdwardsNotation fen = board.getFen();
+		if (board.getPiece(source) instanceof Rook && castlingPossible(fen)) {
+			switch (source) {
+				case a1, h1 -> fen.kingRookMove();
+				case a8, h8 -> fen.queenRookMove();
+			}
+		}
+	}
+
+	private void updateForsythEdwardsNotation(IBoard board) {
+		board.getFen().incrementFullMoveNumber();
+	}
+
 	private boolean isPlayersPiece(IBoard board, Square source) {
-		IBitboard player = board.getFen().getActiveColor() == 'w'
+		IBitboard player = board.getFen().isWhite()
 			? board.getWhitePieces()
 			: board.getBlackPieces();
 		IBitboard movingPiece = Bitboard.getSingleBit(Square.getIndex(source));

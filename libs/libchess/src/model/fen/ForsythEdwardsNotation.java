@@ -39,6 +39,7 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 				"Invalid FEN: It should consist of 6 space-separated parts"
 			);
 		}
+		unsetEnPassantMask();
 		setPiecePlacementData(parts[0]);
 		setActiveColor(parts[1]);
 		setCastling(parts[2]);
@@ -53,6 +54,10 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 
 	public char getActiveColor() {
 		return activeColor;
+	}
+
+	public boolean isWhite() {
+		return getActiveColor() == 'w';
 	}
 
 	public String getCastling() {

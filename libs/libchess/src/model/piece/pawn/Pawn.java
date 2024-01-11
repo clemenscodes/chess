@@ -41,7 +41,7 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 		IBitboard regularAttacks = Bitboard.merge(maskedWestAttacks, maskedEastAttacks);
 		IBitboard directAttacks = Bitboard.intersect(
 			regularAttacks,
-			board.getPieces(board.getFen().getActiveColor() == 'w')
+			board.getPieces(board.getFen().isWhite())
 		);
 		if (Bitboard.overlap(regularAttacks, enPassantMask)) {
 			directAttacks.merge(enPassantMask);
@@ -76,7 +76,7 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 	private boolean kingSafe(int source, int destination, IBoard board, IReader reader) {
 		IBoard simulatedBoard = simulateMove(source, destination, board, reader);
 		boolean kingSafety = !Bitboard.overlap(
-			board.getKing(board.getFen().getActiveColor() == 'w'),
+			board.getKing(board.getFen().isWhite()),
 			simulatedBoard.getAllOpponentAttacks()
 		);
 		if (!kingSafety) {

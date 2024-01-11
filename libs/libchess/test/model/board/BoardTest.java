@@ -108,6 +108,7 @@ public class BoardTest {
 	@Test
 	void testKingUnsafe() {
 		IBoard board = new Board();
+		System.out.println(board);
 		assertFalse(board.kingUnsafe());
 	}
 
