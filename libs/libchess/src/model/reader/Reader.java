@@ -12,7 +12,7 @@ public class Reader implements IReader {
 	}
 
 	public String readLine() {
-		return getScanner().nextLine();
+		return getScanner().hasNextLine() ? getScanner().nextLine() : "";
 	}
 
 	private Scanner getScanner() {
