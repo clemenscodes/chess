@@ -95,6 +95,10 @@ public class ForsythEdwardsNotationTest {
 		assertFalse(fen.getWhiteQueenCastle());
 		assertTrue(fen.getBlackKingCastle());
 		assertTrue(fen.getBlackQueenCastle());
+		fen.switchActiveColor();
+		fen.castle();
+		assertFalse(fen.getBlackKingCastle());
+		assertFalse(fen.getBlackQueenCastle());
 	}
 
 	@Test
@@ -105,6 +109,10 @@ public class ForsythEdwardsNotationTest {
 		assertFalse(fen.getWhiteQueenCastle());
 		assertTrue(fen.getBlackKingCastle());
 		assertTrue(fen.getBlackQueenCastle());
+		fen.switchActiveColor();
+		fen.kingMove();
+		assertFalse(fen.getBlackKingCastle());
+		assertFalse(fen.getBlackQueenCastle());
 	}
 
 	@Test
@@ -114,6 +122,10 @@ public class ForsythEdwardsNotationTest {
 		assertFalse(fen.getWhiteKingCastle());
 		assertTrue(fen.getWhiteQueenCastle());
 		assertTrue(fen.getBlackKingCastle());
+		assertTrue(fen.getBlackQueenCastle());
+		fen.switchActiveColor();
+		fen.kingRookMove();
+		assertFalse(fen.getBlackKingCastle());
 		assertTrue(fen.getBlackQueenCastle());
 	}
 
@@ -125,5 +137,119 @@ public class ForsythEdwardsNotationTest {
 		assertFalse(fen.getWhiteQueenCastle());
 		assertTrue(fen.getBlackKingCastle());
 		assertTrue(fen.getBlackQueenCastle());
+		fen.switchActiveColor();
+		fen.queenRookMove();
+		assertTrue(fen.getBlackKingCastle());
+		assertFalse(fen.getBlackQueenCastle());
+	}
+
+	@Test
+	void testInvalidPiecePlacementData() {
+		ForsythEdwardsNotation fen = new ForsythEdwardsNotation();
+		assertThrows(
+			IllegalArgumentException.class,
+			() -> fen.parse("rnbqkbnr/pppppppp/8/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+		);
+		assertThrows(
+			IllegalArgumentException.class,
+			() -> fen.parse("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPPPPPPP/RNBQKBNR w KQkq - 0 1")
+		);
+	}
+
+	@Test
+	void testInvalidActiveColor() {
+		ForsythEdwardsNotation fen = new ForsythEdwardsNotation();
+		assertThrows(
+			IllegalArgumentException.class,
+			() -> fen.parse("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR x KQkq - 0 1")
+		);
+		assertThrows(
+			IllegalArgumentException.class,
+			() -> fen.parse("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR  KQkq - 0 1")
+		);
+		assertThrows(
+			IllegalArgumentException.class,
+			() -> fen.parse("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR KQkq - 0 1")
+		);
+	}
+
+	@Test
+	void testInvalidEnPassantInfo() {
+		ForsythEdwardsNotation fen = new ForsythEdwardsNotation();
+		assertThrows(
+			IllegalArgumentException.class,
+			() -> fen.parse("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq x 0 1")
+		);
+		assertThrows(
+			IllegalArgumentException.class,
+			() -> fen.parse("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq e 0 1")
+		);
+		assertThrows(
+			IllegalArgumentException.class,
+			() -> fen.parse("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq e99 0 1")
+		);
+	}
+
+	@Test
+	void testInvalidHalfMoveClockNegative() {
+		IForsythEdwardsNotation fen = new ForsythEdwardsNotation();
+		assertThrows(
+			IllegalArgumentException.class,
+			() -> fen.parse("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - -1 1")
+		);
+	}
+
+	@Test
+	void testInvalidHalfMoveClockNumberFormat() {
+		IForsythEdwardsNotation fen = new ForsythEdwardsNotation();
+		assertThrows(
+			IllegalArgumentException.class,
+			() -> fen.parse("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - x 1")
+		);
+	}
+
+	@Test
+	void testInvalidHalfMoveClockExceedsMax() {
+		IForsythEdwardsNotation fen = new ForsythEdwardsNotation();
+		assertThrows(
+			IllegalArgumentException.class,
+			() -> fen.parse("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 151 1")
+		);
+	}
+
+	@Test
+	void testInvalidFullMoveNumberZero() {
+		IForsythEdwardsNotation fen = new ForsythEdwardsNotation();
+		assertThrows(
+			IllegalArgumentException.class,
+			() -> fen.parse("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0")
+		);
+	}
+
+	@Test
+	void testInvalidFullMoveNumberNegative() {
+		IForsythEdwardsNotation fen = new ForsythEdwardsNotation();
+		assertThrows(
+			IllegalArgumentException.class,
+			() -> fen.parse("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - -5 1")
+		);
+	}
+
+	@Test
+	void testInvalidFullMoveClockNumberFormat() {
+		IForsythEdwardsNotation fen = new ForsythEdwardsNotation();
+		assertThrows(
+			IllegalArgumentException.class,
+			() -> fen.parse("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 x")
+		);
+	}
+
+	@Test
+	void testInvalidCastlingInfo() {
+		IForsythEdwardsNotation fen = new ForsythEdwardsNotation();
+		assertThrows(
+			IllegalArgumentException.class,
+			() -> fen.parse("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkqz - 1 1")
+		);
 	}
 }

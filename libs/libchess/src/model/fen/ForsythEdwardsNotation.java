@@ -218,16 +218,12 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 	}
 
 	private void setEnPassant(String enPassantInfo) {
-		try {
-			if (!enPassantInfo.equals("-")) {
-				if (enPassantInfo.length() != 2 || !isValidEnPassantSquare(enPassantInfo)) {
-					throw new IllegalArgumentException("Invalid en passant target square");
-				}
+		if (!enPassantInfo.equals("-")) {
+			if (enPassantInfo.length() != 2 || !isValidEnPassantSquare(enPassantInfo)) {
+				throw new IllegalArgumentException("Invalid en passant target square");
 			}
-			enPassant = enPassantInfo;
-		} catch (IndexOutOfBoundsException e) {
-			throw new IllegalArgumentException("Invalid en passant information");
 		}
+		enPassant = enPassantInfo;
 	}
 
 	private void setEnPassantMask(Square square) {
@@ -278,17 +274,13 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 	}
 
 	private void setCastling(String castlingInfo) {
-		try {
-			if (!castlingInfo.matches("^[-KQkq]*$")) {
-				throw new IllegalArgumentException(
-					"Invalid castling information: Use 'K', 'Q', 'k', 'q', or '-'"
-				);
-			}
-			castling = castlingInfo;
-			parseCastlingInfo();
-		} catch (IndexOutOfBoundsException e) {
-			throw new IllegalArgumentException("Invalid castling information");
+		if (!castlingInfo.matches("^[-KQkq]*$")) {
+			throw new IllegalArgumentException(
+				"Invalid castling information: Use 'K', 'Q', 'k', 'q', or '-'"
+			);
 		}
+		castling = castlingInfo;
+		parseCastlingInfo();
 	}
 
 	private void updateCastlingInfo() {

@@ -45,14 +45,14 @@ public class Board implements IBoard, Serializable {
 	public static final byte WEST_WEST_SOUTH = WEST + SOUTH_WEST;
 	public static final IBitboard firstFile = new Bitboard(0x0101010101010101L);
 	public static final IBitboard secondFile = new Bitboard(0x0202020202020202L);
-	public static final IBitboard notFirstFile = Bitboard.negate(firstFile);
 	public static final IBitboard lastFile = new Bitboard(0x8080808080808080L);
-	public static final IBitboard notLastFile = Bitboard.negate(lastFile);
 	public static final IBitboard secondLastFile = new Bitboard(0x4040404040404040L);
 	public static final IBitboard firstRank = new Bitboard(0x00000000000000FFL);
 	public static final IBitboard fourthRank = new Bitboard(0x0000000FF000000L);
 	public static final IBitboard fifthRank = new Bitboard(0x000000FF00000000L);
 	public static final IBitboard eighthRank = new Bitboard(0xFF00000000000000L);
+	public static final IBitboard notFirstFile = Bitboard.negate(firstFile);
+	public static final IBitboard notLastFile = Bitboard.negate(lastFile);
 	public static final Square whiteKingSquare = e1;
 	public static final Square whiteKingRookSquare = h1;
 	public static final Square whiteQueenRookSquare = a1;
