@@ -243,10 +243,6 @@ public class BitboardTest {
 		IBitboard board = new Bitboard(-1);
 		IBitboard shiftedBoard = Bitboard.shiftWestWestNorth(board);
 		IBitboard expected = new Bitboard(0x3F3F3F3F3F3F3F00L);
-		System.out.println(board);
-		System.out.println(shiftedBoard);
-		System.out.println(Long.toHexString(shiftedBoard.getBits()));
-		System.out.println(expected);
 		assertEquals(expected.getBits(), shiftedBoard.getBits());
 	}
 
@@ -316,5 +312,35 @@ public class BitboardTest {
 		IBitboard original = new Bitboard(0x0000000000000001L);
 		var split = Bitboard.split(original);
 		assertEquals(original.getBits(), split.getFirst().getBits());
+	}
+
+	@Test
+	void shouldToggleBitsOnBitboard() {
+		IBitboard bitboard = new Bitboard(0b1100);
+		IBitboard mockBitboard = new Bitboard(0b1010);
+		long initialBits = bitboard.getBits();
+		bitboard.toggleBits(mockBitboard);
+		long toggledBits = bitboard.getBits();
+		assertEquals(initialBits ^ mockBitboard.getBits(), toggledBits);
+	}
+
+	@Test
+	void shouldUnsetBitByIndexOnBitboard() {
+		IBitboard bitboard = new Bitboard(0b1101);
+		long initialBits = bitboard.getBits();
+		int indexToUnset = 2;
+		bitboard.unsetBitByIndex(indexToUnset);
+		long unsetBits = bitboard.getBits();
+		assertEquals(initialBits & ~(1L << indexToUnset), unsetBits);
+	}
+
+	@Test
+	void shouldSetBitByIndexOnBitboard() {
+		IBitboard bitboard = new Bitboard(0b1101);
+		long initialBits = bitboard.getBits();
+		int indexToSet = 2;
+		bitboard.setBitByIndex(indexToSet);
+		long setBits = bitboard.getBits();
+		assertEquals(initialBits | (1L << indexToSet), setBits);
 	}
 }
