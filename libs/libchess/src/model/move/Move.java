@@ -7,6 +7,8 @@ import model.board.IBoard;
 import model.board.Square;
 import model.fen.IForsythEdwardsNotation;
 import model.move.irreversible.castling.CastleMove;
+import model.move.irreversible.castling.KingCastleMove;
+import model.move.irreversible.castling.QueenCastleMove;
 import model.move.irreversible.pawn.DoublePawnPushMove;
 import model.piece.pawn.Pawn;
 import model.piece.rook.Rook;
@@ -84,28 +86,28 @@ public abstract class Move implements IMove, Serializable {
 	private static boolean isWhiteKingCastle(Square source, Square destination) {
 		return (
 			source == CastleMove.whiteCastleSourceSquare &&
-			destination == CastleMove.whiteKingCastleDestinationSquare
+			destination == KingCastleMove.whiteKingCastleDestinationSquare
 		);
 	}
 
 	private static boolean isBlackKingCastle(Square source, Square destination) {
 		return (
 			source == CastleMove.blackCastleSourceSquare &&
-			destination == CastleMove.blackKingCastleDestinationSquare
+			destination == KingCastleMove.blackKingCastleDestinationSquare
 		);
 	}
 
 	private static boolean isWhiteQueenCastle(Square source, Square destination) {
 		return (
 			source == CastleMove.whiteCastleSourceSquare &&
-			destination == CastleMove.whiteQueenCastleDestinationSquare
+			destination == QueenCastleMove.whiteQueenCastleDestinationSquare
 		);
 	}
 
 	private static boolean isBlackQueenCastle(Square source, Square destination) {
 		return (
 			source == CastleMove.blackCastleSourceSquare &&
-			destination == CastleMove.blackQueenCastleDestinationSquare
+			destination == QueenCastleMove.blackQueenCastleDestinationSquare
 		);
 	}
 

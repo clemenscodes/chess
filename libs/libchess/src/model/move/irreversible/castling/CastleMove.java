@@ -10,19 +10,7 @@ import model.move.irreversible.IrreversibleMove;
 public abstract class CastleMove extends IrreversibleMove {
 
 	public static final Square whiteCastleSourceSquare = e1;
-	public static final Square whiteKingCastleDestinationSquare = g1;
-	public static final Square whiteRookKingCastleDestinationSquare = f1;
-	public static final Square whiteQueenCastleDestinationSquare = c1;
-	public static final Square whiteQueenCastleRookSquare = a1;
-	public static final Square whiteQueenCastleRookDestinationSquare = d1;
-	public static final Square whiteKingCastleRookSquare = h1;
 	public static final Square blackCastleSourceSquare = e8;
-	public static final Square blackKingCastleDestinationSquare = g8;
-	public static final Square blackRookKingCastleDestinationSquare = f8;
-	public static final Square blackQueenCastleDestinationSquare = c8;
-	public static final Square blackQueenCastleRookDestinationSquare = d8;
-	public static final Square blackKingCastleRookSquare = h8;
-	public static final Square blackQueenCastleRookSquare = a8;
 
 	public CastleMove(Square source, Square destination, IBoard board) {
 		super(source, destination, board);
@@ -35,17 +23,17 @@ public abstract class CastleMove extends IrreversibleMove {
 		castle(source, destination, board);
 	}
 
-	protected boolean canCastleOverSquare(Square square, IBoard board) {
+	private boolean canCastleOverSquare(Square square, IBoard board) {
 		return board.isSquareEmpty(square) && !board.isSquareAttacked(square);
 	}
 
-	protected boolean invalidCastle(IBoard board) {
+	private boolean invalidCastle(IBoard board) {
 		boolean validKingSquare = canCastleOverSquare(getCastledKingSquare(board), board);
 		boolean validRookSquare = canCastleOverSquare(getCastledRookSquare(board), board);
 		return !(validKingSquare && validRookSquare);
 	}
 
-	protected void castle(Square source, Square destination, IBoard board) {
+	private void castle(Square source, Square destination, IBoard board) {
 		moveKing(source, destination, board);
 		moveRook(board);
 		removeCastlingRights(board);

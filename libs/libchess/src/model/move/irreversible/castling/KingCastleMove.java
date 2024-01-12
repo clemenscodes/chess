@@ -1,9 +1,19 @@
 package model.move.irreversible.castling;
 
+import static model.board.Square.*;
+import static model.board.Square.h8;
+
 import model.board.IBoard;
 import model.board.Square;
 
 public class KingCastleMove extends CastleMove {
+
+	public static final Square whiteKingCastleDestinationSquare = g1;
+	public static final Square blackKingCastleDestinationSquare = g8;
+	private static final Square whiteRookKingCastleDestinationSquare = f1;
+	private static final Square whiteKingCastleRookSquare = h1;
+	private static final Square blackRookKingCastleDestinationSquare = f8;
+	private static final Square blackKingCastleRookSquare = h8;
 
 	public KingCastleMove(Square source, Square destination, IBoard board) {
 		super(source, destination, board);
