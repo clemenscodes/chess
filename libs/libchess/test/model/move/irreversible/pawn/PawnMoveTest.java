@@ -21,28 +21,9 @@ public class PawnMoveTest {
 	@Test
 	void shouldUnsetPawnBit() {
 		IPiece piece = board.getWhitePawn();
-		String expected =
-			"""
-			00000000
-			00000000
-			00000000
-			00000000
-			00000000
-			00000000
-			11111111
-			00000000""";
-		assertEquals(expected, piece.getBitboard().toString());
 		new SinglePawnPushMove(e2, e3, board, piece);
-		expected =
-			"""
-			00000000
-			00000000
-			00000000
-			00000000
-			00000000
-			00001000
-			11110111
-			00000000""";
-		assertEquals(expected, piece.getBitboard().toString());
+		board.getFen().updatePiecePlacementData(board);
+		String expected = "rnbqkbnr/pppppppp/8/8/8/4P3/PPPP1PPP/RNBQKBNR w KQkq - 0 1";
+		assertEquals(expected, board.getFen().toString());
 	}
 }

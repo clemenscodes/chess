@@ -6,13 +6,13 @@ import model.piece.Pieces;
 
 public class BishopPromotionCaptureMove extends PromotionCaptureMove {
 
-	public BishopPromotionCaptureMove(
-		Square source,
-		Square destination,
-		IBoard board,
-		Pieces chosenPromotion
-	) {
-		super(source, destination, board, chosenPromotion);
+	public BishopPromotionCaptureMove(Square source, Square destination, IBoard board) {
+		super(
+			source,
+			destination,
+			board,
+			board.getFen().isWhite() ? Pieces.WhiteBishop : Pieces.BlackBishop
+		);
 	}
 
 	@Override

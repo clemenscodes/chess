@@ -209,29 +209,29 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 	private IMove makePromotion(Square src, Square dst, Pieces piece, IBoard board) {
 		Pieces[] pieces = getPromotionPieces();
 		if (piece == pieces[0]) {
-			return new QueenPromotionMove(src, dst, board, piece);
+			return new QueenPromotionMove(src, dst, board);
 		}
 		if (piece == pieces[1]) {
-			return new RookPromotionMove(src, dst, board, piece);
+			return new RookPromotionMove(src, dst, board);
 		}
 		if (piece == pieces[2]) {
-			return new KnightPromotionMove(src, dst, board, piece);
+			return new KnightPromotionMove(src, dst, board);
 		}
-		return new BishopPromotionMove(src, dst, board, piece);
+		return new BishopPromotionMove(src, dst, board);
 	}
 
 	private IMove makePromotionCapture(Square src, Square dst, Pieces piece, IBoard board) {
 		Pieces[] pieces = getPromotionPieces();
 		if (piece == pieces[0]) {
-			return new QueenPromotionCaptureMove(src, dst, board, piece);
+			return new QueenPromotionCaptureMove(src, dst, board);
 		}
 		if (piece == pieces[1]) {
-			return new RookPromotionCaptureMove(src, dst, board, piece);
+			return new RookPromotionCaptureMove(src, dst, board);
 		}
 		if (piece == pieces[2]) {
-			return new KnightPromotionCaptureMove(src, dst, board, piece);
+			return new KnightPromotionCaptureMove(src, dst, board);
 		}
-		return new BishopPromotionCaptureMove(src, dst, board, piece);
+		return new BishopPromotionCaptureMove(src, dst, board);
 	}
 
 	private IMove unsafeMove(int source, int destination, IBoard board, IReader reader) {

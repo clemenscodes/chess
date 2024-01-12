@@ -6,13 +6,13 @@ import model.piece.Pieces;
 
 public class KnightPromotionMove extends PromotionMove {
 
-	public KnightPromotionMove(
-		Square source,
-		Square destination,
-		IBoard board,
-		Pieces chosenPromotion
-	) {
-		super(source, destination, board, chosenPromotion);
+	public KnightPromotionMove(Square source, Square destination, IBoard board) {
+		super(
+			source,
+			destination,
+			board,
+			board.getFen().isWhite() ? Pieces.WhiteKnight : Pieces.BlackKnight
+		);
 	}
 
 	@Override
