@@ -46,13 +46,25 @@ public abstract class CastleMove extends IrreversibleMove {
 	}
 
 	protected void castle(Square source, Square destination, IBoard board) {
-		Square rookSquare = getRookSquare(board);
+		moveKing(source, destination, board);
+		moveRook(board);
+		removeCastlingRights(board);
+	}
+
+	private void moveKing(Square source, Square destination, IBoard board) {
 		IBitboard king = board.getPiece(source).getBitboard();
-		IBitboard rook = board.getPiece(rookSquare).getBitboard();
 		king.unsetBitByIndex(Square.getIndex(source));
 		king.setBitByIndex(Square.getIndex(destination));
+	}
+
+	private void moveRook(IBoard board) {
+		Square rookSquare = getRookSquare(board);
+		IBitboard rook = board.getPiece(rookSquare).getBitboard();
 		rook.unsetBitByIndex(Square.getIndex(rookSquare));
 		rook.setBitByIndex(Square.getIndex(getCastledRookSquare(board)));
+	}
+
+	private void removeCastlingRights(IBoard board) {
 		board.getFen().castle();
 	}
 
