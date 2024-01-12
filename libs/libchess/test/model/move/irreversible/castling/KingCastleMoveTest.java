@@ -25,7 +25,7 @@ public class KingCastleMoveTest {
 		new KingCastleMove(e1, g1, board);
 		board.getFen().switchActiveColor();
 		board.getFen().updatePiecePlacementData(board);
-		String expected = "r1bqk2r/pppp1ppp/2n2n2/1Bb1p3/4P3/3P1N2/PPP2PPP/RNBQ1RK1 b kq - 2 6";
+		String expected = "r1bqk2r/pppp1ppp/2n2n2/1Bb1p3/4P3/3P1N2/PPP2PPP/RNBQ1RK1 b kq - 2 5";
 		assertEquals(expected, board.getFen().toString());
 	}
 

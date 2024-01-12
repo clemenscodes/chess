@@ -8,6 +8,7 @@ import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
 import model.fen.ForsythEdwardsNotation;
+import model.fen.IForsythEdwardsNotation;
 import model.move.irreversible.pawn.EnPassantCaptureMove;
 import model.move.reversible.QuietMove;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,10 +25,20 @@ public class MoveTest {
 
 	@Test
 	void shouldIncrementFullMoveNumber() {
-		int fullMoveNumber = board.getFen().getFullMoveNumber();
+		IForsythEdwardsNotation fen = board.getFen();
+		int fullMoveNumber = fen.getFullMoveNumber();
 		assertEquals(1, fullMoveNumber);
 		new QuietMove(g1, f3, board);
-		fullMoveNumber = board.getFen().getFullMoveNumber();
+		fen.switchActiveColor();
+		fullMoveNumber = fen.getFullMoveNumber();
+		assertEquals(1, fullMoveNumber);
+		new QuietMove(g8, f6, board);
+		fen.switchActiveColor();
+		fullMoveNumber = fen.getFullMoveNumber();
+		assertEquals(2, fullMoveNumber);
+		new QuietMove(b1, c3, board);
+		fen.switchActiveColor();
+		fullMoveNumber = fen.getFullMoveNumber();
 		assertEquals(2, fullMoveNumber);
 	}
 

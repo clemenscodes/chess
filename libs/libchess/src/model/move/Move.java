@@ -172,7 +172,9 @@ public abstract class Move implements IMove, Serializable {
 	}
 
 	private void updateForsythEdwardsNotation(IBoard board) {
-		board.getFen().incrementFullMoveNumber();
+		if (!board.getFen().isWhite()) {
+			board.getFen().incrementFullMoveNumber();
+		}
 	}
 
 	private boolean isPlayersPiece(IBoard board, Square source) {
