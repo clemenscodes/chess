@@ -21,14 +21,14 @@ public class ChessModelTest {
 	void startGameShouldSetInitialState() {
 		chessModel.startGame();
 		assertEquals(State.Start, chessModel.getGameState());
-		assertEquals(0, chessModel.getMoveList().getPlayedMoves());
+		assertEquals(0, chessModel.getMoveList().getMoves().size());
 	}
 
 	@Test
 	void startNewGameShouldResetGame() {
 		chessModel.startNewGame();
 		assertEquals(State.Playing, chessModel.getGameState());
-		assertEquals(0, chessModel.getMoveList().getPlayedMoves());
+		assertEquals(0, chessModel.getMoveList().getMoves().size());
 	}
 
 	@Test
@@ -39,6 +39,6 @@ public class ChessModelTest {
 		chessModel.startNewGame();
 		chessModel.makeMove(Square.e2, Square.e4);
 		assertEquals(State.Playing, chessModel.getGameState());
-		assertEquals(1, chessModel.getMoveList().getPlayedMoves());
+		assertEquals(1, chessModel.getMoveList().getMoves().size());
 	}
 }

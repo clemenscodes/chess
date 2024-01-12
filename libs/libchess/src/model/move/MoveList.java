@@ -1,6 +1,7 @@
 package model.move;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import model.board.IBoard;
 import model.board.Square;
 import model.piece.Pieces;
@@ -8,57 +9,43 @@ import model.reader.IReader;
 
 public class MoveList implements IMoveList, Serializable {
 
-	private static final int MOVE_LIMIT = 17697;
-	private IMove[] moves;
-	private int playedMoves;
+	private ArrayList<IMove> moves;
 
 	public MoveList() {
-		setPlayedMoves(0);
-		setMoves(new Move[MOVE_LIMIT]);
+		setMoves(new ArrayList<>());
 	}
 
-	public IMove[] getMoves() {
+	public ArrayList<IMove> getMoves() {
 		return moves;
 	}
 
-	public int getPlayedMoves() {
-		return playedMoves;
+	public void makeMove(Square source, Square destination, IBoard board, IReader reader) {
+		validateMove(source, destination);
+		performMove(source, destination, board, reader);
+		updateBoardState(board);
 	}
 
-	public void makeMove(Square source, Square destination, IBoard board, IReader reader) {
+	private void validateMove(Square source, Square destination) {
 		if (source == destination) {
-			throw new Error("Source and destination must be different");
+			throw new IllegalArgumentException("Source and destination must be different");
 		}
-		if (getPlayedMoves() >= MOVE_LIMIT) {
-			throw new Error("Making another move is impossible");
-		}
-		incrementPlayedMoves();
+	}
+
+	private void performMove(Square source, Square destination, IBoard board, IReader reader) {
 		addMove(source, destination, board, reader);
 		board.getFen().switchActiveColor();
+	}
+
+	private void updateBoardState(IBoard board) {
 		board.getFen().updatePiecePlacementData(board);
 	}
 
 	private void addMove(Square source, Square destination, IBoard board, IReader reader) {
-		moves[getNextMoveIndex()] = move(source, destination, board, reader);
+		moves.add(move(source, destination, board, reader));
 	}
 
-	private void setMoves(IMove[] moves) {
+	private void setMoves(ArrayList<IMove> moves) {
 		this.moves = moves;
-	}
-
-	private void incrementPlayedMoves() {
-		setPlayedMoves(getPlayedMoves() + 1);
-	}
-
-	private int getNextMoveIndex() {
-		return getPlayedMoves() - 1;
-	}
-
-	private void setPlayedMoves(int playedMoves) {
-		if (playedMoves > MOVE_LIMIT) {
-			throw new Error("Can not set played moves higher than the most possible moves");
-		}
-		this.playedMoves = playedMoves;
 	}
 
 	private IMove move(Square source, Square destination, IBoard board, IReader reader) {
@@ -83,15 +70,15 @@ public class MoveList implements IMoveList, Serializable {
 
 	@Override
 	public String toString() {
-		IMove[] moves = getMoves();
+		ArrayList<IMove> moves = getMoves();
 		StringBuilder stringBuilder = new StringBuilder();
-		for (int i = 0; i < getPlayedMoves(); i++) {
+		for (int i = 0; i < moves.size(); i++) {
 			if (i % 2 == 0) {
 				stringBuilder.append((i / 2) + 1).append(". ");
-				stringBuilder.append(moves[i]).append(" ");
+				stringBuilder.append(moves.get(i)).append(" ");
 			}
 			if (i % 2 != 0) {
-				stringBuilder.append(moves[i]).append("\n");
+				stringBuilder.append(moves.get(i)).append("\n");
 			}
 		}
 		return stringBuilder.toString();
