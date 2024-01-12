@@ -8,7 +8,7 @@ import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
 import model.fen.ForsythEdwardsNotation;
-import model.move.irreversible.pawn.DoublePawnPushMove;
+import model.move.irreversible.pawn.EnPassantCaptureMove;
 import model.move.reversible.QuietMove;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -111,5 +111,42 @@ public class MoveTest {
 		Move move = new QuietMove(g1, f3, board);
 		assertEquals(g1, move.getSource());
 		assertEquals(f3, move.getDestination());
+	}
+
+	@Test
+	void testCanNotMoveOpponentsPieces() {
+		assertThrows(Error.class, () -> new QuietMove(e7, e5, board));
+		try {
+			new QuietMove(e7, e5, board);
+		} catch (Error e) {
+			assertEquals(e.getMessage(), "Can not move opponent's piece");
+		}
+	}
+
+	@Test
+	void testCanHandleEnPassant() {
+		String fen = "rnbqkb1r/ppp1pppp/5n2/3pP3/8/8/PPPP1PPP/RNBQKBNR w KQkq d6 0 1";
+		board = new Board(new ForsythEdwardsNotation(fen));
+		new EnPassantCaptureMove(e5, d6, board, board.getPiece(e5));
+	}
+
+	@Test
+	void testCanMakeKingRookMove() {
+		String fen = "rnbqkb1r/pppppppp/5n2/8/8/5N2/PPPPPPPP/RNBQKB1R w KQkq - 0 1";
+		board = new Board(new ForsythEdwardsNotation(fen));
+		new QuietMove(h1, g1, board);
+		board.getFen().switchActiveColor();
+		new QuietMove(h8, g8, board);
+		assertEquals("Qq", board.getFen().getCastling());
+	}
+
+	@Test
+	void testCanMakeQueenRookMove() {
+		String fen = "r1bqkbnr/pppppppp/2n5/8/8/2N5/PPPPPPPP/R1BQKBNR w KQkq - 0 1";
+		board = new Board(new ForsythEdwardsNotation(fen));
+		new QuietMove(a1, b1, board);
+		board.getFen().switchActiveColor();
+		new QuietMove(a8, b8, board);
+		assertEquals("Kk", board.getFen().getCastling());
 	}
 }

@@ -18,10 +18,7 @@ public abstract class Move implements IMove, Serializable {
 	}
 
 	public static boolean isCapture(IBitboard destination, IBoard board) {
-		return Bitboard.overlap(
-			destination,
-			board.getPieces(board.getFen().getActiveColor() == 'w')
-		);
+		return Bitboard.overlap(destination, board.getPieces(board.getFen().isWhite()));
 	}
 
 	public static boolean isEnPassant(IBitboard destination, IBoard board) {
@@ -131,7 +128,7 @@ public abstract class Move implements IMove, Serializable {
 
 	private void checkValidMove(IBoard board, Square source) {
 		if (!isPlayersPiece(board, source)) {
-			throw new Error("Cannot move opponent's piece");
+			throw new Error("Can not move opponent's piece");
 		}
 	}
 
@@ -154,8 +151,8 @@ public abstract class Move implements IMove, Serializable {
 		IForsythEdwardsNotation fen = board.getFen();
 		if (board.getPiece(source) instanceof Rook && castlingPossible(fen)) {
 			switch (source) {
-				case a1, h1 -> fen.kingRookMove();
-				case a8, h8 -> fen.queenRookMove();
+				case h1, h8 -> fen.kingRookMove();
+				case a1, a8 -> fen.queenRookMove();
 			}
 		}
 	}
