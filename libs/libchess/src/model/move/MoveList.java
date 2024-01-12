@@ -15,14 +15,18 @@ public class MoveList implements IMoveList, Serializable {
 		setMoves(new ArrayList<>());
 	}
 
-	public ArrayList<IMove> getMoves() {
-		return moves;
+	public int getPlayedMoves() {
+		return getMoves().size();
 	}
 
 	public void makeMove(Square source, Square destination, IBoard board, IReader reader) {
 		validateMove(source, destination);
 		performMove(source, destination, board, reader);
 		updateBoardState(board);
+	}
+
+	private ArrayList<IMove> getMoves() {
+		return moves;
 	}
 
 	private void validateMove(Square source, Square destination) {

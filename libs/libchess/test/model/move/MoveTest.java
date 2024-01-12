@@ -23,6 +23,15 @@ public class MoveTest {
 	}
 
 	@Test
+	void shouldIncrementFullMoveNumber() {
+		int fullMoveNumber = board.getFen().getFullMoveNumber();
+		assertEquals(1, fullMoveNumber);
+		new QuietMove(g1, f3, board);
+		fullMoveNumber = board.getFen().getFullMoveNumber();
+		assertEquals(2, fullMoveNumber);
+	}
+
+	@Test
 	void shouldDeterminePromotion() {
 		boolean result = Move.isPromotion(Bitboard.merge(Board.firstRank, Board.eighthRank));
 		assertTrue(result);

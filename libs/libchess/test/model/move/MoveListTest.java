@@ -33,7 +33,7 @@ public class MoveListTest {
 	@Test
 	void shouldInitializeCorrectly() {
 		int expectedPlayedMoves = 0;
-		assertEquals(expectedPlayedMoves, list.getMoves().size());
+		assertEquals(expectedPlayedMoves, list.getPlayedMoves());
 	}
 
 	@Test
@@ -43,7 +43,7 @@ public class MoveListTest {
 		} catch (IllegalArgumentException e) {
 			assertEquals("Source and destination must be different", e.getMessage());
 		}
-		assertEquals(0, list.getMoves().size());
+		assertEquals(0, list.getPlayedMoves());
 	}
 
 	@Test
