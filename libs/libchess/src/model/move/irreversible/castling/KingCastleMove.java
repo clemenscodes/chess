@@ -1,7 +1,5 @@
 package model.move.irreversible.castling;
 
-import static model.board.Square.*;
-
 import model.board.IBoard;
 import model.board.Square;
 
@@ -11,12 +9,20 @@ public class KingCastleMove extends CastleMove {
 		super(source, destination, board);
 	}
 
+	protected Square getRookSquare(IBoard board) {
+		return board.getFen().isWhite() ? whiteKingCastleRookSquare : blackKingCastleRookSquare;
+	}
+
 	protected Square getCastledKingSquare(IBoard board) {
-		return board.getFen().getActiveColor() == 'w' ? f1 : f8;
+		return board.getFen().isWhite()
+			? whiteKingCastleDestinationSquare
+			: blackKingCastleDestinationSquare;
 	}
 
 	protected Square getCastledRookSquare(IBoard board) {
-		return board.getFen().getActiveColor() == 'w' ? g1 : g8;
+		return board.getFen().isWhite()
+			? whiteRookKingCastleDestinationSquare
+			: blackRookKingCastleDestinationSquare;
 	}
 
 	@Override

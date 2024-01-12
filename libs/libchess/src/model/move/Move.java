@@ -3,10 +3,10 @@ package model.move;
 import java.io.Serializable;
 import model.bits.Bitboard;
 import model.bits.IBitboard;
-import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
 import model.fen.IForsythEdwardsNotation;
+import model.move.irreversible.castling.CastleMove;
 import model.move.irreversible.pawn.DoublePawnPushMove;
 import model.piece.pawn.Pawn;
 import model.piece.rook.Rook;
@@ -82,19 +82,31 @@ public abstract class Move implements IMove, Serializable {
 	}
 
 	private static boolean isWhiteKingCastle(Square source, Square destination) {
-		return source == Board.whiteKingSquare && destination == Board.whiteKingRookSquare;
+		return (
+			source == CastleMove.whiteCastleSourceSquare &&
+			destination == CastleMove.whiteKingCastleDestinationSquare
+		);
 	}
 
 	private static boolean isBlackKingCastle(Square source, Square destination) {
-		return source == Board.blackKingSquare && destination == Board.blackKingRookSquare;
+		return (
+			source == CastleMove.blackCastleSourceSquare &&
+			destination == CastleMove.blackKingCastleDestinationSquare
+		);
 	}
 
 	private static boolean isWhiteQueenCastle(Square source, Square destination) {
-		return source == Board.whiteKingSquare && destination == Board.whiteQueenRookSquare;
+		return (
+			source == CastleMove.whiteCastleSourceSquare &&
+			destination == CastleMove.whiteQueenCastleDestinationSquare
+		);
 	}
 
 	private static boolean isBlackQueenCastle(Square source, Square destination) {
-		return source == Board.blackKingSquare && destination == Board.blackQueenRookSquare;
+		return (
+			source == CastleMove.blackCastleSourceSquare &&
+			destination == CastleMove.blackQueenCastleDestinationSquare
+		);
 	}
 
 	private Square source;

@@ -1,7 +1,5 @@
 package model.board;
 
-import static model.board.Square.*;
-
 import java.io.*;
 import java.util.Arrays;
 import model.bits.Bitboard;
@@ -53,12 +51,6 @@ public class Board implements IBoard, Serializable {
 	public static final IBitboard eighthRank = new Bitboard(0xFF00000000000000L);
 	public static final IBitboard notFirstFile = Bitboard.negate(firstFile);
 	public static final IBitboard notLastFile = Bitboard.negate(lastFile);
-	public static final Square whiteKingSquare = e1;
-	public static final Square whiteKingRookSquare = g1;
-	public static final Square whiteQueenRookSquare = c1;
-	public static final Square blackKingSquare = e8;
-	public static final Square blackKingRookSquare = g8;
-	public static final Square blackQueenRookSquare = c8;
 
 	public static int getSquareIndex(int rank, int file) {
 		return SIZE * rank + file;
