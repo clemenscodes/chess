@@ -1,7 +1,6 @@
 package model.move.irreversible.pawn.promotion.capturing;
 
-import static model.board.Square.f7;
-import static model.board.Square.g8;
+import static model.board.Square.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import model.board.Board;
@@ -21,11 +20,17 @@ public class KnightPromotionCaptureMoveTest {
 	}
 
 	@Test
-	void shouldCaptureAndPromotePawn() {
+	void shouldCaptureAndPromotePawnToKnight() {
 		new KnightPromotionCaptureMove(f7, g8, board);
 		board.getFen().updatePiecePlacementData(board);
 		board.getFen().switchActiveColor();
 		String expected = "rnbq1bNr/pppkp1pp/8/8/8/3p4/PPPP1PPP/RNBQKBNR b KQ - 0 5";
 		assertEquals(expected, board.getFen().toString());
+	}
+
+	@Test
+	void shouldPrint() {
+		var move = new KnightPromotionCaptureMove(f7, g8, board);
+		assertEquals("f7g8", move.toString());
 	}
 }

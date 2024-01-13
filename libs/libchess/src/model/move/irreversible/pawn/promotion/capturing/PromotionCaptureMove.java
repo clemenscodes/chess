@@ -15,5 +15,6 @@ public abstract class PromotionCaptureMove extends PromotionMove {
 	) {
 		super(source, destination, board, chosenPromotion);
 		board.capturePiece(Square.getIndex(destination));
+		promote(board, destination, chosenPromotion);
 	}
 }
