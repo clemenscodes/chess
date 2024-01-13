@@ -97,10 +97,8 @@ public abstract class Piece implements IPiece, Serializable {
 
 	protected boolean kingSafe(int source, int destination, IBoard board) {
 		IBoard simulatedBoard = simulateMove(source, destination, board);
-		char color = board.getFen().getActiveColor();
-		boolean getWhite = color == 'w';
 		boolean kingAttacked = Bitboard.overlap(
-			board.getKing(getWhite),
+			board.getKing(board.getFen().isWhite()),
 			simulatedBoard.getAllOpponentAttacks()
 		);
 		if (kingAttacked) {
