@@ -1,8 +1,11 @@
 package model.bits;
 
+import static model.bits.Directions.*;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import model.board.Board;
+import model.board.IBoard;
 import model.writer.Writer;
 
 public class Bitboard implements IBitboard, Serializable {
@@ -154,6 +157,58 @@ public class Bitboard implements IBitboard, Serializable {
 			shift(board, Board.WEST_WEST_SOUTH),
 			negate(merge(Board.lastFile, Board.secondLastFile))
 		);
+	}
+
+	public static IBitboard getDiagonalRays(IBitboard piece, IBoard board) {
+		return Bitboard.mergeMany(
+			new IBitboard[] {
+				getRay(piece, board, NorthEast),
+				getRay(piece, board, NorthWest),
+				getRay(piece, board, SouthWest),
+				getRay(piece, board, SouthEast),
+			}
+		);
+	}
+
+	public static IBitboard getHorizontalRays(IBitboard piece, IBoard board) {
+		return Bitboard.mergeMany(
+			new IBitboard[] { getRay(piece, board, East), getRay(piece, board, West) }
+		);
+	}
+
+	public static IBitboard getVerticalRays(IBitboard piece, IBoard board) {
+		return Bitboard.mergeMany(
+			new IBitboard[] { getRay(piece, board, North), getRay(piece, board, South) }
+		);
+	}
+
+	public static IBitboard getRay(IBitboard piece, IBoard board, Directions direction) {
+		IBitboard ray = new Bitboard();
+		IBitboard shift = piece.copy();
+		while (Directions.canSlide(shift, board, direction)) {
+			shift = Directions.shift(shift, direction);
+			ray.merge(shift);
+		}
+		shift = Directions.shift(shift, direction);
+		if (isEnemyCollision(shift, board)) {
+			ray.merge(shift);
+		}
+		return ray;
+	}
+
+	public static boolean isFriendlyCollision(IBitboard piece, IBoard board) {
+		return Bitboard.overlap(piece, board.getPieces(board.getFen().isWhite()));
+	}
+
+	public static boolean isEnemyCollision(IBitboard piece, IBoard board) {
+		return Bitboard.overlap(piece, board.getPieces(!board.getFen().isWhite()));
+	}
+
+	public static boolean pathFree(IBitboard slided, IBoard board) {
+		if (isFriendlyCollision(slided, board)) {
+			return false;
+		}
+		return !isEnemyCollision(slided, board);
 	}
 
 	public static ArrayList<IBitboard> split(IBitboard board) {

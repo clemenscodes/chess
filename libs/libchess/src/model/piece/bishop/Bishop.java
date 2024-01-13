@@ -1,6 +1,7 @@
 package model.piece.bishop;
 
 import java.io.Serializable;
+import model.bits.Bitboard;
 import model.bits.IBitboard;
 import model.board.IBoard;
 import model.piece.Movable;
@@ -14,6 +15,6 @@ public abstract class Bishop extends Piece implements Movable, Serializable {
 	}
 
 	public IBitboard getAttacks(IBitboard piece, IBoard board) {
-		return getDiagonalRays(piece, board);
+		return Bitboard.getDiagonalRays(piece, board);
 	}
 }

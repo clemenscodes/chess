@@ -16,7 +16,10 @@ public abstract class Rook extends Piece implements Movable, Serializable {
 
 	public IBitboard getAttacks(IBitboard piece, IBoard board) {
 		return Bitboard.mergeMany(
-			new IBitboard[] { getHorizontalRays(piece, board), getVerticalRays(piece, board) }
+			new IBitboard[] {
+				Bitboard.getHorizontalRays(piece, board),
+				Bitboard.getVerticalRays(piece, board),
+			}
 		);
 	}
 }
