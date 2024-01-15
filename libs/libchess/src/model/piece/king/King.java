@@ -85,7 +85,7 @@ public abstract class King extends Piece implements Movable, Serializable {
 	protected boolean kingSafe(int source, int destination, IBoard board) {
 		IBoard simulatedBoard = simulateMove(source, destination, board);
 		boolean kingAttacked = Bitboard.overlap(
-			simulatedBoard.getKing(board.getFen().getActiveColor() == 'w'),
+			simulatedBoard.getKing(board.getFen().isWhite()),
 			simulatedBoard.getAllOpponentAttacks()
 		);
 		if (kingAttacked) {

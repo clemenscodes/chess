@@ -131,4 +131,97 @@ public class KingTest {
 			00000000""";
 		assertEquals(expected, attacks.toString());
 	}
+
+	@Test
+	void shouldErrorIfKingCanNotMoveToDestination() {
+		board = new Board(new ForsythEdwardsNotation());
+		piece = new PieceMock(Pieces.BlackKing, board.getBlackKing().getBitboard());
+		int src = Square.getIndex(a2);
+		int dst = Square.getIndex(a4);
+		try {
+			piece.move(src, dst, board);
+		} catch (Error e) {
+			assertEquals("Invalid move", e.getMessage());
+		}
+	}
+
+	@Test
+	void shouldErrorIfKingUnsafe() {
+		String fen = "rn1qkbnr/ppp1pppp/3p4/8/3P2b1/4P3/PPP2PPP/RNBQKBNR w KQkq - 1 3";
+		board = new Board(new ForsythEdwardsNotation(fen));
+		piece = new PieceMock(Pieces.WhiteKing, board.getWhiteKing().getBitboard());
+		int src = Square.getIndex(e1);
+		int dst = Square.getIndex(e2);
+		try {
+			piece.move(src, dst, board);
+		} catch (Error e) {
+			assertEquals("King can not move into an attack", e.getMessage());
+		}
+	}
+
+	@Test
+	void shouldCaptureIfDestinationOverlapsWithEnemy() {
+		String fen = "rn1qkbnr/ppp1pppp/3p4/8/3P4/4P3/PPPQbPPP/RNB1KBNR w KQkq - 3 4";
+		board = new Board(new ForsythEdwardsNotation(fen));
+		piece = new PieceMock(Pieces.WhiteKing, board.getWhiteKing().getBitboard());
+		int src = Square.getIndex(e1);
+		int dst = Square.getIndex(e2);
+		piece.move(src, dst, board);
+	}
+
+	@Test
+	void shouldKingCastle() {
+		String fen = "r3k2r/pppq1ppp/2np1n2/1Bb1p3/4P1b1/2NPBN2/PPPQ1PPP/R3K2R w KQkq - 4 8";
+		board = new Board(new ForsythEdwardsNotation(fen));
+		piece = new PieceMock(Pieces.WhiteKing, board.getWhiteKing().getBitboard());
+		int src = Square.getIndex(e1);
+		int dst = Square.getIndex(g1);
+		piece.move(src, dst, board);
+		board.getFen().updatePiecePlacementData(board);
+		board.getFen().switchActiveColor();
+		String expected = "r3k2r/pppq1ppp/2np1n2/1Bb1p3/4P1b1/2NPBN2/PPPQ1PPP/R4RK1 b kq - 5 8";
+		assertEquals(expected, board.getFen().toString());
+	}
+
+	@Test
+	void shouldQueenCastle() {
+		String fen = "r3k2r/pppq1ppp/2np1n2/1Bb1p3/4P1b1/2NPBN2/PPPQ1PPP/R3K2R w KQkq - 4 8";
+		board = new Board(new ForsythEdwardsNotation(fen));
+		piece = new PieceMock(Pieces.WhiteKing, board.getWhiteKing().getBitboard());
+		int src = Square.getIndex(e1);
+		int dst = Square.getIndex(c1);
+		piece.move(src, dst, board);
+		board.getFen().updatePiecePlacementData(board);
+		board.getFen().switchActiveColor();
+		String expected = "r3k2r/pppq1ppp/2np1n2/1Bb1p3/4P1b1/2NPBN2/PPPQ1PPP/2KR3R b kq - 5 8";
+		assertEquals(expected, board.getFen().toString());
+	}
+
+	@Test
+	void shouldErrorIfInvalidKingCastle() {
+		String fen = "r3k2r/pppq1ppp/2np1n2/1Bb1p3/4P1b1/2NPBN2/PPPQ1PPP/R3K2R w - - 4 8";
+		board = new Board(new ForsythEdwardsNotation(fen));
+		piece = new PieceMock(Pieces.WhiteKing, board.getWhiteKing().getBitboard());
+		int src = Square.getIndex(e1);
+		int dst = Square.getIndex(g1);
+		try {
+			piece.move(src, dst, board);
+		} catch (Error e) {
+			assertEquals("Invalid move", e.getMessage());
+		}
+	}
+
+	@Test
+	void shouldErrorIfInvalidQueenCastle() {
+		String fen = "r3k2r/pppq1ppp/2np1n2/1Bb1p3/4P1b1/2NPBN2/PPPQ1PPP/R3K2R w - - 4 8";
+		board = new Board(new ForsythEdwardsNotation(fen));
+		piece = new PieceMock(Pieces.WhiteKing, board.getWhiteKing().getBitboard());
+		int src = Square.getIndex(e1);
+		int dst = Square.getIndex(c1);
+		try {
+			piece.move(src, dst, board);
+		} catch (Error e) {
+			assertEquals("Invalid move", e.getMessage());
+		}
+	}
 }
