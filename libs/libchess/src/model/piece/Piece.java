@@ -38,6 +38,11 @@ public abstract class Piece implements IPiece, Serializable {
 		setBitboard(new Bitboard());
 	}
 
+	public Piece(Pieces variant, IBitboard bitboard) {
+		setVariant(variant);
+		setBitboard(bitboard);
+	}
+
 	public IMove move(int source, int destination, IBoard board) {
 		if (isInvalidMove(source, destination, board)) {
 			throw new Error("Invalid move");
@@ -51,15 +56,6 @@ public abstract class Piece implements IPiece, Serializable {
 
 	public IBitboard getAllAttacks(IBoard board) {
 		return getAllSlidingAttacks(board);
-	}
-
-	protected IBitboard getAllSlidingAttacks(IBoard board) {
-		return Bitboard
-			.split(getBitboard())
-			.stream()
-			.map(slider -> getAttacks(slider, board))
-			.reduce(Bitboard::merge)
-			.orElse(new Bitboard());
 	}
 
 	protected IBitboard removeFriendlyPieces(IBitboard piece, IBoard board) {
@@ -86,13 +82,12 @@ public abstract class Piece implements IPiece, Serializable {
 	}
 
 	protected IBoard simulateMove(int source, int destination, IBoard board) {
+		IBoard copiedBoard = null;
 		try {
-			IBoard copiedBoard = board.deepCopy();
-			unsafeMove(source, destination, copiedBoard);
-			return copiedBoard;
-		} catch (IOException | ClassNotFoundException e) {
-			throw new RuntimeException(e);
-		}
+			copiedBoard = board.deepCopy();
+		} catch (IOException | ClassNotFoundException ignored) {}
+		unsafeMove(source, destination, copiedBoard);
+		return copiedBoard;
 	}
 
 	protected boolean kingSafe(int source, int destination, IBoard board) {
@@ -113,6 +108,16 @@ public abstract class Piece implements IPiece, Serializable {
 		if (Move.isCapture(Bitboard.getSingleBit(destination), board)) {
 			return new CaptureMove(src, dst, board);
 		}
+
 		return new QuietMove(src, dst, board);
+	}
+
+	private IBitboard getAllSlidingAttacks(IBoard board) {
+		return Bitboard
+			.split(getBitboard())
+			.stream()
+			.map(slider -> getAttacks(slider, board))
+			.reduce(Bitboard::merge)
+			.orElse(new Bitboard());
 	}
 }

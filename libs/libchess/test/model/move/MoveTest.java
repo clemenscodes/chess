@@ -51,6 +51,8 @@ public class MoveTest {
 	@Test
 	void shouldDetermineCapture() {
 		boolean result = Move.isCapture(Bitboard.getSingleBit(Square.getIndex(e2)), board);
+		assertFalse(result);
+		result = Move.isCapture(Bitboard.getSingleBit(Square.getIndex(e7)), board);
 		assertTrue(result);
 	}
 

@@ -64,13 +64,13 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 	}
 
 	private IBoard simulateMove(int source, int destination, IBoard board, IReader reader) {
+		IBoard copiedBoard = null;
 		try {
-			IBoard copiedBoard = board.deepCopy();
-			unsafeMove(source, destination, copiedBoard, reader);
-			return copiedBoard;
-		} catch (IOException | ClassNotFoundException e) {
-			throw new RuntimeException(e);
-		}
+			copiedBoard = board.deepCopy();
+		} catch (IOException | ClassNotFoundException ignored) {}
+		assert copiedBoard != null;
+		unsafeMove(source, destination, copiedBoard, reader);
+		return copiedBoard;
 	}
 
 	private boolean kingSafe(int source, int destination, IBoard board, IReader reader) {
