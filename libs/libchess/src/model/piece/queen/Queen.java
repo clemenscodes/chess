@@ -15,6 +15,10 @@ public abstract class Queen extends Piece implements Movable, Serializable {
 		super(variant);
 	}
 
+	public Queen(Pieces variant, IBitboard board) {
+		super(variant, board);
+	}
+
 	public IBitboard getAttacks(IBitboard piece, IBoard board) {
 		return Bitboard.mergeMany(
 			new IBitboard[] {

@@ -14,6 +14,10 @@ public abstract class Bishop extends Piece implements Movable, Serializable {
 		super(variant);
 	}
 
+	public Bishop(Pieces variant, IBitboard board) {
+		super(variant, board);
+	}
+
 	public IBitboard getAttacks(IBitboard piece, IBoard board) {
 		return Rays.getDiagonalRays(piece, board);
 	}

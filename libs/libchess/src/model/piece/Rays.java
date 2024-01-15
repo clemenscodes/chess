@@ -39,6 +39,9 @@ public enum Rays {
 	}
 
 	private static IBitboard getRay(IBitboard piece, IBoard board, Rays direction) {
+		if (piece.getBits() == 0) {
+			return piece;
+		}
 		IBitboard ray = new Bitboard();
 		IBitboard slider = piece.copy();
 		while (canSlide(slider, board, direction)) {
