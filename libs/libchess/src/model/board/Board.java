@@ -278,6 +278,28 @@ public class Board implements IBoard, Serializable {
 		getPiece(Square.getSquare(index)).getBitboard().toggleBits(Bitboard.getSingleBit(index));
 	}
 
+	public IPiece[] getAllWhitePieces() {
+		return new IPiece[] {
+			getWhiteRook(),
+			getWhiteKnight(),
+			getWhiteBishop(),
+			getWhiteQueen(),
+			getWhiteKing(),
+			getWhitePawn(),
+		};
+	}
+
+	public IPiece[] getAllBlackPieces() {
+		return new IPiece[] {
+			getBlackRook(),
+			getBlackKnight(),
+			getBlackBishop(),
+			getBlackQueen(),
+			getBlackKing(),
+			getBlackPawn(),
+		};
+	}
+
 	private void setFen(IForsythEdwardsNotation fen) {
 		this.fen = fen;
 	}
@@ -379,17 +401,6 @@ public class Board implements IBoard, Serializable {
 		updateBlackPieces();
 	}
 
-	private IPiece[] getAllWhitePieces() {
-		return new IPiece[] {
-			getWhiteRook(),
-			getWhiteKnight(),
-			getWhiteBishop(),
-			getWhiteQueen(),
-			getWhiteKing(),
-			getWhitePawn(),
-		};
-	}
-
 	private IBitboard[] getAllWhiteBitboards() {
 		return getAllBitboards(getAllWhitePieces());
 	}
@@ -397,17 +408,6 @@ public class Board implements IBoard, Serializable {
 	private void updateBlackPieces() {
 		IBitboard[] pieces = getAllBlackBitboards();
 		setBlackPieces(Bitboard.mergeMany(pieces));
-	}
-
-	private IPiece[] getAllBlackPieces() {
-		return new IPiece[] {
-			getBlackRook(),
-			getBlackKnight(),
-			getBlackBishop(),
-			getBlackQueen(),
-			getBlackKing(),
-			getBlackPawn(),
-		};
 	}
 
 	private IBitboard[] getAllBitboards(IPiece[] pieces) {

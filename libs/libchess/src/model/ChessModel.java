@@ -1,5 +1,6 @@
 package model;
 
+import java.io.IOException;
 import java.io.InputStream;
 import model.board.Board;
 import model.board.IBoard;
@@ -29,7 +30,10 @@ public class ChessModel implements IChessModel {
 	}
 
 	public IBoard getBoard() {
-		return board;
+		try {
+			return board.deepCopy();
+		} catch (IOException | ClassNotFoundException ignored) {}
+		return null;
 	}
 
 	public IMoveList getMoveList() {

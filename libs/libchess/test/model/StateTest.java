@@ -2,9 +2,21 @@ package model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import model.board.Board;
+import model.board.IBoard;
+import model.fen.ForsythEdwardsNotation;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class StateTest {
+
+	private IBoard board;
+
+	@BeforeEach
+	void setup() {
+		String fen = "rnb1kbnr/pppp1ppp/8/4p3/6Pq/5P2/PPPPP2P/RNBQKBNR w KQkq - 1 3";
+		board = new Board(new ForsythEdwardsNotation(fen));
+	}
 
 	@Test
 	void testEnumValues() {
@@ -27,5 +39,11 @@ public class StateTest {
 		assertEquals(State.Start, State.valueOf("Start"));
 		assertEquals(State.Playing, State.valueOf("Playing"));
 		assertEquals(State.GameOver, State.valueOf("GameOver"));
+	}
+
+	@Test
+	void shouldDetermineCheckmate() {
+		boolean isMate = State.isCheckmate(board);
+		assertTrue(isMate);
 	}
 }

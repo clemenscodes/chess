@@ -45,7 +45,11 @@ public interface IBoard {
 
 	BlackPawn getBlackPawn();
 
+	IPiece[] getAllWhitePieces();
+
 	IBitboard getWhitePieces();
+
+	IPiece[] getAllBlackPieces();
 
 	IBitboard getBlackPieces();
 
