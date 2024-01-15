@@ -35,7 +35,13 @@ public abstract class King extends Piece implements Movable, Serializable {
 		IBitboard southAttack = Bitboard.shiftSouth(horizontalAttack);
 		IBitboard[] all = new IBitboard[] { horizontalAttack, northAttack, southAttack };
 		IBitboard allAttacks = Bitboard.mergeMany(all);
-		return removeFriendlyPieces(allAttacks, board);
+		IBitboard filterKing = Bitboard.toggle(allAttacks, piece);
+		return removeFriendlyPieces(filterKing, board);
+	}
+
+	@Override
+	public IBitboard getAllAttacks(IBoard board) {
+		return getAttacks(getBitboard(), board);
 	}
 
 	@Override
@@ -53,14 +59,6 @@ public abstract class King extends Piece implements Movable, Serializable {
 			pieceCanMoveToDestination(source, destination, board) &&
 			kingSafe(source, destination, board)
 		);
-	}
-
-	private boolean isValidKingCastle(Square src, Square dst, IBoard board) {
-		return Move.isKingCastle(src, dst, board) && Move.canKingCastle(src, dst, board);
-	}
-
-	private boolean isValidQueenCastle(Square src, Square dst, IBoard board) {
-		return Move.isQueenCastle(src, dst, board) && Move.canQueenCastle(src, dst, board);
 	}
 
 	@Override
@@ -96,8 +94,11 @@ public abstract class King extends Piece implements Movable, Serializable {
 		return true;
 	}
 
-	@Override
-	public IBitboard getAllAttacks(IBoard board) {
-		return getAttacks(getBitboard(), board);
+	private boolean isValidKingCastle(Square src, Square dst, IBoard board) {
+		return Move.isKingCastle(src, dst, board) && Move.canKingCastle(src, dst, board);
+	}
+
+	private boolean isValidQueenCastle(Square src, Square dst, IBoard board) {
+		return Move.isQueenCastle(src, dst, board) && Move.canQueenCastle(src, dst, board);
 	}
 }
