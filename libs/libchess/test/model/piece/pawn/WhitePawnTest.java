@@ -191,7 +191,70 @@ public class WhitePawnTest {
 	}
 
 	@Test
-	void shouldGetPromotionPieces() {
+	void shouldNotLeaveKingUnsafe() {
+		String fen = "rnbqk1nr/pppp1ppp/8/4p3/1b2P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3";
+		board = new Board(new ForsythEdwardsNotation(fen));
+		piece = new WhitePawn(board.getWhitePawn().getBitboard());
+		int src = Square.getIndex(d2);
+		int dst = Square.getIndex(d3);
+		try {
+			piece.move(src, dst, board, reader);
+		} catch (Error e) {
+			assertEquals("King is in check", e.getMessage());
+		}
+	}
+
+	@Test
+	void shouldSinglePush() {
+		int src = Square.getIndex(e2);
+		int dst = Square.getIndex(e3);
+		piece.move(src, dst, board, reader);
+	}
+
+	@Test
+	void shouldDoublePush() {
+		int src = Square.getIndex(e2);
+		int dst = Square.getIndex(e4);
+		piece.move(src, dst, board, reader);
+	}
+
+	@Test
+	void shouldCapture() {
+		String fen = "rnb1kbnr/ppp3pp/3qp3/3pPp2/3P4/2N5/PPP2PPP/R1BQKBNR w KQkq f6 0 5";
+		board = new Board(new ForsythEdwardsNotation(fen));
+		piece = new WhitePawn(board.getWhitePawn().getBitboard());
+		int src = Square.getIndex(e5);
+		int dst = Square.getIndex(d6);
+		piece.move(src, dst, board, reader);
+	}
+
+	@Test
+	void shouldEnPassant() {
+		String fen = "rnb1kbnr/ppp3pp/3qp3/3pPp2/3P4/2N5/PPP2PPP/R1BQKBNR w KQkq f6 0 5";
+		board = new Board(new ForsythEdwardsNotation(fen));
+		piece = new WhitePawn(board.getWhitePawn().getBitboard());
+		int src = Square.getIndex(e5);
+		int dst = Square.getIndex(f6);
+		piece.move(src, dst, board, reader);
+	}
+
+	@Test
+	void shouldRepromptIfInvalidPromotionSelection() {
+		String fen = "rnbqk2r/ppp2pPp/3p1n2/2b1p3/8/8/PPPPPPP1/RNBQKBNR w KQkq - 0 5";
+		board = new Board(new ForsythEdwardsNotation(fen));
+		piece = new WhitePawn(board.getWhitePawn().getBitboard());
+		String inputString = "X\nR";
+		byte[] bytes = inputString.getBytes();
+		InputStream inputStream = new ByteArrayInputStream(bytes);
+		reader = new Reader(inputStream);
+		int src = Square.getIndex(g7);
+		int dst = Square.getIndex(g8);
+		piece.move(src, dst, board, reader);
+		assertEquals(Pieces.WhiteRook, board.getPiece(g8).getVariant());
+	}
+
+	@Test
+	void shouldPromoteToQueen() {
 		String fen = "rnbqk2r/ppp2pPp/3p1n2/2b1p3/8/8/PPPPPPP1/RNBQKBNR w KQkq - 0 5";
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new WhitePawn(board.getWhitePawn().getBitboard());
@@ -199,5 +262,106 @@ public class WhitePawnTest {
 		int dst = Square.getIndex(g8);
 		piece.move(src, dst, board, reader);
 		assertEquals(Pieces.WhiteQueen, board.getPiece(g8).getVariant());
+	}
+
+	@Test
+	void shouldPromoteToRook() {
+		String fen = "rnbqk2r/ppp2pPp/3p1n2/2b1p3/8/8/PPPPPPP1/RNBQKBNR w KQkq - 0 5";
+		board = new Board(new ForsythEdwardsNotation(fen));
+		piece = new WhitePawn(board.getWhitePawn().getBitboard());
+		String inputString = "R";
+		byte[] bytes = inputString.getBytes();
+		InputStream inputStream = new ByteArrayInputStream(bytes);
+		reader = new Reader(inputStream);
+		int src = Square.getIndex(g7);
+		int dst = Square.getIndex(g8);
+		piece.move(src, dst, board, reader);
+		assertEquals(Pieces.WhiteRook, board.getPiece(g8).getVariant());
+	}
+
+	@Test
+	void shouldPromoteToBishop() {
+		String fen = "rnbqk2r/ppp2pPp/3p1n2/2b1p3/8/8/PPPPPPP1/RNBQKBNR w KQkq - 0 5";
+		board = new Board(new ForsythEdwardsNotation(fen));
+		piece = new WhitePawn(board.getWhitePawn().getBitboard());
+		String inputString = "B";
+		byte[] bytes = inputString.getBytes();
+		InputStream inputStream = new ByteArrayInputStream(bytes);
+		reader = new Reader(inputStream);
+		int src = Square.getIndex(g7);
+		int dst = Square.getIndex(g8);
+		piece.move(src, dst, board, reader);
+		assertEquals(Pieces.WhiteBishop, board.getPiece(g8).getVariant());
+	}
+
+	@Test
+	void shouldPromoteToKnight() {
+		String fen = "rnbqk2r/ppp2pPp/3p1n2/2b1p3/8/8/PPPPPPP1/RNBQKBNR w KQkq - 0 5";
+		board = new Board(new ForsythEdwardsNotation(fen));
+		piece = new WhitePawn(board.getWhitePawn().getBitboard());
+		String inputString = "N";
+		byte[] bytes = inputString.getBytes();
+		InputStream inputStream = new ByteArrayInputStream(bytes);
+		reader = new Reader(inputStream);
+		int src = Square.getIndex(g7);
+		int dst = Square.getIndex(g8);
+		piece.move(src, dst, board, reader);
+		assertEquals(Pieces.WhiteKnight, board.getPiece(g8).getVariant());
+	}
+
+	@Test
+	void shouldPromoteCaptureToQueen() {
+		String fen = "rnbqk2r/ppp2pPp/3p1n2/2b1p3/8/8/PPPPPPP1/RNBQKBNR w KQkq - 0 5";
+		board = new Board(new ForsythEdwardsNotation(fen));
+		piece = new WhitePawn(board.getWhitePawn().getBitboard());
+		int src = Square.getIndex(g7);
+		int dst = Square.getIndex(h8);
+		piece.move(src, dst, board, reader);
+		assertEquals(Pieces.WhiteQueen, board.getPiece(h8).getVariant());
+	}
+
+	@Test
+	void shouldPromoteCaptureToRook() {
+		String fen = "rnbqk2r/ppp2pPp/3p1n2/2b1p3/8/8/PPPPPPP1/RNBQKBNR w KQkq - 0 5";
+		board = new Board(new ForsythEdwardsNotation(fen));
+		piece = new WhitePawn(board.getWhitePawn().getBitboard());
+		String inputString = "R";
+		byte[] bytes = inputString.getBytes();
+		InputStream inputStream = new ByteArrayInputStream(bytes);
+		reader = new Reader(inputStream);
+		int src = Square.getIndex(g7);
+		int dst = Square.getIndex(h8);
+		piece.move(src, dst, board, reader);
+		assertEquals(Pieces.WhiteRook, board.getPiece(h8).getVariant());
+	}
+
+	@Test
+	void shouldPromoteCaptureToBishop() {
+		String fen = "rnbqk2r/ppp2pPp/3p1n2/2b1p3/8/8/PPPPPPP1/RNBQKBNR w KQkq - 0 5";
+		board = new Board(new ForsythEdwardsNotation(fen));
+		piece = new WhitePawn(board.getWhitePawn().getBitboard());
+		String inputString = "B";
+		byte[] bytes = inputString.getBytes();
+		InputStream inputStream = new ByteArrayInputStream(bytes);
+		reader = new Reader(inputStream);
+		int src = Square.getIndex(g7);
+		int dst = Square.getIndex(h8);
+		piece.move(src, dst, board, reader);
+		assertEquals(Pieces.WhiteBishop, board.getPiece(h8).getVariant());
+	}
+
+	@Test
+	void shouldPromoteCaptureToKnight() {
+		String fen = "rnbqk2r/ppp2pPp/3p1n2/2b1p3/8/8/PPPPPPP1/RNBQKBNR w KQkq - 0 5";
+		board = new Board(new ForsythEdwardsNotation(fen));
+		piece = new WhitePawn(board.getWhitePawn().getBitboard());
+		String inputString = "N";
+		byte[] bytes = inputString.getBytes();
+		InputStream inputStream = new ByteArrayInputStream(bytes);
+		reader = new Reader(inputStream);
+		int src = Square.getIndex(g7);
+		int dst = Square.getIndex(h8);
+		piece.move(src, dst, board, reader);
+		assertEquals(Pieces.WhiteKnight, board.getPiece(h8).getVariant());
 	}
 }
