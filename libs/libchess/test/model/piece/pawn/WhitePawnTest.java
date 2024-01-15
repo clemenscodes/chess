@@ -5,13 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import model.bits.Bitboard;
 import model.bits.IBitboard;
 import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
 import model.fen.ForsythEdwardsNotation;
+import model.piece.Pieces;
 import model.reader.IReader;
 import model.reader.Reader;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,15 +26,86 @@ public class WhitePawnTest {
 	@BeforeEach
 	void setup() {
 		String inputString = "Q";
-		byte[] bytes = inputString.getBytes(StandardCharsets.UTF_8);
+		byte[] bytes = inputString.getBytes();
 		InputStream inputStream = new ByteArrayInputStream(bytes);
 		reader = new Reader(inputStream);
-		board = new Board(new ForsythEdwardsNotation("8/8/8/8/8/8/8/8 w - - 0 1"));
+		board = new Board();
 		piece = new WhitePawn(board.getWhitePawn().getBitboard());
 	}
 
 	@Test
+	void shouldGetTargetsFromBaseRank() {
+		IBitboard attacks = piece.getTargets(Bitboard.getSingleBit(Square.getIndex(e2)), board);
+		String expected =
+			"""
+			00000000
+			00000000
+			00000000
+			00000000
+			00001000
+			00001000
+			00000000
+			00000000""";
+		assertEquals(expected, attacks.toString());
+	}
+
+	@Test
+	void shouldGetTargetsFromBaseRankWithEnemyObstacle() {
+		String fen = "rnbqkbnr/pppp1ppp/8/8/4p3/2N3P1/PPPPPP1P/R1BQKBNR w KQkq - 0 3";
+		board = new Board(new ForsythEdwardsNotation(fen));
+		IBitboard attacks = piece.getTargets(Bitboard.getSingleBit(Square.getIndex(e2)), board);
+		String expected =
+			"""
+			00000000
+			00000000
+			00000000
+			00000000
+			00000000
+			00001000
+			00000000
+			00000000""";
+		assertEquals(expected, attacks.toString());
+	}
+
+	@Test
+	void shouldGetTargetsFromBaseRankWithImmediateEnemyObstacle() {
+		String fen = "rnbqkbnr/pppp1ppp/8/8/8/2N1pNP1/PPPPPP1P/R1BQKB1R w KQkq - 0 4";
+		board = new Board(new ForsythEdwardsNotation(fen));
+		IBitboard attacks = piece.getTargets(Bitboard.getSingleBit(Square.getIndex(e2)), board);
+		String expected =
+			"""
+			00000000
+			00000000
+			00000000
+			00000000
+			00000000
+			00000000
+			00000000
+			00000000""";
+		assertEquals(expected, attacks.toString());
+	}
+
+	@Test
+	void shouldGetTargetsFromBaseRankWithImmediateFriendlyObstacle() {
+		String fen = "rnbqkbnr/pppp1ppp/8/8/8/2N1pNP1/PPPPPP1P/R1BQKB1R w KQkq - 0 4";
+		board = new Board(new ForsythEdwardsNotation(fen));
+		IBitboard attacks = piece.getTargets(Bitboard.getSingleBit(Square.getIndex(f2)), board);
+		String expected =
+			"""
+			00000000
+			00000000
+			00000000
+			00000000
+			00000000
+			00001000
+			00000000
+			00000000""";
+		assertEquals(expected, attacks.toString());
+	}
+
+	@Test
 	void shouldNotGetAttacksWithoutEnemy() {
+		board = new Board(new ForsythEdwardsNotation("8/8/8/8/8/8/8/8 w - - 0 1"));
 		IBitboard attacks = piece.getAttacks(Bitboard.getSingleBit(Square.getIndex(e2)), board);
 		assertEquals(0, attacks.getBits());
 	}
@@ -110,12 +181,23 @@ public class WhitePawnTest {
 	@Test
 	void shouldErrorIfPieceCanNotMoveToDestination() {
 		board = new Board();
-		int src = Square.getIndex(a2);
-		int dst = Square.getIndex(a3);
+		int src = Square.getIndex(e5);
+		int dst = Square.getIndex(e6);
 		try {
 			piece.move(src, dst, board, reader);
 		} catch (Error e) {
 			assertEquals("Invalid move", e.getMessage());
 		}
+	}
+
+	@Test
+	void shouldGetPromotionPieces() {
+		String fen = "rnbqk2r/ppp2pPp/3p1n2/2b1p3/8/8/PPPPPPP1/RNBQKBNR w KQkq - 0 5";
+		board = new Board(new ForsythEdwardsNotation(fen));
+		piece = new WhitePawn(board.getWhitePawn().getBitboard());
+		int src = Square.getIndex(g7);
+		int dst = Square.getIndex(g8);
+		piece.move(src, dst, board, reader);
+		assertEquals(Pieces.WhiteQueen, board.getPiece(g8).getVariant());
 	}
 }

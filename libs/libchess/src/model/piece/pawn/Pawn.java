@@ -54,6 +54,12 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 		return unsafeMove(source, destination, board, reader);
 	}
 
+	public IBitboard getTargets(IBitboard piece, IBoard board) {
+		IBitboard pushTargets = getPushTargets(piece, board.getEmptySquares());
+		IBitboard attackTargets = getAttacks(piece, board);
+		return Bitboard.merge(pushTargets, attackTargets);
+	}
+
 	public IBitboard getAttacks(IBitboard piece, IBoard board) {
 		IBitboard enPassantMask = board.getFen().getEnPassantMask();
 		IBitboard westAttacks = getWestAttacks(piece);
@@ -87,12 +93,6 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 		IBitboard pushablePawns = getPushablePawns(board.getEmptySquares());
 		IBitboard attackingPawns = getAttackingPawns(board);
 		return Bitboard.merge(pushablePawns, attackingPawns);
-	}
-
-	private IBitboard getTargets(IBitboard piece, IBoard board) {
-		IBitboard pushTargets = getPushTargets(piece, board.getEmptySquares());
-		IBitboard attackTargets = getAttacks(piece, board);
-		return Bitboard.merge(pushTargets, attackTargets);
 	}
 
 	private IBitboard getPushablePawns(IBitboard emptySquares) {
