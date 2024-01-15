@@ -79,7 +79,7 @@ public class PieceTest {
 	}
 
 	@Test
-	void shouldDetermineInvalidMoveIfSourceSquareDoesNotHavePiece() {
+	void shouldErrorIfSourceSquareDoesNotHavePiece() {
 		int src = Square.getIndex(a1);
 		int dst = Square.getIndex(b1);
 		try {
@@ -90,7 +90,7 @@ public class PieceTest {
 	}
 
 	@Test
-	void shouldDetermineInvalidMoveIfPieceCanNotMoveToDestination() {
+	void shouldErrorIfPieceCanNotMoveToDestination() {
 		board = new Board(new ForsythEdwardsNotation());
 		piece = new PieceMock(Pieces.WhitePawn, board.getWhitePawn().getBitboard());
 		int src = Square.getIndex(a2);
@@ -103,7 +103,7 @@ public class PieceTest {
 	}
 
 	@Test
-	void shouldDetermineInvalidMoveIfKingUnsafe() {
+	void shouldErrorIfKingUnsafe() {
 		String fen = "rnbqk1nr/pppp1ppp/8/4p3/1b2P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3";
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new PieceMock(Pieces.WhitePawn, board.getWhitePawn().getBitboard());

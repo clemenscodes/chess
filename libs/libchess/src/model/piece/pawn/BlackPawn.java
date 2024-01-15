@@ -15,6 +15,10 @@ public class BlackPawn extends Pawn implements Serializable {
 		super(Pieces.BlackPawn);
 	}
 
+	public BlackPawn(IBitboard board) {
+		super(Pieces.BlackPawn, board);
+	}
+
 	protected IBitboard getWestAttacks(IBitboard pawns) {
 		IBitboard westAttackMask = Board.notFirstFile;
 		IBitboard westAttack = Bitboard.shiftSouthWest(pawns);
