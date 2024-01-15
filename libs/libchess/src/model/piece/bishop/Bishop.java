@@ -3,10 +3,10 @@ package model.piece.bishop;
 import java.io.Serializable;
 import model.bits.IBitboard;
 import model.board.IBoard;
-import model.piece.Directions;
 import model.piece.Movable;
 import model.piece.Piece;
 import model.piece.Pieces;
+import model.piece.Rays;
 
 public abstract class Bishop extends Piece implements Movable, Serializable {
 
@@ -15,6 +15,6 @@ public abstract class Bishop extends Piece implements Movable, Serializable {
 	}
 
 	public IBitboard getAttacks(IBitboard piece, IBoard board) {
-		return Directions.getDiagonalRays(piece, board);
+		return Rays.getDiagonalRays(piece, board);
 	}
 }

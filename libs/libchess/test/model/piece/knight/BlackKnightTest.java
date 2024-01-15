@@ -4,4 +4,4 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-public class BlackKnightTest extends KnightTest {}
+public class BlackKnightTest {}

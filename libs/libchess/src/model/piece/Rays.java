@@ -5,7 +5,7 @@ import model.bits.IBitboard;
 import model.board.Board;
 import model.board.IBoard;
 
-public enum Directions {
+public enum Rays {
 	West,
 	NorthWest,
 	North,
@@ -38,7 +38,7 @@ public enum Directions {
 		);
 	}
 
-	private static IBitboard getRay(IBitboard piece, IBoard board, Directions direction) {
+	private static IBitboard getRay(IBitboard piece, IBoard board, Rays direction) {
 		IBitboard ray = new Bitboard();
 		IBitboard slider = piece.copy();
 		while (canSlide(slider, board, direction)) {
@@ -52,7 +52,7 @@ public enum Directions {
 		return ray;
 	}
 
-	private static IBitboard shift(IBitboard slider, Directions direction) {
+	private static IBitboard shift(IBitboard slider, Rays direction) {
 		return switch (direction) {
 			case West -> Bitboard.shiftWest(slider);
 			case NorthWest -> Bitboard.shiftNorthWest(slider);
@@ -65,11 +65,11 @@ public enum Directions {
 		};
 	}
 
-	private static boolean canSlide(IBitboard slider, IBoard board, Directions direction) {
+	private static boolean canSlide(IBitboard slider, IBoard board, Rays direction) {
 		return !isEdge(slider, direction) && pathFree(shift(slider, direction), board);
 	}
 
-	private static boolean isEdge(IBitboard slider, Directions direction) {
+	private static boolean isEdge(IBitboard slider, Rays direction) {
 		return switch (direction) {
 			case West -> isWestEdge(slider);
 			case North -> isNorthEdge(slider);

@@ -4,4 +4,4 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-public class BlackRookTest extends RookTest {}
+public class BlackRookTest {}

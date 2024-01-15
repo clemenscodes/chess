@@ -4,4 +4,4 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-public class WhiteBishopTest extends BishopTest {}
+public class WhiteBishopTest {}

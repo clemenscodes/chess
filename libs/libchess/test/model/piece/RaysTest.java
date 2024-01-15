@@ -12,7 +12,7 @@ import model.fen.ForsythEdwardsNotation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class DirectionsTest {
+public class RaysTest {
 
 	private IBoard board;
 	private IBitboard slider;
@@ -25,7 +25,7 @@ public class DirectionsTest {
 
 	@Test
 	void shouldGetDiagonalRaysFromTopRightOnEmptyBoard() {
-		IBitboard rays = Directions.getDiagonalRays(slider, board);
+		IBitboard rays = Rays.getDiagonalRays(slider, board);
 		String expected =
 			"""
 			00000000
@@ -42,7 +42,7 @@ public class DirectionsTest {
 	@Test
 	void shouldGetDiagonalRaysFromTopLeftOnEmptyBoard() {
 		slider = Bitboard.getSingleBit(Square.getIndex(a8));
-		IBitboard rays = Directions.getDiagonalRays(slider, board);
+		IBitboard rays = Rays.getDiagonalRays(slider, board);
 		String expected =
 			"""
 			00000000
@@ -59,7 +59,7 @@ public class DirectionsTest {
 	@Test
 	void shouldGetDiagonalRaysFromBottomLeftOnEmptyBoard() {
 		slider = Bitboard.getSingleBit(Square.getIndex(a1));
-		IBitboard rays = Directions.getDiagonalRays(slider, board);
+		IBitboard rays = Rays.getDiagonalRays(slider, board);
 		String expected =
 			"""
 			00000001
@@ -76,7 +76,7 @@ public class DirectionsTest {
 	@Test
 	void shouldGetDiagonalRaysFromBottomRightOnEmptyBoard() {
 		slider = Bitboard.getSingleBit(Square.getIndex(h1));
-		IBitboard rays = Directions.getDiagonalRays(slider, board);
+		IBitboard rays = Rays.getDiagonalRays(slider, board);
 		String expected =
 			"""
 			10000000
@@ -93,7 +93,7 @@ public class DirectionsTest {
 	@Test
 	void shouldGetDiagonalRaysFromCenterOnEmptyBoard() {
 		slider = Bitboard.getSingleBit(Square.getIndex(e4));
-		IBitboard rays = Directions.getDiagonalRays(slider, board);
+		IBitboard rays = Rays.getDiagonalRays(slider, board);
 		String expected =
 			"""
 			10000000
@@ -111,7 +111,7 @@ public class DirectionsTest {
 	void shouldGetDiagonalRaysFromCenterAsWhite() {
 		board = new Board();
 		slider = Bitboard.getSingleBit(Square.getIndex(e4));
-		IBitboard rays = Directions.getDiagonalRays(slider, board);
+		IBitboard rays = Rays.getDiagonalRays(slider, board);
 		String expected =
 			"""
 			00000000
@@ -128,7 +128,7 @@ public class DirectionsTest {
 	@Test
 	void shouldGetDiagonalRaysFromTopRightAsWhite() {
 		board = new Board();
-		IBitboard rays = Directions.getDiagonalRays(slider, board);
+		IBitboard rays = Rays.getDiagonalRays(slider, board);
 		String expected =
 			"""
 			00000000
@@ -146,7 +146,7 @@ public class DirectionsTest {
 	void shouldGetDiagonalRaysFromTopLeftAsWhite() {
 		board = new Board();
 		slider = Bitboard.getSingleBit(Square.getIndex(a8));
-		IBitboard rays = Directions.getDiagonalRays(slider, board);
+		IBitboard rays = Rays.getDiagonalRays(slider, board);
 		String expected =
 			"""
 			00000000
@@ -164,7 +164,7 @@ public class DirectionsTest {
 	void shouldGetDiagonalRaysFromBottomLeftAsWhite() {
 		board = new Board();
 		slider = Bitboard.getSingleBit(Square.getIndex(a1));
-		IBitboard rays = Directions.getDiagonalRays(slider, board);
+		IBitboard rays = Rays.getDiagonalRays(slider, board);
 		String expected =
 			"""
 			00000000
@@ -182,7 +182,7 @@ public class DirectionsTest {
 	void shouldGetDiagonalRaysFromBottomRightAsWhite() {
 		board = new Board();
 		slider = Bitboard.getSingleBit(Square.getIndex(h1));
-		IBitboard rays = Directions.getDiagonalRays(slider, board);
+		IBitboard rays = Rays.getDiagonalRays(slider, board);
 		String expected =
 			"""
 			00000000
@@ -198,7 +198,7 @@ public class DirectionsTest {
 
 	@Test
 	void shouldGetVerticalRaysFromTopRightOnEmptyBoard() {
-		IBitboard rays = Directions.getVerticalRays(slider, board);
+		IBitboard rays = Rays.getVerticalRays(slider, board);
 		String expected =
 			"""
 			00000000
@@ -215,7 +215,7 @@ public class DirectionsTest {
 	@Test
 	void shouldGetVerticalRaysFromTopLeftOnEmptyBoard() {
 		slider = Bitboard.getSingleBit(Square.getIndex(a8));
-		IBitboard rays = Directions.getVerticalRays(slider, board);
+		IBitboard rays = Rays.getVerticalRays(slider, board);
 		String expected =
 			"""
 			00000000
@@ -232,7 +232,7 @@ public class DirectionsTest {
 	@Test
 	void shouldGetVerticalRaysFromBottomLeftOnEmptyBoard() {
 		slider = Bitboard.getSingleBit(Square.getIndex(a1));
-		IBitboard rays = Directions.getVerticalRays(slider, board);
+		IBitboard rays = Rays.getVerticalRays(slider, board);
 		String expected =
 			"""
 			10000000
@@ -249,7 +249,7 @@ public class DirectionsTest {
 	@Test
 	void shouldGetVerticalRaysFromBottomRightOnEmptyBoard() {
 		slider = Bitboard.getSingleBit(Square.getIndex(h1));
-		IBitboard rays = Directions.getVerticalRays(slider, board);
+		IBitboard rays = Rays.getVerticalRays(slider, board);
 		String expected =
 			"""
 			00000001
@@ -266,7 +266,7 @@ public class DirectionsTest {
 	@Test
 	void shouldGetVerticalRaysFromCenterOnEmptyBoard() {
 		slider = Bitboard.getSingleBit(Square.getIndex(e4));
-		IBitboard rays = Directions.getVerticalRays(slider, board);
+		IBitboard rays = Rays.getVerticalRays(slider, board);
 		String expected =
 			"""
 			00001000
@@ -284,7 +284,7 @@ public class DirectionsTest {
 	void shouldGetVerticalRaysFromCenterAsWhite() {
 		board = new Board();
 		slider = Bitboard.getSingleBit(Square.getIndex(e4));
-		IBitboard rays = Directions.getVerticalRays(slider, board);
+		IBitboard rays = Rays.getVerticalRays(slider, board);
 		String expected =
 			"""
 			00000000
@@ -301,7 +301,7 @@ public class DirectionsTest {
 	@Test
 	void shouldGetVerticalRaysFromTopRightAsWhite() {
 		board = new Board();
-		IBitboard rays = Directions.getVerticalRays(slider, board);
+		IBitboard rays = Rays.getVerticalRays(slider, board);
 		String expected =
 			"""
 			00000000
@@ -319,7 +319,7 @@ public class DirectionsTest {
 	void shouldGetVerticalRaysFromTopLeftAsWhite() {
 		board = new Board();
 		slider = Bitboard.getSingleBit(Square.getIndex(a8));
-		IBitboard rays = Directions.getVerticalRays(slider, board);
+		IBitboard rays = Rays.getVerticalRays(slider, board);
 		String expected =
 			"""
 			00000000
@@ -337,7 +337,7 @@ public class DirectionsTest {
 	void shouldGetVerticalRaysFromBottomLeftAsWhite() {
 		board = new Board();
 		slider = Bitboard.getSingleBit(Square.getIndex(a1));
-		IBitboard rays = Directions.getVerticalRays(slider, board);
+		IBitboard rays = Rays.getVerticalRays(slider, board);
 		String expected =
 			"""
 			00000000
@@ -355,7 +355,7 @@ public class DirectionsTest {
 	void shouldGetVerticalRaysFromBottomRightAsWhite() {
 		board = new Board();
 		slider = Bitboard.getSingleBit(Square.getIndex(h1));
-		IBitboard rays = Directions.getVerticalRays(slider, board);
+		IBitboard rays = Rays.getVerticalRays(slider, board);
 		String expected =
 			"""
 			00000000
@@ -371,7 +371,7 @@ public class DirectionsTest {
 
 	@Test
 	void shouldGetHorizontalRaysFromTopRightOnEmptyBoard() {
-		IBitboard rays = Directions.getHorizontalRays(slider, board);
+		IBitboard rays = Rays.getHorizontalRays(slider, board);
 		String expected =
 			"""
 			11111110
@@ -388,7 +388,7 @@ public class DirectionsTest {
 	@Test
 	void shouldGetHorizontalRaysFromTopLeftOnEmptyBoard() {
 		slider = Bitboard.getSingleBit(Square.getIndex(a8));
-		IBitboard rays = Directions.getHorizontalRays(slider, board);
+		IBitboard rays = Rays.getHorizontalRays(slider, board);
 		String expected =
 			"""
 			01111111
@@ -405,7 +405,7 @@ public class DirectionsTest {
 	@Test
 	void shouldGetHorizontalRaysFromBottomLeftOnEmptyBoard() {
 		slider = Bitboard.getSingleBit(Square.getIndex(a1));
-		IBitboard rays = Directions.getHorizontalRays(slider, board);
+		IBitboard rays = Rays.getHorizontalRays(slider, board);
 		String expected =
 			"""
 			00000000
@@ -422,7 +422,7 @@ public class DirectionsTest {
 	@Test
 	void shouldGetHorizontalRaysFromBottomRightOnEmptyBoard() {
 		slider = Bitboard.getSingleBit(Square.getIndex(h1));
-		IBitboard rays = Directions.getHorizontalRays(slider, board);
+		IBitboard rays = Rays.getHorizontalRays(slider, board);
 		String expected =
 			"""
 			00000000
@@ -439,7 +439,7 @@ public class DirectionsTest {
 	@Test
 	void shouldGetHorizontalRaysFromCenterOnEmptyBoard() {
 		slider = Bitboard.getSingleBit(Square.getIndex(e4));
-		IBitboard rays = Directions.getHorizontalRays(slider, board);
+		IBitboard rays = Rays.getHorizontalRays(slider, board);
 		String expected =
 			"""
 			00000000
@@ -457,7 +457,7 @@ public class DirectionsTest {
 	void shouldGetHorizontalRaysFromCenterAsWhite() {
 		board = new Board();
 		slider = Bitboard.getSingleBit(Square.getIndex(e4));
-		IBitboard rays = Directions.getHorizontalRays(slider, board);
+		IBitboard rays = Rays.getHorizontalRays(slider, board);
 		String expected =
 			"""
 			00000000
@@ -474,7 +474,7 @@ public class DirectionsTest {
 	@Test
 	void shouldGetHorizontalRaysFromTopRightAsWhite() {
 		board = new Board();
-		IBitboard rays = Directions.getHorizontalRays(slider, board);
+		IBitboard rays = Rays.getHorizontalRays(slider, board);
 		String expected =
 			"""
 			00000010
@@ -492,7 +492,7 @@ public class DirectionsTest {
 	void shouldGetHorizontalRaysFromTopLeftAsWhite() {
 		board = new Board();
 		slider = Bitboard.getSingleBit(Square.getIndex(a8));
-		IBitboard rays = Directions.getHorizontalRays(slider, board);
+		IBitboard rays = Rays.getHorizontalRays(slider, board);
 		String expected =
 			"""
 			01000000
@@ -510,7 +510,7 @@ public class DirectionsTest {
 	void shouldGetHorizontalRaysFromBottomLeftAsWhite() {
 		board = new Board();
 		slider = Bitboard.getSingleBit(Square.getIndex(a1));
-		IBitboard rays = Directions.getHorizontalRays(slider, board);
+		IBitboard rays = Rays.getHorizontalRays(slider, board);
 		String expected =
 			"""
 			00000000
@@ -528,7 +528,7 @@ public class DirectionsTest {
 	void shouldGetHorizontalRaysFromBottomRightAsWhite() {
 		board = new Board();
 		slider = Bitboard.getSingleBit(Square.getIndex(h1));
-		IBitboard rays = Directions.getHorizontalRays(slider, board);
+		IBitboard rays = Rays.getHorizontalRays(slider, board);
 		String expected =
 			"""
 			00000000

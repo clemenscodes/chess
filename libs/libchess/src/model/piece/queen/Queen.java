@@ -4,10 +4,10 @@ import java.io.Serializable;
 import model.bits.Bitboard;
 import model.bits.IBitboard;
 import model.board.IBoard;
-import model.piece.Directions;
 import model.piece.Movable;
 import model.piece.Piece;
 import model.piece.Pieces;
+import model.piece.Rays;
 
 public abstract class Queen extends Piece implements Movable, Serializable {
 
@@ -18,9 +18,9 @@ public abstract class Queen extends Piece implements Movable, Serializable {
 	public IBitboard getAttacks(IBitboard piece, IBoard board) {
 		return Bitboard.mergeMany(
 			new IBitboard[] {
-				Directions.getDiagonalRays(piece, board),
-				Directions.getHorizontalRays(piece, board),
-				Directions.getVerticalRays(piece, board),
+				Rays.getDiagonalRays(piece, board),
+				Rays.getHorizontalRays(piece, board),
+				Rays.getVerticalRays(piece, board),
 			}
 		);
 	}

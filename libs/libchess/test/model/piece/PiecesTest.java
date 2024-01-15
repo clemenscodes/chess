@@ -24,6 +24,22 @@ public class PiecesTest {
 	}
 
 	@Test
+	void testFromKind() {
+		assertEquals('r', Pieces.fromKind(Pieces.BlackRook));
+		assertEquals('n', Pieces.fromKind(Pieces.BlackKnight));
+		assertEquals('b', Pieces.fromKind(Pieces.BlackBishop));
+		assertEquals('q', Pieces.fromKind(Pieces.BlackQueen));
+		assertEquals('k', Pieces.fromKind(Pieces.BlackKing));
+		assertEquals('p', Pieces.fromKind(Pieces.BlackPawn));
+		assertEquals('R', Pieces.fromKind(Pieces.WhiteRook));
+		assertEquals('N', Pieces.fromKind(Pieces.WhiteKnight));
+		assertEquals('B', Pieces.fromKind(Pieces.WhiteBishop));
+		assertEquals('Q', Pieces.fromKind(Pieces.WhiteQueen));
+		assertEquals('K', Pieces.fromKind(Pieces.WhiteKing));
+		assertEquals('P', Pieces.fromKind(Pieces.WhitePawn));
+	}
+
+	@Test
 	void testGetWhitePromotionPieces() {
 		Pieces[] whitePromotionPieces = Pieces.getWhitePromotionPieces();
 		assertNotNull(whitePromotionPieces);
