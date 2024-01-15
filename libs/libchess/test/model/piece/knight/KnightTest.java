@@ -114,4 +114,23 @@ public class KnightTest {
 			00000000""";
 		assertEquals(expected, attacks.toString());
 	}
+
+	@Test
+	void shouldGetAllAttacks() {
+		String fen = "rnbqkbnr/pppp1ppp/8/4p3/8/5N2/PPPPPPPP/RNBQKB1R w KQkq e6 0 2";
+		board = new Board(new ForsythEdwardsNotation(fen));
+		piece = new PieceMock(Pieces.WhiteKnight, board.getWhiteKnight().getBitboard());
+		IBitboard attacks = piece.getAllAttacks(board);
+		String expected =
+			"""
+			00000000
+			00000000
+			00000000
+			00001010
+			00010001
+			10100000
+			00000000
+			00000010""";
+		assertEquals(expected, attacks.toString());
+	}
 }
