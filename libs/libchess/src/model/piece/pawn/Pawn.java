@@ -35,6 +35,10 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 		super(variant);
 	}
 
+	public Pawn(Pieces variant, IBitboard board) {
+		super(variant, board);
+	}
+
 	public boolean isInvalidMove(int source, int destination, IBoard board, IReader reader) {
 		return !(
 			sourceSquareHasPiece(source, board) &&
