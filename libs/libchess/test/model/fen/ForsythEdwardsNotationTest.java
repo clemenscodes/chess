@@ -4,14 +4,31 @@ import static model.board.Square.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import model.bits.Bitboard;
+import model.board.Board;
+import model.board.IBoard;
 import model.board.Square;
 import org.junit.jupiter.api.Test;
 
 public class ForsythEdwardsNotationTest {
 
 	@Test
+	void shouldGetIsWhite() {
+		IForsythEdwardsNotation fen = new ForsythEdwardsNotation();
+		assertTrue(fen.isWhite());
+	}
+
+	@Test
 	void testDefaultConstructor() {
 		IForsythEdwardsNotation fen = new ForsythEdwardsNotation();
+		assertNotNull(fen);
+		assertEquals("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", fen.toString());
+	}
+
+	@Test
+	void testConstructor() {
+		IForsythEdwardsNotation fen = new ForsythEdwardsNotation(
+			"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+		);
 		assertNotNull(fen);
 		assertEquals("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", fen.toString());
 	}
@@ -141,6 +158,17 @@ public class ForsythEdwardsNotationTest {
 		fen.queenRookMove();
 		assertTrue(fen.getBlackKingCastle());
 		assertFalse(fen.getBlackQueenCastle());
+	}
+
+	@Test
+	void testUpdatePiecePlacementData() {
+		IForsythEdwardsNotation fen = new ForsythEdwardsNotation(
+			"rnbqkbnr/1ppppppp/8/8/3PP3/2N2N2/PpPB1PPP/R2QKB1R b KQkq - 1 5"
+		);
+		IBoard board = new Board();
+		fen.updatePiecePlacementData(board);
+		String expected = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 1 5";
+		assertEquals(expected, fen.toString());
 	}
 
 	@Test

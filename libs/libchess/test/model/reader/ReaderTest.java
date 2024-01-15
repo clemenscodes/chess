@@ -12,7 +12,9 @@ public class ReaderTest {
 	@Test
 	void shouldReadLineCorrectly() {
 		String inputString = "Hello, World!";
-		InputStream inputStream = new ByteArrayInputStream(inputString.getBytes(StandardCharsets.UTF_8));
+		InputStream inputStream = new ByteArrayInputStream(
+			inputString.getBytes(StandardCharsets.UTF_8)
+		);
 		Reader reader = new Reader(inputStream);
 		String result = reader.readLine();
 		assertEquals(inputString, result.trim());
@@ -21,7 +23,9 @@ public class ReaderTest {
 	@Test
 	void shouldReadEmptyLineCorrectly() {
 		String inputString = "";
-		InputStream inputStream = new ByteArrayInputStream(inputString.getBytes(StandardCharsets.UTF_8));
+		InputStream inputStream = new ByteArrayInputStream(
+			inputString.getBytes(StandardCharsets.UTF_8)
+		);
 		Reader reader = new Reader(inputStream);
 		String result = reader.readLine();
 		assertEquals(inputString, result);
@@ -30,7 +34,9 @@ public class ReaderTest {
 	@Test
 	void shouldReadFromBufferWhenNotEmpty() {
 		String inputString = "First Line\nSecond Line";
-		InputStream inputStream = new ByteArrayInputStream(inputString.getBytes(StandardCharsets.UTF_8));
+		InputStream inputStream = new ByteArrayInputStream(
+			inputString.getBytes(StandardCharsets.UTF_8)
+		);
 		Reader reader = new Reader(inputStream);
 		reader.readLine();
 		reader.readLine();
@@ -41,7 +47,9 @@ public class ReaderTest {
 	@Test
 	void shouldReadFromStreamWhenBufferEmpty() {
 		String inputString = "First Line\nSecond Line";
-		InputStream inputStream = new ByteArrayInputStream(inputString.getBytes(StandardCharsets.UTF_8));
+		InputStream inputStream = new ByteArrayInputStream(
+			inputString.getBytes(StandardCharsets.UTF_8)
+		);
 		Reader reader = new Reader(inputStream);
 		String result = reader.readLine();
 		assertEquals("First Line", result.trim());
