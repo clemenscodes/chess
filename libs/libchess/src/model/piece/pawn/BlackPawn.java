@@ -20,13 +20,13 @@ public class BlackPawn extends Pawn implements Serializable {
 	}
 
 	protected IBitboard getWestAttacks(IBitboard pawns) {
-		IBitboard westAttackMask = Board.notFirstFile;
+		IBitboard westAttackMask = Board.notLastFile;
 		IBitboard westAttack = Bitboard.shiftSouthWest(pawns);
 		return Bitboard.intersect(westAttack, westAttackMask);
 	}
 
 	protected IBitboard getEastAttacks(IBitboard pawns) {
-		IBitboard eastAttackMask = Board.notLastFile;
+		IBitboard eastAttackMask = Board.notFirstFile;
 		IBitboard eastAttack = Bitboard.shiftSouthEast(pawns);
 		return Bitboard.intersect(eastAttack, eastAttackMask);
 	}
