@@ -22,6 +22,10 @@ public abstract class King extends Piece implements Movable, Serializable {
 		super(variant);
 	}
 
+	public King(Pieces variant, IBitboard board) {
+		super(variant, board);
+	}
+
 	public IBitboard getAttacks(IBitboard piece, IBoard board) {
 		IBitboard eastAttack = Bitboard.shiftEast(piece);
 		IBitboard westAttack = Bitboard.shiftWest(piece);

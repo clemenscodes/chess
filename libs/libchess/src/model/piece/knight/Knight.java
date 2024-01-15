@@ -14,6 +14,10 @@ public abstract class Knight extends Piece implements Movable, Serializable {
 		super(variant);
 	}
 
+	public Knight(Pieces variant, IBitboard board) {
+		super(variant, board);
+	}
+
 	public IBitboard getAttacks(IBitboard piece, IBoard board) {
 		IBitboard directions = Bitboard.mergeMany(
 			new IBitboard[] {

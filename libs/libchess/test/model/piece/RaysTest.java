@@ -24,6 +24,12 @@ public class RaysTest {
 	}
 
 	@Test
+	void shouldReturnNoRayIfNoPieceGiven() {
+		IBitboard rays = Rays.getDiagonalRays(new Bitboard(), board);
+		assertEquals(0, rays.getBits());
+	}
+
+	@Test
 	void shouldGetDiagonalRaysFromTopRightOnEmptyBoard() {
 		IBitboard rays = Rays.getDiagonalRays(slider, board);
 		String expected =
