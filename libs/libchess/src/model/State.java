@@ -15,18 +15,27 @@ public enum State implements Serializable {
 	GameOver;
 
 	public static boolean isCheckmate(IBoard board) {
+		boolean mate = false;
 		if (!isCheck(board)) {
 			return false;
 		}
 		IForsythEdwardsNotation fen = board.getFen();
 		boolean isWhite = fen.isWhite();
-		ArrayList<Square[]> destinations = board.getAllMoveDestinations(isWhite);
-		for (var d : destinations) {
-			System.out.println(d[0].name() + d[1].name());
-			int source = Square.getIndex(d[0]);
-			int destination = Square.getIndex(d[1]);
+		ArrayList<Square[]> moves = board.getAllMoves(isWhite);
+		for (var move : moves) {
+			IPiece piece = board.getPiece(move[0]);
+			int source = Square.getIndex(move[0]);
+			int destination = Square.getIndex(move[1]);
+			try {
+				mate = piece.isInvalidMove(source, destination, board);
+				if (!mate) {
+					return false;
+				}
+			} catch (Error e) {
+				mate = true;
+			}
 		}
-		return false;
+		return mate;
 	}
 
 	private static boolean isCheck(IBoard board) {

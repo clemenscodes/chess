@@ -88,5 +88,5 @@ public interface IBoard {
 
 	String getPiecePlacementData();
 
-	ArrayList<Square[]> getAllMoveDestinations(boolean getWhite);
+	ArrayList<Square[]> getAllMoves(boolean getWhite);
 }

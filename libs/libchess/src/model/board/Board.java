@@ -175,7 +175,7 @@ public class Board implements IBoard, Serializable {
 		return getWhite ? getWhitePieces() : getBlackPieces();
 	}
 
-	public ArrayList<Square[]> getAllMoveDestinations(boolean getWhite) {
+	public ArrayList<Square[]> getAllMoves(boolean getWhite) {
 		return Arrays
 			.stream(getAllPieces(getWhite))
 			.flatMap(piece -> piece.getMoveDestinations(this).stream())

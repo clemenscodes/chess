@@ -119,7 +119,7 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 		return true;
 	}
 
-	private IBoard simulateMove(int source, int destination, IBoard board, IReader reader) {
+	public IBoard simulateMove(int source, int destination, IBoard board, IReader reader) {
 		IBoard copiedBoard = null;
 		try {
 			copiedBoard = board.deepCopy();

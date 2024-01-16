@@ -96,7 +96,7 @@ public abstract class Piece implements IPiece, Serializable {
 		);
 	}
 
-	protected boolean isInvalidMove(int source, int destination, IBoard board) {
+	public boolean isInvalidMove(int source, int destination, IBoard board) {
 		return !(
 			sourceSquareHasPiece(source) &&
 			pieceCanMoveToDestination(source, destination, board) &&

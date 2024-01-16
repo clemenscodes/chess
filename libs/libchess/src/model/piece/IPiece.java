@@ -17,4 +17,6 @@ public interface IPiece {
 	IBitboard getAllAttacks(IBoard board);
 
 	ArrayList<Square[]> getMoveDestinations(IBoard board);
+
+	boolean isInvalidMove(int source, int destination, IBoard board);
 }
