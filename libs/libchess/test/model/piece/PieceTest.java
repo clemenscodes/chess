@@ -9,6 +9,7 @@ import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
 import model.fen.ForsythEdwardsNotation;
+import model.piece.knight.WhiteKnight;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -124,5 +125,26 @@ public class PieceTest {
 		int src = Square.getIndex(e4);
 		int dst = Square.getIndex(d5);
 		piece.move(src, dst, board);
+	}
+
+	@Test
+	void shouldGetMoves() {
+		String fen = "rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq d6 0 2";
+		board = new Board(new ForsythEdwardsNotation(fen));
+		piece = new WhiteKnight(board.getWhiteKnight().getBitboard());
+		var moves = piece.getMoves(board);
+		StringBuilder builder = new StringBuilder();
+		for (var move : moves) {
+			builder.append(move[0].name()).append(move[1].name()).append("\n");
+		}
+		String expected =
+			"""
+			b1a3
+			b1c3
+			g1e2
+			g1f3
+			g1h3
+			""";
+		assertEquals(expected, builder.toString());
 	}
 }

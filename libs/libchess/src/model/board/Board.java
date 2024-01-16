@@ -177,7 +177,7 @@ public class Board implements IBoard, Serializable {
 	public ArrayList<Square[]> getAllMoves(boolean getWhite) {
 		return Arrays
 			.stream(getAllPieces(getWhite))
-			.flatMap(piece -> piece.getMoveDestinations(this).stream())
+			.flatMap(piece -> piece.getMoves(this).stream())
 			.collect(Collectors.toCollection(ArrayList::new));
 	}
 

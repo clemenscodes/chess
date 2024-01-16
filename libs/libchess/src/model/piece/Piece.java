@@ -60,7 +60,7 @@ public abstract class Piece implements IPiece, Serializable {
 		return getAllSlidingAttacks(board);
 	}
 
-	public ArrayList<Square[]> getMoveDestinations(IBoard board) {
+	public ArrayList<Square[]> getMoves(IBoard board) {
 		ArrayList<Square[]> allDestinations = new ArrayList<>();
 		ArrayList<IBitboard> pieces = Bitboard.split(getBitboard());
 		pieces.forEach(piece -> {

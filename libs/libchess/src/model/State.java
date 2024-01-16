@@ -13,23 +13,23 @@ public enum State implements Serializable {
 	GameOver;
 
 	public static boolean isCheckmate(IBoard board) {
-		if (!isCheck(board)) {
-			return false;
-		}
+		return isCheck(board) && hasNoLegalMoves(board);
+	}
+
+	public static boolean isStalemate(IBoard board) {
+		return !isCheck(board) && hasNoLegalMoves(board);
+	}
+
+	private static boolean hasNoLegalMoves(IBoard board) {
 		var moves = board.getAllMoves(board.getFen().isWhite());
 		for (var move : moves) {
 			try {
-				return testMove(move, board);
+				return board
+					.getPiece(move[0])
+					.isInvalidMove(Square.getIndex(move[0]), Square.getIndex(move[1]), board);
 			} catch (Error ignored) {}
 		}
 		return true;
-	}
-
-	private static boolean testMove(Square[] move, IBoard board) {
-		IPiece piece = board.getPiece(move[0]);
-		int source = Square.getIndex(move[0]);
-		int destination = Square.getIndex(move[1]);
-		return piece.isInvalidMove(source, destination, board);
 	}
 
 	private static boolean isCheck(IBoard board) {
