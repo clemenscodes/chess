@@ -1,7 +1,10 @@
 package model.board;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import model.bits.Bitboard;
 import model.bits.IBitboard;
 import model.fen.ForsythEdwardsNotation;
@@ -170,6 +173,21 @@ public class Board implements IBoard, Serializable {
 
 	public IBitboard getPieces(boolean getWhite) {
 		return getWhite ? getWhitePieces() : getBlackPieces();
+	}
+
+	public ArrayList<Square[]> getAllMoveDestinations(boolean getWhite) {
+		return Arrays
+			.stream(getAllPieces(getWhite))
+			.flatMap(piece -> piece.getMoveDestinations(this).stream())
+			.collect(Collectors.toCollection(ArrayList::new));
+	}
+
+	public IBitboard getAllFriendlyAttacks() {
+		return Arrays
+			.stream(getAllPieces(getFen().isWhite()))
+			.map(piece -> piece.getAllAttacks(this))
+			.reduce(Bitboard::merge)
+			.orElse(new Bitboard());
 	}
 
 	public IBitboard getAllOpponentAttacks() {

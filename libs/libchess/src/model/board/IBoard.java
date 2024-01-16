@@ -1,6 +1,7 @@
 package model.board;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import model.bits.IBitboard;
 import model.fen.IForsythEdwardsNotation;
 import model.piece.IPiece;
@@ -63,6 +64,8 @@ public interface IBoard {
 
 	IBitboard getAllOpponentAttacks();
 
+	IBitboard getAllFriendlyAttacks();
+
 	IBitboard getKing(boolean getWhite);
 
 	IPiece getPiece(Square square);
@@ -84,4 +87,6 @@ public interface IBoard {
 	boolean isSquareEmpty(Square square);
 
 	String getPiecePlacementData();
+
+	ArrayList<Square[]> getAllMoveDestinations(boolean getWhite);
 }

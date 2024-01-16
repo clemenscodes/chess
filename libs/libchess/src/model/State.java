@@ -1,9 +1,11 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import model.bits.Bitboard;
 import model.bits.IBitboard;
 import model.board.IBoard;
+import model.board.Square;
 import model.fen.IForsythEdwardsNotation;
 import model.piece.IPiece;
 
@@ -17,15 +19,20 @@ public enum State implements Serializable {
 			return false;
 		}
 		IForsythEdwardsNotation fen = board.getFen();
-		IBitboard enemyAttack = board.getAllOpponentAttacks();
-		System.out.println(enemyAttack);
-		IPiece[] pieces = fen.isWhite() ? board.getAllWhitePieces() : board.getAllBlackPieces();
+		boolean isWhite = fen.isWhite();
+		ArrayList<Square[]> destinations = board.getAllMoveDestinations(isWhite);
+		for (var d : destinations) {
+			System.out.println(d[0].name() + d[1].name());
+			int source = Square.getIndex(d[0]);
+			int destination = Square.getIndex(d[1]);
+		}
 		return false;
 	}
 
 	private static boolean isCheck(IBoard board) {
-		IBitboard king = board.getKing(board.getFen().isWhite());
-		IBitboard enemyAttack = board.getAllOpponentAttacks();
-		return Bitboard.overlap(king, enemyAttack);
+		boolean isWhite = board.getFen().isWhite();
+		IBitboard king = board.getKing(isWhite);
+		IBitboard attacks = isWhite ? board.getAllOpponentAttacks() : board.getAllFriendlyAttacks();
+		return Bitboard.overlap(king, attacks);
 	}
 }

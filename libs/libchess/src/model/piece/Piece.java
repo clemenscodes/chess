@@ -2,6 +2,7 @@ package model.piece;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import model.bits.Bitboard;
 import model.bits.IBitboard;
 import model.board.IBoard;
@@ -10,6 +11,7 @@ import model.move.IMove;
 import model.move.Move;
 import model.move.irreversible.capturing.CaptureMove;
 import model.move.reversible.QuietMove;
+import model.piece.pawn.Pawn;
 
 public abstract class Piece implements IPiece, Serializable {
 
@@ -56,6 +58,35 @@ public abstract class Piece implements IPiece, Serializable {
 
 	public IBitboard getAllAttacks(IBoard board) {
 		return getAllSlidingAttacks(board);
+	}
+
+	public ArrayList<Square[]> getMoveDestinations(IBoard board) {
+		ArrayList<Square[]> allDestinations = new ArrayList<>();
+		ArrayList<IBitboard> pieces = Bitboard.split(getBitboard());
+		pieces.forEach(piece -> {
+			Square pieceSourceSquare = getSquareFromSingleBit(piece);
+			IBitboard pieceAttacks = this instanceof Pawn pawn
+				? pawn.getTargets(piece, board)
+				: getAttacks(piece, board);
+			ArrayList<IBitboard> splitAttacks = Bitboard.split(pieceAttacks);
+			splitAttacks.forEach(bitboard -> {
+				Square[] squarePair = new Square[2];
+				squarePair[0] = pieceSourceSquare;
+				squarePair[1] = getSquareFromSingleBit(bitboard);
+				allDestinations.add(squarePair);
+			});
+		});
+		return allDestinations;
+	}
+
+	private Square getSquareFromSingleBit(IBitboard board) {
+		for (int i = 0; i < 64; i++) {
+			IBitboard mask = Bitboard.leftShiftMask(i);
+			if (Bitboard.overlap(board, mask)) {
+				return Square.getSquare(i);
+			}
+		}
+		return null;
 	}
 
 	protected IBitboard removeFriendlyPieces(IBitboard piece, IBoard board) {

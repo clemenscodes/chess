@@ -167,7 +167,7 @@ public class Bitboard implements IBitboard, Serializable {
 		return boards;
 	}
 
-	private static IBitboard leftShiftMask(int bits) {
+	public static IBitboard leftShiftMask(int bits) {
 		return new Bitboard(1L << bits);
 	}
 

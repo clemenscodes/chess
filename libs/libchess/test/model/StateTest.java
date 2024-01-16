@@ -43,7 +43,11 @@ public class StateTest {
 
 	@Test
 	void shouldDetermineCheckmate() {
-		boolean isMate = State.isCheckmate(board);
-		assertTrue(isMate);
+		assertTrue(State.isCheckmate(board));
+	}
+
+	@Test
+	void shouldDetermineNonCheckmate() {
+		assertFalse(State.isCheckmate(new Board()));
 	}
 }
