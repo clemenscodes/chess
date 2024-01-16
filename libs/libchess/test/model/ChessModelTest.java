@@ -1,5 +1,6 @@
 package model;
 
+import static model.board.Square.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.ByteArrayInputStream;
@@ -40,5 +41,15 @@ public class ChessModelTest {
 		chessModel.makeMove(Square.e2, Square.e4);
 		assertEquals(State.Playing, chessModel.getGameState());
 		assertEquals(1, chessModel.getMoveList().getPlayedMoves());
+	}
+
+	@Test
+	void shouldSetGameStateToCheckmate() {
+		chessModel.startNewGame();
+		chessModel.makeMove(g2, g4);
+		chessModel.makeMove(e7, e5);
+		chessModel.makeMove(f2, f3);
+		chessModel.makeMove(d8, h4);
+		assertEquals(State.Checkmate, chessModel.getGameState());
 	}
 }

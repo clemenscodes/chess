@@ -18,5 +18,7 @@ public interface IChessModel {
 
 	void startNewGame();
 
+	void resign();
+
 	void makeMove(Square source, Square destination);
 }

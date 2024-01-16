@@ -5,11 +5,12 @@ import model.bits.Bitboard;
 import model.bits.IBitboard;
 import model.board.IBoard;
 import model.board.Square;
-import model.piece.IPiece;
 
 public enum State implements Serializable {
 	Start,
 	Playing,
+	Checkmate,
+	Stalemate,
 	GameOver;
 
 	public static boolean isCheckmate(IBoard board) {

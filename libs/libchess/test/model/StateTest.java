@@ -21,16 +21,20 @@ public class StateTest {
 	@Test
 	void testEnumValues() {
 		State[] states = State.values();
-		assertEquals(3, states.length);
+		assertEquals(5, states.length);
 		assertEquals(State.Start, states[0]);
 		assertEquals(State.Playing, states[1]);
-		assertEquals(State.GameOver, states[2]);
+		assertEquals(State.Checkmate, states[2]);
+		assertEquals(State.Stalemate, states[3]);
+		assertEquals(State.GameOver, states[4]);
 	}
 
 	@Test
 	void testEnumToString() {
 		assertEquals("Start", State.Start.toString());
 		assertEquals("Playing", State.Playing.toString());
+		assertEquals("Checkmate", State.Checkmate.toString());
+		assertEquals("Stalemate", State.Stalemate.toString());
 		assertEquals("GameOver", State.GameOver.toString());
 	}
 
@@ -38,6 +42,8 @@ public class StateTest {
 	void testEnumValueOf() {
 		assertEquals(State.Start, State.valueOf("Start"));
 		assertEquals(State.Playing, State.valueOf("Playing"));
+		assertEquals(State.Checkmate, State.valueOf("Checkmate"));
+		assertEquals(State.Stalemate, State.valueOf("Stalemate"));
 		assertEquals(State.GameOver, State.valueOf("GameOver"));
 	}
 

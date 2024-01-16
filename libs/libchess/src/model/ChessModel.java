@@ -53,8 +53,28 @@ public class ChessModel implements IChessModel {
 	}
 
 	public void makeMove(Square source, Square destination) {
+		if (getGameState() != State.Playing) {
+			System.err.println("Can not make moves");
+			return;
+		}
 		getMoveList().makeMove(source, destination, getBoard(), getReader());
 		printGame();
+		boolean isWhite = getBoard().getFen().isWhite();
+		if (State.isCheckmate(board)) {
+			setGameState(State.Checkmate);
+			System.out.println("Checkmate!");
+			System.out.println(isWhite ? "Black won." : "White won.");
+			System.out.println(getMoveList());
+		}
+		if (State.isStalemate(board)) {
+			setGameState(State.Stalemate);
+			System.out.println("Stalemate!");
+			System.out.println(getMoveList());
+		}
+	}
+
+	public void resign() {
+		setGameState(State.GameOver);
 	}
 
 	private void setGameState(State state) {
