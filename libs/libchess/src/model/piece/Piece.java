@@ -80,13 +80,14 @@ public abstract class Piece implements IPiece, Serializable {
 	}
 
 	private Square getSquareFromSingleBit(IBitboard board) {
+		Square square = null;
 		for (int i = 0; i < 64; i++) {
 			IBitboard mask = Bitboard.leftShiftMask(i);
 			if (Bitboard.overlap(board, mask)) {
-				return Square.getSquare(i);
+				square = Square.getSquare(i);
 			}
 		}
-		return null;
+		return square;
 	}
 
 	protected IBitboard removeFriendlyPieces(IBitboard piece, IBoard board) {

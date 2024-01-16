@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 import model.bits.Bitboard;
+import model.bits.IBitboard;
 import model.fen.ForsythEdwardsNotation;
 import model.piece.Pieces;
 import org.junit.jupiter.api.Test;
@@ -130,5 +131,39 @@ public class BoardTest {
 		int index = Square.getIndex(a1);
 		board.capturePiece(index);
 		assert (Bitboard.overlap(Bitboard.getSingleBit(index), board.getEmptySquares()));
+	}
+
+	@Test
+	void shouldGetAllOpponentAttacks() {
+		IBoard board = new Board();
+		IBitboard attacks = board.getAllOpponentAttacks();
+		String expected =
+			"""
+			00000000
+			00000000
+			10100101
+			00000000
+			00000000
+			00000000
+			00000000
+			00000000""";
+		assertEquals(expected, attacks.toString());
+	}
+
+	@Test
+	void shouldGetAllFriendlyAttacks() {
+		IBoard board = new Board();
+		IBitboard attacks = board.getAllFriendlyAttacks();
+		String expected =
+			"""
+			00000000
+			00000000
+			00000000
+			00000000
+			00000000
+			10100101
+			00000000
+			00000000""";
+		assertEquals(expected, attacks.toString());
 	}
 }

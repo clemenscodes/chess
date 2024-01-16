@@ -3,7 +3,6 @@ package model.board;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 import model.bits.Bitboard;
 import model.bits.IBitboard;
