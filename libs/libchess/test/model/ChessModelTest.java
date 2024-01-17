@@ -52,4 +52,21 @@ public class ChessModelTest {
 		chessModel.makeMove(d8, h4);
 		assertEquals(State.Checkmate, chessModel.getGameState());
 	}
+
+	@Test
+	void shouldDetermineNonCheckmate() {
+		assertFalse(chessModel.isCheckmate());
+	}
+
+	@Test
+	void shouldDetermineCheckmate() {
+		assertTrue(chessModel.isCheckmate());
+	}
+	// @Test
+	// void shouldDetermineStalemate() {
+	//     String fen = "8/8/8/8/8/7k/7p/7K w - - 0 1";
+	//     board = new Board(new ForsythEdwardsNotation(fen));
+	//     System.out.println(board);
+	//     assertTrue(State.isStalemate(board));
+	// }
 }

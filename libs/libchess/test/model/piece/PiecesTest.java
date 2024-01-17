@@ -8,40 +8,40 @@ public class PiecesTest {
 
 	@Test
 	void testFromSymbol() {
-		assertEquals(Pieces.BlackRook, Pieces.fromSymbol('r'));
-		assertEquals(Pieces.BlackKnight, Pieces.fromSymbol('n'));
-		assertEquals(Pieces.BlackBishop, Pieces.fromSymbol('b'));
-		assertEquals(Pieces.BlackQueen, Pieces.fromSymbol('q'));
-		assertEquals(Pieces.BlackKing, Pieces.fromSymbol('k'));
-		assertEquals(Pieces.BlackPawn, Pieces.fromSymbol('p'));
-		assertEquals(Pieces.WhiteRook, Pieces.fromSymbol('R'));
-		assertEquals(Pieces.WhiteKnight, Pieces.fromSymbol('N'));
-		assertEquals(Pieces.WhiteBishop, Pieces.fromSymbol('B'));
-		assertEquals(Pieces.WhiteQueen, Pieces.fromSymbol('Q'));
-		assertEquals(Pieces.WhiteKing, Pieces.fromSymbol('K'));
-		assertEquals(Pieces.WhitePawn, Pieces.fromSymbol('P'));
-		assertThrows(IllegalStateException.class, () -> Pieces.fromSymbol('x'));
+		assertEquals(Pieces.BlackRook, Piece.fromSymbol('r'));
+		assertEquals(Pieces.BlackKnight, Piece.fromSymbol('n'));
+		assertEquals(Pieces.BlackBishop, Piece.fromSymbol('b'));
+		assertEquals(Pieces.BlackQueen, Piece.fromSymbol('q'));
+		assertEquals(Pieces.BlackKing, Piece.fromSymbol('k'));
+		assertEquals(Pieces.BlackPawn, Piece.fromSymbol('p'));
+		assertEquals(Pieces.WhiteRook, Piece.fromSymbol('R'));
+		assertEquals(Pieces.WhiteKnight, Piece.fromSymbol('N'));
+		assertEquals(Pieces.WhiteBishop, Piece.fromSymbol('B'));
+		assertEquals(Pieces.WhiteQueen, Piece.fromSymbol('Q'));
+		assertEquals(Pieces.WhiteKing, Piece.fromSymbol('K'));
+		assertEquals(Pieces.WhitePawn, Piece.fromSymbol('P'));
+		assertThrows(IllegalStateException.class, () -> Piece.fromSymbol('x'));
 	}
 
 	@Test
 	void testFromKind() {
-		assertEquals('r', Pieces.fromKind(Pieces.BlackRook));
-		assertEquals('n', Pieces.fromKind(Pieces.BlackKnight));
-		assertEquals('b', Pieces.fromKind(Pieces.BlackBishop));
-		assertEquals('q', Pieces.fromKind(Pieces.BlackQueen));
-		assertEquals('k', Pieces.fromKind(Pieces.BlackKing));
-		assertEquals('p', Pieces.fromKind(Pieces.BlackPawn));
-		assertEquals('R', Pieces.fromKind(Pieces.WhiteRook));
-		assertEquals('N', Pieces.fromKind(Pieces.WhiteKnight));
-		assertEquals('B', Pieces.fromKind(Pieces.WhiteBishop));
-		assertEquals('Q', Pieces.fromKind(Pieces.WhiteQueen));
-		assertEquals('K', Pieces.fromKind(Pieces.WhiteKing));
-		assertEquals('P', Pieces.fromKind(Pieces.WhitePawn));
+		assertEquals('r', Piece.fromKind(Pieces.BlackRook));
+		assertEquals('n', Piece.fromKind(Pieces.BlackKnight));
+		assertEquals('b', Piece.fromKind(Pieces.BlackBishop));
+		assertEquals('q', Piece.fromKind(Pieces.BlackQueen));
+		assertEquals('k', Piece.fromKind(Pieces.BlackKing));
+		assertEquals('p', Piece.fromKind(Pieces.BlackPawn));
+		assertEquals('R', Piece.fromKind(Pieces.WhiteRook));
+		assertEquals('N', Piece.fromKind(Pieces.WhiteKnight));
+		assertEquals('B', Piece.fromKind(Pieces.WhiteBishop));
+		assertEquals('Q', Piece.fromKind(Pieces.WhiteQueen));
+		assertEquals('K', Piece.fromKind(Pieces.WhiteKing));
+		assertEquals('P', Piece.fromKind(Pieces.WhitePawn));
 	}
 
 	@Test
 	void testGetWhitePromotionPieces() {
-		Pieces[] whitePromotionPieces = Pieces.getWhitePromotionPieces();
+		Pieces[] whitePromotionPieces = Piece.getWhitePromotionPieces();
 		assertNotNull(whitePromotionPieces);
 		assertEquals(4, whitePromotionPieces.length);
 		assertEquals(Pieces.WhiteQueen, whitePromotionPieces[0]);
@@ -52,7 +52,7 @@ public class PiecesTest {
 
 	@Test
 	void testGetBlackPromotionPieces() {
-		Pieces[] blackPromotionPieces = Pieces.getBlackPromotionPieces();
+		Pieces[] blackPromotionPieces = Piece.getBlackPromotionPieces();
 		assertNotNull(blackPromotionPieces);
 		assertEquals(4, blackPromotionPieces.length);
 		assertEquals(Pieces.BlackQueen, blackPromotionPieces[0]);
@@ -69,31 +69,31 @@ public class PiecesTest {
 			Pieces.WhiteKnight,
 			Pieces.WhiteBishop,
 		};
-		assertEquals(Pieces.WhiteQueen, Pieces.getSelectedPiece(testPieces, "Q"));
-		assertEquals(Pieces.WhiteRook, Pieces.getSelectedPiece(testPieces, "R"));
-		assertEquals(Pieces.WhiteKnight, Pieces.getSelectedPiece(testPieces, "N"));
-		assertEquals(Pieces.WhiteBishop, Pieces.getSelectedPiece(testPieces, "B"));
-		assertThrows(Error.class, () -> Pieces.getSelectedPiece(testPieces, "Invalid"));
+		assertEquals(Pieces.WhiteQueen, Piece.getSelectedPiece(testPieces, "Q"));
+		assertEquals(Pieces.WhiteRook, Piece.getSelectedPiece(testPieces, "R"));
+		assertEquals(Pieces.WhiteKnight, Piece.getSelectedPiece(testPieces, "N"));
+		assertEquals(Pieces.WhiteBishop, Piece.getSelectedPiece(testPieces, "B"));
+		assertThrows(Error.class, () -> Piece.getSelectedPiece(testPieces, "Invalid"));
 	}
 
 	@Test
 	void testPieceByIndex() {
-		assertEquals(Pieces.BlackRook, Pieces.PIECE_BY_INDEX[0]);
-		assertEquals(Pieces.BlackKnight, Pieces.PIECE_BY_INDEX[1]);
-		assertEquals(Pieces.BlackBishop, Pieces.PIECE_BY_INDEX[2]);
-		assertEquals(Pieces.BlackQueen, Pieces.PIECE_BY_INDEX[3]);
-		assertEquals(Pieces.BlackKing, Pieces.PIECE_BY_INDEX[4]);
-		assertEquals(Pieces.BlackPawn, Pieces.PIECE_BY_INDEX[5]);
-		assertEquals(Pieces.WhiteRook, Pieces.PIECE_BY_INDEX[6]);
-		assertEquals(Pieces.WhiteKnight, Pieces.PIECE_BY_INDEX[7]);
-		assertEquals(Pieces.WhiteBishop, Pieces.PIECE_BY_INDEX[8]);
-		assertEquals(Pieces.WhiteQueen, Pieces.PIECE_BY_INDEX[9]);
-		assertEquals(Pieces.WhiteKing, Pieces.PIECE_BY_INDEX[10]);
-		assertEquals(Pieces.WhitePawn, Pieces.PIECE_BY_INDEX[11]);
+		assertEquals(Pieces.BlackRook, Piece.PIECE_BY_INDEX[0]);
+		assertEquals(Pieces.BlackKnight, Piece.PIECE_BY_INDEX[1]);
+		assertEquals(Pieces.BlackBishop, Piece.PIECE_BY_INDEX[2]);
+		assertEquals(Pieces.BlackQueen, Piece.PIECE_BY_INDEX[3]);
+		assertEquals(Pieces.BlackKing, Piece.PIECE_BY_INDEX[4]);
+		assertEquals(Pieces.BlackPawn, Piece.PIECE_BY_INDEX[5]);
+		assertEquals(Pieces.WhiteRook, Piece.PIECE_BY_INDEX[6]);
+		assertEquals(Pieces.WhiteKnight, Piece.PIECE_BY_INDEX[7]);
+		assertEquals(Pieces.WhiteBishop, Piece.PIECE_BY_INDEX[8]);
+		assertEquals(Pieces.WhiteQueen, Piece.PIECE_BY_INDEX[9]);
+		assertEquals(Pieces.WhiteKing, Piece.PIECE_BY_INDEX[10]);
+		assertEquals(Pieces.WhitePawn, Piece.PIECE_BY_INDEX[11]);
 	}
 
 	@Test
 	void testEmptySymbol() {
-		assertEquals(' ', Pieces.EMPTY_SYMBOL);
+		assertEquals(' ', Piece.EMPTY_SYMBOL);
 	}
 }

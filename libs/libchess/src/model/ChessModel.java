@@ -1,6 +1,8 @@
 package model;
 
 import java.io.InputStream;
+import model.bits.Bitboard;
+import model.bits.IBitboard;
 import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
@@ -15,6 +17,8 @@ public class ChessModel implements IChessModel {
 	private IBoard board;
 	private IMoveList moveList;
 	private IReader reader;
+
+	public static void main(String[] args) {}
 
 	public ChessModel(InputStream in) {
 		setReader(in);
@@ -60,13 +64,13 @@ public class ChessModel implements IChessModel {
 		getMoveList().makeMove(source, destination, getBoard(), getReader());
 		printGame();
 		boolean isWhite = getBoard().getFen().isWhite();
-		if (State.isCheckmate(board)) {
+		if (isCheckmate()) {
 			setGameState(State.Checkmate);
 			System.out.println("Checkmate!");
 			System.out.println(isWhite ? "Black won." : "White won.");
 			System.out.println(getMoveList());
 		}
-		if (State.isStalemate(board)) {
+		if (isStalemate()) {
 			setGameState(State.Stalemate);
 			System.out.println("Stalemate!");
 			System.out.println(getMoveList());
@@ -96,5 +100,32 @@ public class ChessModel implements IChessModel {
 
 	private void setReader(InputStream in) {
 		reader = new Reader(in);
+	}
+
+	public boolean isCheckmate() {
+		return isCheck() && hasNoLegalMoves();
+	}
+
+	public boolean isStalemate() {
+		return !isCheck() && hasNoLegalMoves();
+	}
+
+	private boolean hasNoLegalMoves() {
+		var moves = getBoard().getAllMoves(getBoard().getFen().isWhite());
+		for (var move : moves) {
+			try {
+				return getBoard()
+					.getPiece(move[0])
+					.isInvalidMove(Board.getIndex(move[0]), Board.getIndex(move[1]), getBoard());
+			} catch (Error ignored) {}
+		}
+		return true;
+	}
+
+	private boolean isCheck() {
+		boolean isWhite = board.getFen().isWhite();
+		IBitboard king = board.getKing(isWhite);
+		IBitboard attacks = isWhite ? board.getAllOpponentAttacks() : board.getAllFriendlyAttacks();
+		return Bitboard.overlap(king, attacks);
 	}
 }

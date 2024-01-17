@@ -9,32 +9,32 @@ public class SquareTest {
 	@Test
 	void testGetSquare() {
 		for (int i = 0; i < 64; i++) {
-			Square square = Square.getSquare(i);
+			Square square = Board.getSquare(i);
 			assertNotNull(square);
-			assertEquals(i, Square.getIndex(square));
+			assertEquals(i, Board.getIndex(square));
 		}
 	}
 
 	@Test
 	void testGetIndex() {
 		for (int i = 0; i < 64; i++) {
-			Square square = Square.getSquare(i);
-			assertEquals(i, Square.getIndex(square));
+			Square square = Board.getSquare(i);
+			assertEquals(i, Board.getIndex(square));
 		}
 	}
 
 	@Test
 	void testGetSquareInvalidIndex() {
-		assertThrows(IndexOutOfBoundsException.class, () -> Square.getSquare(-1));
-		assertThrows(IndexOutOfBoundsException.class, () -> Square.getSquare(64));
+		assertThrows(IndexOutOfBoundsException.class, () -> Board.getSquare(-1));
+		assertThrows(IndexOutOfBoundsException.class, () -> Board.getSquare(64));
 	}
 
 	@Test
 	void testGetIndexInvalidSquare() {
-		assertThrows(NullPointerException.class, () -> Square.getIndex(null));
+		assertThrows(NullPointerException.class, () -> Board.getIndex(null));
 		assertThrows(
 			IllegalArgumentException.class,
-			() -> Square.getIndex(Square.valueOf("invalid"))
+			() -> Board.getIndex(Square.valueOf("invalid"))
 		);
 	}
 }

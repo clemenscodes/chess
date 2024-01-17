@@ -1,6 +1,7 @@
 package model.move.irreversible.pawn.promotion;
 
 import model.bits.Bitboard;
+import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
 import model.move.irreversible.pawn.PawnMove;
@@ -20,6 +21,6 @@ public abstract class PromotionMove extends PawnMove {
 		board
 			.getPieceByKind(chosenPromotion)
 			.getBitboard()
-			.merge(Bitboard.getSingleBit(Square.getIndex(destination)));
+			.merge(Bitboard.getSingleBit(Board.getIndex(destination)));
 	}
 }

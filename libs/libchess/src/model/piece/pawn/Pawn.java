@@ -11,7 +11,7 @@ import model.move.irreversible.pawn.promotion.capturing.*;
 import model.piece.*;
 import model.reader.IReader;
 
-public abstract class Pawn extends Piece implements MovableWithReader, Serializable {
+public abstract class Pawn extends Piece implements IPawn {
 
 	protected abstract IBitboard getWestAttacks(IBitboard pawns);
 
@@ -130,10 +130,10 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 	}
 
 	private IMove unsafeMove(int source, int destination, IBoard board, IReader reader) {
-		Square src = Square.getSquare(source);
-		Square dst = Square.getSquare(destination);
+		Square src = Board.getSquare(source);
+		Square dst = Board.getSquare(destination);
 		IBitboard destinationBit = Bitboard.getSingleBit(destination);
-		IPiece pawn = board.getPiece(Square.getSquare(source));
+		IPiece pawn = board.getPiece(Board.getSquare(source));
 		if (Move.isPromotion(destinationBit)) {
 			return promotePawn(src, dst, board, reader);
 		}
@@ -150,8 +150,8 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 		System.out.println(
 			"Pawn promotion! Select the piece you want: Q (Queen), R (Rook), N (Knight), B (Bishop)"
 		);
-		Pieces piece = Pieces.getSelectedPiece(getPromotionPieces(), getSelection(reader));
-		IBitboard destinationBit = Bitboard.getSingleBit(Square.getIndex(dst));
+		Pieces piece = Piece.getSelectedPiece(getPromotionPieces(), getSelection(reader));
+		IBitboard destinationBit = Bitboard.getSingleBit(Board.getIndex(dst));
 		return Move.isCapture(destinationBit, board)
 			? makePromotionCapture(src, dst, piece, board)
 			: makePromotion(src, dst, piece, board);
@@ -168,7 +168,7 @@ public abstract class Pawn extends Piece implements MovableWithReader, Serializa
 
 	private IMove pawnPush(Square source, Square destination, IBoard board) {
 		IPiece pawn = board.getPiece(source);
-		int moveIndexDifference = Math.abs(Square.getIndex(destination) - Square.getIndex(source));
+		int moveIndexDifference = Math.abs(Board.getIndex(destination) - Board.getIndex(source));
 		return (moveIndexDifference == Board.SIZE)
 			? new SinglePawnPushMove(source, destination, board, pawn)
 			: new DoublePawnPushMove(source, destination, board, pawn);

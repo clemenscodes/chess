@@ -1,15 +1,13 @@
 package model.piece.pawn;
 
-import java.io.Serializable;
 import model.bits.Bitboard;
 import model.bits.IBitboard;
 import model.board.Board;
 import model.board.IBoard;
+import model.piece.Piece;
 import model.piece.Pieces;
 
-public class WhitePawn extends Pawn implements Serializable {
-
-	public static final char SYMBOL = '♙';
+public class WhitePawn extends Pawn {
 
 	public WhitePawn() {
 		super(Pieces.WhitePawn);
@@ -65,6 +63,6 @@ public class WhitePawn extends Pawn implements Serializable {
 	}
 
 	protected Pieces[] getPromotionPieces() {
-		return Pieces.getWhitePromotionPieces();
+		return Piece.getWhitePromotionPieces();
 	}
 }

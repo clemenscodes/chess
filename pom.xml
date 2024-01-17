@@ -45,5 +45,9 @@
 	<modules>
 		<module>apps/chess</module>
 		<module>libs/libchess</module>
+		<module>libs/api</module>
+		<module>libs/model</module>
+		<module>libs/view</module>
+		<module>libs/controller</module>
 	</modules>
 </project>

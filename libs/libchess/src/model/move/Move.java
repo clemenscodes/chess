@@ -3,6 +3,7 @@ package model.move;
 import java.io.Serializable;
 import model.bits.Bitboard;
 import model.bits.IBitboard;
+import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
 import model.fen.IForsythEdwardsNotation;
@@ -181,7 +182,7 @@ public abstract class Move implements IMove, Serializable {
 		IBitboard player = board.getFen().isWhite()
 			? board.getWhitePieces()
 			: board.getBlackPieces();
-		IBitboard movingPiece = Bitboard.getSingleBit(Square.getIndex(source));
+		IBitboard movingPiece = Bitboard.getSingleBit(Board.getIndex(source));
 		return Bitboard.overlap(player, movingPiece);
 	}
 }

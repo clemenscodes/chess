@@ -44,7 +44,7 @@
 		</dependency>
 		<dependency>
 			<groupId>thm.pis</groupId>
-			<artifactId>libtcp</artifactId>
+			<artifactId>api</artifactId>
 			<version>0.0.1</version>
 			<scope>compile</scope>
 		</dependency>

@@ -1,10 +1,13 @@
 package model.piece;
 
+import static model.piece.Pieces.*;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import model.bits.Bitboard;
 import model.bits.IBitboard;
+import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
 import model.move.IMove;
@@ -13,7 +16,114 @@ import model.move.irreversible.capturing.CaptureMove;
 import model.move.reversible.QuietMove;
 import model.piece.pawn.Pawn;
 
-public abstract class Piece implements IPiece, Serializable {
+public abstract class Piece implements IPiece {
+
+	public static final char BLACK_BISHOP = '♝';
+	public static final char WHITE_BISHOP = '♗';
+	public static final char BLACK_KING = '♚';
+	public static final char WHITE_KING = '♔';
+	public static final char BLACK_KNIGHT = '♞';
+	public static final char WHITE_KNIGHT = '♘';
+	public static final char BLACK_PAWN = '♟';
+	public static final char WHITE_PAWN = '♙';
+	public static final char BLACK_QUEEN = '♛';
+	public static final char WHITE_QUEEN = '♕';
+	public static final char BLACK_ROOK = '♜';
+	public static final char WHITE_ROOK = '♖';
+	public static final char EMPTY_SYMBOL = ' ';
+
+	public static Pieces fromSymbol(char symbol) {
+		return switch (symbol) {
+			case 'r' -> BlackRook;
+			case 'n' -> BlackKnight;
+			case 'b' -> BlackBishop;
+			case 'q' -> BlackQueen;
+			case 'k' -> BlackKing;
+			case 'p' -> BlackPawn;
+			case 'R' -> WhiteRook;
+			case 'N' -> WhiteKnight;
+			case 'B' -> WhiteBishop;
+			case 'Q' -> WhiteQueen;
+			case 'K' -> WhiteKing;
+			case 'P' -> WhitePawn;
+			default -> throw new IllegalStateException("Unexpected symbol: " + symbol);
+		};
+	}
+
+	public static char fromKind(Pieces kind) {
+		return switch (kind) {
+			case BlackRook -> 'r';
+			case BlackKnight -> 'n';
+			case BlackBishop -> 'b';
+			case BlackQueen -> 'q';
+			case BlackKing -> 'k';
+			case BlackPawn -> 'p';
+			case WhiteRook -> 'R';
+			case WhiteKnight -> 'N';
+			case WhiteBishop -> 'B';
+			case WhiteQueen -> 'Q';
+			case WhiteKing -> 'K';
+			case WhitePawn -> 'P';
+		};
+	}
+
+	public static final char[] SYMBOLS = {
+		BLACK_ROOK,
+		BLACK_KNIGHT,
+		BLACK_BISHOP,
+		BLACK_QUEEN,
+		BLACK_KING,
+		BLACK_PAWN,
+		WHITE_ROOK,
+		WHITE_KNIGHT,
+		WHITE_BISHOP,
+		WHITE_QUEEN,
+		WHITE_KING,
+		WHITE_PAWN,
+	};
+
+	public static final Pieces[] PIECE_BY_INDEX = {
+		BlackRook,
+		BlackKnight,
+		BlackBishop,
+		BlackQueen,
+		BlackKing,
+		BlackPawn,
+		WhiteRook,
+		WhiteKnight,
+		WhiteBishop,
+		WhiteQueen,
+		WhiteKing,
+		WhitePawn,
+	};
+
+	public static Pieces getSelectedPiece(Pieces[] pieces, String userInput) {
+		return switch (userInput) {
+			case "Q" -> pieces[0];
+			case "R" -> pieces[1];
+			case "N" -> pieces[2];
+			case "B" -> pieces[3];
+			default -> throw new Error("Invalid input");
+		};
+	}
+
+	public static Pieces[] getWhitePromotionPieces() {
+		return new Pieces[] {
+			Pieces.WhiteQueen,
+			Pieces.WhiteRook,
+			Pieces.WhiteKnight,
+			Pieces.WhiteBishop,
+		};
+	}
+
+	public static Pieces[] getBlackPromotionPieces() {
+		return new Pieces[] {
+			Pieces.BlackQueen,
+			Pieces.BlackRook,
+			Pieces.BlackKnight,
+			Pieces.BlackBishop,
+		};
+	}
 
 	private Pieces variant;
 
@@ -84,7 +194,7 @@ public abstract class Piece implements IPiece, Serializable {
 		for (int i = 0; i < 64; i++) {
 			IBitboard mask = Bitboard.leftShiftMask(i);
 			if (Bitboard.overlap(board, mask)) {
-				square = Square.getSquare(i);
+				square = Board.getSquare(i);
 			}
 		}
 		return square;
@@ -135,8 +245,8 @@ public abstract class Piece implements IPiece, Serializable {
 	}
 
 	protected IMove unsafeMove(int source, int destination, IBoard board) {
-		Square src = Square.getSquare(source);
-		Square dst = Square.getSquare(destination);
+		Square src = Board.getSquare(source);
+		Square dst = Board.getSquare(destination);
 		if (Move.isCapture(Bitboard.getSingleBit(destination), board)) {
 			return new CaptureMove(src, dst, board);
 		}

@@ -10,7 +10,7 @@ public class EnPassantCaptureMove extends PawnMove {
 
 	public EnPassantCaptureMove(Square source, Square destination, IBoard board, IPiece pawn) {
 		super(source, destination, board);
-		int dst = Square.getIndex(destination);
+		int dst = Board.getIndex(destination);
 		int passedSquareIndex = getPassedSquareIndex(dst, pawn);
 		board.capturePiece(passedSquareIndex);
 		pawn.getBitboard().setBitByIndex(dst);

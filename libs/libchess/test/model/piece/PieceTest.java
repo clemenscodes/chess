@@ -58,7 +58,7 @@ public class PieceTest {
 
 	@Test
 	void shouldGetMoveMask() {
-		IBitboard moveMask = piece.getMoveMask(Square.getIndex(a1), Square.getIndex(b1));
+		IBitboard moveMask = piece.getMoveMask(Board.getIndex(a1), Board.getIndex(b1));
 		String expected =
 			"""
 			00000000
@@ -81,8 +81,8 @@ public class PieceTest {
 
 	@Test
 	void shouldErrorIfSourceSquareDoesNotHavePiece() {
-		int src = Square.getIndex(a1);
-		int dst = Square.getIndex(b1);
+		int src = Board.getIndex(a1);
+		int dst = Board.getIndex(b1);
 		try {
 			piece.move(src, dst, board);
 		} catch (Error e) {
@@ -94,8 +94,8 @@ public class PieceTest {
 	void shouldErrorIfPieceCanNotMoveToDestination() {
 		board = new Board(new ForsythEdwardsNotation());
 		piece = new PieceMock(Pieces.WhitePawn, board.getWhitePawn().getBitboard());
-		int src = Square.getIndex(a2);
-		int dst = Square.getIndex(a3);
+		int src = Board.getIndex(a2);
+		int dst = Board.getIndex(a3);
 		try {
 			piece.move(src, dst, board);
 		} catch (Error e) {
@@ -108,8 +108,8 @@ public class PieceTest {
 		String fen = "rnbqk1nr/pppp1ppp/8/4p3/1b2P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3";
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new PieceMock(Pieces.WhitePawn, board.getWhitePawn().getBitboard());
-		int src = Square.getIndex(d2);
-		int dst = Square.getIndex(d3);
+		int src = Board.getIndex(d2);
+		int dst = Board.getIndex(d3);
 		try {
 			piece.move(src, dst, board);
 		} catch (Error e) {
@@ -122,8 +122,8 @@ public class PieceTest {
 		String fen = "rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq d6 0 2";
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new PieceMock(Pieces.WhitePawn, board.getWhitePawn().getBitboard());
-		int src = Square.getIndex(e4);
-		int dst = Square.getIndex(d5);
+		int src = Board.getIndex(e4);
+		int dst = Board.getIndex(d5);
 		piece.move(src, dst, board);
 	}
 

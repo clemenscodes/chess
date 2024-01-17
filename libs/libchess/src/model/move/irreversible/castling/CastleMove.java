@@ -3,6 +3,7 @@ package model.move.irreversible.castling;
 import static model.board.Square.*;
 
 import model.bits.IBitboard;
+import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
 import model.move.irreversible.IrreversibleMove;
@@ -41,15 +42,15 @@ public abstract class CastleMove extends IrreversibleMove {
 
 	private void moveKing(Square source, Square destination, IBoard board) {
 		IBitboard king = board.getPiece(source).getBitboard();
-		king.unsetBitByIndex(Square.getIndex(source));
-		king.setBitByIndex(Square.getIndex(destination));
+		king.unsetBitByIndex(Board.getIndex(source));
+		king.setBitByIndex(Board.getIndex(destination));
 	}
 
 	private void moveRook(IBoard board) {
 		Square rookSquare = getRookSquare(board);
 		IBitboard rook = board.getPiece(rookSquare).getBitboard();
-		rook.unsetBitByIndex(Square.getIndex(rookSquare));
-		rook.setBitByIndex(Square.getIndex(getCastledRookSquare(board)));
+		rook.unsetBitByIndex(Board.getIndex(rookSquare));
+		rook.setBitByIndex(Board.getIndex(getCastledRookSquare(board)));
 	}
 
 	private void removeCastlingRights(IBoard board) {

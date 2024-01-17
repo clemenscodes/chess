@@ -1,14 +1,12 @@
 package model.piece.knight;
 
-import java.io.Serializable;
 import model.bits.Bitboard;
 import model.bits.IBitboard;
 import model.board.IBoard;
-import model.piece.Movable;
 import model.piece.Piece;
 import model.piece.Pieces;
 
-public abstract class Knight extends Piece implements Movable, Serializable {
+public abstract class Knight extends Piece implements IKnight {
 
 	public Knight(Pieces variant) {
 		super(variant);

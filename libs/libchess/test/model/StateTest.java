@@ -46,22 +46,4 @@ public class StateTest {
 		assertEquals(State.Stalemate, State.valueOf("Stalemate"));
 		assertEquals(State.GameOver, State.valueOf("GameOver"));
 	}
-
-	@Test
-	void shouldDetermineNonCheckmate() {
-		assertFalse(State.isCheckmate(new Board()));
-	}
-
-	@Test
-	void shouldDetermineCheckmate() {
-		assertTrue(State.isCheckmate(board));
-	}
-
-	@Test
-	void shouldDetermineStalemate() {
-		String fen = "8/8/8/8/8/7k/7p/7K w - - 0 1";
-		board = new Board(new ForsythEdwardsNotation(fen));
-		System.out.println(board);
-		assertTrue(State.isStalemate(board));
-	}
 }

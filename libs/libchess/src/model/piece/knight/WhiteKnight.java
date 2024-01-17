@@ -1,12 +1,9 @@
 package model.piece.knight;
 
-import java.io.Serializable;
 import model.bits.IBitboard;
 import model.piece.Pieces;
 
-public class WhiteKnight extends Knight implements Serializable {
-
-	public static final char SYMBOL = '♘';
+public class WhiteKnight extends Knight {
 
 	public WhiteKnight() {
 		super(Pieces.WhiteKnight);

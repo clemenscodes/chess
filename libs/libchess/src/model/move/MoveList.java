@@ -2,6 +2,7 @@ package model.move;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
 import model.piece.Pieces;
@@ -53,8 +54,8 @@ public class MoveList implements IMoveList, Serializable {
 	}
 
 	private IMove move(Square source, Square destination, IBoard board, IReader reader) {
-		int src = Square.getIndex(source);
-		int dst = Square.getIndex(destination);
+		int src = Board.getIndex(source);
+		int dst = Board.getIndex(destination);
 		Pieces piece = board.getPieceByIndex(src);
 		return switch (piece) {
 			case WhitePawn -> board.getWhitePawn().move(src, dst, board, reader);

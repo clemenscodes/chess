@@ -1,8 +1,8 @@
 package model.piece.king;
 
-import java.io.Serializable;
 import model.bits.Bitboard;
 import model.bits.IBitboard;
+import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
 import model.fen.IForsythEdwardsNotation;
@@ -12,11 +12,10 @@ import model.move.irreversible.capturing.CaptureMove;
 import model.move.irreversible.castling.KingCastleMove;
 import model.move.irreversible.castling.QueenCastleMove;
 import model.move.reversible.QuietMove;
-import model.piece.Movable;
 import model.piece.Piece;
 import model.piece.Pieces;
 
-public abstract class King extends Piece implements Movable, Serializable {
+public abstract class King extends Piece implements IKing {
 
 	public King(Pieces variant) {
 		super(variant);
@@ -46,8 +45,8 @@ public abstract class King extends Piece implements Movable, Serializable {
 
 	@Override
 	public boolean isInvalidMove(int source, int destination, IBoard board) {
-		Square src = Square.getSquare(source);
-		Square dst = Square.getSquare(destination);
+		Square src = Board.getSquare(source);
+		Square dst = Board.getSquare(destination);
 		if (isValidKingCastle(src, dst, board)) {
 			return false;
 		}
@@ -63,8 +62,8 @@ public abstract class King extends Piece implements Movable, Serializable {
 
 	@Override
 	protected IMove unsafeMove(int source, int destination, IBoard board) {
-		Square src = Square.getSquare(source);
-		Square dst = Square.getSquare(destination);
+		Square src = Board.getSquare(source);
+		Square dst = Board.getSquare(destination);
 		IForsythEdwardsNotation fen = board.getFen();
 		if (Move.isKingCastle(src, dst, board)) {
 			return new KingCastleMove(src, dst, board);

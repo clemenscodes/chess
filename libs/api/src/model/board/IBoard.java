@@ -6,45 +6,39 @@ import model.bits.IBitboard;
 import model.fen.IForsythEdwardsNotation;
 import model.piece.IPiece;
 import model.piece.Pieces;
-import model.piece.bishop.BlackBishop;
-import model.piece.bishop.WhiteBishop;
-import model.piece.king.BlackKing;
-import model.piece.king.WhiteKing;
-import model.piece.knight.BlackKnight;
-import model.piece.knight.WhiteKnight;
-import model.piece.pawn.BlackPawn;
-import model.piece.pawn.WhitePawn;
-import model.piece.queen.BlackQueen;
-import model.piece.queen.WhiteQueen;
-import model.piece.rook.BlackRook;
-import model.piece.rook.WhiteRook;
+import model.piece.bishop.IBishop;
+import model.piece.king.IKing;
+import model.piece.knight.IKnight;
+import model.piece.pawn.IPawn;
+import model.piece.queen.IQueen;
+import model.piece.rook.IRook;
 
 public interface IBoard {
 	IForsythEdwardsNotation getFen();
 
-	WhiteKing getWhiteKing();
+	IKing getWhiteKing();
 
-	WhiteQueen getWhiteQueen();
+	IQueen getWhiteQueen();
 
-	WhiteRook getWhiteRook();
+	IRook getWhiteRook();
 
-	WhiteKnight getWhiteKnight();
+	IKnight getWhiteKnight();
 
-	WhiteBishop getWhiteBishop();
+	IBishop getWhiteBishop();
 
-	WhitePawn getWhitePawn();
+	IPawn getWhitePawn();
 
-	BlackKing getBlackKing();
+	IKing getBlackKing();
 
-	BlackQueen getBlackQueen();
+	IQueen getBlackQueen();
 
-	BlackRook getBlackRook();
+	IRook getBlackRook();
 
-	BlackKnight getBlackKnight();
+	IKnight getBlackKnight();
 
-	BlackBishop getBlackBishop();
+	IBishop getBlackBishop();
 
-	BlackPawn getBlackPawn();
+	IPawn getBlackPawn();
 
 	IPiece[] getAllWhitePieces();
 

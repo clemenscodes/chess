@@ -241,7 +241,7 @@ public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializ
 	}
 
 	private void setEnPassantMask(Square square) {
-		enPassantMask = Bitboard.getSingleBit(Square.getIndex(square));
+		enPassantMask = Bitboard.getSingleBit(Board.getIndex(square));
 	}
 
 	private void unsetEnPassantMask() {

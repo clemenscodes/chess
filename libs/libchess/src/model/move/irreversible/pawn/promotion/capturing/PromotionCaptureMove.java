@@ -1,5 +1,6 @@
 package model.move.irreversible.pawn.promotion.capturing;
 
+import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
 import model.move.irreversible.pawn.promotion.PromotionMove;
@@ -14,7 +15,7 @@ public abstract class PromotionCaptureMove extends PromotionMove {
 		Pieces chosenPromotion
 	) {
 		super(source, destination, board, chosenPromotion);
-		board.capturePiece(Square.getIndex(destination));
+		board.capturePiece(Board.getIndex(destination));
 		promote(board, destination, chosenPromotion);
 	}
 }

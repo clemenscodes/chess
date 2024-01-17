@@ -1,26 +1,37 @@
 package model.board;
 
+import static model.board.Square.*;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 import model.bits.Bitboard;
 import model.bits.IBitboard;
 import model.fen.ForsythEdwardsNotation;
 import model.fen.IForsythEdwardsNotation;
 import model.piece.IPiece;
+import model.piece.Piece;
 import model.piece.Pieces;
 import model.piece.bishop.BlackBishop;
+import model.piece.bishop.IBishop;
 import model.piece.bishop.WhiteBishop;
 import model.piece.king.BlackKing;
+import model.piece.king.IKing;
 import model.piece.king.WhiteKing;
 import model.piece.knight.BlackKnight;
+import model.piece.knight.IKnight;
 import model.piece.knight.WhiteKnight;
 import model.piece.pawn.BlackPawn;
+import model.piece.pawn.IPawn;
 import model.piece.pawn.WhitePawn;
 import model.piece.queen.BlackQueen;
+import model.piece.queen.IQueen;
 import model.piece.queen.WhiteQueen;
 import model.piece.rook.BlackRook;
+import model.piece.rook.IRook;
 import model.piece.rook.WhiteRook;
 import model.writer.Writer;
 
@@ -58,6 +69,89 @@ public class Board implements IBoard, Serializable {
 		return SIZE * rank + file;
 	}
 
+	private static final Square[] SQUARES = new Square[] {
+		a1,
+		b1,
+		c1,
+		d1,
+		e1,
+		f1,
+		g1,
+		h1,
+		a2,
+		b2,
+		c2,
+		d2,
+		e2,
+		f2,
+		g2,
+		h2,
+		a3,
+		b3,
+		c3,
+		d3,
+		e3,
+		f3,
+		g3,
+		h3,
+		a4,
+		b4,
+		c4,
+		d4,
+		e4,
+		f4,
+		g4,
+		h4,
+		a5,
+		b5,
+		c5,
+		d5,
+		e5,
+		f5,
+		g5,
+		h5,
+		a6,
+		b6,
+		c6,
+		d6,
+		e6,
+		f6,
+		g6,
+		h6,
+		a7,
+		b7,
+		c7,
+		d7,
+		e7,
+		f7,
+		g7,
+		h7,
+		a8,
+		b8,
+		c8,
+		d8,
+		e8,
+		f8,
+		g8,
+		h8,
+	};
+
+	private static final Map<Square, Integer> SQUARE_TO_INDEX = new HashMap<>();
+
+	static {
+		for (int i = 0; i < SQUARES.length; i++) {
+			SQUARE_TO_INDEX.put(getSquare(i), i);
+		}
+	}
+
+	public static Square getSquare(int index) {
+		return SQUARES[index];
+	}
+
+	public static int getIndex(Square square) {
+		return SQUARE_TO_INDEX.get(square);
+	}
+
 	private IForsythEdwardsNotation fen;
 	private WhiteKing whiteKing;
 	private WhiteQueen whiteQueen;
@@ -92,51 +186,51 @@ public class Board implements IBoard, Serializable {
 		return fen;
 	}
 
-	public WhiteKing getWhiteKing() {
+	public IKing getWhiteKing() {
 		return whiteKing;
 	}
 
-	public WhiteQueen getWhiteQueen() {
+	public IQueen getWhiteQueen() {
 		return whiteQueen;
 	}
 
-	public WhiteRook getWhiteRook() {
+	public IRook getWhiteRook() {
 		return whiteRook;
 	}
 
-	public WhiteKnight getWhiteKnight() {
+	public IKnight getWhiteKnight() {
 		return whiteKnight;
 	}
 
-	public WhiteBishop getWhiteBishop() {
+	public IBishop getWhiteBishop() {
 		return whiteBishop;
 	}
 
-	public WhitePawn getWhitePawn() {
+	public IPawn getWhitePawn() {
 		return whitePawn;
 	}
 
-	public BlackKing getBlackKing() {
+	public IKing getBlackKing() {
 		return blackKing;
 	}
 
-	public BlackQueen getBlackQueen() {
+	public IQueen getBlackQueen() {
 		return blackQueen;
 	}
 
-	public BlackRook getBlackRook() {
+	public IRook getBlackRook() {
 		return blackRook;
 	}
 
-	public BlackKnight getBlackKnight() {
+	public IKnight getBlackKnight() {
 		return blackKnight;
 	}
 
-	public BlackBishop getBlackBishop() {
+	public IBishop getBlackBishop() {
 		return blackBishop;
 	}
 
-	public BlackPawn getBlackPawn() {
+	public IPawn getBlackPawn() {
 		return blackPawn;
 	}
 
@@ -210,14 +304,14 @@ public class Board implements IBoard, Serializable {
 		IBitboard[] allPieces = getAllPieces();
 		for (int i = 0; i < allPieces.length; i++) {
 			if (allPieces[i].overlap(Bitboard.getSingleBit(index))) {
-				return Pieces.PIECE_BY_INDEX[i];
+				return Piece.PIECE_BY_INDEX[i];
 			}
 		}
 		return null;
 	}
 
 	public IPiece getPiece(Square square) {
-		Pieces kind = getPieceByIndex(Square.getIndex(square));
+		Pieces kind = getPieceByIndex(Board.getIndex(square));
 		return getPieceByKind(kind);
 	}
 
@@ -281,18 +375,18 @@ public class Board implements IBoard, Serializable {
 
 	public boolean isSquareAttacked(Square square) {
 		return Bitboard.overlap(
-			Bitboard.getSingleBit(Square.getIndex(square)),
+			Bitboard.getSingleBit(Board.getIndex(square)),
 			getAllOpponentAttacks()
 		);
 	}
 
 	public boolean isSquareEmpty(Square square) {
-		IBitboard bit = Bitboard.getSingleBit(Square.getIndex(square));
+		IBitboard bit = Bitboard.getSingleBit(Board.getIndex(square));
 		return !Bitboard.overlap(bit, getOccupiedSquares());
 	}
 
 	public void capturePiece(int index) {
-		getPiece(Square.getSquare(index)).getBitboard().toggleBits(Bitboard.getSingleBit(index));
+		getPiece(Board.getSquare(index)).getBitboard().toggleBits(Bitboard.getSingleBit(index));
 	}
 
 	public IPiece[] getAllWhitePieces() {
@@ -440,7 +534,7 @@ public class Board implements IBoard, Serializable {
 	}
 
 	private void initializePiece(char symbol, int rank, int file) {
-		IPiece piece = getPieceByKind(Pieces.fromSymbol(symbol));
+		IPiece piece = getPieceByKind(Piece.fromSymbol(symbol));
 		piece.getBitboard().merge(Bitboard.getSingleBit(getSquareIndex(rank, file)));
 		setPiece(piece);
 	}
@@ -465,10 +559,10 @@ public class Board implements IBoard, Serializable {
 	private char getPieceSymbol(int index, IBitboard[] pieces) {
 		for (int i = 0; i < pieces.length; i++) {
 			if (pieces[i].overlap(Bitboard.getSingleBit(index))) {
-				return Pieces.SYMBOLS[i];
+				return Piece.SYMBOLS[i];
 			}
 		}
-		return Pieces.EMPTY_SYMBOL;
+		return Piece.EMPTY_SYMBOL;
 	}
 
 	private void processRank(StringBuilder fenPiecePlacement, int rank) {
@@ -508,12 +602,12 @@ public class Board implements IBoard, Serializable {
 	}
 
 	private char getPieceChar(int index) {
-		Square square = Square.getSquare(index);
+		Square square = Board.getSquare(index);
 		IPiece piece = getPiece(square);
 		if (piece == null) {
 			return ' ';
 		}
-		return Pieces.fromKind(piece.getVariant());
+		return Piece.fromKind(piece.getVariant());
 	}
 
 	@Override
