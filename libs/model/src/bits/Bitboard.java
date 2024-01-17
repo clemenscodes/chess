@@ -1,9 +1,10 @@
-package model.bits;
+package bits;
 
 import static model.move.Rays.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import model.bits.IBitboard;
 import model.board.Board;
 import model.board.IBoard;
 import model.move.Rays;

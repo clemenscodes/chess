@@ -1,6 +1,6 @@
-package model;
-
 import java.io.InputStream;
+import model.IChessModel;
+import model.State;
 import model.bits.Bitboard;
 import model.bits.IBitboard;
 import model.board.Board;

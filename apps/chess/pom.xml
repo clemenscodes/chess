@@ -17,7 +17,7 @@
 	<name>chess</name>
 	<description>
 		This project was generated
-		with @jnxplus/nx-maven
+        with @jnxplus/nx-maven
 	</description>
 
 	<properties>
@@ -27,14 +27,20 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
-			<version>5.10.0-M1</version>
-			<scope>test</scope>
+			<groupId>thm.pis</groupId>
+			<artifactId>controller</artifactId>
+			<version>0.0.1</version>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>thm.pis</groupId>
-			<artifactId>libchess</artifactId>
+			<artifactId>model</artifactId>
+			<version>0.0.1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>thm.pis</groupId>
+			<artifactId>view</artifactId>
 			<version>0.0.1</version>
 			<scope>compile</scope>
 		</dependency>

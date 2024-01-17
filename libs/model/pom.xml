@@ -9,7 +9,7 @@
 		<groupId>thm</groupId>
 		<artifactId>pis</artifactId>
 		<version>0.0.1</version>
-		<relativePath>../..</relativePath>
+		<relativePath>../../pom.xml</relativePath>
 	</parent>
 	<groupId>thm.pis</groupId>
 	<artifactId>model</artifactId>
@@ -28,6 +28,12 @@
 			<artifactId>junit-jupiter-api</artifactId>
 			<version>5.10.0-M1</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>thm.pis</groupId>
+			<artifactId>api</artifactId>
+			<version>0.0.1</version>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 </project>

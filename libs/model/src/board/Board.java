@@ -1,14 +1,14 @@
-package model.board;
+package board;
 
 import static model.board.Square.*;
 
+import bits.Bitboard;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
-import model.bits.Bitboard;
 import model.bits.IBitboard;
 import model.fen.ForsythEdwardsNotation;
 import model.fen.IForsythEdwardsNotation;

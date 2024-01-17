@@ -1,5 +1,4 @@
-package controller;
-
+import controller.IChessController;
 import model.IChessModel;
 import model.State;
 import view.IChessView;

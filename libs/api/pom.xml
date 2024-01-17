@@ -15,7 +15,6 @@
 	<artifactId>api</artifactId>
 	<version>0.0.1</version>
 	<name>api</name>
-	<description>This project was generated with @jnxplus/nx-maven</description>
 
 	<properties>
 		<maven.compiler.source>${java.version}</maven.compiler.source>

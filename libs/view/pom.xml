@@ -9,13 +9,12 @@
 		<groupId>thm</groupId>
 		<artifactId>pis</artifactId>
 		<version>0.0.1</version>
-		<relativePath>../..</relativePath>
+		<relativePath>../../pom.xml</relativePath>
 	</parent>
 	<groupId>thm.pis</groupId>
 	<artifactId>view</artifactId>
 	<version>0.0.1</version>
 	<name>view</name>
-	<description>This project was generated with @jnxplus/nx-maven</description>
 
 	<properties>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
@@ -24,10 +23,22 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
-			<version>5.10.0-M1</version>
-			<scope>test</scope>
+			<groupId>thm.pis</groupId>
+			<artifactId>processing</artifactId>
+			<version>0.0.1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>thm.pis</groupId>
+			<artifactId>controlp5</artifactId>
+			<version>0.0.1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>thm.pis</groupId>
+			<artifactId>api</artifactId>
+			<version>0.0.1</version>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 </project>

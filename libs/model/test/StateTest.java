@@ -1,7 +1,6 @@
-package model;
-
 import static org.junit.jupiter.api.Assertions.*;
 
+import model.State;
 import model.board.Board;
 import model.board.IBoard;
 import model.fen.ForsythEdwardsNotation;
