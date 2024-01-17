@@ -2,8 +2,6 @@ package model;
 
 import static api.model.Square.*;
 
-import api.model.IBitboard;
-import api.model.IBoard;
 import api.model.Square;
 
 abstract class CastleMove extends IrreversibleMove {

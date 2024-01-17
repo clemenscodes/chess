@@ -43,6 +43,10 @@ public class ChessController implements IChessController {
 		return getModel().getGameState();
 	}
 
+	public String getBoard() {
+		return getModel().getFen();
+	}
+
 	public void handleUserInput(char key, int keyCode) {
 		var state = getGameState();
 		switch (state) {

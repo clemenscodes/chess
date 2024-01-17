@@ -1,9 +1,11 @@
-package api.model;
+package model;
 
+import api.model.Pieces;
+import api.model.Square;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public interface IBoard {
+interface IBoard {
 	IForsythEdwardsNotation getFen();
 
 	IKing getWhiteKing();

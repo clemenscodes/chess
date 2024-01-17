@@ -38,7 +38,10 @@ public class ChessView extends PApplet implements IChessView {
 		background(255);
 	}
 
-	public void drawStart() {}
+	public void drawStart() {
+		String board = getController().getBoard();
+		println(board);
+	}
 
 	public void drawPlaying() {}
 

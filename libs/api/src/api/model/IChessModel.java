@@ -3,13 +3,11 @@ package api.model;
 public interface IChessModel {
 	State getGameState();
 
-	IBoard getBoard();
-
-	IMoveList getMoveList();
-
 	void startGame();
 
-	void startGame(IBoard board);
+	String getFen();
+
+	void startGame(String fen);
 
 	void startNewGame();
 

@@ -3,9 +3,6 @@ package model;
 import static api.model.Square.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import api.model.IBitboard;
-import api.model.IBoard;
-import api.model.IReader;
 import api.model.Pieces;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

@@ -1,4 +1,4 @@
-package api.model;
+package model;
 
 public enum Rays {
 	West,

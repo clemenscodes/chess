@@ -1,9 +1,5 @@
 package model;
 
-import api.model.IBoard;
-import api.model.IMove;
-import api.model.IMoveList;
-import api.model.IReader;
 import api.model.Pieces;
 import api.model.Square;
 import java.io.Serializable;

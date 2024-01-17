@@ -1,10 +1,5 @@
 package model;
 
-import api.model.IBitboard;
-import api.model.IBoard;
-import api.model.IForsythEdwardsNotation;
-import api.model.IKing;
-import api.model.IMove;
 import api.model.Pieces;
 import api.model.Square;
 

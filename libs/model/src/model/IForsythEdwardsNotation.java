@@ -1,6 +1,8 @@
-package api.model;
+package model;
 
-public interface IForsythEdwardsNotation {
+import api.model.Square;
+
+interface IForsythEdwardsNotation {
 	String[] getPiecePlacementData();
 
 	char getActiveColor();

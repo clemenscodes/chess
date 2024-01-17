@@ -1,7 +1,5 @@
 package model;
 
-import api.model.IBitboard;
-
 class Writer {
 
 	static StringBuilder loopOver(LoopBody body, IBitboard[] pieces) {
