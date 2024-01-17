@@ -1,11 +1,11 @@
-package model.move.irreversible.castling;
+package move.irreversible.castling;
 
 import static model.board.Square.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import model.board.Board;
+import board.Board;
+import fen.ForsythEdwardsNotation;
 import model.board.IBoard;
-import model.fen.ForsythEdwardsNotation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

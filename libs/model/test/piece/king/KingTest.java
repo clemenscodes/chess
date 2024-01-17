@@ -1,14 +1,13 @@
-package model.piece.king;
+package piece.king;
 
 import static model.board.Square.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import model.bits.Bitboard;
+import bits.Bitboard;
+import board.Board;
+import fen.ForsythEdwardsNotation;
 import model.bits.IBitboard;
-import model.board.Board;
 import model.board.IBoard;
-import model.board.Square;
-import model.fen.ForsythEdwardsNotation;
 import model.piece.Pieces;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +27,7 @@ public class KingTest {
 	@BeforeEach
 	void setup() {
 		board = new Board(new ForsythEdwardsNotation("8/8/8/8/8/8/8/8 w - - 0 1"));
-		piece = new PieceMock(Pieces.BlackKing, Bitboard.getSingleBit(Square.getIndex(e4)));
+		piece = new PieceMock(Pieces.BlackKing, Bitboard.getSingleBit(Board.getIndex(e4)));
 	}
 
 	@Test
@@ -49,7 +48,7 @@ public class KingTest {
 
 	@Test
 	void shouldGetAttacksFromBottomLeft() {
-		piece = new PieceMock(Pieces.BlackKing, Bitboard.getSingleBit(Square.getIndex(a1)));
+		piece = new PieceMock(Pieces.BlackKing, Bitboard.getSingleBit(Board.getIndex(a1)));
 		IBitboard attacks = piece.getAttacks(piece.getBitboard(), board);
 		String expected =
 			"""
@@ -66,7 +65,7 @@ public class KingTest {
 
 	@Test
 	void shouldGetAttacksFromBottomRight() {
-		piece = new PieceMock(Pieces.BlackKing, Bitboard.getSingleBit(Square.getIndex(h1)));
+		piece = new PieceMock(Pieces.BlackKing, Bitboard.getSingleBit(Board.getIndex(h1)));
 		IBitboard attacks = piece.getAttacks(piece.getBitboard(), board);
 		String expected =
 			"""
@@ -83,7 +82,7 @@ public class KingTest {
 
 	@Test
 	void shouldGetAttacksFromTopLeft() {
-		piece = new PieceMock(Pieces.BlackKing, Bitboard.getSingleBit(Square.getIndex(a8)));
+		piece = new PieceMock(Pieces.BlackKing, Bitboard.getSingleBit(Board.getIndex(a8)));
 		IBitboard attacks = piece.getAttacks(piece.getBitboard(), board);
 		String expected =
 			"""
@@ -100,7 +99,7 @@ public class KingTest {
 
 	@Test
 	void shouldGetAttacksFromTopRight() {
-		piece = new PieceMock(Pieces.BlackKing, Bitboard.getSingleBit(Square.getIndex(h8)));
+		piece = new PieceMock(Pieces.BlackKing, Bitboard.getSingleBit(Board.getIndex(h8)));
 		IBitboard attacks = piece.getAttacks(piece.getBitboard(), board);
 		String expected =
 			"""
@@ -117,7 +116,7 @@ public class KingTest {
 
 	@Test
 	void shouldGetAllAttacks() {
-		piece = new PieceMock(Pieces.BlackKing, Bitboard.getSingleBit(Square.getIndex(h8)));
+		piece = new PieceMock(Pieces.BlackKing, Bitboard.getSingleBit(Board.getIndex(h8)));
 		IBitboard attacks = piece.getAllAttacks(board);
 		String expected =
 			"""
@@ -136,8 +135,8 @@ public class KingTest {
 	void shouldErrorIfKingCanNotMoveToDestination() {
 		board = new Board(new ForsythEdwardsNotation());
 		piece = new PieceMock(Pieces.BlackKing, board.getBlackKing().getBitboard());
-		int src = Square.getIndex(a2);
-		int dst = Square.getIndex(a4);
+		int src = Board.getIndex(a2);
+		int dst = Board.getIndex(a4);
 		try {
 			piece.move(src, dst, board);
 		} catch (Error e) {
@@ -150,8 +149,8 @@ public class KingTest {
 		String fen = "rn1qkbnr/ppp1pppp/3p4/8/3P2b1/4P3/PPP2PPP/RNBQKBNR w KQkq - 1 3";
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new PieceMock(Pieces.WhiteKing, board.getWhiteKing().getBitboard());
-		int src = Square.getIndex(e1);
-		int dst = Square.getIndex(e2);
+		int src = Board.getIndex(e1);
+		int dst = Board.getIndex(e2);
 		try {
 			piece.move(src, dst, board);
 		} catch (Error e) {
@@ -164,8 +163,8 @@ public class KingTest {
 		String fen = "rn1qkbnr/ppp1pppp/3p4/8/3P4/4P3/PPPQbPPP/RNB1KBNR w KQkq - 3 4";
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new PieceMock(Pieces.WhiteKing, board.getWhiteKing().getBitboard());
-		int src = Square.getIndex(e1);
-		int dst = Square.getIndex(e2);
+		int src = Board.getIndex(e1);
+		int dst = Board.getIndex(e2);
 		piece.move(src, dst, board);
 	}
 
@@ -174,8 +173,8 @@ public class KingTest {
 		String fen = "r3k2r/pppq1ppp/2np1n2/1Bb1p3/4P1b1/2NPBN2/PPPQ1PPP/R3K2R w KQkq - 4 8";
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new PieceMock(Pieces.WhiteKing, board.getWhiteKing().getBitboard());
-		int src = Square.getIndex(e1);
-		int dst = Square.getIndex(g1);
+		int src = Board.getIndex(e1);
+		int dst = Board.getIndex(g1);
 		piece.move(src, dst, board);
 		board.getFen().updatePiecePlacementData(board);
 		board.getFen().switchActiveColor();
@@ -188,8 +187,8 @@ public class KingTest {
 		String fen = "r3k2r/pppq1ppp/2np1n2/1Bb1p3/4P1b1/2NPBN2/PPPQ1PPP/R3K2R w KQkq - 4 8";
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new PieceMock(Pieces.WhiteKing, board.getWhiteKing().getBitboard());
-		int src = Square.getIndex(e1);
-		int dst = Square.getIndex(c1);
+		int src = Board.getIndex(e1);
+		int dst = Board.getIndex(c1);
 		piece.move(src, dst, board);
 		board.getFen().updatePiecePlacementData(board);
 		board.getFen().switchActiveColor();
@@ -202,8 +201,8 @@ public class KingTest {
 		String fen = "r3k2r/pppq1ppp/2np1n2/1Bb1p3/4P1b1/2NPBN2/PPPQ1PPP/R3K2R w - - 4 8";
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new PieceMock(Pieces.WhiteKing, board.getWhiteKing().getBitboard());
-		int src = Square.getIndex(e1);
-		int dst = Square.getIndex(g1);
+		int src = Board.getIndex(e1);
+		int dst = Board.getIndex(g1);
 		try {
 			piece.move(src, dst, board);
 		} catch (Error e) {
@@ -216,8 +215,8 @@ public class KingTest {
 		String fen = "r3k2r/pppq1ppp/2np1n2/1Bb1p3/4P1b1/2NPBN2/PPPQ1PPP/R3K2R w - - 4 8";
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new PieceMock(Pieces.WhiteKing, board.getWhiteKing().getBitboard());
-		int src = Square.getIndex(e1);
-		int dst = Square.getIndex(c1);
+		int src = Board.getIndex(e1);
+		int dst = Board.getIndex(c1);
 		try {
 			piece.move(src, dst, board);
 		} catch (Error e) {

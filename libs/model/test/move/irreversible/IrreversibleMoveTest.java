@@ -1,12 +1,12 @@
-package model.move.irreversible;
+package move.irreversible;
 
 import static model.board.Square.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import model.board.Board;
+import board.Board;
+import fen.ForsythEdwardsNotation;
 import model.board.IBoard;
-import model.fen.ForsythEdwardsNotation;
-import model.move.irreversible.capturing.CaptureMove;
+import move.irreversible.capturing.CaptureMove;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

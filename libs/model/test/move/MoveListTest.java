@@ -1,18 +1,19 @@
-package model.move;
+package move;
 
 import static model.board.Square.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import board.Board;
+import fen.ForsythEdwardsNotation;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import model.board.Board;
 import model.board.IBoard;
-import model.fen.ForsythEdwardsNotation;
+import model.move.IMoveList;
 import model.reader.IReader;
-import model.reader.Reader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reader.Reader;
 
 public class MoveListTest {
 

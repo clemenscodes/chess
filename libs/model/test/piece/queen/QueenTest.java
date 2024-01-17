@@ -1,14 +1,14 @@
-package model.piece.queen;
+package piece.queen;
 
 import static model.board.Square.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import model.bits.Bitboard;
+import bits.Bitboard;
+import board.Board;
+import fen.ForsythEdwardsNotation;
 import model.bits.IBitboard;
-import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
-import model.fen.ForsythEdwardsNotation;
 import model.piece.Pieces;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ public class QueenTest {
 	@BeforeEach
 	void setup() {
 		board = new Board(new ForsythEdwardsNotation("8/8/8/8/8/8/8/8 w - - 0 1"));
-		piece = new PieceMock(Pieces.BlackQueen, Bitboard.getSingleBit(Square.getIndex(e4)));
+		piece = new PieceMock(Pieces.BlackQueen, Bitboard.getSingleBit(Board.getIndex(e4)));
 	}
 
 	@Test
@@ -49,7 +49,7 @@ public class QueenTest {
 
 	@Test
 	void shouldGetAttacksFromBottomLeft() {
-		piece = new PieceMock(Pieces.BlackQueen, Bitboard.getSingleBit(Square.getIndex(a1)));
+		piece = new PieceMock(Pieces.BlackQueen, Bitboard.getSingleBit(Board.getIndex(a1)));
 		IBitboard attacks = piece.getAttacks(piece.getBitboard(), board);
 		String expected =
 			"""
@@ -66,7 +66,7 @@ public class QueenTest {
 
 	@Test
 	void shouldGetAttacksFromBottomRight() {
-		piece = new PieceMock(Pieces.BlackQueen, Bitboard.getSingleBit(Square.getIndex(h1)));
+		piece = new PieceMock(Pieces.BlackQueen, Bitboard.getSingleBit(Board.getIndex(h1)));
 		IBitboard attacks = piece.getAttacks(piece.getBitboard(), board);
 		String expected =
 			"""
@@ -83,7 +83,7 @@ public class QueenTest {
 
 	@Test
 	void shouldGetAttacksFromTopLeft() {
-		piece = new PieceMock(Pieces.BlackQueen, Bitboard.getSingleBit(Square.getIndex(a8)));
+		piece = new PieceMock(Pieces.BlackQueen, Bitboard.getSingleBit(Board.getIndex(a8)));
 		IBitboard attacks = piece.getAttacks(piece.getBitboard(), board);
 		String expected =
 			"""
@@ -100,7 +100,7 @@ public class QueenTest {
 
 	@Test
 	void shouldGetAttacksFromTopRight() {
-		piece = new PieceMock(Pieces.BlackQueen, Bitboard.getSingleBit(Square.getIndex(h8)));
+		piece = new PieceMock(Pieces.BlackQueen, Bitboard.getSingleBit(Board.getIndex(h8)));
 		IBitboard attacks = piece.getAttacks(piece.getBitboard(), board);
 		String expected =
 			"""

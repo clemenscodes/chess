@@ -1,12 +1,12 @@
-package model.fen;
+package fen;
 
 import static model.board.Square.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import model.bits.Bitboard;
-import model.board.Board;
+import bits.Bitboard;
+import board.Board;
 import model.board.IBoard;
-import model.board.Square;
+import model.fen.IForsythEdwardsNotation;
 import org.junit.jupiter.api.Test;
 
 public class ForsythEdwardsNotationTest {
@@ -91,7 +91,7 @@ public class ForsythEdwardsNotationTest {
 		fen.setEnPassantTargetSquare(e3);
 		assertEquals("e3", fen.getEnPassant());
 		assertNotNull(fen.getEnPassantMask());
-		assertEquals(fen.getEnPassantMask(), Bitboard.getSingleBit(Square.getIndex(e3)));
+		assertEquals(fen.getEnPassantMask(), Bitboard.getSingleBit(Board.getIndex(e3)));
 	}
 
 	@Test

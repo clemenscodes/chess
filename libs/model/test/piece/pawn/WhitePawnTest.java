@@ -1,21 +1,20 @@
-package model.piece.pawn;
+package piece.pawn;
 
 import static model.board.Square.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import bits.Bitboard;
+import board.Board;
+import fen.ForsythEdwardsNotation;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import model.bits.Bitboard;
 import model.bits.IBitboard;
-import model.board.Board;
 import model.board.IBoard;
-import model.board.Square;
-import model.fen.ForsythEdwardsNotation;
 import model.piece.Pieces;
 import model.reader.IReader;
-import model.reader.Reader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reader.Reader;
 
 public class WhitePawnTest {
 
@@ -35,7 +34,7 @@ public class WhitePawnTest {
 
 	@Test
 	void shouldGetTargetsFromBaseRank() {
-		IBitboard attacks = piece.getTargets(Bitboard.getSingleBit(Square.getIndex(e2)), board);
+		IBitboard attacks = piece.getTargets(Bitboard.getSingleBit(Board.getIndex(e2)), board);
 		String expected =
 			"""
 			00000000
@@ -53,7 +52,7 @@ public class WhitePawnTest {
 	void shouldGetTargetsFromBaseRankWithEnemyObstacle() {
 		String fen = "rnbqkbnr/pppp1ppp/8/8/4p3/2N3P1/PPPPPP1P/R1BQKBNR w KQkq - 0 3";
 		board = new Board(new ForsythEdwardsNotation(fen));
-		IBitboard attacks = piece.getTargets(Bitboard.getSingleBit(Square.getIndex(e2)), board);
+		IBitboard attacks = piece.getTargets(Bitboard.getSingleBit(Board.getIndex(e2)), board);
 		String expected =
 			"""
 			00000000
@@ -71,7 +70,7 @@ public class WhitePawnTest {
 	void shouldGetTargetsFromBaseRankWithImmediateEnemyObstacle() {
 		String fen = "rnbqkbnr/pppp1ppp/8/8/8/2N1pNP1/PPPPPP1P/R1BQKB1R w KQkq - 0 4";
 		board = new Board(new ForsythEdwardsNotation(fen));
-		IBitboard attacks = piece.getTargets(Bitboard.getSingleBit(Square.getIndex(e2)), board);
+		IBitboard attacks = piece.getTargets(Bitboard.getSingleBit(Board.getIndex(e2)), board);
 		String expected =
 			"""
 			00000000
@@ -89,7 +88,7 @@ public class WhitePawnTest {
 	void shouldGetTargetsFromBaseRankWithImmediateFriendlyObstacle() {
 		String fen = "rnbqkbnr/pppp1ppp/8/8/8/2N1pNP1/PPPPPP1P/R1BQKB1R w KQkq - 0 4";
 		board = new Board(new ForsythEdwardsNotation(fen));
-		IBitboard attacks = piece.getTargets(Bitboard.getSingleBit(Square.getIndex(f2)), board);
+		IBitboard attacks = piece.getTargets(Bitboard.getSingleBit(Board.getIndex(f2)), board);
 		String expected =
 			"""
 			00000000
@@ -106,7 +105,7 @@ public class WhitePawnTest {
 	@Test
 	void shouldNotGetAttacksWithoutEnemy() {
 		board = new Board(new ForsythEdwardsNotation("8/8/8/8/8/8/8/8 w - - 0 1"));
-		IBitboard attacks = piece.getAttacks(Bitboard.getSingleBit(Square.getIndex(e2)), board);
+		IBitboard attacks = piece.getAttacks(Bitboard.getSingleBit(Board.getIndex(e2)), board);
 		assertEquals(0, attacks.getBits());
 	}
 
@@ -115,7 +114,7 @@ public class WhitePawnTest {
 		String fen = "rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq d6 0 2";
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new WhitePawn(board.getWhitePawn().getBitboard());
-		IBitboard attacks = piece.getAttacks(Bitboard.getSingleBit(Square.getIndex(e4)), board);
+		IBitboard attacks = piece.getAttacks(Bitboard.getSingleBit(Board.getIndex(e4)), board);
 		String expected =
 			"""
 			00000000
@@ -134,7 +133,7 @@ public class WhitePawnTest {
 		String fen = "rnbqkbnr/ppp1p1pp/8/3p1p2/3PP3/8/PPP2PPP/RNBQKBNR w KQkq f6 0 3";
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new WhitePawn(board.getWhitePawn().getBitboard());
-		IBitboard attacks = piece.getAttacks(Bitboard.getSingleBit(Square.getIndex(e4)), board);
+		IBitboard attacks = piece.getAttacks(Bitboard.getSingleBit(Board.getIndex(e4)), board);
 		String expected =
 			"""
 			00000000
@@ -153,7 +152,7 @@ public class WhitePawnTest {
 		String fen = "rnb1kbnr/ppp3pp/3qp3/3pPp2/3P4/2N5/PPP2PPP/R1BQKBNR w KQkq f6 0 5";
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new WhitePawn(board.getWhitePawn().getBitboard());
-		IBitboard attacks = piece.getAttacks(Bitboard.getSingleBit(Square.getIndex(e5)), board);
+		IBitboard attacks = piece.getAttacks(Bitboard.getSingleBit(Board.getIndex(e5)), board);
 		String expected =
 			"""
 			00000000
@@ -169,8 +168,8 @@ public class WhitePawnTest {
 
 	@Test
 	void shouldErrorIfSourceSquareDoesNotHavePiece() {
-		int src = Square.getIndex(a1);
-		int dst = Square.getIndex(b1);
+		int src = Board.getIndex(a1);
+		int dst = Board.getIndex(b1);
 		try {
 			piece.move(src, dst, board, reader);
 		} catch (Error e) {
@@ -181,8 +180,8 @@ public class WhitePawnTest {
 	@Test
 	void shouldErrorIfPieceCanNotMoveToDestination() {
 		board = new Board();
-		int src = Square.getIndex(e5);
-		int dst = Square.getIndex(e6);
+		int src = Board.getIndex(e5);
+		int dst = Board.getIndex(e6);
 		try {
 			piece.move(src, dst, board, reader);
 		} catch (Error e) {
@@ -195,8 +194,8 @@ public class WhitePawnTest {
 		String fen = "rnbqk1nr/pppp1ppp/8/4p3/1b2P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3";
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new WhitePawn(board.getWhitePawn().getBitboard());
-		int src = Square.getIndex(d2);
-		int dst = Square.getIndex(d3);
+		int src = Board.getIndex(d2);
+		int dst = Board.getIndex(d3);
 		try {
 			piece.move(src, dst, board, reader);
 		} catch (Error e) {
@@ -206,15 +205,15 @@ public class WhitePawnTest {
 
 	@Test
 	void shouldSinglePush() {
-		int src = Square.getIndex(e2);
-		int dst = Square.getIndex(e3);
+		int src = Board.getIndex(e2);
+		int dst = Board.getIndex(e3);
 		piece.move(src, dst, board, reader);
 	}
 
 	@Test
 	void shouldDoublePush() {
-		int src = Square.getIndex(e2);
-		int dst = Square.getIndex(e4);
+		int src = Board.getIndex(e2);
+		int dst = Board.getIndex(e4);
 		piece.move(src, dst, board, reader);
 	}
 
@@ -223,8 +222,8 @@ public class WhitePawnTest {
 		String fen = "rnb1kbnr/ppp3pp/3qp3/3pPp2/3P4/2N5/PPP2PPP/R1BQKBNR w KQkq f6 0 5";
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new WhitePawn(board.getWhitePawn().getBitboard());
-		int src = Square.getIndex(e5);
-		int dst = Square.getIndex(d6);
+		int src = Board.getIndex(e5);
+		int dst = Board.getIndex(d6);
 		piece.move(src, dst, board, reader);
 	}
 
@@ -233,8 +232,8 @@ public class WhitePawnTest {
 		String fen = "rnb1kbnr/ppp3pp/3qp3/3pPp2/3P4/2N5/PPP2PPP/R1BQKBNR w KQkq f6 0 5";
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new WhitePawn(board.getWhitePawn().getBitboard());
-		int src = Square.getIndex(e5);
-		int dst = Square.getIndex(f6);
+		int src = Board.getIndex(e5);
+		int dst = Board.getIndex(f6);
 		piece.move(src, dst, board, reader);
 	}
 
@@ -247,8 +246,8 @@ public class WhitePawnTest {
 		byte[] bytes = inputString.getBytes();
 		InputStream inputStream = new ByteArrayInputStream(bytes);
 		reader = new Reader(inputStream);
-		int src = Square.getIndex(g7);
-		int dst = Square.getIndex(g8);
+		int src = Board.getIndex(g7);
+		int dst = Board.getIndex(g8);
 		piece.move(src, dst, board, reader);
 		assertEquals(Pieces.WhiteRook, board.getPiece(g8).getVariant());
 	}
@@ -258,8 +257,8 @@ public class WhitePawnTest {
 		String fen = "rnbqk2r/ppp2pPp/3p1n2/2b1p3/8/8/PPPPPPP1/RNBQKBNR w KQkq - 0 5";
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new WhitePawn(board.getWhitePawn().getBitboard());
-		int src = Square.getIndex(g7);
-		int dst = Square.getIndex(g8);
+		int src = Board.getIndex(g7);
+		int dst = Board.getIndex(g8);
 		piece.move(src, dst, board, reader);
 		assertEquals(Pieces.WhiteQueen, board.getPiece(g8).getVariant());
 	}
@@ -273,8 +272,8 @@ public class WhitePawnTest {
 		byte[] bytes = inputString.getBytes();
 		InputStream inputStream = new ByteArrayInputStream(bytes);
 		reader = new Reader(inputStream);
-		int src = Square.getIndex(g7);
-		int dst = Square.getIndex(g8);
+		int src = Board.getIndex(g7);
+		int dst = Board.getIndex(g8);
 		piece.move(src, dst, board, reader);
 		assertEquals(Pieces.WhiteRook, board.getPiece(g8).getVariant());
 	}
@@ -288,8 +287,8 @@ public class WhitePawnTest {
 		byte[] bytes = inputString.getBytes();
 		InputStream inputStream = new ByteArrayInputStream(bytes);
 		reader = new Reader(inputStream);
-		int src = Square.getIndex(g7);
-		int dst = Square.getIndex(g8);
+		int src = Board.getIndex(g7);
+		int dst = Board.getIndex(g8);
 		piece.move(src, dst, board, reader);
 		assertEquals(Pieces.WhiteBishop, board.getPiece(g8).getVariant());
 	}
@@ -303,8 +302,8 @@ public class WhitePawnTest {
 		byte[] bytes = inputString.getBytes();
 		InputStream inputStream = new ByteArrayInputStream(bytes);
 		reader = new Reader(inputStream);
-		int src = Square.getIndex(g7);
-		int dst = Square.getIndex(g8);
+		int src = Board.getIndex(g7);
+		int dst = Board.getIndex(g8);
 		piece.move(src, dst, board, reader);
 		assertEquals(Pieces.WhiteKnight, board.getPiece(g8).getVariant());
 	}
@@ -314,8 +313,8 @@ public class WhitePawnTest {
 		String fen = "rnbqk2r/ppp2pPp/3p1n2/2b1p3/8/8/PPPPPPP1/RNBQKBNR w KQkq - 0 5";
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new WhitePawn(board.getWhitePawn().getBitboard());
-		int src = Square.getIndex(g7);
-		int dst = Square.getIndex(h8);
+		int src = Board.getIndex(g7);
+		int dst = Board.getIndex(h8);
 		piece.move(src, dst, board, reader);
 		assertEquals(Pieces.WhiteQueen, board.getPiece(h8).getVariant());
 	}
@@ -329,8 +328,8 @@ public class WhitePawnTest {
 		byte[] bytes = inputString.getBytes();
 		InputStream inputStream = new ByteArrayInputStream(bytes);
 		reader = new Reader(inputStream);
-		int src = Square.getIndex(g7);
-		int dst = Square.getIndex(h8);
+		int src = Board.getIndex(g7);
+		int dst = Board.getIndex(h8);
 		piece.move(src, dst, board, reader);
 		assertEquals(Pieces.WhiteRook, board.getPiece(h8).getVariant());
 	}
@@ -344,8 +343,8 @@ public class WhitePawnTest {
 		byte[] bytes = inputString.getBytes();
 		InputStream inputStream = new ByteArrayInputStream(bytes);
 		reader = new Reader(inputStream);
-		int src = Square.getIndex(g7);
-		int dst = Square.getIndex(h8);
+		int src = Board.getIndex(g7);
+		int dst = Board.getIndex(h8);
 		piece.move(src, dst, board, reader);
 		assertEquals(Pieces.WhiteBishop, board.getPiece(h8).getVariant());
 	}
@@ -359,8 +358,8 @@ public class WhitePawnTest {
 		byte[] bytes = inputString.getBytes();
 		InputStream inputStream = new ByteArrayInputStream(bytes);
 		reader = new Reader(inputStream);
-		int src = Square.getIndex(g7);
-		int dst = Square.getIndex(h8);
+		int src = Board.getIndex(g7);
+		int dst = Board.getIndex(h8);
 		piece.move(src, dst, board, reader);
 		assertEquals(Pieces.WhiteKnight, board.getPiece(h8).getVariant());
 	}

@@ -1,9 +1,9 @@
-package model.move.irreversible.pawn;
+package move.irreversible.pawn;
 
 import static model.board.Square.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import model.board.Board;
+import board.Board;
 import model.board.IBoard;
 import model.piece.IPiece;
 import org.junit.jupiter.api.BeforeEach;

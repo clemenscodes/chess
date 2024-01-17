@@ -1,17 +1,18 @@
-package model.piece;
+package piece;
 
 import static model.board.Square.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import model.bits.Bitboard;
+import bits.Bitboard;
+import board.Board;
+import fen.ForsythEdwardsNotation;
 import model.bits.IBitboard;
-import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
-import model.fen.ForsythEdwardsNotation;
-import model.piece.knight.WhiteKnight;
+import model.piece.Pieces;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import piece.knight.WhiteKnight;
 
 public class PieceTest {
 

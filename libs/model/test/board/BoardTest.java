@@ -1,12 +1,13 @@
-package model.board;
+package board;
 
 import static model.board.Square.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import bits.Bitboard;
+import fen.ForsythEdwardsNotation;
 import java.io.IOException;
-import model.bits.Bitboard;
 import model.bits.IBitboard;
-import model.fen.ForsythEdwardsNotation;
+import model.board.IBoard;
 import model.piece.Pieces;
 import org.junit.jupiter.api.Test;
 
@@ -58,10 +59,10 @@ public class BoardTest {
 	@Test
 	void testGetPieceByIndex() {
 		IBoard board = new Board();
-		assertEquals(Pieces.WhiteRook, board.getPieceByIndex(Square.getIndex(a1)));
-		assertEquals(Pieces.BlackPawn, board.getPieceByIndex(Square.getIndex(d7)));
+		assertEquals(Pieces.WhiteRook, board.getPieceByIndex(Board.getIndex(a1)));
+		assertEquals(Pieces.BlackPawn, board.getPieceByIndex(Board.getIndex(d7)));
 		try {
-			board.getPieceByIndex(Square.getIndex(e4));
+			board.getPieceByIndex(Board.getIndex(e4));
 		} catch (Error e) {
 			assertEquals(e.getMessage(), "No piece is set on the square e4");
 		}
@@ -128,7 +129,7 @@ public class BoardTest {
 	@Test
 	void testCapturePiece() {
 		IBoard board = new Board();
-		int index = Square.getIndex(a1);
+		int index = Board.getIndex(a1);
 		board.capturePiece(index);
 		assert (Bitboard.overlap(Bitboard.getSingleBit(index), board.getEmptySquares()));
 	}

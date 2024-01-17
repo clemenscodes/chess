@@ -1,4 +1,4 @@
-package model.piece.pawn;
+package piece.pawn;
 
 import static org.junit.jupiter.api.Assertions.*;
 

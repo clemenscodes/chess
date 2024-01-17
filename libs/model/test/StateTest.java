@@ -1,9 +1,9 @@
 import static org.junit.jupiter.api.Assertions.*;
 
+import board.Board;
+import fen.ForsythEdwardsNotation;
 import model.State;
-import model.board.Board;
 import model.board.IBoard;
-import model.fen.ForsythEdwardsNotation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

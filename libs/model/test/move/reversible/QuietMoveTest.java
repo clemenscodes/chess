@@ -1,9 +1,9 @@
-package model.move.reversible;
+package move.reversible;
 
 import static model.board.Square.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import model.board.Board;
+import board.Board;
 import model.board.IBoard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

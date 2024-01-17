@@ -50,9 +50,9 @@ public class MoveTest {
 
 	@Test
 	void shouldDetermineCapture() {
-		boolean result = Move.isCapture(Bitboard.getSingleBit(Square.getIndex(e2)), board);
+		boolean result = Move.isCapture(Bitboard.getSingleBit(Board.getIndex(e2)), board);
 		assertFalse(result);
-		result = Move.isCapture(Bitboard.getSingleBit(Square.getIndex(e7)), board);
+		result = Move.isCapture(Bitboard.getSingleBit(Board.getIndex(e7)), board);
 		assertTrue(result);
 	}
 
@@ -60,7 +60,7 @@ public class MoveTest {
 	void shouldDetermineEnPassant() {
 		String fen = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1";
 		board = new Board(new ForsythEdwardsNotation(fen));
-		boolean result = Move.isEnPassant(Bitboard.getSingleBit(Square.getIndex(e3)), board);
+		boolean result = Move.isEnPassant(Bitboard.getSingleBit(Board.getIndex(e3)), board);
 		assertTrue(result);
 	}
 

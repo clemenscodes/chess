@@ -1,11 +1,11 @@
-package model.move.irreversible.pawn.promotion.capturing;
+package move.irreversible.pawn.promotion.capturing;
 
 import static model.board.Square.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import model.board.Board;
+import board.Board;
+import fen.ForsythEdwardsNotation;
 import model.board.IBoard;
-import model.fen.ForsythEdwardsNotation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
