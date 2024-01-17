@@ -1,17 +1,17 @@
 package piece.pawn;
 
-import static model.board.Square.*;
+import static api.model.board.Square.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import api.model.bits.IBitboard;
+import api.model.board.IBoard;
+import api.model.piece.Pieces;
+import api.model.reader.IReader;
 import bits.Bitboard;
 import board.Board;
 import fen.ForsythEdwardsNotation;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import model.bits.IBitboard;
-import model.board.IBoard;
-import model.piece.Pieces;
-import model.reader.IReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reader.Reader;

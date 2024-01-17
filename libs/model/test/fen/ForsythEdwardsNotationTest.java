@@ -1,12 +1,12 @@
 package fen;
 
-import static model.board.Square.*;
+import static api.model.board.Square.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import api.model.board.IBoard;
+import api.model.fen.IForsythEdwardsNotation;
 import bits.Bitboard;
 import board.Board;
-import model.board.IBoard;
-import model.fen.IForsythEdwardsNotation;
 import org.junit.jupiter.api.Test;
 
 public class ForsythEdwardsNotationTest {

@@ -1,7 +1,7 @@
 package piece.knight;
 
-import model.bits.IBitboard;
-import model.piece.Pieces;
+import api.model.bits.IBitboard;
+import api.model.piece.Pieces;
 
 public class WhiteKnight extends Knight {
 

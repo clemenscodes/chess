@@ -1,14 +1,16 @@
 package piece.pawn;
 
+import api.model.bits.IBitboard;
+import api.model.board.IBoard;
+import api.model.board.Square;
+import api.model.move.IMove;
+import api.model.piece.IPiece;
+import api.model.piece.Pieces;
+import api.model.piece.pawn.IPawn;
+import api.model.reader.IReader;
 import bits.Bitboard;
 import board.Board;
 import java.io.IOException;
-import model.bits.*;
-import model.board.*;
-import model.move.*;
-import model.piece.*;
-import model.piece.pawn.IPawn;
-import model.reader.IReader;
 import move.Move;
 import move.irreversible.pawn.*;
 import move.irreversible.pawn.promotion.*;

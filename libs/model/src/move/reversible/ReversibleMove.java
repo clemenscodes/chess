@@ -1,7 +1,7 @@
 package move.reversible;
 
-import model.board.IBoard;
-import model.board.Square;
+import api.model.board.IBoard;
+import api.model.board.Square;
 import move.Move;
 
 public abstract class ReversibleMove extends Move {

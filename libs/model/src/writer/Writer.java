@@ -1,7 +1,7 @@
 package writer;
 
+import api.model.bits.IBitboard;
 import board.Board;
-import model.bits.IBitboard;
 
 public class Writer {
 

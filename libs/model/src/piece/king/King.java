@@ -1,14 +1,14 @@
 package piece.king;
 
+import api.model.bits.IBitboard;
+import api.model.board.IBoard;
+import api.model.board.Square;
+import api.model.fen.IForsythEdwardsNotation;
+import api.model.move.IMove;
+import api.model.piece.Pieces;
+import api.model.piece.king.IKing;
 import bits.Bitboard;
 import board.Board;
-import model.bits.IBitboard;
-import model.board.IBoard;
-import model.board.Square;
-import model.fen.IForsythEdwardsNotation;
-import model.move.IMove;
-import model.piece.Pieces;
-import model.piece.king.IKing;
 import move.Move;
 import move.irreversible.capturing.CaptureMove;
 import move.irreversible.castling.KingCastleMove;

@@ -2,10 +2,10 @@ package reader;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import api.model.reader.IReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import model.reader.IReader;
 import org.junit.jupiter.api.Test;
 
 public class ReaderTest {

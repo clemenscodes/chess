@@ -1,8 +1,8 @@
 package move.irreversible.pawn.promotion.capturing;
 
-import model.board.IBoard;
-import model.board.Square;
-import model.piece.Pieces;
+import api.model.board.IBoard;
+import api.model.board.Square;
+import api.model.piece.Pieces;
 
 public class BishopPromotionCaptureMove extends PromotionCaptureMove {
 

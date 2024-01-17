@@ -1,9 +1,9 @@
 package move.irreversible.capturing;
 
+import api.model.board.IBoard;
+import api.model.board.Square;
+import api.model.piece.IPiece;
 import board.Board;
-import model.board.IBoard;
-import model.board.Square;
-import model.piece.IPiece;
 import move.irreversible.IrreversibleMove;
 
 public class CaptureMove extends IrreversibleMove {

@@ -1,11 +1,11 @@
 package move.irreversible.castling;
 
-import static model.board.Square.*;
+import static api.model.board.Square.*;
 
+import api.model.bits.IBitboard;
+import api.model.board.IBoard;
+import api.model.board.Square;
 import board.Board;
-import model.bits.IBitboard;
-import model.board.IBoard;
-import model.board.Square;
 import move.irreversible.IrreversibleMove;
 
 public abstract class CastleMove extends IrreversibleMove {

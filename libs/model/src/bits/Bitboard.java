@@ -1,13 +1,13 @@
 package bits;
 
-import static model.move.Rays.*;
+import static api.model.move.Rays.*;
 
+import api.model.bits.IBitboard;
+import api.model.board.IBoard;
+import api.model.move.Rays;
 import board.Board;
 import java.io.Serializable;
 import java.util.ArrayList;
-import model.bits.IBitboard;
-import model.board.IBoard;
-import model.move.Rays;
 import writer.Writer;
 
 public class Bitboard implements IBitboard, Serializable {

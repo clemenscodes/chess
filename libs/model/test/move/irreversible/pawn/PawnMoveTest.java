@@ -1,11 +1,11 @@
 package move.irreversible.pawn;
 
-import static model.board.Square.*;
+import static api.model.board.Square.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import api.model.board.IBoard;
+import api.model.piece.IPiece;
 import board.Board;
-import model.board.IBoard;
-import model.piece.IPiece;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

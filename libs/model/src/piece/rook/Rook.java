@@ -1,10 +1,10 @@
 package piece.rook;
 
+import api.model.bits.IBitboard;
+import api.model.board.IBoard;
+import api.model.piece.Pieces;
+import api.model.piece.rook.IRook;
 import bits.Bitboard;
-import model.bits.IBitboard;
-import model.board.IBoard;
-import model.piece.Pieces;
-import model.piece.rook.IRook;
 import piece.Piece;
 
 public abstract class Rook extends Piece implements IRook {

@@ -1,13 +1,13 @@
 package move;
 
+import api.model.bits.IBitboard;
+import api.model.board.IBoard;
+import api.model.board.Square;
+import api.model.fen.IForsythEdwardsNotation;
+import api.model.move.IMove;
 import bits.Bitboard;
 import board.Board;
 import java.io.Serializable;
-import model.bits.IBitboard;
-import model.board.IBoard;
-import model.board.Square;
-import model.fen.IForsythEdwardsNotation;
-import model.move.IMove;
 import move.irreversible.castling.CastleMove;
 import move.irreversible.castling.KingCastleMove;
 import move.irreversible.castling.QueenCastleMove;

@@ -1,10 +1,10 @@
 package reader;
 
+import api.model.reader.IReader;
 import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
-import model.reader.IReader;
 
 public class Reader implements IReader {
 

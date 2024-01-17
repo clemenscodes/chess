@@ -1,7 +1,6 @@
 package piece.queen;
 
-import model.piece.Pieces;
-import piece.queen.Queen;
+import api.model.piece.Pieces;
 
 public class BlackQueen extends Queen {
 

@@ -1,6 +1,5 @@
-package view;
-
-import controller.IChessController;
+import api.controller.IChessController;
+import api.view.IChessView;
 import processing.core.PApplet;
 import processing.event.KeyEvent;
 

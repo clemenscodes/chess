@@ -1,10 +1,10 @@
-import static model.board.Square.*;
+import static api.model.board.Square.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import api.model.State;
+import api.model.board.Square;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import model.State;
-import model.board.Square;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

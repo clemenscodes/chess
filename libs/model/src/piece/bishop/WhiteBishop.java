@@ -1,6 +1,6 @@
 package piece.bishop;
 
-import model.piece.Pieces;
+import api.model.piece.Pieces;
 
 public class WhiteBishop extends Bishop {
 

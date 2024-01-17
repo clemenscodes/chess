@@ -2,7 +2,7 @@ package board;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import model.board.Square;
+import api.model.board.Square;
 import org.junit.jupiter.api.Test;
 
 public class SquareTest {

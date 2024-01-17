@@ -1,6 +1,3 @@
-import processing.core.PApplet;
-import view.ChessView;
-
 public class Chess {
 
 	public static void main(String[] args) {
@@ -10,6 +7,6 @@ public class Chess {
 		controller.setModel(model);
 		controller.setView(view);
 		view.setController(controller);
-		PApplet.runSketch(new String[] { "ChessView" }, view);
+		processing.core.PApplet.runSketch(new String[] { "ChessView" }, view);
 	}
 }

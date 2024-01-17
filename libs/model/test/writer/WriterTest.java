@@ -2,8 +2,8 @@ package writer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import api.model.bits.IBitboard;
 import board.Board;
-import model.bits.IBitboard;
 import org.junit.jupiter.api.Test;
 
 class WriterTest {

@@ -1,9 +1,9 @@
 package move.irreversible.pawn;
 
+import api.model.board.IBoard;
+import api.model.board.Square;
+import api.model.piece.IPiece;
 import board.Board;
-import model.board.IBoard;
-import model.board.Square;
-import model.piece.IPiece;
 import piece.pawn.WhitePawn;
 
 public class EnPassantCaptureMove extends PawnMove {

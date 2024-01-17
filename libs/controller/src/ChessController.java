@@ -1,7 +1,7 @@
-import controller.IChessController;
-import model.IChessModel;
-import model.State;
-import view.IChessView;
+import api.controller.IChessController;
+import api.model.IChessModel;
+import api.model.State;
+import api.view.IChessView;
 
 public class ChessController implements IChessController {
 

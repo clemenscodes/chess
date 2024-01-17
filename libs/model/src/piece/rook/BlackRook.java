@@ -1,7 +1,6 @@
 package piece.rook;
 
-import model.piece.Pieces;
-import piece.rook.Rook;
+import api.model.piece.Pieces;
 
 public class BlackRook extends Rook {
 

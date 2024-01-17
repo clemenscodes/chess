@@ -1,17 +1,17 @@
 package piece;
 
-import static model.piece.Pieces.*;
+import static api.model.piece.Pieces.*;
 
+import api.model.bits.IBitboard;
+import api.model.board.IBoard;
+import api.model.board.Square;
+import api.model.move.IMove;
+import api.model.piece.IPiece;
+import api.model.piece.Pieces;
 import bits.Bitboard;
 import board.Board;
 import java.io.IOException;
 import java.util.ArrayList;
-import model.bits.IBitboard;
-import model.board.IBoard;
-import model.board.Square;
-import model.move.IMove;
-import model.piece.IPiece;
-import model.piece.Pieces;
 import move.Move;
 import move.irreversible.capturing.CaptureMove;
 import move.reversible.QuietMove;

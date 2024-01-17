@@ -2,7 +2,7 @@ package bits;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import model.bits.IBitboard;
+import api.model.bits.IBitboard;
 import org.junit.jupiter.api.Test;
 
 public class BitboardTest {

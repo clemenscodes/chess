@@ -1,8 +1,8 @@
 package move.irreversible;
 
-import model.board.IBoard;
-import model.board.Square;
-import model.piece.IPiece;
+import api.model.board.IBoard;
+import api.model.board.Square;
+import api.model.piece.IPiece;
 import move.Move;
 import piece.king.King;
 

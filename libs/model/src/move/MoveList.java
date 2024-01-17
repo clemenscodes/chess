@@ -1,14 +1,14 @@
 package move;
 
+import api.model.board.IBoard;
+import api.model.board.Square;
+import api.model.move.IMove;
+import api.model.move.IMoveList;
+import api.model.piece.Pieces;
+import api.model.reader.IReader;
 import board.Board;
 import java.io.Serializable;
 import java.util.ArrayList;
-import model.board.IBoard;
-import model.board.Square;
-import model.move.IMove;
-import model.move.IMoveList;
-import model.piece.Pieces;
-import model.reader.IReader;
 
 public class MoveList implements IMoveList, Serializable {
 

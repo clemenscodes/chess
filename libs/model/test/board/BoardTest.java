@@ -1,14 +1,14 @@
 package board;
 
-import static model.board.Square.*;
+import static api.model.board.Square.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import api.model.bits.IBitboard;
+import api.model.board.IBoard;
+import api.model.piece.Pieces;
 import bits.Bitboard;
 import fen.ForsythEdwardsNotation;
 import java.io.IOException;
-import model.bits.IBitboard;
-import model.board.IBoard;
-import model.piece.Pieces;
 import org.junit.jupiter.api.Test;
 
 public class BoardTest {

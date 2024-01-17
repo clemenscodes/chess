@@ -1,6 +1,6 @@
 package writer;
 
-import model.bits.IBitboard;
+import api.model.bits.IBitboard;
 
 @FunctionalInterface
 public interface LoopBody {

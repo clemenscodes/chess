@@ -1,7 +1,6 @@
 package piece.knight;
 
-import model.piece.Pieces;
-import piece.knight.Knight;
+import api.model.piece.Pieces;
 
 public class BlackKnight extends Knight {
 

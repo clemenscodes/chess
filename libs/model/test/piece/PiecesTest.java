@@ -2,7 +2,7 @@ package piece;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import model.piece.Pieces;
+import api.model.piece.Pieces;
 import org.junit.jupiter.api.Test;
 
 public class PiecesTest {
