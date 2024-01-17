@@ -44,7 +44,6 @@
 
 	<modules>
 		<module>apps/chess</module>
-		<module>libs/libtcp</module>
 		<module>libs/libchess</module>
 	</modules>
 </project>
