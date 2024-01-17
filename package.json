@@ -7,6 +7,7 @@
 	"private": true,
 	"scripts": {
 		"cloc": "cloc libs/libchess/src/model",
+		"start": "pnpm nx serve chess --output-style=stream",
 		"fmt": "pnpm fmt:xml && pnpm fmt:java && pnpm nx format --all",
 		"fmt:check": "pnpm nx format:check --all",
 		"fmt:xml": "prettier --plugin=@prettier/plugin-xml --print-width 100 --write '**/*.xml'",

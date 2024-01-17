@@ -1,8 +1,6 @@
-import api.model.IChessModel;
-import api.model.State;
+import api.model.*;
 import api.model.bits.IBitboard;
-import api.model.board.IBoard;
-import api.model.board.Square;
+import api.model.board.*;
 import api.model.move.IMoveList;
 import api.model.reader.IReader;
 import bits.Bitboard;
@@ -36,10 +34,6 @@ public class ChessModel implements IChessModel {
 
 	public IMoveList getMoveList() {
 		return moveList;
-	}
-
-	public IReader getReader() {
-		return reader;
 	}
 
 	public void startGame() {
@@ -85,33 +79,17 @@ public class ChessModel implements IChessModel {
 		setGameState(State.GameOver);
 	}
 
-	private void setGameState(State state) {
-		this.state = state;
-	}
-
-	private void setMoveList(IMoveList moveList) {
-		this.moveList = moveList;
-	}
-
-	private void setBoard(IBoard board) {
-		this.board = board;
-	}
-
-	private void printGame() {
-		System.out.println(getBoard());
-		System.out.println(getBoard().getFen());
-	}
-
-	private void setReader(InputStream in) {
-		reader = new Reader(in);
-	}
-
 	public boolean isCheckmate() {
 		return isCheck() && hasNoLegalMoves();
 	}
 
 	public boolean isStalemate() {
 		return !isCheck() && hasNoLegalMoves();
+	}
+
+	private void printGame() {
+		System.out.println(getBoard());
+		System.out.println(getBoard().getFen());
 	}
 
 	private boolean hasNoLegalMoves() {
@@ -133,5 +111,25 @@ public class ChessModel implements IChessModel {
 			? getBoard().getAllOpponentAttacks()
 			: getBoard().getAllFriendlyAttacks();
 		return Bitboard.overlap(king, attacks);
+	}
+
+	private IReader getReader() {
+		return reader;
+	}
+
+	private void setReader(InputStream in) {
+		reader = new Reader(in);
+	}
+
+	private void setGameState(State state) {
+		this.state = state;
+	}
+
+	private void setMoveList(IMoveList moveList) {
+		this.moveList = moveList;
+	}
+
+	private void setBoard(IBoard board) {
+		this.board = board;
 	}
 }
