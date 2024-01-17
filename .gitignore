@@ -1,6 +1,5 @@
 # Nx
-.nx/installation
-.nx/cache
+.nx/
 
 # IntelliJ
 .idea/
