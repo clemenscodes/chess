@@ -1,17 +1,8 @@
 package model;
 
+import static api.model.Pieces.*;
 import static api.model.Square.*;
 
-import api.model.IBishop;
-import api.model.IBitboard;
-import api.model.IBoard;
-import api.model.IForsythEdwardsNotation;
-import api.model.IKing;
-import api.model.IKnight;
-import api.model.IPawn;
-import api.model.IPiece;
-import api.model.IQueen;
-import api.model.IRook;
 import api.model.Pieces;
 import api.model.Square;
 import java.io.*;

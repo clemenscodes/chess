@@ -1,8 +1,5 @@
 package model;
 
-import api.model.IBitboard;
-import api.model.IBoard;
-import api.model.IRook;
 import api.model.Pieces;
 
 abstract class Rook extends Piece implements IRook {

@@ -1,6 +1,6 @@
-package api.model;
+package model;
 
-public interface IBitboard {
+interface IBitboard {
 	long getBits();
 
 	void setBits(long bits);

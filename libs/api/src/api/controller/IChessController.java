@@ -18,4 +18,6 @@ public interface IChessController {
 	void startNewGame();
 
 	State getGameState();
+
+	String getBoard();
 }

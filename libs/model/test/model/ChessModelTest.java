@@ -3,7 +3,6 @@ package model;
 import static api.model.Square.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import api.model.IChessModel;
 import api.model.Square;
 import api.model.State;
 import java.io.ByteArrayInputStream;
@@ -13,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 public class ChessModelTest {
 
-	private IChessModel chessModel;
+	private ChessModel chessModel;
 
 	@BeforeEach
 	void setUp() {
@@ -65,14 +64,14 @@ public class ChessModelTest {
 	@Test
 	void shouldDetermineCheckmate() {
 		String fen = "rnb1kbnr/pppp1ppp/8/4p3/6Pq/5P2/PPPPP2P/RNBQKBNR w KQkq - 1 3";
-		chessModel.startGame(new Board(new ForsythEdwardsNotation(fen)));
+		chessModel.startGame(fen);
 		assertTrue(chessModel.isCheckmate());
 	}
 
 	@Test
 	void shouldDetermineStalemate() {
 		String fen = "8/8/8/8/8/7k/7p/7K w - - 0 1";
-		chessModel.startGame(new Board(new ForsythEdwardsNotation(fen)));
+		chessModel.startGame(fen);
 		assertTrue(chessModel.isStalemate());
 	}
 }

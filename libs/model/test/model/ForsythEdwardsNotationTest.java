@@ -3,8 +3,6 @@ package model;
 import static api.model.Square.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import api.model.IBoard;
-import api.model.IForsythEdwardsNotation;
 import org.junit.jupiter.api.Test;
 
 public class ForsythEdwardsNotationTest {

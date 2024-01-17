@@ -1,11 +1,5 @@
 package model;
 
-import api.model.IBitboard;
-import api.model.IBoard;
-import api.model.IMove;
-import api.model.IPawn;
-import api.model.IPiece;
-import api.model.IReader;
 import api.model.Pieces;
 import api.model.Square;
 import java.io.IOException;

@@ -1,7 +1,5 @@
 package model;
 
-import api.model.IBoard;
-import api.model.IPiece;
 import api.model.Square;
 
 class QuietMove extends ReversibleMove {

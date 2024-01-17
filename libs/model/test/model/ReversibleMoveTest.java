@@ -3,7 +3,6 @@ package model;
 import static api.model.Square.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import api.model.IBoard;
 import api.model.Square;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

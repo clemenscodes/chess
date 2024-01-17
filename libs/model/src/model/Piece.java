@@ -2,10 +2,6 @@ package model;
 
 import static api.model.Pieces.*;
 
-import api.model.IBitboard;
-import api.model.IBoard;
-import api.model.IMove;
-import api.model.IPiece;
 import api.model.Pieces;
 import api.model.Square;
 import java.io.IOException;

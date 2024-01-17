@@ -2,7 +2,6 @@ package model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import api.model.IBitboard;
 import org.junit.jupiter.api.Test;
 
 class WriterTest {

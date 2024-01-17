@@ -3,9 +3,6 @@ package model;
 import static api.model.Square.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import api.model.IBoard;
-import api.model.IMoveList;
-import api.model.IReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;

@@ -1,10 +1,7 @@
 package model;
 
-import static api.model.Rays.*;
+import static model.Rays.*;
 
-import api.model.IBitboard;
-import api.model.IBoard;
-import api.model.Rays;
 import java.io.Serializable;
 import java.util.ArrayList;
 

@@ -1,8 +1,5 @@
 package model;
 
-import api.model.IBitboard;
-import api.model.IBoard;
-import api.model.IKnight;
 import api.model.Pieces;
 
 abstract class Knight extends Piece implements IKnight {

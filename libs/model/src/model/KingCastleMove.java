@@ -2,7 +2,6 @@ package model;
 
 import static api.model.Square.*;
 
-import api.model.IBoard;
 import api.model.Square;
 
 class KingCastleMove extends CastleMove {

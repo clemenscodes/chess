@@ -1,6 +1,5 @@
 package model;
 
-import api.model.IBitboard;
 import api.model.Pieces;
 
 class WhiteKnight extends Knight {

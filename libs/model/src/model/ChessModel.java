@@ -1,9 +1,8 @@
 package model;
 
-import api.model.*;
-import api.model.IBitboard;
-import api.model.IMoveList;
-import api.model.IReader;
+import api.model.IChessModel;
+import api.model.Square;
+import api.model.State;
 import java.io.InputStream;
 
 public class ChessModel implements IChessModel {
@@ -25,11 +24,11 @@ public class ChessModel implements IChessModel {
 		return state;
 	}
 
-	public IBoard getBoard() {
+	IBoard getBoard() {
 		return board;
 	}
 
-	public IMoveList getMoveList() {
+	IMoveList getMoveList() {
 		return moveList;
 	}
 
@@ -40,8 +39,12 @@ public class ChessModel implements IChessModel {
 		printGame();
 	}
 
-	public void startGame(IBoard board) {
-		setBoard(board);
+	public String getFen() {
+		return getBoard().getFen().toString();
+	}
+
+	public void startGame(String fen) {
+		setBoard(new Board(new ForsythEdwardsNotation(fen)));
 		setMoveList(new MoveList());
 		setGameState(State.Start);
 		printGame();

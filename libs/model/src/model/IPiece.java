@@ -1,9 +1,11 @@
-package api.model;
+package model;
 
+import api.model.Pieces;
+import api.model.Square;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public interface IPiece extends Serializable {
+interface IPiece extends Serializable {
 	Pieces getVariant();
 
 	IBitboard getBitboard();

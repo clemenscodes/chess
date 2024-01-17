@@ -1,6 +1,5 @@
 package model;
 
-import api.model.IReader;
 import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.Queue;

@@ -1,7 +1,5 @@
 package model;
 
-import api.model.IBitboard;
-import api.model.IBoard;
 import api.model.Pieces;
 
 class BlackPawn extends Pawn {

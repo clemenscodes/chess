@@ -1,8 +1,5 @@
 package model;
 
-import api.model.IBitboard;
-import api.model.IBoard;
-import api.model.IQueen;
 import api.model.Pieces;
 
 abstract class Queen extends Piece implements IQueen {
