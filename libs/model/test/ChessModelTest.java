@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import api.model.IChessModel;
 import api.model.State;
 import api.model.board.Square;
-import board.Board;
-import fen.ForsythEdwardsNotation;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import org.junit.jupiter.api.BeforeEach;

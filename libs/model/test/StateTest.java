@@ -2,8 +2,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import api.model.State;
 import api.model.board.IBoard;
-import board.Board;
-import fen.ForsythEdwardsNotation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

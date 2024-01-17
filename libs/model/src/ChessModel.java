@@ -3,11 +3,7 @@ import api.model.bits.IBitboard;
 import api.model.board.*;
 import api.model.move.IMoveList;
 import api.model.reader.IReader;
-import bits.Bitboard;
-import board.Board;
 import java.io.InputStream;
-import move.MoveList;
-import reader.Reader;
 
 public class ChessModel implements IChessModel {
 
