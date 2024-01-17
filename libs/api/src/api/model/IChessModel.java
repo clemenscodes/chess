@@ -1,9 +1,5 @@
 package api.model;
 
-import api.model.board.IBoard;
-import api.model.board.Square;
-import api.model.move.IMoveList;
-
 public interface IChessModel {
 	State getGameState();
 
