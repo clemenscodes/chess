@@ -1,0 +1,38 @@
+package model;
+
+import api.model.IBitboard;
+import api.model.IBoard;
+import api.model.IKnight;
+import api.model.Pieces;
+
+abstract class Knight extends Piece implements IKnight {
+
+	Knight(Pieces variant) {
+		super(variant);
+	}
+
+	Knight(Pieces variant, IBitboard board) {
+		super(variant, board);
+	}
+
+	public IBitboard getAttacks(IBitboard piece, IBoard board) {
+		IBitboard directions = Bitboard.mergeMany(
+			new IBitboard[] {
+				Bitboard.shiftEastEastNorth(piece),
+				Bitboard.shiftEastEastSouth(piece),
+				Bitboard.shiftWestWestNorth(piece),
+				Bitboard.shiftWestWestSouth(piece),
+				Bitboard.shiftNorthNorthEast(piece),
+				Bitboard.shiftNorthNorthWest(piece),
+				Bitboard.shiftSouthSouthEast(piece),
+				Bitboard.shiftSouthSouthWest(piece),
+			}
+		);
+		return removeFriendlyPieces(directions, board);
+	}
+
+	@Override
+	public IBitboard getAllAttacks(IBoard board) {
+		return getAttacks(getBitboard(), board);
+	}
+}
