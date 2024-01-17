@@ -1,10 +1,11 @@
-package model.piece.bishop;
+package piece.bishop;
 
-import model.bits.Bitboard;
+import bits.Bitboard;
 import model.bits.IBitboard;
 import model.board.IBoard;
-import model.piece.Piece;
 import model.piece.Pieces;
+import model.piece.bishop.IBishop;
+import piece.Piece;
 
 public abstract class Bishop extends Piece implements IBishop {
 

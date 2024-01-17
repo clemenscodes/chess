@@ -1,10 +1,12 @@
-package model.move;
+package move;
 
+import board.Board;
 import java.io.Serializable;
 import java.util.ArrayList;
-import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
+import model.move.IMove;
+import model.move.IMoveList;
 import model.piece.Pieces;
 import model.reader.IReader;
 

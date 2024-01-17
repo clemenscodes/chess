@@ -1,4 +1,4 @@
-package model.piece.knight;
+package piece.knight;
 
 import model.bits.IBitboard;
 import model.piece.Pieces;

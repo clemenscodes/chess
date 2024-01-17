@@ -4,8 +4,9 @@ import bits.Bitboard;
 import board.Board;
 import model.bits.IBitboard;
 import model.board.IBoard;
-import model.piece.Piece;
 import model.piece.Pieces;
+import piece.Piece;
+import piece.pawn.Pawn;
 
 public class BlackPawn extends Pawn {
 

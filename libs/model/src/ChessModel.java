@@ -1,15 +1,15 @@
+import bits.Bitboard;
+import board.Board;
 import java.io.InputStream;
 import model.IChessModel;
 import model.State;
-import model.bits.Bitboard;
 import model.bits.IBitboard;
-import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
 import model.move.IMoveList;
-import model.move.MoveList;
 import model.reader.IReader;
-import model.reader.Reader;
+import move.MoveList;
+import reader.Reader;
 
 public class ChessModel implements IChessModel {
 

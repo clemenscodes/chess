@@ -1,16 +1,16 @@
-package model.move;
+package move;
 
 import static model.board.Square.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import model.bits.Bitboard;
-import model.board.Board;
+import bits.Bitboard;
+import board.Board;
+import fen.ForsythEdwardsNotation;
 import model.board.IBoard;
 import model.board.Square;
-import model.fen.ForsythEdwardsNotation;
 import model.fen.IForsythEdwardsNotation;
-import model.move.irreversible.pawn.EnPassantCaptureMove;
-import model.move.reversible.QuietMove;
+import move.irreversible.pawn.EnPassantCaptureMove;
+import move.reversible.QuietMove;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

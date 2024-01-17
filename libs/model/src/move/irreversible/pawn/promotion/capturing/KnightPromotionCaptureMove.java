@@ -1,4 +1,4 @@
-package model.move.irreversible.pawn.promotion.capturing;
+package move.irreversible.pawn.promotion.capturing;
 
 import model.board.IBoard;
 import model.board.Square;

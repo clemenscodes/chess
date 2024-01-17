@@ -1,4 +1,4 @@
-package model.move.irreversible.castling;
+package move.irreversible.castling;
 
 import static model.board.Square.*;
 import static model.board.Square.h8;

@@ -1,20 +1,21 @@
-package model.piece;
+package piece;
 
 import static model.piece.Pieces.*;
 
+import bits.Bitboard;
+import board.Board;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
-import model.bits.Bitboard;
 import model.bits.IBitboard;
-import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
 import model.move.IMove;
-import model.move.Move;
-import model.move.irreversible.capturing.CaptureMove;
-import model.move.reversible.QuietMove;
-import model.piece.pawn.Pawn;
+import model.piece.IPiece;
+import model.piece.Pieces;
+import move.Move;
+import move.irreversible.capturing.CaptureMove;
+import move.reversible.QuietMove;
+import piece.pawn.Pawn;
 
 public abstract class Piece implements IPiece {
 

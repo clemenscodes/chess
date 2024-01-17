@@ -1,11 +1,12 @@
-package model.fen;
+package fen;
 
+import bits.Bitboard;
+import board.Board;
 import java.io.Serializable;
-import model.bits.Bitboard;
 import model.bits.IBitboard;
-import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
+import model.fen.IForsythEdwardsNotation;
 
 public class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializable {
 

@@ -1,4 +1,4 @@
-package model.piece.queen;
+package piece.queen;
 
 import model.piece.Pieces;
 

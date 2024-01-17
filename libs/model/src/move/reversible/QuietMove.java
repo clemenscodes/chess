@@ -1,6 +1,6 @@
-package model.move.reversible;
+package move.reversible;
 
-import model.board.Board;
+import board.Board;
 import model.board.IBoard;
 import model.board.Square;
 import model.piece.IPiece;

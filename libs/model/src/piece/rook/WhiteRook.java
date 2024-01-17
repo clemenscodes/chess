@@ -1,4 +1,4 @@
-package model.piece.rook;
+package piece.rook;
 
 import model.piece.Pieces;
 

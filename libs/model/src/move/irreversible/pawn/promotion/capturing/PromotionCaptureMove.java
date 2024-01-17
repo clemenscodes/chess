@@ -1,10 +1,10 @@
-package model.move.irreversible.pawn.promotion.capturing;
+package move.irreversible.pawn.promotion.capturing;
 
-import model.board.Board;
+import board.Board;
 import model.board.IBoard;
 import model.board.Square;
-import model.move.irreversible.pawn.promotion.PromotionMove;
 import model.piece.Pieces;
+import move.irreversible.pawn.promotion.PromotionMove;
 
 public abstract class PromotionCaptureMove extends PromotionMove {
 

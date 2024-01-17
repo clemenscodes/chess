@@ -1,10 +1,10 @@
-package model.move.irreversible.pawn;
+package move.irreversible.pawn;
 
-import model.board.Board;
+import board.Board;
 import model.board.IBoard;
 import model.board.Square;
 import model.piece.IPiece;
-import model.piece.pawn.WhitePawn;
+import piece.pawn.WhitePawn;
 
 public class DoublePawnPushMove extends PawnMove {
 

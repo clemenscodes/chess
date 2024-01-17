@@ -1,19 +1,20 @@
-package model.piece.king;
+package piece.king;
 
-import model.bits.Bitboard;
+import bits.Bitboard;
+import board.Board;
 import model.bits.IBitboard;
-import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
 import model.fen.IForsythEdwardsNotation;
 import model.move.IMove;
-import model.move.Move;
-import model.move.irreversible.capturing.CaptureMove;
-import model.move.irreversible.castling.KingCastleMove;
-import model.move.irreversible.castling.QueenCastleMove;
-import model.move.reversible.QuietMove;
-import model.piece.Piece;
 import model.piece.Pieces;
+import model.piece.king.IKing;
+import move.Move;
+import move.irreversible.capturing.CaptureMove;
+import move.irreversible.castling.KingCastleMove;
+import move.irreversible.castling.QueenCastleMove;
+import move.reversible.QuietMove;
+import piece.Piece;
 
 public abstract class King extends Piece implements IKing {
 

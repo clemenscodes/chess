@@ -1,10 +1,10 @@
-package model.move.irreversible;
+package move.irreversible;
 
 import model.board.IBoard;
 import model.board.Square;
-import model.move.Move;
 import model.piece.IPiece;
-import model.piece.king.King;
+import move.Move;
+import piece.king.King;
 
 public abstract class IrreversibleMove extends Move {
 

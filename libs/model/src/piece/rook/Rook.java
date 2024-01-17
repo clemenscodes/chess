@@ -1,10 +1,11 @@
-package model.piece.rook;
+package piece.rook;
 
-import model.bits.Bitboard;
+import bits.Bitboard;
 import model.bits.IBitboard;
 import model.board.IBoard;
-import model.piece.Piece;
 import model.piece.Pieces;
+import model.piece.rook.IRook;
+import piece.Piece;
 
 public abstract class Rook extends Piece implements IRook {
 

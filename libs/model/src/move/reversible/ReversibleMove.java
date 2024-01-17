@@ -1,8 +1,8 @@
-package model.move.reversible;
+package move.reversible;
 
 import model.board.IBoard;
 import model.board.Square;
-import model.move.Move;
+import move.Move;
 
 public abstract class ReversibleMove extends Move {
 

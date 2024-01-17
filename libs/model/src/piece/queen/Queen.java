@@ -1,10 +1,11 @@
-package model.piece.queen;
+package piece.queen;
 
-import model.bits.Bitboard;
+import bits.Bitboard;
 import model.bits.IBitboard;
 import model.board.IBoard;
-import model.piece.Piece;
 import model.piece.Pieces;
+import model.piece.queen.IQueen;
+import piece.Piece;
 
 public abstract class Queen extends Piece implements IQueen {
 

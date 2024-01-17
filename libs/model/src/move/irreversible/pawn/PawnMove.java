@@ -1,9 +1,9 @@
-package model.move.irreversible.pawn;
+package move.irreversible.pawn;
 
-import model.board.Board;
+import board.Board;
 import model.board.IBoard;
 import model.board.Square;
-import model.move.irreversible.IrreversibleMove;
+import move.irreversible.IrreversibleMove;
 
 public abstract class PawnMove extends IrreversibleMove {
 

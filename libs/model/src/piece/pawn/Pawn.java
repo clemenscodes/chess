@@ -1,15 +1,19 @@
-package model.piece.pawn;
+package piece.pawn;
 
+import bits.Bitboard;
+import board.Board;
 import java.io.IOException;
-import java.io.Serializable;
 import model.bits.*;
 import model.board.*;
 import model.move.*;
-import model.move.irreversible.pawn.*;
-import model.move.irreversible.pawn.promotion.*;
-import model.move.irreversible.pawn.promotion.capturing.*;
 import model.piece.*;
+import model.piece.pawn.IPawn;
 import model.reader.IReader;
+import move.Move;
+import move.irreversible.pawn.*;
+import move.irreversible.pawn.promotion.*;
+import move.irreversible.pawn.promotion.capturing.*;
+import piece.Piece;
 
 public abstract class Pawn extends Piece implements IPawn {
 

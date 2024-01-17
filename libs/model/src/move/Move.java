@@ -1,18 +1,19 @@
-package model.move;
+package move;
 
+import bits.Bitboard;
+import board.Board;
 import java.io.Serializable;
-import model.bits.Bitboard;
 import model.bits.IBitboard;
-import model.board.Board;
 import model.board.IBoard;
 import model.board.Square;
 import model.fen.IForsythEdwardsNotation;
-import model.move.irreversible.castling.CastleMove;
-import model.move.irreversible.castling.KingCastleMove;
-import model.move.irreversible.castling.QueenCastleMove;
-import model.move.irreversible.pawn.DoublePawnPushMove;
-import model.piece.pawn.Pawn;
-import model.piece.rook.Rook;
+import model.move.IMove;
+import move.irreversible.castling.CastleMove;
+import move.irreversible.castling.KingCastleMove;
+import move.irreversible.castling.QueenCastleMove;
+import move.irreversible.pawn.DoublePawnPushMove;
+import piece.pawn.Pawn;
+import piece.rook.Rook;
 
 public abstract class Move implements IMove, Serializable {
 

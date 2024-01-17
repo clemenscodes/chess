@@ -1,10 +1,11 @@
-package model.piece.knight;
+package piece.knight;
 
-import model.bits.Bitboard;
+import bits.Bitboard;
 import model.bits.IBitboard;
 import model.board.IBoard;
-import model.piece.Piece;
 import model.piece.Pieces;
+import model.piece.knight.IKnight;
+import piece.Piece;
 
 public abstract class Knight extends Piece implements IKnight {
 

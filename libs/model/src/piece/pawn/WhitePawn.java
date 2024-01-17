@@ -1,11 +1,11 @@
-package model.piece.pawn;
+package piece.pawn;
 
-import model.bits.Bitboard;
+import bits.Bitboard;
+import board.Board;
 import model.bits.IBitboard;
-import model.board.Board;
 import model.board.IBoard;
-import model.piece.Piece;
 import model.piece.Pieces;
+import piece.Piece;
 
 public class WhitePawn extends Pawn {
 

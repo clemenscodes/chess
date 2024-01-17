@@ -1,4 +1,4 @@
-package model.piece.bishop;
+package piece.bishop;
 
 import model.piece.Pieces;
 
