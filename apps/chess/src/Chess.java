@@ -1,4 +1,4 @@
-public class Chess {
+class Chess {
 
 	public static void main(String[] args) {
 		ChessModel model = new ChessModel();

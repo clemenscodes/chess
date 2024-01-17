@@ -18,8 +18,6 @@ public class ChessModel implements IChessModel {
 	private IMoveList moveList;
 	private IReader reader;
 
-	public static void main(String[] args) {}
-
 	public ChessModel(InputStream in) {
 		setReader(in);
 	}
@@ -51,6 +49,13 @@ public class ChessModel implements IChessModel {
 		printGame();
 	}
 
+	public void startGame(IBoard board) {
+		setBoard(board);
+		setMoveList(new MoveList());
+		setGameState(State.Start);
+		printGame();
+	}
+
 	public void startNewGame() {
 		startGame();
 		setGameState(State.Playing);
@@ -63,11 +68,10 @@ public class ChessModel implements IChessModel {
 		}
 		getMoveList().makeMove(source, destination, getBoard(), getReader());
 		printGame();
-		boolean isWhite = getBoard().getFen().isWhite();
 		if (isCheckmate()) {
 			setGameState(State.Checkmate);
 			System.out.println("Checkmate!");
-			System.out.println(isWhite ? "Black won." : "White won.");
+			System.out.println(getBoard().getFen().isWhite() ? "Black won." : "White won.");
 			System.out.println(getMoveList());
 		}
 		if (isStalemate()) {
@@ -123,9 +127,11 @@ public class ChessModel implements IChessModel {
 	}
 
 	private boolean isCheck() {
-		boolean isWhite = board.getFen().isWhite();
-		IBitboard king = board.getKing(isWhite);
-		IBitboard attacks = isWhite ? board.getAllOpponentAttacks() : board.getAllFriendlyAttacks();
+		boolean isWhite = getBoard().getFen().isWhite();
+		IBitboard king = getBoard().getKing(isWhite);
+		IBitboard attacks = isWhite
+			? getBoard().getAllOpponentAttacks()
+			: getBoard().getAllFriendlyAttacks();
 		return Bitboard.overlap(king, attacks);
 	}
 }

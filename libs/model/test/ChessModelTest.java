@@ -1,8 +1,11 @@
 import static api.model.board.Square.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import api.model.IChessModel;
 import api.model.State;
 import api.model.board.Square;
+import board.Board;
+import fen.ForsythEdwardsNotation;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,7 +13,7 @@ import org.junit.jupiter.api.Test;
 
 public class ChessModelTest {
 
-	private ChessModel chessModel;
+	private IChessModel chessModel;
 
 	@BeforeEach
 	void setUp() {
@@ -49,23 +52,27 @@ public class ChessModelTest {
 		chessModel.makeMove(e7, e5);
 		chessModel.makeMove(f2, f3);
 		chessModel.makeMove(d8, h4);
+		System.out.println(chessModel.getBoard().getFen());
 		assertEquals(State.Checkmate, chessModel.getGameState());
 	}
 
 	@Test
 	void shouldDetermineNonCheckmate() {
+		chessModel.startGame();
 		assertFalse(chessModel.isCheckmate());
 	}
 
 	@Test
 	void shouldDetermineCheckmate() {
+		String fen = "rnb1kbnr/pppp1ppp/8/4p3/6Pq/5P2/PPPPP2P/RNBQKBNR w KQkq - 1 3";
+		chessModel.startGame(new Board(new ForsythEdwardsNotation(fen)));
 		assertTrue(chessModel.isCheckmate());
 	}
-	// @Test
-	// void shouldDetermineStalemate() {
-	//     String fen = "8/8/8/8/8/7k/7p/7K w - - 0 1";
-	//     board = new Board(new ForsythEdwardsNotation(fen));
-	//     System.out.println(board);
-	//     assertTrue(State.isStalemate(board));
-	// }
+
+	@Test
+	void shouldDetermineStalemate() {
+		String fen = "8/8/8/8/8/7k/7p/7K w - - 0 1";
+		chessModel.startGame(new Board(new ForsythEdwardsNotation(fen)));
+		assertTrue(chessModel.isStalemate());
+	}
 }
