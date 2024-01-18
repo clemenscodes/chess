@@ -2,12 +2,35 @@ package view;
 
 import api.controller.IChessController;
 import api.view.IChessView;
+import controlP5.ControlP5;
 import processing.core.PApplet;
 import processing.event.KeyEvent;
 
 public class ChessView extends PApplet implements IChessView {
 
 	private IChessController controller;
+
+	public void setController(IChessController controller) {
+		this.controller = controller;
+	}
+
+	private IChessController getController() {
+		return controller;
+	}
+
+	private ControlP5 cp5;
+
+	private void setCp5(ControlP5 cp5) {
+		this.cp5 = cp5;
+	}
+
+	private ControlP5 getCp5() {
+		return cp5;
+	}
+
+	public ChessView() {
+		setCp5(new ControlP5(this));
+	}
 
 	@Override
 	public void settings() {
@@ -30,18 +53,11 @@ public class ChessView extends PApplet implements IChessView {
 		getController().handleUserInput(key, keyCode);
 	}
 
-	public void setController(IChessController controller) {
-		this.controller = controller;
-	}
-
 	public void setBackground() {
 		background(255);
 	}
 
-	public void drawStart() {
-		String board = getController().getBoard();
-		println(board);
-	}
+	public void drawStart() {}
 
 	public void drawPlaying() {}
 
@@ -50,10 +66,6 @@ public class ChessView extends PApplet implements IChessView {
 	public void drawStalemate() {}
 
 	public void drawGameOver() {}
-
-	private IChessController getController() {
-		return controller;
-	}
 
 	private void fillWhite() {
 		fill(237, 214, 176);

@@ -1,21 +1,6 @@
 package api.model;
 
-public interface IChessModel {
-	State getGameState();
+import api.IChess;
+import api.IGame;
 
-	void startGame();
-
-	String getFen();
-
-	void startGame(String fen);
-
-	void startNewGame();
-
-	void resign();
-
-	void makeMove(Square source, Square destination);
-
-	boolean isCheckmate();
-
-	boolean isStalemate();
-}
+public interface IChessModel extends IChess, IGame {}

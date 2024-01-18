@@ -2,6 +2,7 @@ package controller;
 
 import api.controller.IChessController;
 import api.model.IChessModel;
+import api.model.Square;
 import api.model.State;
 import api.view.IChessView;
 
@@ -43,17 +44,119 @@ public class ChessController implements IChessController {
 		return getModel().getGameState();
 	}
 
-	public String getBoard() {
-		return getModel().getFen();
+	/**
+	 *
+	 */
+	public void resign() {
+		getModel().resign();
+	}
+
+	/**
+	 * @param source      Square
+	 * @param destination Square
+	 */
+	public void makeMove(Square source, Square destination) {
+		getModel().makeMove(source, destination);
+	}
+
+	/**
+	 * @return boolean isCheckmate
+	 */
+	public boolean isCheckmate() {
+		return getModel().isCheckmate();
+	}
+
+	/**
+	 * @return boolean isStalemate
+	 */
+	public boolean isStalemate() {
+		return getModel().isStalemate();
+	}
+
+	/**
+	 * @return String piecePlacementData
+	 */
+	public String[] getPiecePlacementData() {
+		return getModel().getPiecePlacementData();
+	}
+
+	/**
+	 * @return char activeColor
+	 */
+	public char getActiveColor() {
+		return getModel().getActiveColor();
+	}
+
+	/**
+	 * @return boolean isWhite
+	 */
+	public boolean isWhite() {
+		return getModel().isWhite();
+	}
+
+	/**
+	 * @return String castlingInformation
+	 */
+	public String getCastling() {
+		return getModel().getCastling();
+	}
+
+	/**
+	 * @return boolean canWhiteKingCastle
+	 */
+	public boolean getWhiteKingCastle() {
+		return getModel().getWhiteKingCastle();
+	}
+
+	/**
+	 * @return boolean canWhiteQueenCastle
+	 */
+	public boolean getWhiteQueenCastle() {
+		return getModel().getWhiteQueenCastle();
+	}
+
+	/**
+	 * @return boolean canBlackKingCastle
+	 */
+	public boolean getBlackKingCastle() {
+		return getModel().getBlackKingCastle();
+	}
+
+	/**
+	 * @return boolean canBlackQueenCastle
+	 */
+	public boolean getBlackQueenCastle() {
+		return getModel().getBlackQueenCastle();
+	}
+
+	/**
+	 * @return String enPassantSquare
+	 */
+	public String getEnPassant() {
+		return getModel().getEnPassant();
+	}
+
+	/**
+	 * @return int halfMoveClock
+	 */
+	public int getHalfMoveClock() {
+		return getModel().getHalfMoveClock();
+	}
+
+	/**
+	 * @return int fullMoveNumber
+	 */
+	public int getFullMoveNumber() {
+		return getModel().getFullMoveNumber();
 	}
 
 	public void handleUserInput(char key, int keyCode) {
 		var state = getGameState();
 		switch (state) {
-			case Start, GameOver -> handleStartOrGameOverInput(key);
-			case Playing -> handlePlaying(key, keyCode);
-			case Checkmate -> handleCheckmate(key, keyCode);
-			case Stalemate -> handleStalemate(key, keyCode);
+			case Start, GameOver -> System.out.println("handleStartGameOver");
+			case Playing -> System.out.println("handlePlaying");
+			case Checkmate -> System.out.println("handleCheckmate");
+			case Stalemate -> System.out.println("handleStalemate");
 			default -> throw new IllegalStateException("Unexpected value: " + state);
 		}
 	}
@@ -64,21 +167,5 @@ public class ChessController implements IChessController {
 
 	private IChessView getView() {
 		return view;
-	}
-
-	private void handleStartOrGameOverInput(char key) {
-		System.out.println("handleStartGameOver");
-	}
-
-	private void handlePlaying(char key, int keyCode) {
-		System.out.println("handlePlaying");
-	}
-
-	private void handleCheckmate(char key, int keyCode) {
-		System.out.println("handleCheckmate");
-	}
-
-	private void handleStalemate(char key, int keyCode) {
-		System.out.println("handleStalemate");
 	}
 }
