@@ -1,10 +1,11 @@
 package api.controller;
 
+import api.IChess;
 import api.model.IChessModel;
 import api.model.State;
 import api.view.IChessView;
 
-public interface IChessController {
+public interface IChessController extends IChess {
 	void setModel(IChessModel model);
 
 	void setView(IChessView view);
@@ -18,6 +19,4 @@ public interface IChessController {
 	void startNewGame();
 
 	State getGameState();
-
-	String getBoard();
 }

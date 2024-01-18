@@ -12,11 +12,11 @@ public class Chess {
 
 	public static void main(String[] args) {
 		IChessModel model = new ChessModel();
-		IChessController controller = new ChessController();
 		IChessView view = new ChessView();
+		IChessController controller = new ChessController();
 		controller.setModel(model);
 		controller.setView(view);
 		view.setController(controller);
-		PApplet.runSketch(new String[] { "view.ChessView" }, (PApplet) view);
+		PApplet.runSketch(new String[] { "ChessView" }, (PApplet) view);
 	}
 }

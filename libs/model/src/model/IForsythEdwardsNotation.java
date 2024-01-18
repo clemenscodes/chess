@@ -11,6 +11,14 @@ interface IForsythEdwardsNotation {
 
 	String getCastling();
 
+	boolean getWhiteKingCastle();
+
+	boolean getWhiteQueenCastle();
+
+	boolean getBlackKingCastle();
+
+	boolean getBlackQueenCastle();
+
 	String getEnPassant();
 
 	IBitboard getEnPassantMask();
@@ -34,14 +42,6 @@ interface IForsythEdwardsNotation {
 	void unsetEnPassantTargetSquare();
 
 	void parse(String fen);
-
-	boolean getWhiteKingCastle();
-
-	boolean getWhiteQueenCastle();
-
-	boolean getBlackKingCastle();
-
-	boolean getBlackQueenCastle();
 
 	void castle();
 

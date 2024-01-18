@@ -1,11 +1,11 @@
 package api.model;
 
-public interface IChessModel {
+import api.IChess;
+
+public interface IChessModel extends IChess {
 	State getGameState();
 
 	void startGame();
-
-	String getFen();
 
 	void startGame(String fen);
 
