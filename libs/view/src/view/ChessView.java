@@ -5,6 +5,7 @@ import api.model.Pieces;
 import api.view.IChessView;
 import controlP5.ControlP5;
 import processing.core.PApplet;
+import processing.core.PFont;
 import processing.core.PImage;
 import processing.event.KeyEvent;
 
@@ -48,8 +49,7 @@ public class ChessView extends PApplet implements IChessView {
 
 	private void loadImages() {
 		for (int i = 0; i < 12; i++) {
-			String imagePath = getImagePath(i);
-			pieceImages[i] = loadImage(imagePath);
+			getPieceImages()[i] = loadImage(getImagePath(i));
 		}
 	}
 
@@ -69,6 +69,21 @@ public class ChessView extends PApplet implements IChessView {
 			case 11 -> "images/white/pawn.png";
 			default -> throw new Error("Invalid image index");
 		};
+	}
+
+	private PFont font;
+
+	private PFont getFont() {
+		return font;
+	}
+
+	private void setFont(PFont font) {
+		this.font = font;
+	}
+
+	private void loadFont() {
+		String fontPath = "fonts/IosevkaTerm-ExtraLight.ttf";
+		setFont(createFont(fontPath, 16));
 	}
 
 	private int leftBoardOffset;
@@ -109,11 +124,14 @@ public class ChessView extends PApplet implements IChessView {
 
 	@Override
 	public void setup() {
+		windowTitle("Chess");
 		setCp5(new ControlP5(this));
 		setSquareSize(height / 10);
 		setLeftBoardOffset((width / 2) - getSquareSize() * 4);
 		setTopBoardOffset(height / 10);
 		loadPieceImages();
+		loadFont();
+		textFont(getFont());
 		getController().startGame();
 	}
 
