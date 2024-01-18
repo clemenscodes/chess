@@ -2,6 +2,7 @@ package controller;
 
 import api.controller.IChessController;
 import api.model.IChessModel;
+import api.model.Square;
 import api.model.State;
 import api.view.IChessView;
 
@@ -41,6 +42,35 @@ public class ChessController implements IChessController {
 
 	public State getGameState() {
 		return getModel().getGameState();
+	}
+
+	/**
+	 *
+	 */
+	public void resign() {
+		getModel().resign();
+	}
+
+	/**
+	 * @param source      Square
+	 * @param destination Square
+	 */
+	public void makeMove(Square source, Square destination) {
+		getModel().makeMove(source, destination);
+	}
+
+	/**
+	 * @return boolean isCheckmate
+	 */
+	public boolean isCheckmate() {
+		return getModel().isCheckmate();
+	}
+
+	/**
+	 * @return boolean isStalemate
+	 */
+	public boolean isStalemate() {
+		return getModel().isStalemate();
 	}
 
 	/**

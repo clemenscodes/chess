@@ -1,31 +1,10 @@
 package model;
 
+import api.IChess;
 import api.model.Square;
 
-interface IForsythEdwardsNotation {
-	String[] getPiecePlacementData();
-
-	char getActiveColor();
-
-	boolean isWhite();
-
-	String getCastling();
-
-	boolean getWhiteKingCastle();
-
-	boolean getWhiteQueenCastle();
-
-	boolean getBlackKingCastle();
-
-	boolean getBlackQueenCastle();
-
-	String getEnPassant();
-
+interface IForsythEdwardsNotation extends IChess {
 	IBitboard getEnPassantMask();
-
-	int getHalfMoveClock();
-
-	int getFullMoveNumber();
 
 	void updatePiecePlacementData(IBoard board);
 
