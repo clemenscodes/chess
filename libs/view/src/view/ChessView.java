@@ -13,164 +13,16 @@ import processing.event.KeyEvent;
 
 public class ChessView extends PApplet implements IChessView {
 
-	private IChessController controller;
-
-	public void setController(IChessController controller) {
-		this.controller = controller;
-	}
-
-	private IChessController getController() {
-		return controller;
-	}
-
 	private final int whiteColor = color(237, 214, 176);
-
-	private int getWhiteColor() {
-		return whiteColor;
-	}
-
 	private final int blackColor = color(181, 136, 99);
-
-	private int getBlackColor() {
-		return blackColor;
-	}
-
+	private IChessController controller;
 	private ControlP5 cp5;
-
-	private void setCp5(ControlP5 cp5) {
-		this.cp5 = cp5;
-	}
-
-	private ControlP5 getCp5() {
-		return cp5;
-	}
-
-	private void initCp5() {
-		setCp5(new ControlP5(this));
-		getCp5().setFont(getFont());
-	}
-
 	private Button resignButton;
-
-	private Button getResignButton() {
-		return resignButton;
-	}
-
-	private void setResignButton(Button resignButton) {
-		this.resignButton = resignButton;
-	}
-
-	private void initResignButton() {
-		int background = color(48, 46, 43);
-		int hoverColor = color(28, 26, 24);
-		int textColor = color(193, 193, 192);
-		int buttonWidth = width / 10;
-		int buttonHeight = height / 20;
-		float leftOffset = width - (getLeftBoardOffset() / 2.0f) - buttonWidth / 2.0f;
-		float topOffset = height - 2 * getTopBoardOffset() + buttonHeight / 2.0f;
-		setResignButton(getCp5().addButton("Resign"));
-		getResignButton()
-			.setSwitch(true)
-			.setPosition(leftOffset, topOffset)
-			.setWidth(buttonWidth)
-			.setHeight(buttonHeight)
-			.setColorBackground(background)
-			.setColorActive(background)
-			.setColorForeground(hoverColor)
-			.onRelease(event -> getController().resign());
-		getResignButton()
-			.getCaptionLabel()
-			.toUpperCase(false)
-			.setColor(textColor)
-			.setFont(getFont())
-			.setText("Resign")
-			.setSize(20);
-	}
-
 	private PImage[] pieceImages;
-
-	private PImage[] getPieceImages() {
-		return pieceImages;
-	}
-
-	private void setPieceImages(PImage[] pieceImages) {
-		this.pieceImages = pieceImages;
-	}
-
-	private void loadPieceImages() {
-		setPieceImages(new PImage[12]);
-		Thread imageLoaderThread = new Thread(this::loadImages);
-		imageLoaderThread.start();
-	}
-
-	private void loadImages() {
-		for (int i = 0; i < 12; i++) {
-			getPieceImages()[i] = loadImage(getImagePath(i));
-		}
-	}
-
-	private String getImagePath(int index) {
-		return switch (index) {
-			case 0 -> "images/black/rook.png";
-			case 1 -> "images/black/knight.png";
-			case 2 -> "images/black/bishop.png";
-			case 3 -> "images/black/queen.png";
-			case 4 -> "images/black/king.png";
-			case 5 -> "images/black/pawn.png";
-			case 6 -> "images/white/rook.png";
-			case 7 -> "images/white/knight.png";
-			case 8 -> "images/white/bishop.png";
-			case 9 -> "images/white/queen.png";
-			case 10 -> "images/white/king.png";
-			case 11 -> "images/white/pawn.png";
-			default -> throw new Error("Invalid image index");
-		};
-	}
-
 	private PFont font;
-
-	private PFont getFont() {
-		return font;
-	}
-
-	private void setFont(PFont font) {
-		this.font = font;
-	}
-
-	private void loadFont() {
-		String fontPath = "fonts/IosevkaTerm-ExtraLight.ttf";
-		setFont(createFont(fontPath, 16));
-	}
-
 	private int leftBoardOffset;
-
-	private int getLeftBoardOffset() {
-		return leftBoardOffset;
-	}
-
-	private void setLeftBoardOffset(int leftBoardOffset) {
-		this.leftBoardOffset = leftBoardOffset;
-	}
-
 	private int topBoardOffset;
-
-	private int getTopBoardOffset() {
-		return topBoardOffset;
-	}
-
-	private void setTopBoardOffset(int topBoardOffset) {
-		this.topBoardOffset = topBoardOffset;
-	}
-
 	private int squareSize;
-
-	private int getSquareSize() {
-		return squareSize;
-	}
-
-	private void setSquareSize(int squareSize) {
-		this.squareSize = squareSize;
-	}
 
 	@Override
 	public void settings() {
@@ -259,12 +111,32 @@ public class ChessView extends PApplet implements IChessView {
 		}
 	}
 
+	public void setController(IChessController controller) {
+		this.controller = controller;
+	}
+
 	public void setBackground() {
 		background(255);
 	}
 
 	public void drawStart() {
 		drawBoard(getController().getPiecePlacementData());
+	}
+
+	public void drawPlaying() {}
+
+	public void drawCheckmate() {}
+
+	public void drawStalemate() {}
+
+	public void drawGameOver() {}
+
+	private int getLeftSquareOffset(int file) {
+		return getLeftBoardOffset() + (file - 1) * getSquareSize();
+	}
+
+	private int getTopSquareOffset(int rank) {
+		return height - getTopBoardOffset() - rank * getSquareSize();
 	}
 
 	private void drawBoard(String[] piecePlacementData) {
@@ -289,6 +161,18 @@ public class ChessView extends PApplet implements IChessView {
 				drawPiece(rank, fileToRenderPieceOn, pieceFromChar(c));
 			}
 		}
+	}
+
+	private void drawSquare(int rank, int file) {
+		boolean bothEven = rank % 2 == 0 && file % 2 == 0;
+		boolean bothOdd = rank % 2 != 0 && file % 2 != 0;
+		boolean printBlack = bothEven || bothOdd;
+		if (printBlack) {
+			fill(getBlackColor());
+		} else {
+			fill(getWhiteColor());
+		}
+		square(getLeftSquareOffset(file), getTopSquareOffset(rank), getSquareSize());
 	}
 
 	private void drawPiece(int rank, int file, Pieces piece) {
@@ -335,39 +219,138 @@ public class ChessView extends PApplet implements IChessView {
 		};
 	}
 
-	private int getLeftSquareOffset(int file) {
-		return getLeftBoardOffset() + (file - 1) * getSquareSize();
+	private IChessController getController() {
+		return controller;
 	}
 
-	private int getTopSquareOffset(int rank) {
-		return height - getTopBoardOffset() - rank * getSquareSize();
+	private void setCp5(ControlP5 cp5) {
+		this.cp5 = cp5;
 	}
 
-	private void drawSquare(int rank, int file) {
-		boolean bothEven = rank % 2 == 0 && file % 2 == 0;
-		boolean bothOdd = rank % 2 != 0 && file % 2 != 0;
-		boolean printBlack = bothEven || bothOdd;
-		if (printBlack) {
-			fillBlack();
-		} else {
-			fillWhite();
+	private ControlP5 getCp5() {
+		return cp5;
+	}
+
+	private void initCp5() {
+		setCp5(new ControlP5(this));
+		getCp5().setFont(getFont());
+	}
+
+	private Button getResignButton() {
+		return resignButton;
+	}
+
+	private void setResignButton(Button resignButton) {
+		this.resignButton = resignButton;
+	}
+
+	private void initResignButton() {
+		int background = color(48, 46, 43);
+		int hoverColor = color(28, 26, 24);
+		int textColor = color(193, 193, 192);
+		int buttonWidth = width / 10;
+		int buttonHeight = height / 20;
+		float leftOffset = width - (getLeftBoardOffset() / 2.0f) - buttonWidth / 2.0f;
+		float topOffset = height - 2 * getTopBoardOffset() + buttonHeight / 2.0f;
+		setResignButton(getCp5().addButton("Resign"));
+		getResignButton()
+			.setSwitch(true)
+			.setPosition(leftOffset, topOffset)
+			.setWidth(buttonWidth)
+			.setHeight(buttonHeight)
+			.setColorBackground(background)
+			.setColorActive(background)
+			.setColorForeground(hoverColor)
+			.onRelease(event -> getController().resign());
+		getResignButton()
+			.getCaptionLabel()
+			.toUpperCase(false)
+			.setColor(textColor)
+			.setFont(getFont())
+			.setText("Resign")
+			.setSize(20);
+	}
+
+	private PImage[] getPieceImages() {
+		return pieceImages;
+	}
+
+	private void setPieceImages(PImage[] pieceImages) {
+		this.pieceImages = pieceImages;
+	}
+
+	private void loadPieceImages() {
+		setPieceImages(new PImage[12]);
+		Thread imageLoaderThread = new Thread(this::loadImages);
+		imageLoaderThread.start();
+	}
+
+	private void loadImages() {
+		for (int i = 0; i < 12; i++) {
+			getPieceImages()[i] = loadImage(getImagePath(i));
 		}
-		square(getLeftSquareOffset(file), getTopSquareOffset(rank), getSquareSize());
 	}
 
-	public void drawPlaying() {}
-
-	public void drawCheckmate() {}
-
-	public void drawStalemate() {}
-
-	public void drawGameOver() {}
-
-	private void fillWhite() {
-		fill(getWhiteColor());
+	private String getImagePath(int index) {
+		return switch (index) {
+			case 0 -> "images/black/rook.png";
+			case 1 -> "images/black/knight.png";
+			case 2 -> "images/black/bishop.png";
+			case 3 -> "images/black/queen.png";
+			case 4 -> "images/black/king.png";
+			case 5 -> "images/black/pawn.png";
+			case 6 -> "images/white/rook.png";
+			case 7 -> "images/white/knight.png";
+			case 8 -> "images/white/bishop.png";
+			case 9 -> "images/white/queen.png";
+			case 10 -> "images/white/king.png";
+			case 11 -> "images/white/pawn.png";
+			default -> throw new Error("Invalid image index");
+		};
 	}
 
-	private void fillBlack() {
-		fill(getBlackColor());
+	private PFont getFont() {
+		return font;
+	}
+
+	private void setFont(PFont font) {
+		this.font = font;
+	}
+
+	private void loadFont() {
+		String fontPath = "fonts/IosevkaTerm-ExtraLight.ttf";
+		setFont(createFont(fontPath, 16));
+	}
+
+	private int getLeftBoardOffset() {
+		return leftBoardOffset;
+	}
+
+	private void setLeftBoardOffset(int leftBoardOffset) {
+		this.leftBoardOffset = leftBoardOffset;
+	}
+
+	private int getTopBoardOffset() {
+		return topBoardOffset;
+	}
+
+	private void setTopBoardOffset(int topBoardOffset) {
+		this.topBoardOffset = topBoardOffset;
+	}
+
+	private int getSquareSize() {
+		return squareSize;
+	}
+
+	private void setSquareSize(int squareSize) {
+		this.squareSize = squareSize;
+	}
+
+	private int getWhiteColor() {
+		return whiteColor;
+	}
+
+	private int getBlackColor() {
+		return blackColor;
 	}
 }
