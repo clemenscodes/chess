@@ -204,7 +204,16 @@ public class ChessView extends PApplet implements IChessView {
 
 	@Override
 	public void mouseDragged() {
-		Square square = getSquareFromCoordinates(mouseX, mouseY);
+		Square square = getController()
+			.getSquareFromCoordinates(
+				mouseX,
+				mouseY,
+				getLeftBoardOffset(),
+				getTopBoardOffset(),
+				getSquareSize(),
+				width,
+				height
+			);
 		if (square != null) {
 			System.out.println("Dragged on square " + square);
 		} else {
@@ -214,7 +223,16 @@ public class ChessView extends PApplet implements IChessView {
 
 	@Override
 	public void mousePressed() {
-		Square square = getSquareFromCoordinates(mouseX, mouseY);
+		Square square = getController()
+			.getSquareFromCoordinates(
+				mouseX,
+				mouseY,
+				getLeftBoardOffset(),
+				getTopBoardOffset(),
+				getSquareSize(),
+				width,
+				height
+			);
 		if (square != null) {
 			System.out.println("Pressed on square " + square);
 		} else {
@@ -224,7 +242,16 @@ public class ChessView extends PApplet implements IChessView {
 
 	@Override
 	public void mouseReleased() {
-		Square square = getSquareFromCoordinates(mouseX, mouseY);
+		Square square = getController()
+			.getSquareFromCoordinates(
+				mouseX,
+				mouseY,
+				getLeftBoardOffset(),
+				getTopBoardOffset(),
+				getSquareSize(),
+				width,
+				height
+			);
 		if (square != null) {
 			System.out.println("Released on square " + square);
 		} else {
@@ -269,10 +296,8 @@ public class ChessView extends PApplet implements IChessView {
 		if (pieceImage == null) {
 			return;
 		}
-		int leftPieceOffset = getLeftSquareOffset(file);
-		int topPieceOffset = getTopSquareOffset(rank);
 		int size = getSquareSize();
-		image(pieceImage, leftPieceOffset, topPieceOffset, size, size);
+		image(pieceImage, getLeftSquareOffset(file), getTopSquareOffset(rank), size, size);
 	}
 
 	private PImage getPieceImage(Pieces piece) {
@@ -328,28 +353,6 @@ public class ChessView extends PApplet implements IChessView {
 			fillWhite();
 		}
 		square(getLeftSquareOffset(file), getTopSquareOffset(rank), getSquareSize());
-	}
-
-	private Square getSquareFromCoordinates(int x, int y) {
-		int leftBoardOffset = getLeftBoardOffset();
-		int topBoardOffset = getTopBoardOffset();
-		boolean outsideHorizontally = x < leftBoardOffset || x > width - leftBoardOffset;
-		boolean outsideVertically = y < topBoardOffset || y > height - topBoardOffset;
-		if (outsideHorizontally || outsideVertically) {
-			return null;
-		}
-		int fileOffset = x - leftBoardOffset;
-		int rankOffset = (height - (topBoardOffset)) - y;
-		int file = (int) Math.floor((double) fileOffset / getSquareSize()) + 1;
-		int rank = (int) Math.floor((double) rankOffset / getSquareSize()) + 1;
-		return getSquareFromRankFile(rank, file);
-	}
-
-	private Square getSquareFromRankFile(int rank, int file) {
-		char rankChar = (char) (rank + '0');
-		char fileChar = (char) (file + 'a' - 1);
-		String square = new String(new char[] { fileChar, rankChar });
-		return Square.valueOf(square);
 	}
 
 	public void drawPlaying() {}

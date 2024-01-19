@@ -10,6 +10,12 @@
 	"targetDefaults": {
 		"build": {
 			"dependsOn": ["^build"]
+		},
+		"serve": {
+			"dependsOn": ["build"]
+		},
+		"test": {
+			"dependsOn": ["build"]
 		}
 	},
 	"workspaceLayout": {

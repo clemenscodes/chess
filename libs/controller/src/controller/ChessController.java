@@ -161,6 +161,45 @@ public class ChessController implements IChessController {
 		}
 	}
 
+	public Square getSquareFromCoordinates(
+		int x,
+		int y,
+		int leftOffset,
+		int topOffset,
+		int squareSize,
+		int width,
+		int height
+	) {
+		boolean isOutsideHorizontally = isOutsideHorizontally(x, leftOffset, width);
+		boolean isOutsideVertically = isOutsideVertically(y, topOffset, height);
+		boolean isOutside = isOutsideHorizontally || isOutsideVertically;
+		if (isOutside) {
+			return null;
+		}
+		int file = getIndex(x - leftOffset, squareSize);
+		int rank = getIndex((height - topOffset) - y, squareSize);
+		return getSquareFromRankFile(rank, file);
+	}
+
+	private boolean isOutsideHorizontally(int point, int offset, int width) {
+		return point < offset || point > width - offset;
+	}
+
+	private boolean isOutsideVertically(int point, int offset, int height) {
+		return point < offset || point > height - offset;
+	}
+
+	private int getIndex(int offset, int squareSize) {
+		return (int) Math.floor((double) offset / squareSize) + 1;
+	}
+
+	private Square getSquareFromRankFile(int rank, int file) {
+		char rankChar = (char) (rank + '0');
+		char fileChar = (char) (file + 'a' - 1);
+		String square = new String(new char[] { fileChar, rankChar });
+		return Square.valueOf(square);
+	}
+
 	private IChessModel getModel() {
 		return model;
 	}
