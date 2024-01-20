@@ -295,7 +295,7 @@ public class ChessView extends PApplet implements IChessView {
 	}
 
 	private void initStartButton() {
-		setStartButton(initButton("Start game", "Start"));
+		setStartButton(initButton("Start game button", "Start new game"));
 		getStartButton()
 			.onRelease(event -> {
 				getStartButton().hide();
