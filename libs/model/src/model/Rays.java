@@ -1,6 +1,6 @@
 package model;
 
-public enum Rays {
+enum Rays {
 	West,
 	NorthWest,
 	North,

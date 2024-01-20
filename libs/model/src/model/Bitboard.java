@@ -35,10 +35,6 @@ class Bitboard implements IBitboard, Serializable {
 		return merge(board, getSingleBit(index));
 	}
 
-	static IBitboard toggleBit(IBitboard board, int index) {
-		return toggle(board, getSingleBit(index));
-	}
-
 	static IBitboard toggle(IBitboard a, IBitboard b) {
 		return new Bitboard(a.getBits() ^ b.getBits());
 	}

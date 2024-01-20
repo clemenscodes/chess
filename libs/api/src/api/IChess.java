@@ -3,8 +3,6 @@ package api;
 public interface IChess {
 	String[] getPiecePlacementData();
 
-	char getActiveColor();
-
 	boolean isWhite();
 
 	String getCastling();

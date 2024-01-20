@@ -10,6 +10,9 @@ public class ChessController implements IChessController {
 
 	private IChessModel model;
 	private IChessView view;
+	private Square source;
+	private Square destination;
+	private String errorMessage;
 
 	public void setModel(IChessModel model) {
 		this.model = model;
@@ -29,19 +32,22 @@ public class ChessController implements IChessController {
 
 	public void nextFrame() {
 		State state = getModel().getGameState();
-		getView().setBackground();
 		switch (state) {
 			case Start -> getView().drawStart();
 			case Playing -> getView().drawPlaying();
 			case Checkmate -> getView().drawCheckmate();
 			case Stalemate -> getView().drawStalemate();
-			case GameOver -> getView().drawGameOver();
+			case Resignation -> getView().drawResignation();
 			default -> throw new IllegalStateException("Unexpected value: " + state);
 		}
 	}
 
 	public State getGameState() {
 		return getModel().getGameState();
+	}
+
+	public String getMoves() {
+		return getModel().getMoves();
 	}
 
 	/**
@@ -60,31 +66,14 @@ public class ChessController implements IChessController {
 	}
 
 	/**
-	 * @return boolean isCheckmate
-	 */
-	public boolean isCheckmate() {
-		return getModel().isCheckmate();
-	}
-
-	/**
-	 * @return boolean isStalemate
-	 */
-	public boolean isStalemate() {
-		return getModel().isStalemate();
-	}
-
-	/**
 	 * @return String piecePlacementData
 	 */
 	public String[] getPiecePlacementData() {
 		return getModel().getPiecePlacementData();
 	}
 
-	/**
-	 * @return char activeColor
-	 */
-	public char getActiveColor() {
-		return getModel().getActiveColor();
+	public String getFen() {
+		return getModel().getFen();
 	}
 
 	/**
@@ -150,15 +139,77 @@ public class ChessController implements IChessController {
 		return getModel().getFullMoveNumber();
 	}
 
-	public void handleUserInput(char key, int keyCode) {
-		var state = getGameState();
-		switch (state) {
-			case Start, GameOver -> System.out.println("handleStartGameOver");
-			case Playing -> System.out.println("handlePlaying");
-			case Checkmate -> System.out.println("handleCheckmate");
-			case Stalemate -> System.out.println("handleStalemate");
-			default -> throw new IllegalStateException("Unexpected value: " + state);
+	public void handleUserInput(int x, int y) {
+		if (getGameState() == State.Playing) {
+			handlePlaying(x, y);
 		}
+	}
+
+	private void handlePlaying(int x, int y) {
+		Square square = getSquareFromCoordinates(x, y);
+		if (square == null) {
+			setSource(null);
+			setDestination(null);
+			return;
+		}
+		if (getSource() == null) {
+			setSource(square);
+			setDestination(null);
+			return;
+		}
+		if (getSource().equals(square)) {
+			setSource(null);
+			setDestination(null);
+			return;
+		}
+		setDestination(square);
+		try {
+			getModel().makeMove(getSource(), getDestination());
+			clearErrorMessage();
+		} catch (Error e) {
+			setErrorMessage(e.getMessage());
+		} finally {
+			setSource(null);
+			setDestination(null);
+		}
+	}
+
+	private Square getSquareFromCoordinates(int x, int y) {
+		boolean isOutsideHorizontally = isOutsideHorizontally(x);
+		boolean isOutsideVertically = isOutsideVertically(y);
+		boolean isOutside = isOutsideHorizontally || isOutsideVertically;
+		if (isOutside) {
+			return null;
+		}
+		int fileOffset = x - getView().getLeftBoardOffset();
+		int rankOffset = (getView().getHeight() - getView().getTopBoardOffset()) - y;
+		int squareSize = getView().getSquareSize();
+		int file = getIndex(fileOffset, squareSize);
+		int rank = getIndex(rankOffset, squareSize);
+		return getSquareFromRankFile(rank, file);
+	}
+
+	private boolean isOutsideHorizontally(int point) {
+		boolean isOutsideLeft = point < getView().getLeftBoardOffset();
+		boolean isOutsideRight = point > getView().getWidth() - getView().getLeftBoardOffset();
+		return isOutsideLeft || isOutsideRight;
+	}
+
+	private boolean isOutsideVertically(int point) {
+		boolean isOutsideTop = point < getView().getTopBoardOffset();
+		boolean isOutsideBottom = point > getView().getHeight() - getView().getTopBoardOffset();
+		return isOutsideTop || isOutsideBottom;
+	}
+
+	private int getIndex(int offset, int squareSize) {
+		return (int) Math.floor((double) offset / squareSize) + 1;
+	}
+
+	private Square getSquareFromRankFile(int rank, int file) {
+		char rankChar = (char) (rank + '0');
+		char fileChar = (char) (file + 'a' - 1);
+		String square = new String(new char[] { fileChar, rankChar });
+		return Square.valueOf(square);
 	}
 
 	private IChessModel getModel() {
@@ -167,5 +218,35 @@ public class ChessController implements IChessController {
 
 	private IChessView getView() {
 		return view;
+	}
+
+	private Square getSource() {
+		return source;
+	}
+
+	private void setSource(Square source) {
+		this.source = source;
+	}
+
+	private Square getDestination() {
+		return destination;
+	}
+
+	private void setDestination(Square destination) {
+		this.destination = destination;
+	}
+
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	public void clearErrorMessage() {
+		setSource(null);
+		setDestination(null);
+		setErrorMessage(null);
+	}
+
+	private void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
 	}
 }

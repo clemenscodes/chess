@@ -4,17 +4,15 @@ import api.model.Square;
 import api.model.State;
 
 public interface IGame {
+	State getGameState();
+
+	String getMoves();
+
 	void startGame();
 
 	void startNewGame();
 
-	State getGameState();
-
 	void resign();
 
 	void makeMove(Square source, Square destination);
-
-	boolean isCheckmate();
-
-	boolean isStalemate();
 }

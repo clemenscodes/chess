@@ -8,11 +8,14 @@ import model.ChessModel;
 import processing.core.PApplet;
 import view.ChessView;
 
-public class Chess {
+public final class Chess {
 
 	public static void main(String[] args) {
+		final int width = 1600;
+		final int height = 900;
+		final String title = "Chess";
 		IChessModel model = new ChessModel();
-		IChessView view = new ChessView();
+		IChessView view = new ChessView(width, height, title);
 		IChessController controller = new ChessController();
 		controller.setModel(model);
 		controller.setView(view);

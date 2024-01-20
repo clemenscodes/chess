@@ -3,18 +3,9 @@ package model;
 import static org.junit.jupiter.api.Assertions.*;
 
 import api.model.State;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class StateTest {
-
-	private IBoard board;
-
-	@BeforeEach
-	void setup() {
-		String fen = "rnb1kbnr/pppp1ppp/8/4p3/6Pq/5P2/PPPPP2P/RNBQKBNR w KQkq - 1 3";
-		board = new Board(new ForsythEdwardsNotation(fen));
-	}
 
 	@Test
 	void testEnumValues() {
@@ -24,7 +15,7 @@ public class StateTest {
 		assertEquals(State.Playing, states[1]);
 		assertEquals(State.Checkmate, states[2]);
 		assertEquals(State.Stalemate, states[3]);
-		assertEquals(State.GameOver, states[4]);
+		assertEquals(State.Resignation, states[4]);
 	}
 
 	@Test
@@ -33,7 +24,7 @@ public class StateTest {
 		assertEquals("Playing", State.Playing.toString());
 		assertEquals("Checkmate", State.Checkmate.toString());
 		assertEquals("Stalemate", State.Stalemate.toString());
-		assertEquals("GameOver", State.GameOver.toString());
+		assertEquals("Resignation", State.Resignation.toString());
 	}
 
 	@Test
@@ -42,6 +33,6 @@ public class StateTest {
 		assertEquals(State.Playing, State.valueOf("Playing"));
 		assertEquals(State.Checkmate, State.valueOf("Checkmate"));
 		assertEquals(State.Stalemate, State.valueOf("Stalemate"));
-		assertEquals(State.GameOver, State.valueOf("GameOver"));
+		assertEquals(State.Resignation, State.valueOf("Resignation"));
 	}
 }

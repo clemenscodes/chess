@@ -109,17 +109,19 @@ public class RaysTest {
 
 	@Test
 	void shouldGetDiagonalRaysFromCenterAsWhite() {
-		board = new Board();
-		slider = Bitboard.getSingleBit(Board.getIndex(e4));
+		String fen = "r1bqk1nr/pppp1Qpp/2n5/2b1p3/2B1P3/8/PPPP1PPP/RNB1K1NR b KQkq - 0 4";
+		board = new Board(new ForsythEdwardsNotation(fen));
+		board.getFen().switchActiveColor();
+		slider = Bitboard.getSingleBit(Board.getIndex(f7));
 		IBitboard rays = Bitboard.getDiagonalRays(slider, board);
 		String expected =
 			"""
+			00001010
 			00000000
-			01000001
-			00100010
-			00010100
+			00001010
+			00010001
 			00000000
-			00010100
+			00000000
 			00000000
 			00000000""";
 		assertEquals(expected, rays.toString());

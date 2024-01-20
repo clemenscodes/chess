@@ -108,4 +108,24 @@ public class QueenTest {
 			10000001""";
 		assertEquals(expected, attacks.toString());
 	}
+
+	@Test
+	void shouldGetAttacks() {
+		String fen = "r1bqk1nr/pppp1Qpp/2n5/2b1p3/2B1P3/8/PPPP1PPP/RNB1K1NR b KQkq - 0 4";
+		board = new Board(new ForsythEdwardsNotation(fen));
+		board.getFen().switchActiveColor();
+		piece = new PieceMock(Pieces.WhiteQueen, Bitboard.getSingleBit(Board.getIndex(f7)));
+		IBitboard attacks = piece.getAttacks(piece.getBitboard(), board);
+		String expected =
+			"""
+			00001110
+			00011010
+			00001110
+			00010101
+			00000100
+			00000100
+			00000000
+			00000000""";
+		assertEquals(expected, attacks.toString());
+	}
 }
