@@ -7,5 +7,5 @@ public enum State implements Serializable {
 	Playing,
 	Checkmate,
 	Stalemate,
-	GameOver,
+	Resignation,
 }

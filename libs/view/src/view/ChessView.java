@@ -46,8 +46,6 @@ public class ChessView extends PApplet implements IChessView {
 		setTopBoardOffset(getHeight() / 10);
 		loadFont();
 		textFont(getFont());
-		textSize(20);
-		textAlign(CENTER, CENTER);
 		initCp5();
 		initStartButton();
 		initResignButton();
@@ -102,32 +100,71 @@ public class ChessView extends PApplet implements IChessView {
 	}
 
 	public void drawPlaying() {
-		drawBoard();
-		drawFen();
+		drawStart();
 		drawPieces(getController().getPiecePlacementData());
+		drawFen();
+		drawMoves();
 	}
 
-	public void drawCheckmate() {}
+	public void drawCheckmate() {
+		drawGameOver();
+		String winner = getController().isWhite() ? "Black" : "White";
+		textSize(28);
+		textAlign(CENTER, CENTER);
+		text(
+			"Checkmate! " + winner + " won.",
+			getWidth() - (getLeftBoardOffset() / 2.0f),
+			getHeight() / 2.0f
+		);
+	}
 
-	public void drawStalemate() {}
+	public void drawStalemate() {
+		drawGameOver();
+		textSize(28);
+		textAlign(CENTER, CENTER);
+		text("Stalemate!", getWidth() - (getLeftBoardOffset() / 2.0f), getHeight() / 2.0f);
+	}
 
-	public void drawGameOver() {
+	public void drawResignation() {
+		drawGameOver();
+		String winner = getController().isWhite() ? "Black" : "White";
+		textAlign(CENTER, CENTER);
+		textSize(28);
+		text(
+			"Resignation! " + winner + " won.",
+			getWidth() - (getLeftBoardOffset() / 2.0f),
+			getHeight() / 2.0f
+		);
+	}
+
+	private void drawGameOver() {
+		drawPlaying();
 		getResignButton().hide();
 		getStartButton().show();
+		textAlign(CENTER, CENTER);
+		textSize(32);
+		text("Game over", getWidth() / 2.0f, getHeight() / 20.0f);
 	}
 
 	public void drawError() {
 		fill(255, 0, 0);
+		textAlign(CENTER, CENTER);
+		textSize(20);
 		text(getController().getErrorMessage(), (float) getWidth() / 2, (float) getHeight() / 20);
 	}
 
 	private void drawFen() {
 		fill(0);
-		text(
-			getController().getFen(),
-			(float) getWidth() / 2,
-			getHeight() - (float) getHeight() / 20
-		);
+		textAlign(CENTER, CENTER);
+		textSize(24);
+		text(getController().getFen(), getWidth() / 2.0f, getHeight() - getHeight() / 20.0f);
+	}
+
+	private void drawMoves() {
+		fill(0);
+		textAlign(LEFT);
+		textSize(20);
+		text(getController().getMoves(), getSquareSize() / 2.0f, getSquareSize() / 2.0f);
 	}
 
 	private int getLeftSquareOffset(int file) {

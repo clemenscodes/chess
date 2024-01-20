@@ -24,6 +24,10 @@ public class ChessModel implements IChessModel {
 		return state;
 	}
 
+	public String getMoves() {
+		return getMoveList().toString();
+	}
+
 	IBoard getBoard() {
 		return board;
 	}
@@ -146,7 +150,7 @@ public class ChessModel implements IChessModel {
 	}
 
 	public void resign() {
-		setGameState(State.GameOver);
+		setGameState(State.Resignation);
 	}
 
 	public boolean isCheckmate() {
@@ -177,9 +181,7 @@ public class ChessModel implements IChessModel {
 	private boolean isCheck() {
 		boolean isWhite = getBoard().getFen().isWhite();
 		IBitboard king = getBoard().getKing(isWhite);
-		IBitboard attacks = isWhite
-			? getBoard().getAllOpponentAttacks()
-			: getBoard().getAllFriendlyAttacks();
+		IBitboard attacks = getBoard().getAllOpponentAttacks();
 		return Bitboard.overlap(king, attacks);
 	}
 

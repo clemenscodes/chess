@@ -69,6 +69,14 @@ public class ChessModelTest {
 	}
 
 	@Test
+	void shouldNotDetermineStalemate() {
+		String fen = "r1bqk1nr/pppp1Qpp/2n5/2b1p3/2B1P3/8/PPPP1PPP/RNB1K1NR b KQkq - 0 4";
+		chessModel.startGame(fen);
+		assertFalse(chessModel.isStalemate());
+		assertTrue(chessModel.isCheckmate());
+	}
+
+	@Test
 	void shouldDetermineStalemate() {
 		String fen = "8/8/8/8/8/7k/7p/7K w - - 0 1";
 		chessModel.startGame(fen);

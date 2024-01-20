@@ -23,5 +23,5 @@ public interface IChessView {
 
 	void drawStalemate();
 
-	void drawGameOver();
+	void drawResignation();
 }

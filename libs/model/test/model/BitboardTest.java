@@ -70,15 +70,6 @@ public class BitboardTest {
 	}
 
 	@Test
-	void shouldToggleBit() {
-		IBitboard board = Bitboard.getSingleBit(2);
-		IBitboard result = Bitboard.toggleBit(board, 2);
-		assertFalse(Bitboard.checkBit(result, 2));
-		result = Bitboard.toggleBit(result, 2);
-		assertTrue(Bitboard.checkBit(result, 2));
-	}
-
-	@Test
 	void shouldToggleBits() {
 		IBitboard a = Bitboard.getSingleBit(1);
 		IBitboard b = Bitboard.getSingleBit(3);

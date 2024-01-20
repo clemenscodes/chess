@@ -37,13 +37,17 @@ public class ChessController implements IChessController {
 			case Playing -> getView().drawPlaying();
 			case Checkmate -> getView().drawCheckmate();
 			case Stalemate -> getView().drawStalemate();
-			case GameOver -> getView().drawGameOver();
+			case Resignation -> getView().drawResignation();
 			default -> throw new IllegalStateException("Unexpected value: " + state);
 		}
 	}
 
 	public State getGameState() {
 		return getModel().getGameState();
+	}
+
+	public String getMoves() {
+		return getModel().getMoves();
 	}
 
 	/**
@@ -59,20 +63,6 @@ public class ChessController implements IChessController {
 	 */
 	public void makeMove(Square source, Square destination) {
 		getModel().makeMove(source, destination);
-	}
-
-	/**
-	 * @return boolean isCheckmate
-	 */
-	public boolean isCheckmate() {
-		return getModel().isCheckmate();
-	}
-
-	/**
-	 * @return boolean isStalemate
-	 */
-	public boolean isStalemate() {
-		return getModel().isStalemate();
 	}
 
 	/**
@@ -150,13 +140,8 @@ public class ChessController implements IChessController {
 	}
 
 	public void handleUserInput(int x, int y) {
-		State state = getGameState();
-		switch (state) {
-			case Start, GameOver -> System.out.println("handleStartGameOver");
-			case Playing -> handlePlaying(x, y);
-			case Checkmate -> System.out.println("handleCheckmate");
-			case Stalemate -> System.out.println("handleStalemate");
-			default -> throw new IllegalStateException("Unexpected value: " + state);
+		if (getGameState() == State.Playing) {
+			handlePlaying(x, y);
 		}
 	}
 
@@ -240,7 +225,6 @@ public class ChessController implements IChessController {
 	}
 
 	private void setSource(Square source) {
-		System.out.println("[Controller] setting source square to " + source);
 		this.source = source;
 	}
 
@@ -249,7 +233,6 @@ public class ChessController implements IChessController {
 	}
 
 	private void setDestination(Square destination) {
-		System.out.println("[Controller] setting destination square to " + destination);
 		this.destination = destination;
 	}
 
