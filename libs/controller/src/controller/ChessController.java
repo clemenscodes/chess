@@ -82,6 +82,10 @@ public class ChessController implements IChessController {
 		return getModel().getPiecePlacementData();
 	}
 
+	public String getFen() {
+		return getModel().getFen();
+	}
+
 	/**
 	 * @return boolean isWhite
 	 */

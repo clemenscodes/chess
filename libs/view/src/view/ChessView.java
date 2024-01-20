@@ -61,7 +61,7 @@ public class ChessView extends PApplet implements IChessView {
 		background(255);
 		if (getController().getErrorMessage() != null) {
 			getClearErrorButton().show();
-			drawError(getController().getErrorMessage());
+			drawError();
 		} else {
 			getClearErrorButton().hide();
 		}
@@ -103,6 +103,7 @@ public class ChessView extends PApplet implements IChessView {
 
 	public void drawPlaying() {
 		drawBoard();
+		drawFen();
 		drawPieces(getController().getPiecePlacementData());
 	}
 
@@ -115,9 +116,18 @@ public class ChessView extends PApplet implements IChessView {
 		getStartButton().show();
 	}
 
-	public void drawError(String error) {
+	public void drawError() {
 		fill(255, 0, 0);
-		text(error, (float) getWidth() / 2, (float) getHeight() / 20);
+		text(getController().getErrorMessage(), (float) getWidth() / 2, (float) getHeight() / 20);
+	}
+
+	private void drawFen() {
+		fill(0);
+		text(
+			getController().getFen(),
+			(float) getWidth() / 2,
+			getHeight() - (float) getHeight() / 20
+		);
 	}
 
 	private int getLeftSquareOffset(int file) {

@@ -48,6 +48,10 @@ class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializable {
 		return piecePlacementData;
 	}
 
+	public String getFen() {
+		return toString();
+	}
+
 	public char getActiveColor() {
 		return activeColor;
 	}

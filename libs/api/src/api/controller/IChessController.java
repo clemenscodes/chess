@@ -18,4 +18,6 @@ public interface IChessController extends IChess, IGame {
 	String getErrorMessage();
 
 	void clearErrorMessage();
+
+	String getFen();
 }
