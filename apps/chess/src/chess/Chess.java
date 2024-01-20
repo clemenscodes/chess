@@ -12,7 +12,7 @@ public class Chess {
 
 	public static void main(String[] args) {
 		IChessModel model = new ChessModel();
-		IChessView view = new ChessView();
+		IChessView view = new ChessView("Chess");
 		IChessController controller = new ChessController();
 		controller.setModel(model);
 		controller.setView(view);
