@@ -11,8 +11,11 @@ import view.ChessView;
 public final class Chess {
 
 	public static void main(String[] args) {
+		final int width = 1600;
+		final int height = 900;
+		final String title = "Chess";
 		IChessModel model = new ChessModel();
-		IChessView view = new ChessView("Chess");
+		IChessView view = new ChessView(width, height, title);
 		IChessController controller = new ChessController();
 		controller.setModel(model);
 		controller.setView(view);

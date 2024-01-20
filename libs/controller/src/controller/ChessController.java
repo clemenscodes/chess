@@ -12,6 +12,7 @@ public class ChessController implements IChessController {
 	private IChessView view;
 	private Square source;
 	private Square destination;
+	private String errorMessage;
 
 	public void setModel(IChessModel model) {
 		this.model = model;
@@ -158,20 +159,26 @@ public class ChessController implements IChessController {
 	private void handlePlaying(int x, int y) {
 		Square square = getSquareFromCoordinates(x, y);
 		if (square == null) {
+			setSource(null);
+			setDestination(null);
 			return;
 		}
 		if (getSource() == null) {
 			setSource(square);
+			setDestination(null);
 			return;
 		}
 		if (getSource().equals(square)) {
+			setSource(null);
+			setDestination(null);
 			return;
 		}
 		setDestination(square);
 		try {
 			getModel().makeMove(getSource(), getDestination());
+			clearErrorMessage();
 		} catch (Error e) {
-			System.err.println(e.getMessage());
+			setErrorMessage(e.getMessage());
 		} finally {
 			setSource(null);
 			setDestination(null);
@@ -240,5 +247,19 @@ public class ChessController implements IChessController {
 	private void setDestination(Square destination) {
 		System.out.println("[Controller] setting destination square to " + destination);
 		this.destination = destination;
+	}
+
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	public void clearErrorMessage() {
+		setSource(null);
+		setDestination(null);
+		setErrorMessage(null);
+	}
+
+	private void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
 	}
 }

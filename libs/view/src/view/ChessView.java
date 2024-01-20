@@ -14,22 +14,27 @@ public class ChessView extends PApplet implements IChessView {
 	private ControlP5 cp5;
 	private Button resignButton;
 	private Button startButton;
+	private Button clearErrorButton;
 	private PImage[] pieceImages;
 	private PFont font;
 	private String title;
+	private int width;
+	private int height;
 	private int leftBoardOffset;
 	private int topBoardOffset;
 	private int squareSize;
 	private final int whiteColor = color(237, 214, 176);
 	private final int blackColor = color(181, 136, 99);
 
-	public ChessView(String title) {
+	public ChessView(int width, int height, String title) {
+		setWidth(width);
+		setHeight(height);
 		setTitle(title);
 	}
 
 	@Override
 	public void settings() {
-		fullScreen();
+		size(getWidth(), getHeight());
 		pixelDensity(displayDensity());
 	}
 
@@ -41,16 +46,25 @@ public class ChessView extends PApplet implements IChessView {
 		setTopBoardOffset(getHeight() / 10);
 		loadFont();
 		textFont(getFont());
+		textSize(20);
+		textAlign(CENTER, CENTER);
 		initCp5();
 		initStartButton();
 		initResignButton();
+		initErrorButton();
 		loadPieceImages();
 		getController().startGame();
 	}
 
 	@Override
 	public void draw() {
-		setBackground();
+		background(255);
+		if (getController().getErrorMessage() != null) {
+			getClearErrorButton().show();
+			drawError(getController().getErrorMessage());
+		} else {
+			getClearErrorButton().hide();
+		}
 		getController().nextFrame();
 	}
 
@@ -61,10 +75,6 @@ public class ChessView extends PApplet implements IChessView {
 
 	public void setController(IChessController controller) {
 		this.controller = controller;
-	}
-
-	public void setBackground() {
-		background(255);
 	}
 
 	public int getLeftBoardOffset() {
@@ -102,6 +112,12 @@ public class ChessView extends PApplet implements IChessView {
 
 	public void drawGameOver() {
 		getResignButton().hide();
+		getStartButton().show();
+	}
+
+	public void drawError(String error) {
+		fill(255, 0, 0);
+		text(error, (float) getWidth() / 2, (float) getHeight() / 20);
 	}
 
 	private int getLeftSquareOffset(int file) {
@@ -254,6 +270,32 @@ public class ChessView extends PApplet implements IChessView {
 		getResignButton().hide().onRelease(event -> getController().resign());
 	}
 
+	private Button getClearErrorButton() {
+		return clearErrorButton;
+	}
+
+	private void setClearErrorButton(Button clearErrorButton) {
+		this.clearErrorButton = clearErrorButton;
+	}
+
+	private void initErrorButton() {
+		setClearErrorButton(initButton("Clear error button", "Clear error"));
+		int background = color(200, 46, 43);
+		int hoverColor = color(190, 26, 24);
+		int textColor = color(255);
+		getClearErrorButton()
+			.setColorBackground(background)
+			.setColorActive(background)
+			.setColorForeground(hoverColor);
+		getClearErrorButton().getCaptionLabel().setColor(textColor).setText("Clear error");
+		getClearErrorButton()
+			.hide()
+			.onRelease(event -> {
+				getController().clearErrorMessage();
+				getClearErrorButton().hide();
+			});
+	}
+
 	private PImage[] getPieceImages() {
 		return pieceImages;
 	}
@@ -303,6 +345,14 @@ public class ChessView extends PApplet implements IChessView {
 	private void loadFont() {
 		String fontPath = "fonts/IosevkaTerm-ExtraLight.ttf";
 		setFont(createFont(fontPath, 16));
+	}
+
+	private void setWidth(int width) {
+		this.width = width;
+	}
+
+	private void setHeight(int height) {
+		this.height = height;
 	}
 
 	private String getTitle() {

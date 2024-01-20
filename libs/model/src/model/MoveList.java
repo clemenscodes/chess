@@ -54,6 +54,9 @@ class MoveList implements IMoveList, Serializable {
 		int src = Board.getIndex(source);
 		int dst = Board.getIndex(destination);
 		Pieces piece = board.getPieceByIndex(src);
+		if (piece == null) {
+			throw new Error("No piece on square " + source);
+		}
 		return switch (piece) {
 			case WhitePawn -> board.getWhitePawn().move(src, dst, board, reader);
 			case WhiteBishop -> board.getWhiteBishop().move(src, dst, board);

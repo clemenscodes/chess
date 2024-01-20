@@ -14,4 +14,8 @@ public interface IChessController extends IChess, IGame {
 	void nextFrame();
 
 	void handleUserInput(int x, int y);
+
+	String getErrorMessage();
+
+	void clearErrorMessage();
 }
