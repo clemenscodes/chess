@@ -150,43 +150,52 @@ public class ChessController implements IChessController {
 		return getModel().getFullMoveNumber();
 	}
 
-	public void handleUserInput(char key, int keyCode) {
-		var state = getGameState();
+	public void handleUserInput(int x, int y) {
+		State state = getGameState();
 		switch (state) {
 			case Start, GameOver -> System.out.println("handleStartGameOver");
-			case Playing -> System.out.println("handlePlaying");
+			case Playing -> handlePlaying(x, y);
 			case Checkmate -> System.out.println("handleCheckmate");
 			case Stalemate -> System.out.println("handleStalemate");
 			default -> throw new IllegalStateException("Unexpected value: " + state);
 		}
 	}
 
-	public Square getSquareFromCoordinates(
-		int x,
-		int y,
-		int leftOffset,
-		int topOffset,
-		int squareSize,
-		int width,
-		int height
-	) {
-		boolean isOutsideHorizontally = isOutsideHorizontally(x, leftOffset, width);
-		boolean isOutsideVertically = isOutsideVertically(y, topOffset, height);
+	private void handlePlaying(int x, int y) {
+		System.out.println("Making move");
+		Square square = getSquareFromCoordinates(x, y);
+		if (square != null) {
+			System.out.println("interacted on square " + square);
+		} else {
+			System.out.println("interacted outside board");
+		}
+	}
+
+	private Square getSquareFromCoordinates(int x, int y) {
+		boolean isOutsideHorizontally = isOutsideHorizontally(x);
+		boolean isOutsideVertically = isOutsideVertically(y);
 		boolean isOutside = isOutsideHorizontally || isOutsideVertically;
 		if (isOutside) {
 			return null;
 		}
-		int file = getIndex(x - leftOffset, squareSize);
-		int rank = getIndex((height - topOffset) - y, squareSize);
+		int fileOffset = x - getView().getLeftBoardOffset();
+		int rankOffset = (getView().getHeight() - getView().getTopBoardOffset()) - y;
+		int squareSize = getView().getSquareSize();
+		int file = getIndex(fileOffset, squareSize);
+		int rank = getIndex(rankOffset, squareSize);
 		return getSquareFromRankFile(rank, file);
 	}
 
-	private boolean isOutsideHorizontally(int point, int offset, int width) {
-		return point < offset || point > width - offset;
+	private boolean isOutsideHorizontally(int point) {
+		boolean isOutsideLeft = point < getView().getLeftBoardOffset();
+		boolean isOutsideRight = point > getView().getWidth() - getView().getLeftBoardOffset();
+		return isOutsideLeft || isOutsideRight;
 	}
 
-	private boolean isOutsideVertically(int point, int offset, int height) {
-		return point < offset || point > height - offset;
+	private boolean isOutsideVertically(int point) {
+		boolean isOutsideTop = point < getView().getTopBoardOffset();
+		boolean isOutsideBottom = point > getView().getHeight() - getView().getTopBoardOffset();
+		return isOutsideTop || isOutsideBottom;
 	}
 
 	private int getIndex(int offset, int squareSize) {

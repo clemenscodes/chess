@@ -7,6 +7,16 @@ public interface IChessView {
 
 	void setBackground();
 
+	int getLeftBoardOffset();
+
+	int getTopBoardOffset();
+
+	int getSquareSize();
+
+	int getWidth();
+
+	int getHeight();
+
 	void drawStart();
 
 	void drawPlaying();

@@ -1,15 +1,12 @@
 package view;
 
 import api.controller.IChessController;
-import api.model.Pieces;
-import api.model.Square;
 import api.view.IChessView;
 import controlP5.Button;
 import controlP5.ControlP5;
 import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PImage;
-import processing.event.KeyEvent;
 
 public class ChessView extends PApplet implements IChessView {
 
@@ -50,65 +47,18 @@ public class ChessView extends PApplet implements IChessView {
 	}
 
 	@Override
-	public void keyPressed(KeyEvent event) {
-		getController().handleUserInput(key, keyCode);
-	}
-
-	@Override
 	public void mouseDragged() {
-		Square square = getController()
-			.getSquareFromCoordinates(
-				mouseX,
-				mouseY,
-				getLeftBoardOffset(),
-				getTopBoardOffset(),
-				getSquareSize(),
-				width,
-				height
-			);
-		if (square != null) {
-			System.out.println("Dragged on square " + square);
-		} else {
-			System.out.println("Dragged outside board");
-		}
+		getController().handleUserInput(mouseX, mouseY);
 	}
 
 	@Override
 	public void mousePressed() {
-		Square square = getController()
-			.getSquareFromCoordinates(
-				mouseX,
-				mouseY,
-				getLeftBoardOffset(),
-				getTopBoardOffset(),
-				getSquareSize(),
-				width,
-				height
-			);
-		if (square != null) {
-			System.out.println("Pressed on square " + square);
-		} else {
-			System.out.println("Outside board");
-		}
+		getController().handleUserInput(mouseX, mouseY);
 	}
 
 	@Override
 	public void mouseReleased() {
-		Square square = getController()
-			.getSquareFromCoordinates(
-				mouseX,
-				mouseY,
-				getLeftBoardOffset(),
-				getTopBoardOffset(),
-				getSquareSize(),
-				width,
-				height
-			);
-		if (square != null) {
-			System.out.println("Released on square " + square);
-		} else {
-			System.out.println("Released outside board");
-		}
+		getController().handleUserInput(mouseX, mouseY);
 	}
 
 	public void setController(IChessController controller) {
@@ -117,6 +67,26 @@ public class ChessView extends PApplet implements IChessView {
 
 	public void setBackground() {
 		background(255);
+	}
+
+	public int getLeftBoardOffset() {
+		return leftBoardOffset;
+	}
+
+	public int getTopBoardOffset() {
+		return topBoardOffset;
+	}
+
+	public int getSquareSize() {
+		return squareSize;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
 	}
 
 	public void drawStart() {
@@ -175,46 +145,28 @@ public class ChessView extends PApplet implements IChessView {
 		square(getLeftSquareOffset(file), getTopSquareOffset(rank), getSquareSize());
 	}
 
-	private void drawPiece(int rank, int file, Pieces piece) {
-		PImage pieceImage = getPieceImage(piece);
-		if (pieceImage == null) {
+	private void drawPiece(int rank, int file, PImage image) {
+		if (image == null) {
 			return;
 		}
 		int size = getSquareSize();
-		image(pieceImage, getLeftSquareOffset(file), getTopSquareOffset(rank), size, size);
+		image(image, getLeftSquareOffset(file), getTopSquareOffset(rank), size, size);
 	}
 
-	private PImage getPieceImage(Pieces piece) {
-		return switch (piece) {
-			case BlackRook -> getPieceImages()[0];
-			case BlackKnight -> getPieceImages()[1];
-			case BlackBishop -> getPieceImages()[2];
-			case BlackQueen -> getPieceImages()[3];
-			case BlackKing -> getPieceImages()[4];
-			case BlackPawn -> getPieceImages()[5];
-			case WhiteRook -> getPieceImages()[6];
-			case WhiteKnight -> getPieceImages()[7];
-			case WhiteBishop -> getPieceImages()[8];
-			case WhiteQueen -> getPieceImages()[9];
-			case WhiteKing -> getPieceImages()[10];
-			case WhitePawn -> getPieceImages()[11];
-		};
-	}
-
-	private Pieces pieceFromChar(char c) {
+	private PImage pieceFromChar(char c) {
 		return switch (c) {
-			case 'p' -> Pieces.BlackPawn;
-			case 'r' -> Pieces.BlackRook;
-			case 'n' -> Pieces.BlackKnight;
-			case 'b' -> Pieces.BlackBishop;
-			case 'q' -> Pieces.BlackQueen;
-			case 'k' -> Pieces.BlackKing;
-			case 'P' -> Pieces.WhitePawn;
-			case 'R' -> Pieces.WhiteRook;
-			case 'N' -> Pieces.WhiteKnight;
-			case 'B' -> Pieces.WhiteBishop;
-			case 'Q' -> Pieces.WhiteQueen;
-			case 'K' -> Pieces.WhiteKing;
+			case 'p' -> getPieceImages()[0];
+			case 'r' -> getPieceImages()[1];
+			case 'n' -> getPieceImages()[2];
+			case 'b' -> getPieceImages()[3];
+			case 'q' -> getPieceImages()[4];
+			case 'k' -> getPieceImages()[5];
+			case 'P' -> getPieceImages()[6];
+			case 'R' -> getPieceImages()[7];
+			case 'N' -> getPieceImages()[8];
+			case 'B' -> getPieceImages()[9];
+			case 'Q' -> getPieceImages()[10];
+			case 'K' -> getPieceImages()[11];
 			default -> throw new IllegalStateException("Unexpected value: " + c);
 		};
 	}
@@ -293,18 +245,18 @@ public class ChessView extends PApplet implements IChessView {
 
 	private String getImagePath(int index) {
 		return switch (index) {
-			case 0 -> "images/black/rook.png";
-			case 1 -> "images/black/knight.png";
-			case 2 -> "images/black/bishop.png";
-			case 3 -> "images/black/queen.png";
-			case 4 -> "images/black/king.png";
-			case 5 -> "images/black/pawn.png";
-			case 6 -> "images/white/rook.png";
-			case 7 -> "images/white/knight.png";
-			case 8 -> "images/white/bishop.png";
-			case 9 -> "images/white/queen.png";
-			case 10 -> "images/white/king.png";
-			case 11 -> "images/white/pawn.png";
+			case 0 -> "images/black/pawn.png";
+			case 1 -> "images/black/rook.png";
+			case 2 -> "images/black/knight.png";
+			case 3 -> "images/black/bishop.png";
+			case 4 -> "images/black/queen.png";
+			case 5 -> "images/black/king.png";
+			case 6 -> "images/white/pawn.png";
+			case 7 -> "images/white/rook.png";
+			case 8 -> "images/white/knight.png";
+			case 9 -> "images/white/bishop.png";
+			case 10 -> "images/white/queen.png";
+			case 11 -> "images/white/king.png";
 			default -> throw new Error("Invalid image index");
 		};
 	}
@@ -322,24 +274,12 @@ public class ChessView extends PApplet implements IChessView {
 		setFont(createFont(fontPath, 16));
 	}
 
-	private int getLeftBoardOffset() {
-		return leftBoardOffset;
-	}
-
 	private void setLeftBoardOffset(int leftBoardOffset) {
 		this.leftBoardOffset = leftBoardOffset;
 	}
 
-	private int getTopBoardOffset() {
-		return topBoardOffset;
-	}
-
 	private void setTopBoardOffset(int topBoardOffset) {
 		this.topBoardOffset = topBoardOffset;
-	}
-
-	private int getSquareSize() {
-		return squareSize;
 	}
 
 	private void setSquareSize(int squareSize) {
