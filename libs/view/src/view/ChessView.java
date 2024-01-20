@@ -36,7 +36,6 @@ public class ChessView extends PApplet implements IChessView {
 	@Override
 	public void setup() {
 		windowTitle(getTitle());
-		setBackground();
 		setSquareSize(getHeight() / 10);
 		setLeftBoardOffset((getWidth() / 2) - getSquareSize() * 4);
 		setTopBoardOffset(getHeight() / 10);
@@ -51,17 +50,8 @@ public class ChessView extends PApplet implements IChessView {
 
 	@Override
 	public void draw() {
+		setBackground();
 		getController().nextFrame();
-	}
-
-	@Override
-	public void mouseDragged() {
-		getController().handleUserInput(mouseX, mouseY);
-	}
-
-	@Override
-	public void mousePressed() {
-		getController().handleUserInput(mouseX, mouseY);
 	}
 
 	@Override
@@ -102,6 +92,7 @@ public class ChessView extends PApplet implements IChessView {
 	}
 
 	public void drawPlaying() {
+		drawBoard();
 		drawPieces(getController().getPiecePlacementData());
 	}
 

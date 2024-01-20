@@ -10,6 +10,8 @@ public class ChessController implements IChessController {
 
 	private IChessModel model;
 	private IChessView view;
+	private Square source;
+	private Square destination;
 
 	public void setModel(IChessModel model) {
 		this.model = model;
@@ -77,13 +79,6 @@ public class ChessController implements IChessController {
 	 */
 	public String[] getPiecePlacementData() {
 		return getModel().getPiecePlacementData();
-	}
-
-	/**
-	 * @return char activeColor
-	 */
-	public char getActiveColor() {
-		return getModel().getActiveColor();
 	}
 
 	/**
@@ -161,12 +156,25 @@ public class ChessController implements IChessController {
 	}
 
 	private void handlePlaying(int x, int y) {
-		System.out.println("Making move");
 		Square square = getSquareFromCoordinates(x, y);
-		if (square != null) {
-			System.out.println("interacted on square " + square);
-		} else {
-			System.out.println("interacted outside board");
+		if (square == null) {
+			return;
+		}
+		if (getSource() == null) {
+			setSource(square);
+			return;
+		}
+		if (getSource().equals(square)) {
+			return;
+		}
+		setDestination(square);
+		try {
+			getModel().makeMove(getSource(), getDestination());
+		} catch (Error e) {
+			System.err.println(e.getMessage());
+		} finally {
+			setSource(null);
+			setDestination(null);
 		}
 	}
 
@@ -214,5 +222,23 @@ public class ChessController implements IChessController {
 
 	private IChessView getView() {
 		return view;
+	}
+
+	private Square getSource() {
+		return source;
+	}
+
+	private void setSource(Square source) {
+		System.out.println("[Controller] setting source square to " + source);
+		this.source = source;
+	}
+
+	private Square getDestination() {
+		return destination;
+	}
+
+	private void setDestination(Square destination) {
+		System.out.println("[Controller] setting destination square to " + destination);
+		this.destination = destination;
 	}
 }

@@ -6,6 +6,8 @@ import api.model.Square;
 interface IForsythEdwardsNotation extends IChess {
 	IBitboard getEnPassantMask();
 
+	char getActiveColor();
+
 	void updatePiecePlacementData(IBoard board);
 
 	void incrementFullMoveNumber();

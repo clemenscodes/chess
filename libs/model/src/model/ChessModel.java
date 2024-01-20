@@ -47,13 +47,6 @@ public class ChessModel implements IChessModel {
 	}
 
 	/**
-	 * @return char activeColor
-	 */
-	public char getActiveColor() {
-		return getBoard().getFen().getActiveColor();
-	}
-
-	/**
 	 * @return boolean isWhite
 	 */
 	public boolean isWhite() {
