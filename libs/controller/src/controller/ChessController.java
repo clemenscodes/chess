@@ -29,7 +29,6 @@ public class ChessController implements IChessController {
 
 	public void nextFrame() {
 		State state = getModel().getGameState();
-		getView().setBackground();
 		switch (state) {
 			case Start -> getView().drawStart();
 			case Playing -> getView().drawPlaying();

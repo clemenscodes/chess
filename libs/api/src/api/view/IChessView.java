@@ -5,8 +5,6 @@ import api.controller.IChessController;
 public interface IChessView {
 	void setController(IChessController controller);
 
-	void setBackground();
-
 	int getLeftBoardOffset();
 
 	int getTopBoardOffset();

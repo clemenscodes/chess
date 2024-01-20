@@ -8,7 +8,7 @@ import model.ChessModel;
 import processing.core.PApplet;
 import view.ChessView;
 
-public class Chess {
+public final class Chess {
 
 	public static void main(String[] args) {
 		IChessModel model = new ChessModel();
