@@ -197,10 +197,20 @@ public class ChessView extends PApplet implements IChessView {
 			return;
 		}
 		for (var move : moves) {
-			System.out.println("Move");
-			System.out.println(move[0]);
-			System.out.println(move[1]);
+			highlightLegalDestination(move[1]);
 		}
+	}
+
+	private void highlightLegalDestination(Square square) {
+		System.out.println(square);
+		int rank = getRankFromSquare(square);
+		int file = getFileFromSquare(square);
+		int halfSquareSize = (int) (getSquareSize() / 2.0f);
+		int fileOffset = getLeftSquareOffset(file) + halfSquareSize;
+		int rankOffset = getTopSquareOffset(rank) + halfSquareSize;
+		fill(color(213, 192, 158, 125));
+		noStroke();
+		circle(fileOffset, rankOffset, getSquareSize() / 3.0f);
 	}
 
 	private void highlightDraggedSquare() {

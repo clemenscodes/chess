@@ -173,10 +173,17 @@ abstract class Piece implements IPiece {
 	}
 
 	public ArrayList<Square[]> getPieceMoves(IBoard board, IBitboard piece) {
+		IBitboard ownPieces = board.getPieces(board.getFen().isWhite());
+		if (!Bitboard.overlap(piece, ownPieces)) {
+			board.getFen().switchActiveColor();
+		}
 		ArrayList<Square[]> allDestinations = new ArrayList<>();
 		Square pieceSourceSquare = getSquareFromSingleBit(piece);
 		IBitboard pieceAttacks = calculatePieceAttacks(piece, board);
 		addAttacksToDestinations(allDestinations, pieceSourceSquare, pieceAttacks);
+		if (!Bitboard.overlap(piece, ownPieces)) {
+			board.getFen().switchActiveColor();
+		}
 		return allDestinations;
 	}
 

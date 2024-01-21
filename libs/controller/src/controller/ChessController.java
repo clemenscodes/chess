@@ -61,7 +61,7 @@ public class ChessController implements IChessController {
 		return getModel().getMoves();
 	}
 
-	public ArrayList<Square[]> getLegalMoves(Square square) {
+	private ArrayList<Square[]> getLegalMoves(Square square) {
 		return getModel().getLegalMoves(square);
 	}
 
@@ -176,7 +176,7 @@ public class ChessController implements IChessController {
 		}
 		setSource(square);
 		setDraggedSquare(square);
-		setLegalMoves(getModel().getLegalMoves(square));
+		setLegalMoves(getLegalMoves(square));
 	}
 
 	public void handleMouseDragged(int x, int y) {
@@ -203,6 +203,7 @@ public class ChessController implements IChessController {
 		try {
 			getModel().makeMove(getSource(), getDestination());
 			clearErrorMessage();
+			getLegalMoves().clear();
 		} catch (Error e) {
 			setErrorMessage(e.getMessage());
 		} finally {
@@ -300,6 +301,7 @@ public class ChessController implements IChessController {
 		setSource(null);
 		setDestination(null);
 		setErrorMessage(null);
+		getLegalMoves().clear();
 	}
 
 	private void setErrorMessage(String errorMessage) {

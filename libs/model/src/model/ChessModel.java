@@ -168,12 +168,20 @@ public class ChessModel implements IChessModel {
 
 	public ArrayList<Square[]> getLegalMoves(Square square) {
 		IPiece piece = getBoard().getPiece(square);
-		return piece.getPieceMoves(getBoard(), Bitboard.getSingleBit(Board.getIndex(square)));
+		ArrayList<Square[]> allMoves = piece.getPieceMoves(
+			getBoard(),
+			Bitboard.getSingleBit(Board.getIndex(square))
+		);
+		return getLegalMoves(allMoves);
 	}
 
 	private ArrayList<Square[]> getAllLegalMoves() {
-		ArrayList<Square[]> legalMoves = new ArrayList<>();
 		ArrayList<Square[]> allMoves = getBoard().getAllMoves(getBoard().getFen().isWhite());
+		return getLegalMoves(allMoves);
+	}
+
+	private ArrayList<Square[]> getLegalMoves(ArrayList<Square[]> allMoves) {
+		ArrayList<Square[]> legalMoves = new ArrayList<>();
 		for (Square[] move : allMoves) {
 			try {
 				int src = Board.getIndex(move[0]);
