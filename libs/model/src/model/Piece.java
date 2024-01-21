@@ -166,18 +166,36 @@ abstract class Piece implements IPiece {
 		ArrayList<IBitboard> pieces = Bitboard.split(getBitboard());
 		pieces.forEach(piece -> {
 			Square pieceSourceSquare = getSquareFromSingleBit(piece);
-			IBitboard pieceAttacks = this instanceof Pawn pawn
-				? pawn.getTargets(piece, board)
-				: getAttacks(piece, board);
-			ArrayList<IBitboard> splitAttacks = Bitboard.split(pieceAttacks);
-			splitAttacks.forEach(bitboard -> {
-				Square[] squarePair = new Square[2];
-				squarePair[0] = pieceSourceSquare;
-				squarePair[1] = getSquareFromSingleBit(bitboard);
-				allDestinations.add(squarePair);
-			});
+			IBitboard pieceAttacks = calculatePieceAttacks(piece, board);
+			addAttacksToDestinations(allDestinations, pieceSourceSquare, pieceAttacks);
 		});
 		return allDestinations;
+	}
+
+	public ArrayList<Square[]> getPieceMoves(IBoard board, IBitboard piece) {
+		ArrayList<Square[]> allDestinations = new ArrayList<>();
+		Square pieceSourceSquare = getSquareFromSingleBit(piece);
+		IBitboard pieceAttacks = calculatePieceAttacks(piece, board);
+		addAttacksToDestinations(allDestinations, pieceSourceSquare, pieceAttacks);
+		return allDestinations;
+	}
+
+	private IBitboard calculatePieceAttacks(IBitboard piece, IBoard board) {
+		return this instanceof Pawn pawn ? pawn.getTargets(piece, board) : getAttacks(piece, board);
+	}
+
+	private void addAttacksToDestinations(
+		ArrayList<Square[]> allDestinations,
+		Square sourceSquare,
+		IBitboard attacks
+	) {
+		ArrayList<IBitboard> splitAttacks = Bitboard.split(attacks);
+		splitAttacks.forEach(bitboard -> {
+			Square[] squarePair = new Square[2];
+			squarePair[0] = sourceSquare;
+			squarePair[1] = getSquareFromSingleBit(bitboard);
+			allDestinations.add(squarePair);
+		});
 	}
 
 	private Square getSquareFromSingleBit(IBitboard board) {

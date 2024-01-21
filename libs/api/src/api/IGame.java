@@ -17,7 +17,7 @@ public interface IGame {
 
 	String getMoves();
 
-	ArrayList<Square[]> getLegalMoves(Square square);
-
 	void makeMove(Square source, Square destination);
+
+	boolean isPieceOnSquare(Square square);
 }

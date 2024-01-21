@@ -150,6 +150,14 @@ public class ChessModel implements IChessModel {
 		}
 	}
 
+	/**
+	 * @param square The square to check for a piece
+	 * @return boolean Whether a piece is on the given square
+	 */
+	public boolean isPieceOnSquare(Square square) {
+		return getBoard().getPiece(square) != null;
+	}
+
 	public void resign() {
 		setGameState(State.Resignation);
 	}
@@ -160,21 +168,19 @@ public class ChessModel implements IChessModel {
 
 	public ArrayList<Square[]> getLegalMoves(Square square) {
 		IPiece piece = getBoard().getPiece(square);
-		return getAllLegalMoves(piece);
+		return piece.getPieceMoves(getBoard(), Bitboard.getSingleBit(Board.getIndex(square)));
 	}
 
-	private ArrayList<Square[]> getAllLegalMoves(IPiece piece) {
+	private ArrayList<Square[]> getAllLegalMoves() {
 		ArrayList<Square[]> legalMoves = new ArrayList<>();
-		ArrayList<Square[]> allMoves = piece != null
-			? piece.getMoves(getBoard())
-			: getBoard().getAllMoves(getBoard().getFen().isWhite());
+		ArrayList<Square[]> allMoves = getBoard().getAllMoves(getBoard().getFen().isWhite());
 		for (Square[] move : allMoves) {
 			try {
 				int src = Board.getIndex(move[0]);
 				int dst = Board.getIndex(move[1]);
-				boolean isIllegal = piece != null
-					? piece.isInvalidMove(src, dst, getBoard())
-					: getBoard().getPiece(move[0]).isInvalidMove(src, dst, getBoard());
+				boolean isIllegal = getBoard()
+					.getPiece(move[0])
+					.isInvalidMove(src, dst, getBoard());
 				if (!isIllegal) {
 					legalMoves.add(new Square[] { move[0], move[1] });
 				}
@@ -192,7 +198,7 @@ public class ChessModel implements IChessModel {
 	}
 
 	private boolean hasNoLegalMoves() {
-		return getAllLegalMoves(null).isEmpty();
+		return getAllLegalMoves().isEmpty();
 	}
 
 	private boolean isCheck() {

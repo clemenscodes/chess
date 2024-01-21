@@ -18,5 +18,7 @@ interface IPiece extends Serializable {
 
 	ArrayList<Square[]> getMoves(IBoard board);
 
+	ArrayList<Square[]> getPieceMoves(IBoard board, IBitboard piece);
+
 	boolean isInvalidMove(int source, int destination, IBoard board);
 }
