@@ -10,12 +10,13 @@ public class StateTest {
 	@Test
 	void testEnumValues() {
 		State[] states = State.values();
-		assertEquals(5, states.length);
+		assertEquals(6, states.length);
 		assertEquals(State.Start, states[0]);
 		assertEquals(State.Playing, states[1]);
 		assertEquals(State.Checkmate, states[2]);
 		assertEquals(State.Stalemate, states[3]);
 		assertEquals(State.Resignation, states[4]);
+		assertEquals(State.Draw, states[5]);
 	}
 
 	@Test
@@ -25,6 +26,7 @@ public class StateTest {
 		assertEquals("Checkmate", State.Checkmate.toString());
 		assertEquals("Stalemate", State.Stalemate.toString());
 		assertEquals("Resignation", State.Resignation.toString());
+		assertEquals("Draw", State.Draw.toString());
 	}
 
 	@Test
@@ -34,5 +36,6 @@ public class StateTest {
 		assertEquals(State.Checkmate, State.valueOf("Checkmate"));
 		assertEquals(State.Stalemate, State.valueOf("Stalemate"));
 		assertEquals(State.Resignation, State.valueOf("Resignation"));
+		assertEquals(State.Draw, State.valueOf("Draw"));
 	}
 }

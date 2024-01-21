@@ -5,6 +5,7 @@ import api.model.IChessModel;
 import api.model.Square;
 import api.model.State;
 import api.view.IChessView;
+import java.util.ArrayList;
 
 public class ChessController implements IChessController {
 
@@ -38,6 +39,7 @@ public class ChessController implements IChessController {
 			case Checkmate -> getView().drawCheckmate();
 			case Stalemate -> getView().drawStalemate();
 			case Resignation -> getView().drawResignation();
+			case Draw -> getView().drawDraw();
 			default -> throw new IllegalStateException("Unexpected value: " + state);
 		}
 	}
@@ -50,11 +52,19 @@ public class ChessController implements IChessController {
 		return getModel().getMoves();
 	}
 
+	public ArrayList<Square[]> getLegalMoves(Square square) {
+		return getModel().getLegalMoves(square);
+	}
+
 	/**
 	 *
 	 */
 	public void resign() {
 		getModel().resign();
+	}
+
+	public void offerDraw() {
+		getModel().offerDraw();
 	}
 
 	/**

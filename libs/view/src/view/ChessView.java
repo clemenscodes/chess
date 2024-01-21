@@ -15,6 +15,7 @@ public class ChessView extends PApplet implements IChessView {
 	private Button resignButton;
 	private Button startButton;
 	private Button clearErrorButton;
+	private Button offerDrawButton;
 	private PImage[] pieceImages;
 	private PFont font;
 	private String title;
@@ -50,6 +51,7 @@ public class ChessView extends PApplet implements IChessView {
 		initStartButton();
 		initResignButton();
 		initErrorButton();
+		initOfferDrawButton();
 		loadPieceImages();
 		getController().startGame();
 	}
@@ -137,9 +139,17 @@ public class ChessView extends PApplet implements IChessView {
 		);
 	}
 
+	public void drawDraw() {
+		drawGameOver();
+		textAlign(CENTER, CENTER);
+		textSize(28);
+		text("Draw!", getWidth() - (getLeftBoardOffset() / 2.0f), getHeight() / 2.0f);
+	}
+
 	private void drawGameOver() {
 		drawPlaying();
 		getResignButton().hide();
+		getOfferDrawButton().hide();
 		getStartButton().show();
 		textAlign(CENTER, CENTER);
 		textSize(32);
@@ -300,6 +310,7 @@ public class ChessView extends PApplet implements IChessView {
 			.onRelease(event -> {
 				getStartButton().hide();
 				getResignButton().show();
+				getOfferDrawButton().show();
 				getController().startNewGame();
 			});
 	}
@@ -341,6 +352,29 @@ public class ChessView extends PApplet implements IChessView {
 				getController().clearErrorMessage();
 				getClearErrorButton().hide();
 			});
+	}
+
+	private Button getOfferDrawButton() {
+		return offerDrawButton;
+	}
+
+	private void setOfferDrawButton(Button offerDrawButton) {
+		this.offerDrawButton = offerDrawButton;
+	}
+
+	private void initOfferDrawButton() {
+		setOfferDrawButton(initButton("Offer draw button", "Offer draw"));
+		int background = color(176, 196, 222);
+		int hoverColor = color(166, 181, 202);
+		int textColor = color(0);
+		var pos = getOfferDrawButton().getPosition();
+		getOfferDrawButton()
+			.setColorBackground(background)
+			.setPosition(pos[0], pos[1] - ((2 * getHeight()) / 20.0f))
+			.setColorActive(background)
+			.setColorForeground(hoverColor);
+		getOfferDrawButton().getCaptionLabel().setColor(textColor).setText("Offer draw");
+		getOfferDrawButton().hide().onRelease(event -> getController().offerDraw());
 	}
 
 	private PImage[] getPieceImages() {

@@ -4,6 +4,7 @@ import api.model.IChessModel;
 import api.model.Square;
 import api.model.State;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 public class ChessModel implements IChessModel {
 
@@ -153,6 +154,35 @@ public class ChessModel implements IChessModel {
 		setGameState(State.Resignation);
 	}
 
+	public void offerDraw() {
+		setGameState(State.Draw);
+	}
+
+	public ArrayList<Square[]> getLegalMoves(Square square) {
+		IPiece piece = getBoard().getPiece(square);
+		return getAllLegalMoves(piece);
+	}
+
+	private ArrayList<Square[]> getAllLegalMoves(IPiece piece) {
+		ArrayList<Square[]> legalMoves = new ArrayList<>();
+		ArrayList<Square[]> allMoves = piece != null
+			? piece.getMoves(getBoard())
+			: getBoard().getAllMoves(getBoard().getFen().isWhite());
+		for (Square[] move : allMoves) {
+			try {
+				int src = Board.getIndex(move[0]);
+				int dst = Board.getIndex(move[1]);
+				boolean isIllegal = piece != null
+					? piece.isInvalidMove(src, dst, getBoard())
+					: getBoard().getPiece(move[0]).isInvalidMove(src, dst, getBoard());
+				if (!isIllegal) {
+					legalMoves.add(new Square[] { move[0], move[1] });
+				}
+			} catch (Error ignored) {}
+		}
+		return legalMoves;
+	}
+
 	public boolean isCheckmate() {
 		return isCheck() && hasNoLegalMoves();
 	}
@@ -161,21 +191,8 @@ public class ChessModel implements IChessModel {
 		return !isCheck() && hasNoLegalMoves();
 	}
 
-	private void printGame() {
-		System.out.println(getBoard());
-		System.out.println(getBoard().getFen());
-	}
-
 	private boolean hasNoLegalMoves() {
-		var moves = getBoard().getAllMoves(getBoard().getFen().isWhite());
-		for (var move : moves) {
-			try {
-				return getBoard()
-					.getPiece(move[0])
-					.isInvalidMove(Board.getIndex(move[0]), Board.getIndex(move[1]), getBoard());
-			} catch (Error ignored) {}
-		}
-		return true;
+		return getAllLegalMoves(null).isEmpty();
 	}
 
 	private boolean isCheck() {
@@ -183,6 +200,11 @@ public class ChessModel implements IChessModel {
 		IBitboard king = getBoard().getKing(isWhite);
 		IBitboard attacks = getBoard().getAllOpponentAttacks();
 		return Bitboard.overlap(king, attacks);
+	}
+
+	private void printGame() {
+		System.out.println(getBoard());
+		System.out.println(getBoard().getFen());
 	}
 
 	private IReader getReader() {

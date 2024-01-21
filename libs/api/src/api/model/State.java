@@ -8,4 +8,5 @@ public enum State implements Serializable {
 	Checkmate,
 	Stalemate,
 	Resignation,
+	Draw,
 }
