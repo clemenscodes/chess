@@ -25,8 +25,8 @@ public class ChessView extends PApplet implements IChessView {
 	private int leftBoardOffset;
 	private int topBoardOffset;
 	private int squareSize;
-	private final int whiteColor = color(237, 214, 176);
-	private final int blackColor = color(181, 136, 99);
+	private final int whiteColor = color(238, 238, 210);
+	private final int blackColor = color(118, 150, 86);
 
 	public ChessView(int width, int height, String title) {
 		setWidth(width);
@@ -59,7 +59,7 @@ public class ChessView extends PApplet implements IChessView {
 
 	@Override
 	public void draw() {
-		background(255);
+		background(221, 221, 221);
 		if (getController().getErrorMessage() != null) {
 			getClearErrorButton().show();
 			drawError();
@@ -191,8 +191,7 @@ public class ChessView extends PApplet implements IChessView {
 		}
 		int rank = getRankFromSquare(source);
 		int file = getFileFromSquare(source);
-		stroke(color(255, 0, 0));
-		fill(255, 255, 0);
+		fill(247, 247, 105);
 		square(getLeftSquareOffset(file), getTopSquareOffset(rank), getSquareSize());
 	}
 
@@ -227,17 +226,10 @@ public class ChessView extends PApplet implements IChessView {
 	private void drawSquare(int rank, int file) {
 		boolean bothEven = rank % 2 == 0 && file % 2 == 0;
 		boolean bothOdd = rank % 2 != 0 && file % 2 != 0;
-		boolean printBlack = bothEven || bothOdd;
-		if (printBlack) {
-			fill(getBlackColor());
-		} else {
-			fill(getWhiteColor());
-		}
-		stroke(0);
+		fill(bothEven || bothOdd ? getBlackColor() : getWhiteColor());
+		noStroke();
 		square(getLeftSquareOffset(file), getTopSquareOffset(rank), getSquareSize());
 	}
-
-	private void drawSquareStroke(int rank, int file) {}
 
 	private void drawPieces(String[] piecePlacementData) {
 		int i = 0;
@@ -429,18 +421,18 @@ public class ChessView extends PApplet implements IChessView {
 
 	private String getImagePath(int index) {
 		return switch (index) {
-			case 0 -> "images/black/pawn.png";
-			case 1 -> "images/black/rook.png";
-			case 2 -> "images/black/knight.png";
-			case 3 -> "images/black/bishop.png";
-			case 4 -> "images/black/queen.png";
-			case 5 -> "images/black/king.png";
-			case 6 -> "images/white/pawn.png";
-			case 7 -> "images/white/rook.png";
-			case 8 -> "images/white/knight.png";
-			case 9 -> "images/white/bishop.png";
-			case 10 -> "images/white/queen.png";
-			case 11 -> "images/white/king.png";
+			case 0 -> "images/bp.png";
+			case 1 -> "images/br.png";
+			case 2 -> "images/bn.png";
+			case 3 -> "images/bb.png";
+			case 4 -> "images/bq.png";
+			case 5 -> "images/bk.png";
+			case 6 -> "images/wp.png";
+			case 7 -> "images/wr.png";
+			case 8 -> "images/wn.png";
+			case 9 -> "images/wb.png";
+			case 10 -> "images/wq.png";
+			case 11 -> "images/wk.png";
 			default -> throw new Error("Invalid image index");
 		};
 	}
