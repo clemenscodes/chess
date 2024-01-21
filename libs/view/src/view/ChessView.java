@@ -118,13 +118,14 @@ public class ChessView extends PApplet implements IChessView {
 
 	public void drawStart() {
 		drawBoard();
+        drawPieces();
 	}
 
 	public void drawPlaying() {
-		drawStart();
+        drawBoard();
 		highlightSource();
 		highlightDraggedSquare();
-		drawPieces(getController().getPiecePlacementData());
+        drawPieces();
 		drawFen();
 		drawMoves();
 		drawLegalMoves();
@@ -195,7 +196,7 @@ public class ChessView extends PApplet implements IChessView {
 	private void drawMoves() {
 		fill(0);
 		textAlign(LEFT);
-		textSize(20);
+		textSize(16);
 		text(getController().getMoves(), getSquareSize() / 2.0f, getSquareSize() / 2.0f);
 	}
 
@@ -291,11 +292,12 @@ public class ChessView extends PApplet implements IChessView {
 		return bothEven || bothOdd ? getBlackColor() : getWhiteColor();
 	}
 
-	private void drawPieces(String[] piecePlacementData) {
+	private void drawPieces() {
+        String[] ppd = getController().getPiecePlacementData();
 		int i = 0;
 		for (int rank = 8; rank > 0; rank--) {
 			int fileToRenderPieceOn = 0;
-			for (var c : piecePlacementData[i].toCharArray()) {
+			for (var c : ppd[i].toCharArray()) {
 				if (Character.isDigit(c)) {
 					int emptySquares = Character.getNumericValue(c);
 					fileToRenderPieceOn += emptySquares;
