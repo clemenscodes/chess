@@ -1,6 +1,7 @@
 package view;
 
 import api.controller.IChessController;
+import api.model.Square;
 import api.view.IChessView;
 import controlP5.Button;
 import controlP5.ControlP5;
@@ -69,6 +70,11 @@ public class ChessView extends PApplet implements IChessView {
 	}
 
 	@Override
+	public void mousePressed() {
+		getController().handleMousePressed(mouseX, mouseY);
+	}
+
+	@Override
 	public void mouseReleased() {
 		getController().handleUserInput(mouseX, mouseY);
 	}
@@ -103,6 +109,7 @@ public class ChessView extends PApplet implements IChessView {
 
 	public void drawPlaying() {
 		drawStart();
+		highlightSource();
 		drawPieces(getController().getPiecePlacementData());
 		drawFen();
 		drawMoves();
@@ -177,6 +184,26 @@ public class ChessView extends PApplet implements IChessView {
 		text(getController().getMoves(), getSquareSize() / 2.0f, getSquareSize() / 2.0f);
 	}
 
+	private void highlightSource() {
+		Square source = getController().getSource();
+		if (source == null) {
+			return;
+		}
+		int rank = getRankFromSquare(source);
+		int file = getFileFromSquare(source);
+		stroke(color(255, 0, 0));
+		fill(255, 255, 0);
+		square(getLeftSquareOffset(file), getTopSquareOffset(rank), getSquareSize());
+	}
+
+	private int getFileFromSquare(Square square) {
+		return square.name().charAt(0) - 'a' + 1;
+	}
+
+	private int getRankFromSquare(Square square) {
+		return Character.getNumericValue(square.name().charAt(1));
+	}
+
 	private int getLeftSquareOffset(int file) {
 		return getLeftBoardOffset() + (file - 1) * getSquareSize();
 	}
@@ -206,8 +233,11 @@ public class ChessView extends PApplet implements IChessView {
 		} else {
 			fill(getWhiteColor());
 		}
+		stroke(0);
 		square(getLeftSquareOffset(file), getTopSquareOffset(rank), getSquareSize());
 	}
+
+	private void drawSquareStroke(int rank, int file) {}
 
 	private void drawPieces(String[] piecePlacementData) {
 		int i = 0;

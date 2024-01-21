@@ -32,6 +32,12 @@ public class ChessController implements IChessController {
 	}
 
 	public void nextFrame() {
+		if (getSource() != null) {
+			System.out.println("Source: " + getSource());
+		}
+		if (getDestination() != null) {
+			System.out.println("Destination: " + getDestination());
+		}
 		State state = getModel().getGameState();
 		switch (state) {
 			case Start -> getView().drawStart();
@@ -155,21 +161,27 @@ public class ChessController implements IChessController {
 		}
 	}
 
+	public void handleMousePressed(int x, int y) {
+		if (getGameState() == State.Playing) {
+			Square square = getSquareFromCoordinates(x, y);
+			if (square == null) {
+				return;
+			}
+			setSource(square);
+		}
+	}
+
+	public Square getSource() {
+		return source;
+	}
+
+	public Square getDestination() {
+		return destination;
+	}
+
 	private void handlePlaying(int x, int y) {
 		Square square = getSquareFromCoordinates(x, y);
-		if (square == null) {
-			setSource(null);
-			setDestination(null);
-			return;
-		}
-		if (getSource() == null) {
-			setSource(square);
-			setDestination(null);
-			return;
-		}
-		if (getSource().equals(square)) {
-			setSource(null);
-			setDestination(null);
+		if (getSource() == null || square == null || square.equals(getSource())) {
 			return;
 		}
 		setDestination(square);
@@ -230,16 +242,8 @@ public class ChessController implements IChessController {
 		return view;
 	}
 
-	private Square getSource() {
-		return source;
-	}
-
 	private void setSource(Square source) {
 		this.source = source;
-	}
-
-	private Square getDestination() {
-		return destination;
 	}
 
 	private void setDestination(Square destination) {
