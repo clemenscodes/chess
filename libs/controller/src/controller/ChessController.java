@@ -14,7 +14,6 @@ public class ChessController implements IChessController {
 	private Square source;
 	private Square destination;
 	private Square draggedSquare;
-	private String errorMessage;
 
 	private ArrayList<Square[]> legalMoves;
 
@@ -83,6 +82,34 @@ public class ChessController implements IChessController {
 	 */
 	public void makeMove(Square source, Square destination) {
 		getModel().makeMove(source, destination);
+	}
+
+	/**
+	 *
+	 */
+	public void promoteQueen() {
+		getModel().promoteQueen();
+	}
+
+	/**
+	 *
+	 */
+	public void promoteRook() {
+		getModel().promoteRook();
+	}
+
+	/**
+	 *
+	 */
+	public void promoteKnight() {
+		getModel().promoteKnight();
+	}
+
+	/**
+	 *
+	 */
+	public void promoteBishop() {
+		getModel().promoteBishop();
 	}
 
 	/**
@@ -212,16 +239,9 @@ public class ChessController implements IChessController {
 			return;
 		}
 		setDestination(square);
-		try {
-			getModel().makeMove(getSource(), getDestination());
-			clearErrorMessage();
-			getLegalMoves().clear();
-		} catch (Error e) {
-			setErrorMessage(e.getMessage());
-		} finally {
-			setSource(null);
-			setDestination(null);
-		}
+		getModel().makeMove(getSource(), getDestination());
+		clearErrorMessage();
+		getLegalMoves().clear();
 	}
 
 	public Square getSource() {
@@ -306,18 +326,14 @@ public class ChessController implements IChessController {
 	}
 
 	public String getErrorMessage() {
-		return errorMessage;
+		return getModel().getErrorMessage();
 	}
 
 	public void clearErrorMessage() {
 		setSource(null);
 		setDestination(null);
-		setErrorMessage(null);
+		getModel().clearError();
 		getLegalMoves().clear();
-	}
-
-	private void setErrorMessage(String errorMessage) {
-		this.errorMessage = errorMessage;
 	}
 
 	private void setLegalMoves(ArrayList<Square[]> legalMoves) {

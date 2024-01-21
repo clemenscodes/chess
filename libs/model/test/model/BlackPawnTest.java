@@ -4,23 +4,26 @@ import static api.model.Square.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import api.model.Pieces;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class BlackPawnTest {
 
+	public BlockingQueue<String> sharedQueue;
 	private BlackPawn piece;
-	private IReader reader;
+	private IReader<String> reader;
+	private IWriter<String> writer;
 	private IBoard board;
 
 	@BeforeEach
 	void setup() {
 		String inputString = "Q";
-		byte[] bytes = inputString.getBytes();
-		InputStream inputStream = new ByteArrayInputStream(bytes);
-		reader = new Reader(inputStream);
+		sharedQueue = new LinkedBlockingQueue<>();
+		writer = new Writer<>(sharedQueue);
+		reader = new Reader<>(sharedQueue);
+		writer.write(inputString);
 		board = new Board();
 		piece = new BlackPawn(board.getBlackPawn().getBitboard());
 	}
@@ -241,10 +244,7 @@ public class BlackPawnTest {
 		String fen = "rnbqkbnr/1ppppppp/8/8/3PP3/2N2N2/PpPB1PPP/R2QKB1R b KQkq - 1 5";
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new BlackPawn(board.getBlackPawn().getBitboard());
-		String inputString = "X\nR";
-		byte[] bytes = inputString.getBytes();
-		InputStream inputStream = new ByteArrayInputStream(bytes);
-		reader = new Reader(inputStream);
+		writer.write("X\nR");
 		int src = Board.getIndex(b2);
 		int dst = Board.getIndex(b1);
 		piece.move(src, dst, board, reader);
@@ -258,6 +258,7 @@ public class BlackPawnTest {
 		piece = new BlackPawn(board.getBlackPawn().getBitboard());
 		int src = Board.getIndex(b2);
 		int dst = Board.getIndex(b1);
+		writer.write("Q");
 		piece.move(src, dst, board, reader);
 		assertEquals(Pieces.BlackQueen, board.getPiece(b1).getVariant());
 	}
@@ -268,9 +269,7 @@ public class BlackPawnTest {
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new BlackPawn(board.getBlackPawn().getBitboard());
 		String inputString = "R";
-		byte[] bytes = inputString.getBytes();
-		InputStream inputStream = new ByteArrayInputStream(bytes);
-		reader = new Reader(inputStream);
+		writer.write(inputString);
 		int src = Board.getIndex(b2);
 		int dst = Board.getIndex(b1);
 		piece.move(src, dst, board, reader);
@@ -283,9 +282,7 @@ public class BlackPawnTest {
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new BlackPawn(board.getBlackPawn().getBitboard());
 		String inputString = "B";
-		byte[] bytes = inputString.getBytes();
-		InputStream inputStream = new ByteArrayInputStream(bytes);
-		reader = new Reader(inputStream);
+		writer.write(inputString);
 		int src = Board.getIndex(b2);
 		int dst = Board.getIndex(b1);
 		piece.move(src, dst, board, reader);
@@ -298,9 +295,7 @@ public class BlackPawnTest {
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new BlackPawn(board.getBlackPawn().getBitboard());
 		String inputString = "N";
-		byte[] bytes = inputString.getBytes();
-		InputStream inputStream = new ByteArrayInputStream(bytes);
-		reader = new Reader(inputStream);
+		writer.write(inputString);
 		int src = Board.getIndex(b2);
 		int dst = Board.getIndex(b1);
 		piece.move(src, dst, board, reader);
@@ -314,6 +309,7 @@ public class BlackPawnTest {
 		piece = new BlackPawn(board.getBlackPawn().getBitboard());
 		int src = Board.getIndex(b2);
 		int dst = Board.getIndex(a1);
+		writer.write("Q");
 		piece.move(src, dst, board, reader);
 		assertEquals(Pieces.BlackQueen, board.getPiece(a1).getVariant());
 	}
@@ -324,9 +320,7 @@ public class BlackPawnTest {
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new BlackPawn(board.getBlackPawn().getBitboard());
 		String inputString = "R";
-		byte[] bytes = inputString.getBytes();
-		InputStream inputStream = new ByteArrayInputStream(bytes);
-		reader = new Reader(inputStream);
+		writer.write(inputString);
 		int src = Board.getIndex(b2);
 		int dst = Board.getIndex(a1);
 		piece.move(src, dst, board, reader);
@@ -339,9 +333,7 @@ public class BlackPawnTest {
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new BlackPawn(board.getBlackPawn().getBitboard());
 		String inputString = "B";
-		byte[] bytes = inputString.getBytes();
-		InputStream inputStream = new ByteArrayInputStream(bytes);
-		reader = new Reader(inputStream);
+		writer.write(inputString);
 		int src = Board.getIndex(b2);
 		int dst = Board.getIndex(a1);
 		piece.move(src, dst, board, reader);
@@ -354,9 +346,7 @@ public class BlackPawnTest {
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new BlackPawn(board.getBlackPawn().getBitboard());
 		String inputString = "N";
-		byte[] bytes = inputString.getBytes();
-		InputStream inputStream = new ByteArrayInputStream(bytes);
-		reader = new Reader(inputStream);
+		writer.write(inputString);
 		int src = Board.getIndex(b2);
 		int dst = Board.getIndex(a1);
 		piece.move(src, dst, board, reader);

@@ -1,45 +1,57 @@
 package model;
 
-import java.io.InputStream;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Scanner;
+import java.util.concurrent.BlockingQueue;
 
-class Reader implements IReader {
+class Reader<T> implements IReader<T> {
 
-	private Scanner scanner;
-	private Queue<String> buffer;
+	private BlockingQueue<T> sharedQueue;
+	private T data;
+	private T buffer;
 
-	Reader(InputStream in) {
-		setScanner(in);
-		setBuffer(new LinkedList<>());
+	Reader(BlockingQueue<T> sharedQueue) {
+		setSharedQueue(sharedQueue);
 	}
 
-	public String readLine() {
-		if (!getBuffer().isEmpty()) {
-			return getBuffer().poll();
-		}
-		if (getScanner().hasNextLine()) {
-			String line = getScanner().nextLine();
-			getBuffer().add(line);
-			return line;
-		}
-		return "";
+	public T read() {
+		try {
+			if (getBuffer() != null) {
+				setData(getBuffer());
+				setBuffer(null);
+				return getData();
+			} else {
+				setData(getSharedQueue().take());
+				setBuffer(getData());
+			}
+		} catch (InterruptedException ignored) {}
+		return getData();
 	}
 
-	private Scanner getScanner() {
-		return scanner;
+	public void flush() {
+		setData(null);
+		setBuffer(null);
 	}
 
-	private void setScanner(InputStream in) {
-		scanner = new Scanner(in);
+	private BlockingQueue<T> getSharedQueue() {
+		return sharedQueue;
 	}
 
-	private Queue<String> getBuffer() {
+	private void setSharedQueue(BlockingQueue<T> sharedQueue) {
+		this.sharedQueue = sharedQueue;
+	}
+
+	private T getData() {
+		return data;
+	}
+
+	private void setData(T data) {
+		this.data = data;
+	}
+
+	private T getBuffer() {
 		return buffer;
 	}
 
-	private void setBuffer(Queue<String> buffer) {
+	private void setBuffer(T buffer) {
 		this.buffer = buffer;
 	}
 }

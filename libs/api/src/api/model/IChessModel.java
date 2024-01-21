@@ -7,4 +7,5 @@ import java.util.ArrayList;
 public interface IChessModel extends IChess, IGame {
 	String getFen();
 	ArrayList<Square[]> getLegalMoves(Square square);
+	void clearError();
 }

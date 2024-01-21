@@ -3,22 +3,30 @@ package model;
 import api.model.IChessModel;
 import api.model.Square;
 import api.model.State;
-import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class ChessModel implements IChessModel {
 
 	private State state;
 	private IBoard board;
 	private IMoveList moveList;
-	private IReader reader;
-
-	public ChessModel(InputStream in) {
-		setReader(in);
-	}
+	private IReader<String> reader;
+	private IWriter<String> writer;
+	private BlockingQueue<String> dataQueue;
+	private IReader<Square[]> moveReader;
+	private IWriter<Square[]> moveWriter;
+	private BlockingQueue<Square[]> moveQueue;
+	private String errorMessage;
 
 	public ChessModel() {
-		setReader(System.in);
+		setDataQueue(new LinkedBlockingQueue<>());
+		setMoveQueue(new LinkedBlockingQueue<>());
+		setReader(getDataQueue());
+		setWriter(getDataQueue());
+		setMoveReader(getMoveQueue());
+		setMoveWriter(getMoveQueue());
 	}
 
 	public State getGameState() {
@@ -128,30 +136,51 @@ public class ChessModel implements IChessModel {
 	public void startNewGame() {
 		startGame();
 		setGameState(State.Playing);
+		new Thread(() -> {
+			System.out.println("Started new game");
+			while (
+				getGameState() != State.Draw &&
+				getGameState() != State.Resignation &&
+				getGameState() != State.Stalemate
+			) {
+				Square[] move = getMoveReader().read();
+				if (move == null) {
+					continue;
+				}
+				if (getGameState() != State.Playing) {
+					System.err.println("Can not make moves");
+					return;
+				}
+				if (getHalfMoveClock() >= ForsythEdwardsNotation.MAX_HALF_MOVE_CLOCK) {
+					setGameState(State.Draw);
+					return;
+				}
+				try {
+					getMoveList().makeMove(move[0], move[1], getBoard(), getReader());
+				} catch (Error e) {
+					setErrorMessage(e.getMessage());
+				} finally {
+					getMoveReader().flush();
+				}
+				printGame();
+				if (isCheckmate()) {
+					setGameState(State.Checkmate);
+					System.out.println("Checkmate!");
+					System.out.println(getBoard().getFen().isWhite() ? "Black won." : "White won.");
+					System.out.println(getMoveList());
+				}
+				if (isStalemate()) {
+					setGameState(State.Stalemate);
+					System.out.println("Stalemate!");
+					System.out.println(getMoveList());
+				}
+			}
+		})
+			.start();
 	}
 
 	public void makeMove(Square source, Square destination) {
-		if (getGameState() != State.Playing) {
-			System.err.println("Can not make moves");
-			return;
-		}
-		if (getHalfMoveClock() >= ForsythEdwardsNotation.MAX_HALF_MOVE_CLOCK) {
-			setGameState(State.Draw);
-			return;
-		}
-		getMoveList().makeMove(source, destination, getBoard(), getReader());
-		printGame();
-		if (isCheckmate()) {
-			setGameState(State.Checkmate);
-			System.out.println("Checkmate!");
-			System.out.println(getBoard().getFen().isWhite() ? "Black won." : "White won.");
-			System.out.println(getMoveList());
-		}
-		if (isStalemate()) {
-			setGameState(State.Stalemate);
-			System.out.println("Stalemate!");
-			System.out.println(getMoveList());
-		}
+		getMoveWriter().write(new Square[] { source, destination });
 	}
 
 	/**
@@ -170,7 +199,7 @@ public class ChessModel implements IChessModel {
 
 	public void offerDraw() {
 		System.out.println("Draw offered! Accept ? (Y)");
-		String answer = getReader().readLine();
+		String answer = getReader().read();
 		if (answer.equals("Y")) {
 			setGameState(State.Draw);
 		}
@@ -187,6 +216,30 @@ public class ChessModel implements IChessModel {
 			Bitboard.getSingleBit(Board.getIndex(square))
 		);
 		return getLegalMoves(allMoves);
+	}
+
+	public void promoteQueen() {
+		new Thread(() -> getWriter().write("Q"));
+	}
+
+	public void promoteRook() {
+		new Thread(() -> getWriter().write("R"));
+	}
+
+	public void promoteKnight() {
+		new Thread(() -> getWriter().write("N"));
+	}
+
+	public void promoteBishop() {
+		new Thread(() -> getWriter().write("B"));
+	}
+
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	public void clearError() {
+		setErrorMessage(null);
 	}
 
 	private ArrayList<Square[]> getAllLegalMoves() {
@@ -235,14 +288,6 @@ public class ChessModel implements IChessModel {
 		System.out.println(getBoard().getFen());
 	}
 
-	private IReader getReader() {
-		return reader;
-	}
-
-	private void setReader(InputStream in) {
-		reader = new Reader(in);
-	}
-
 	private void setGameState(State state) {
 		this.state = state;
 	}
@@ -253,5 +298,57 @@ public class ChessModel implements IChessModel {
 
 	private void setBoard(IBoard board) {
 		this.board = board;
+	}
+
+	private IReader<String> getReader() {
+		return reader;
+	}
+
+	private void setReader(BlockingQueue<String> queue) {
+		reader = new Reader<>(queue);
+	}
+
+	private IWriter<String> getWriter() {
+		return writer;
+	}
+
+	private void setWriter(BlockingQueue<String> queue) {
+		this.writer = new Writer<>(queue);
+	}
+
+	private BlockingQueue<String> getDataQueue() {
+		return dataQueue;
+	}
+
+	private void setDataQueue(BlockingQueue<String> dataQueue) {
+		this.dataQueue = dataQueue;
+	}
+
+	private BlockingQueue<Square[]> getMoveQueue() {
+		return moveQueue;
+	}
+
+	private void setMoveQueue(BlockingQueue<Square[]> moveQueue) {
+		this.moveQueue = moveQueue;
+	}
+
+	private IReader<Square[]> getMoveReader() {
+		return moveReader;
+	}
+
+	private void setMoveReader(BlockingQueue<Square[]> moveQueue) {
+		this.moveReader = new Reader<>(moveQueue);
+	}
+
+	private IWriter<Square[]> getMoveWriter() {
+		return moveWriter;
+	}
+
+	private void setMoveWriter(BlockingQueue<Square[]> moveQueue) {
+		this.moveWriter = new Writer<>(moveQueue);
+	}
+
+	private void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
 	}
 }

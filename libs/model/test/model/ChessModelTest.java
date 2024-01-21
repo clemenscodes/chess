@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import api.model.Square;
 import api.model.State;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -35,9 +33,7 @@ public class ChessModelTest {
 
 	@Test
 	void makeMoveShouldUpdateGameStateAndPrintGame() {
-		String[] moves = { "e2", "e4" };
-		InputStream inputStream = new ByteArrayInputStream(String.join("\n", moves).getBytes());
-		chessModel = new ChessModel(inputStream);
+		chessModel = new ChessModel();
 		chessModel.startNewGame();
 		chessModel.makeMove(Square.e2, Square.e4);
 		assertEquals(State.Playing, chessModel.getGameState());

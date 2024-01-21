@@ -3,26 +3,24 @@ package model;
 import static api.model.Square.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class MoveListTest {
 
+	public BlockingQueue<String> queue;
+	private IReader<String> reader;
 	private IMoveList list;
 	private IBoard board;
-	private IReader reader;
 
 	@BeforeEach
 	void init() {
 		list = new MoveList();
 		board = new Board();
-		String input = "Q";
-		byte[] buf = input.getBytes(StandardCharsets.UTF_8);
-		InputStream is = new ByteArrayInputStream(buf);
-		reader = new Reader(is);
+		queue = new LinkedBlockingQueue<>();
+		reader = new Reader<>(queue);
 	}
 
 	@Test

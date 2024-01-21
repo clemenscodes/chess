@@ -2,7 +2,6 @@ package api;
 
 import api.model.Square;
 import api.model.State;
-import java.util.ArrayList;
 
 public interface IGame {
 	void startGame();
@@ -21,5 +20,15 @@ public interface IGame {
 
 	void makeMove(Square source, Square destination);
 
+	void promoteQueen();
+
+	void promoteRook();
+
+	void promoteKnight();
+
+	void promoteBishop();
+
 	boolean isOwnPieceOnSquare(Square square);
+
+	String getErrorMessage();
 }

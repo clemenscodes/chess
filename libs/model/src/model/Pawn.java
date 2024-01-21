@@ -32,7 +32,12 @@ abstract class Pawn extends Piece implements IPawn {
 		super(variant, board);
 	}
 
-	public boolean isInvalidMove(int source, int destination, IBoard board, IReader reader) {
+	public boolean isInvalidMove(
+		int source,
+		int destination,
+		IBoard board,
+		IReader<String> reader
+	) {
 		return !(
 			sourceSquareHasPiece(source, board) &&
 			pieceCanMoveToDestination(source, destination, board) &&
@@ -40,7 +45,7 @@ abstract class Pawn extends Piece implements IPawn {
 		);
 	}
 
-	public IMove move(int source, int destination, IBoard board, IReader reader) {
+	public IMove move(int source, int destination, IBoard board, IReader<String> reader) {
 		if (isInvalidMove(source, destination, board, reader)) {
 			throw new Error("Invalid move");
 		}
@@ -100,7 +105,7 @@ abstract class Pawn extends Piece implements IPawn {
 		return Bitboard.merge(singlePushTargets, doublePushTargets);
 	}
 
-	private boolean kingSafe(int source, int destination, IBoard board, IReader reader) {
+	private boolean kingSafe(int source, int destination, IBoard board, IReader<String> reader) {
 		IBoard simulatedBoard = simulateMove(source, destination, board, reader);
 		boolean kingSafety = !Bitboard.overlap(
 			board.getKing(board.getFen().isWhite()),
@@ -112,7 +117,7 @@ abstract class Pawn extends Piece implements IPawn {
 		return true;
 	}
 
-	public IBoard simulateMove(int source, int destination, IBoard board, IReader reader) {
+	public IBoard simulateMove(int source, int destination, IBoard board, IReader<String> reader) {
 		IBoard copiedBoard = null;
 		try {
 			copiedBoard = board.deepCopy();
@@ -122,7 +127,7 @@ abstract class Pawn extends Piece implements IPawn {
 		return copiedBoard;
 	}
 
-	private IMove unsafeMove(int source, int destination, IBoard board, IReader reader) {
+	private IMove unsafeMove(int source, int destination, IBoard board, IReader<String> reader) {
 		Square src = Board.getSquare(source);
 		Square dst = Board.getSquare(destination);
 		IBitboard destinationBit = Bitboard.getSingleBit(destination);
@@ -139,7 +144,7 @@ abstract class Pawn extends Piece implements IPawn {
 		return pawnPush(src, dst, board);
 	}
 
-	private IMove promotePawn(Square src, Square dst, IBoard board, IReader reader) {
+	private IMove promotePawn(Square src, Square dst, IBoard board, IReader<String> reader) {
 		System.out.println(
 			"Pawn promotion! Select the piece you want: Q (Queen), R (Rook), N (Knight), B (Bishop)"
 		);
@@ -150,11 +155,18 @@ abstract class Pawn extends Piece implements IPawn {
 			: makePromotion(src, dst, piece, board);
 	}
 
-	private String getSelection(IReader reader) {
-		String userInput = reader.readLine();
-		while (!userInput.matches("[QRNB]")) {
+	private String getSelection(IReader<String> reader) {
+		String userInput = reader.read();
+		while (userInput == null || !userInput.matches("[QRNB]")) {
+			synchronized (this) {
+				try {
+					wait(200);
+				} catch (InterruptedException e) {
+					throw new RuntimeException(e);
+				}
+			}
 			System.err.println("Invalid selection");
-			userInput = reader.readLine();
+			userInput = reader.read();
 		}
 		return userInput;
 	}

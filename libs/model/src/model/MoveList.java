@@ -17,7 +17,7 @@ class MoveList implements IMoveList, Serializable {
 		return getMoves().size();
 	}
 
-	public void makeMove(Square source, Square destination, IBoard board, IReader reader) {
+	public void makeMove(Square source, Square destination, IBoard board, IReader<String> reader) {
 		validateMove(source, destination);
 		performMove(source, destination, board, reader);
 		updateBoardState(board);
@@ -33,7 +33,12 @@ class MoveList implements IMoveList, Serializable {
 		}
 	}
 
-	private void performMove(Square source, Square destination, IBoard board, IReader reader) {
+	private void performMove(
+		Square source,
+		Square destination,
+		IBoard board,
+		IReader<String> reader
+	) {
 		addMove(source, destination, board, reader);
 		board.getFen().switchActiveColor();
 	}
@@ -42,7 +47,7 @@ class MoveList implements IMoveList, Serializable {
 		board.getFen().updatePiecePlacementData(board);
 	}
 
-	private void addMove(Square source, Square destination, IBoard board, IReader reader) {
+	private void addMove(Square source, Square destination, IBoard board, IReader<String> reader) {
 		moves.add(move(source, destination, board, reader));
 	}
 
@@ -50,7 +55,8 @@ class MoveList implements IMoveList, Serializable {
 		this.moves = moves;
 	}
 
-	private IMove move(Square source, Square destination, IBoard board, IReader reader) {
+	private IMove move(Square source, Square destination, IBoard board, IReader<String> reader) {
+		System.out.println("Moving from " + source + " to " + destination);
 		int src = Board.getIndex(source);
 		int dst = Board.getIndex(destination);
 		Pieces piece = board.getPieceByIndex(src);

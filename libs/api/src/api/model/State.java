@@ -9,4 +9,6 @@ public enum State implements Serializable {
 	Stalemate,
 	Resignation,
 	Draw,
+	DrawOffer,
+	Promotion,
 }

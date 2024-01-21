@@ -26,13 +26,13 @@ public class SquareTest {
 
 	@Test
 	void testGetSquareInvalidIndex() {
-		assertThrows(IndexOutOfBoundsException.class, () -> Board.getSquare(-1));
-		assertThrows(IndexOutOfBoundsException.class, () -> Board.getSquare(64));
+		assertThrows(Error.class, () -> Board.getSquare(-1));
+		assertThrows(Error.class, () -> Board.getSquare(64));
 	}
 
 	@Test
 	void testGetIndexInvalidSquare() {
-		assertThrows(NullPointerException.class, () -> Board.getIndex(null));
+		assertThrows(Error.class, () -> Board.getIndex(null));
 		assertThrows(
 			IllegalArgumentException.class,
 			() -> Board.getIndex(Square.valueOf("invalid"))

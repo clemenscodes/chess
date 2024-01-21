@@ -118,14 +118,14 @@ public class ChessView extends PApplet implements IChessView {
 
 	public void drawStart() {
 		drawBoard();
-        drawPieces();
+		drawPieces();
 	}
 
 	public void drawPlaying() {
-        drawBoard();
+		drawBoard();
 		highlightSource();
 		highlightDraggedSquare();
-        drawPieces();
+		drawPieces();
 		drawFen();
 		drawMoves();
 		drawLegalMoves();
@@ -293,7 +293,7 @@ public class ChessView extends PApplet implements IChessView {
 	}
 
 	private void drawPieces() {
-        String[] ppd = getController().getPiecePlacementData();
+		String[] ppd = getController().getPiecePlacementData();
 		int i = 0;
 		for (int rank = 8; rank > 0; rank--) {
 			int fileToRenderPieceOn = 0;
