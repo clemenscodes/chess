@@ -21,7 +21,7 @@
 		"test": "pnpm nx affected -t test --output-style=stream",
 		"test:ci": "pnpm run test --configuration=ci",
 		"test:all": "pnpm nx run-many -t test --output-style=stream --skip-nx-cache",
-		"jshell": "jshell --class-path dist/api:dist/model --startup scripts/model.jshell",
+		"jshell": "pnpm build && jshell --class-path dist/api:dist/model --startup scripts/model.jshell",
 		"prepare": "husky install"
 	},
 	"devDependencies": {
