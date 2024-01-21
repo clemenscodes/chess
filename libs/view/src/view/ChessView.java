@@ -84,6 +84,14 @@ public class ChessView extends PApplet implements IChessView {
 		getController().handleMouseReleased(mouseX, mouseY);
 	}
 
+	@Override
+	public void mouseMoved() {
+		if (mousePressed) {
+			return;
+		}
+		getController().handleMouseMoved(mouseX, mouseY);
+	}
+
 	public void setController(IChessController controller) {
 		this.controller = controller;
 	}
@@ -202,7 +210,6 @@ public class ChessView extends PApplet implements IChessView {
 	}
 
 	private void highlightLegalDestination(Square square) {
-		System.out.println(square);
 		int rank = getRankFromSquare(square);
 		int file = getFileFromSquare(square);
 		int halfSquareSize = (int) (getSquareSize() / 2.0f);

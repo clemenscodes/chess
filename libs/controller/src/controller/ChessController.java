@@ -35,12 +35,6 @@ public class ChessController implements IChessController {
 	}
 
 	public void nextFrame() {
-		if (getSource() != null) {
-			System.out.println("Source: " + getSource());
-		}
-		if (getDestination() != null) {
-			System.out.println("Destination: " + getDestination());
-		}
 		State state = getModel().getGameState();
 		switch (state) {
 			case Start -> getView().drawStart();
@@ -77,6 +71,13 @@ public class ChessController implements IChessController {
 	}
 
 	/**
+	 * Sets the game state to Draw, ending the game as a draw
+	 */
+	public void claimDraw() {
+		getModel().claimDraw();
+	}
+
+	/**
 	 * @param source      Square
 	 * @param destination Square
 	 */
@@ -85,11 +86,11 @@ public class ChessController implements IChessController {
 	}
 
 	/**
-	 * @param square The square to check for a piece
-	 * @return boolean Whether a piece is on the given square
+	 * @param square The square to check for own piece
+	 * @return boolean Whether own piece is on the given square
 	 */
-	public boolean isPieceOnSquare(Square square) {
-		return getModel().isPieceOnSquare(square);
+	public boolean isOwnPieceOnSquare(Square square) {
+		return getModel().isOwnPieceOnSquare(square);
 	}
 
 	/**
@@ -171,7 +172,7 @@ public class ChessController implements IChessController {
 			return;
 		}
 		Square square = getSquareFromCoordinates(x, y);
-		if (square == null || !getModel().isPieceOnSquare(square)) {
+		if (square == null || !getModel().isOwnPieceOnSquare(square)) {
 			return;
 		}
 		setSource(square);
@@ -180,6 +181,17 @@ public class ChessController implements IChessController {
 	}
 
 	public void handleMouseDragged(int x, int y) {
+		if (getGameState() != State.Playing) {
+			return;
+		}
+		Square square = getSquareFromCoordinates(x, y);
+		if (square == null || getSource() == null) {
+			setDraggedSquare(null);
+		}
+		setDraggedSquare(square);
+	}
+
+	public void handleMouseMoved(int x, int y) {
 		if (getGameState() != State.Playing) {
 			return;
 		}

@@ -135,6 +135,10 @@ public class ChessModel implements IChessModel {
 			System.err.println("Can not make moves");
 			return;
 		}
+		if (getHalfMoveClock() >= ForsythEdwardsNotation.MAX_HALF_MOVE_CLOCK) {
+			setGameState(State.Draw);
+			return;
+		}
 		getMoveList().makeMove(source, destination, getBoard(), getReader());
 		printGame();
 		if (isCheckmate()) {
@@ -151,11 +155,13 @@ public class ChessModel implements IChessModel {
 	}
 
 	/**
-	 * @param square The square to check for a piece
-	 * @return boolean Whether a piece is on the given square
+	 * @param square The square to check for own piece
+	 * @return boolean Whether own piece is on the given square
 	 */
-	public boolean isPieceOnSquare(Square square) {
-		return getBoard().getPiece(square) != null;
+	public boolean isOwnPieceOnSquare(Square square) {
+		IBitboard piece = Bitboard.getSingleBit(Board.getIndex(square));
+		IBitboard ownPieces = getBoard().getPieces(getBoard().getFen().isWhite());
+		return Bitboard.overlap(piece, ownPieces);
 	}
 
 	public void resign() {
@@ -163,6 +169,14 @@ public class ChessModel implements IChessModel {
 	}
 
 	public void offerDraw() {
+		System.out.println("Draw offered! Accept ? (Y)");
+		String answer = getReader().readLine();
+		if (answer.equals("Y")) {
+			setGameState(State.Draw);
+		}
+	}
+
+	public void claimDraw() {
 		setGameState(State.Draw);
 	}
 

@@ -20,6 +20,8 @@ public interface IChessController extends IChess, IGame {
 
 	void handleMouseReleased(int x, int y);
 
+	void handleMouseMoved(int x, int y);
+
 	String getErrorMessage();
 
 	void clearErrorMessage();
@@ -31,5 +33,6 @@ public interface IChessController extends IChess, IGame {
 	Square getDestination();
 
 	Square getDraggedSquare();
+
 	ArrayList<Square[]> getLegalMoves();
 }

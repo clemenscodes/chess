@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializable {
 
-	private static final int MAX_HALF_MOVE_CLOCK = 150;
+	public static final int MAX_HALF_MOVE_CLOCK = 150;
 	private static final int MIN_HALF_MOVE_CLOCK = 0;
 	private static final int MIN_FULL_MOVE_CLOCK = 1;
 	private String[] piecePlacementData;

@@ -13,11 +13,13 @@ public interface IGame {
 
 	void offerDraw();
 
+	void claimDraw();
+
 	State getGameState();
 
 	String getMoves();
 
 	void makeMove(Square source, Square destination);
 
-	boolean isPieceOnSquare(Square square);
+	boolean isOwnPieceOnSquare(Square square);
 }

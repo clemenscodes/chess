@@ -1,6 +1,5 @@
 package model;
 
-import static api.model.Pieces.*;
 import static api.model.Square.*;
 
 import api.model.Pieces;
@@ -114,10 +113,16 @@ class Board implements IBoard, Serializable {
 	};
 
 	static Square getSquare(int index) {
+		if (index > 63 || index < 0) {
+			throw new Error("Invalid index");
+		}
 		return SQUARES[index];
 	}
 
 	static int getIndex(Square square) {
+		if (square == null) {
+			throw new Error("Square is null");
+		}
 		return SQUARE_TO_INDEX.get(square);
 	}
 
