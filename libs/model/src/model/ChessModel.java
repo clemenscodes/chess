@@ -14,7 +14,6 @@ public class ChessModel implements IChessModel {
 	private String errorMessage;
 	private Thread moveThread;
 	private Thread drawOfferThread;
-	private State state;
 	private IReader<State> stateReader;
 	private IWriter<State> stateWriter;
 	private BlockingQueue<State> stateQueue;
@@ -42,7 +41,7 @@ public class ChessModel implements IChessModel {
 	}
 
 	public State getGameState() {
-		return state;
+		return getStateReader().peek();
 	}
 
 	public String getMoves() {
@@ -310,7 +309,8 @@ public class ChessModel implements IChessModel {
 	}
 
 	private void setGameState(State state) {
-		this.state = state;
+		getStateReader().flush();
+		getStateWriter().write(state);
 	}
 
 	private IReader<State> getStateReader() {
@@ -433,7 +433,8 @@ public class ChessModel implements IChessModel {
 					continue;
 				}
 				try {
-					getMoveList().makeMove(move[0], move[1], getBoard(), getReader());
+					getMoveList()
+						.makeMove(move[0], move[1], getBoard(), getReader(), getStateWriter());
 				} catch (Error e) {
 					setErrorMessage(e.getMessage());
 				} finally {

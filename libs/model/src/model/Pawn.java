@@ -2,6 +2,7 @@ package model;
 
 import api.model.Pieces;
 import api.model.Square;
+import api.model.State;
 import java.io.IOException;
 
 abstract class Pawn extends Piece implements IPawn {
@@ -36,20 +37,27 @@ abstract class Pawn extends Piece implements IPawn {
 		int source,
 		int destination,
 		IBoard board,
-		IReader<String> reader
+		IReader<String> reader,
+		IWriter<State> writer
 	) {
 		return !(
 			sourceSquareHasPiece(source, board) &&
 			pieceCanMoveToDestination(source, destination, board) &&
-			kingSafe(source, destination, board, reader)
+			kingSafe(source, destination, board, reader, writer)
 		);
 	}
 
-	public IMove move(int source, int destination, IBoard board, IReader<String> reader) {
-		if (isInvalidMove(source, destination, board, reader)) {
+	public IMove move(
+		int source,
+		int destination,
+		IBoard board,
+		IReader<String> reader,
+		IWriter<State> writer
+	) {
+		if (isInvalidMove(source, destination, board, reader, writer)) {
 			throw new Error("Invalid move");
 		}
-		return unsafeMove(source, destination, board, reader);
+		return unsafeMove(source, destination, board, reader, writer);
 	}
 
 	public IBitboard getTargets(IBitboard piece, IBoard board) {
@@ -105,8 +113,14 @@ abstract class Pawn extends Piece implements IPawn {
 		return Bitboard.merge(singlePushTargets, doublePushTargets);
 	}
 
-	private boolean kingSafe(int source, int destination, IBoard board, IReader<String> reader) {
-		IBoard simulatedBoard = simulateMove(source, destination, board, reader);
+	private boolean kingSafe(
+		int source,
+		int destination,
+		IBoard board,
+		IReader<String> reader,
+		IWriter<State> writer
+	) {
+		IBoard simulatedBoard = simulateMove(source, destination, board, reader, writer);
 		boolean kingSafety = !Bitboard.overlap(
 			board.getKing(board.getFen().isWhite()),
 			simulatedBoard.getAllOpponentAttacks()
@@ -117,23 +131,35 @@ abstract class Pawn extends Piece implements IPawn {
 		return true;
 	}
 
-	public IBoard simulateMove(int source, int destination, IBoard board, IReader<String> reader) {
+	public IBoard simulateMove(
+		int source,
+		int destination,
+		IBoard board,
+		IReader<String> reader,
+		IWriter<State> writer
+	) {
 		IBoard copiedBoard = null;
 		try {
 			copiedBoard = board.deepCopy();
 		} catch (IOException | ClassNotFoundException ignored) {}
 		assert copiedBoard != null;
-		unsafeMove(source, destination, copiedBoard, reader);
+		unsafeMove(source, destination, copiedBoard, reader, writer);
 		return copiedBoard;
 	}
 
-	private IMove unsafeMove(int source, int destination, IBoard board, IReader<String> reader) {
+	private IMove unsafeMove(
+		int source,
+		int destination,
+		IBoard board,
+		IReader<String> reader,
+		IWriter<State> writer
+	) {
 		Square src = Board.getSquare(source);
 		Square dst = Board.getSquare(destination);
 		IBitboard destinationBit = Bitboard.getSingleBit(destination);
 		IPiece pawn = board.getPiece(Board.getSquare(source));
 		if (Move.isPromotion(destinationBit)) {
-			return promotePawn(src, dst, board, reader);
+			return promotePawn(src, dst, board, reader, writer);
 		}
 		if (Move.isEnPassant(destinationBit, board)) {
 			return new EnPassantCaptureMove(src, dst, board, pawn);
@@ -144,7 +170,14 @@ abstract class Pawn extends Piece implements IPawn {
 		return pawnPush(src, dst, board);
 	}
 
-	private IMove promotePawn(Square src, Square dst, IBoard board, IReader<String> reader) {
+	private IMove promotePawn(
+		Square src,
+		Square dst,
+		IBoard board,
+		IReader<String> reader,
+		IWriter<State> writer
+	) {
+		writer.write(State.Promotion);
 		System.out.println(
 			"Pawn promotion! Select the piece you want: Q (Queen), R (Rook), N (Knight), B (Bishop)"
 		);

@@ -2,4 +2,4 @@ package model;
 
 import java.io.Serializable;
 
-interface IPawn extends IPiece, MovableWithReader<String>, Serializable {}
+interface IPawn extends IPiece, MovableWithReader, Serializable {}

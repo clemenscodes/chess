@@ -28,9 +28,10 @@ class Writer<T> implements IWriter<T> {
 	}
 
 	public void write(T data) {
-		try {
-			getSharedQueue().put(data);
-		} catch (InterruptedException ignored) {}
+		while (getSharedQueue().peek() != null) {
+			getSharedQueue().remove();
+		}
+		getSharedQueue().add(data);
 	}
 
 	private BlockingQueue<T> getSharedQueue() {

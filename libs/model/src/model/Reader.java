@@ -26,7 +26,14 @@ class Reader<T> implements IReader<T> {
 		return getData();
 	}
 
+	public T peek() {
+		return getSharedQueue().peek();
+	}
+
 	public void flush() {
+		while (getSharedQueue().peek() != null) {
+			getSharedQueue().remove();
+		}
 		setData(null);
 		setBuffer(null);
 	}

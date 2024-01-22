@@ -14,7 +14,6 @@ public class ChessController implements IChessController {
 	private Square source;
 	private Square destination;
 	private Square draggedSquare;
-
 	private ArrayList<Square[]> legalMoves;
 
 	public void setModel(IChessModel model) {

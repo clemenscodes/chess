@@ -2,6 +2,7 @@ package model;
 
 import api.model.Pieces;
 import api.model.Square;
+import api.model.State;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -17,9 +18,15 @@ class MoveList implements IMoveList, Serializable {
 		return getMoves().size();
 	}
 
-	public void makeMove(Square source, Square destination, IBoard board, IReader<String> reader) {
+	public void makeMove(
+		Square source,
+		Square destination,
+		IBoard board,
+		IReader<String> reader,
+		IWriter<State> writer
+	) {
 		validateMove(source, destination);
-		performMove(source, destination, board, reader);
+		performMove(source, destination, board, reader, writer);
 		updateBoardState(board);
 	}
 
@@ -37,9 +44,10 @@ class MoveList implements IMoveList, Serializable {
 		Square source,
 		Square destination,
 		IBoard board,
-		IReader<String> reader
+		IReader<String> reader,
+		IWriter<State> writer
 	) {
-		addMove(source, destination, board, reader);
+		addMove(source, destination, board, reader, writer);
 		board.getFen().switchActiveColor();
 	}
 
@@ -47,15 +55,27 @@ class MoveList implements IMoveList, Serializable {
 		board.getFen().updatePiecePlacementData(board);
 	}
 
-	private void addMove(Square source, Square destination, IBoard board, IReader<String> reader) {
-		moves.add(move(source, destination, board, reader));
+	private void addMove(
+		Square source,
+		Square destination,
+		IBoard board,
+		IReader<String> reader,
+		IWriter<State> writer
+	) {
+		moves.add(move(source, destination, board, reader, writer));
 	}
 
 	private void setMoves(ArrayList<IMove> moves) {
 		this.moves = moves;
 	}
 
-	private IMove move(Square source, Square destination, IBoard board, IReader<String> reader) {
+	private IMove move(
+		Square source,
+		Square destination,
+		IBoard board,
+		IReader<String> reader,
+		IWriter<State> writer
+	) {
 		System.out.println("Moving from " + source + " to " + destination);
 		int src = Board.getIndex(source);
 		int dst = Board.getIndex(destination);
@@ -64,13 +84,13 @@ class MoveList implements IMoveList, Serializable {
 			throw new Error("No piece on square " + source);
 		}
 		return switch (piece) {
-			case WhitePawn -> board.getWhitePawn().move(src, dst, board, reader);
+			case WhitePawn -> board.getWhitePawn().move(src, dst, board, reader, writer);
 			case WhiteBishop -> board.getWhiteBishop().move(src, dst, board);
 			case WhiteKnight -> board.getWhiteKnight().move(src, dst, board);
 			case WhiteRook -> board.getWhiteRook().move(src, dst, board);
 			case WhiteQueen -> board.getWhiteQueen().move(src, dst, board);
 			case WhiteKing -> board.getWhiteKing().move(src, dst, board);
-			case BlackPawn -> board.getBlackPawn().move(src, dst, board, reader);
+			case BlackPawn -> board.getBlackPawn().move(src, dst, board, reader, writer);
 			case BlackBishop -> board.getBlackBishop().move(src, dst, board);
 			case BlackKnight -> board.getBlackKnight().move(src, dst, board);
 			case BlackRook -> board.getBlackRook().move(src, dst, board);
