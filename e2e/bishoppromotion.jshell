@@ -1,0 +1,20 @@
+import model.ChessModel;
+import static api.model.Square.*;
+
+var model = new ChessModel();
+
+model.startNewGame();
+model.makeMove(g2,g4);
+model.makeMove(e7,e5);
+model.makeMove(g4,g5);
+model.makeMove(e5,e4);
+model.makeMove(g5,g6);
+model.makeMove(e4,e3);
+model.makeMove(g6,h7);
+model.makeMove(d7,d5);
+model.makeMove(h7,g8);
+model.promoteBishop();
+model.makeMove(d5,d4);
+System.out.println(model.getGameState());
+
+/exit

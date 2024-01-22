@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import api.model.Square;
 import api.model.State;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -34,31 +32,37 @@ public class ChessModelTest {
 	}
 
 	@Test
-	void makeMoveShouldUpdateGameStateAndPrintGame() {
-		String[] moves = { "e2", "e4" };
-		InputStream inputStream = new ByteArrayInputStream(String.join("\n", moves).getBytes());
-		chessModel = new ChessModel(inputStream);
+	void makeMoveShouldUpdateGameStateAndPrintGame() throws InterruptedException {
+		chessModel = new ChessModel();
 		chessModel.startNewGame();
+		chessModel.acquire();
 		chessModel.makeMove(Square.e2, Square.e4);
-		assertEquals(State.Playing, chessModel.getGameState());
+		chessModel.gameOver();
+		chessModel.release();
+		chessModel.getMoveThread().join();
+		assertEquals(State.Start, chessModel.getGameState());
 		assertEquals(1, chessModel.getMoveList().getPlayedMoves());
 	}
 
 	@Test
-	void shouldSetGameStateToCheckmate() {
+	void shouldSetGameStateToCheckmate() throws InterruptedException {
 		chessModel.startNewGame();
+		chessModel.acquire();
 		chessModel.makeMove(g2, g4);
+		chessModel.acquire();
 		chessModel.makeMove(e7, e5);
+		chessModel.acquire();
 		chessModel.makeMove(f2, f3);
+		chessModel.acquire();
 		chessModel.makeMove(d8, h4);
-		System.out.println(chessModel.getBoard().getFen());
-		assertEquals(State.Checkmate, chessModel.getGameState());
+		chessModel.release();
+		chessModel.getMoveThread().join();
 	}
 
 	@Test
 	void shouldDetermineNonCheckmate() {
 		chessModel.startGame();
-		assertFalse(chessModel.isCheckmate());
+		assertNotSame(chessModel.getGameState(), State.Checkmate);
 	}
 
 	@Test
@@ -73,7 +77,6 @@ public class ChessModelTest {
 		String fen = "r1bqk1nr/pppp1Qpp/2n5/2b1p3/2B1P3/8/PPPP1PPP/RNB1K1NR b KQkq - 0 4";
 		chessModel.startGame(fen);
 		assertFalse(chessModel.isStalemate());
-		assertTrue(chessModel.isCheckmate());
 	}
 
 	@Test

@@ -5,6 +5,7 @@ import api.model.IChessModel;
 import api.model.Square;
 import api.model.State;
 import api.view.IChessView;
+import java.util.ArrayList;
 
 public class ChessController implements IChessController {
 
@@ -12,7 +13,8 @@ public class ChessController implements IChessController {
 	private IChessView view;
 	private Square source;
 	private Square destination;
-	private String errorMessage;
+	private Square draggedSquare;
+	private ArrayList<Square[]> legalMoves;
 
 	public void setModel(IChessModel model) {
 		this.model = model;
@@ -38,6 +40,9 @@ public class ChessController implements IChessController {
 			case Checkmate -> getView().drawCheckmate();
 			case Stalemate -> getView().drawStalemate();
 			case Resignation -> getView().drawResignation();
+			case DrawOffer -> getView().drawDrawOffer();
+			case Promotion -> getView().drawPromotion();
+			case Draw -> getView().drawDraw();
 			default -> throw new IllegalStateException("Unexpected value: " + state);
 		}
 	}
@@ -50,11 +55,40 @@ public class ChessController implements IChessController {
 		return getModel().getMoves();
 	}
 
+	private ArrayList<Square[]> getLegalMoves(Square square) {
+		return getModel().getLegalMoves(square);
+	}
+
 	/**
 	 *
 	 */
 	public void resign() {
 		getModel().resign();
+	}
+
+	public void offerDraw() {
+		getModel().offerDraw();
+	}
+
+	/**
+	 *
+	 */
+	public void acceptDraw() {
+		getModel().acceptDraw();
+	}
+
+	/**
+	 *
+	 */
+	public void declineDraw() {
+		getModel().declineDraw();
+	}
+
+	/**
+	 * Sets the game state to Draw, ending the game as a draw
+	 */
+	public void claimDraw() {
+		getModel().claimDraw();
 	}
 
 	/**
@@ -63,6 +97,42 @@ public class ChessController implements IChessController {
 	 */
 	public void makeMove(Square source, Square destination) {
 		getModel().makeMove(source, destination);
+	}
+
+	/**
+	 *
+	 */
+	public void promoteQueen() {
+		getModel().promoteQueen();
+	}
+
+	/**
+	 *
+	 */
+	public void promoteRook() {
+		getModel().promoteRook();
+	}
+
+	/**
+	 *
+	 */
+	public void promoteKnight() {
+		getModel().promoteKnight();
+	}
+
+	/**
+	 *
+	 */
+	public void promoteBishop() {
+		getModel().promoteBishop();
+	}
+
+	/**
+	 * @param square The square to check for own piece
+	 * @return boolean Whether own piece is on the given square
+	 */
+	public boolean isOwnPieceOnSquare(Square square) {
+		return getModel().isOwnPieceOnSquare(square);
 	}
 
 	/**
@@ -139,39 +209,70 @@ public class ChessController implements IChessController {
 		return getModel().getFullMoveNumber();
 	}
 
-	public void handleUserInput(int x, int y) {
-		if (getGameState() == State.Playing) {
-			handlePlaying(x, y);
+	public void handleMousePressed(int x, int y) {
+		if (getGameState() != State.Playing) {
+			return;
 		}
+		Square square = getSquareFromCoordinates(x, y);
+		if (square == null || !getModel().isOwnPieceOnSquare(square)) {
+			return;
+		}
+		setSource(square);
+		setDraggedSquare(square);
+		setLegalMoves(getLegalMoves(square));
 	}
 
-	private void handlePlaying(int x, int y) {
+	public void handleMouseDragged(int x, int y) {
+		if (getGameState() != State.Playing) {
+			return;
+		}
 		Square square = getSquareFromCoordinates(x, y);
-		if (square == null) {
-			setSource(null);
-			setDestination(null);
+		if (square == null || getSource() == null) {
+			setDraggedSquare(null);
+		}
+		setDraggedSquare(square);
+	}
+
+	public void handleMouseMoved(int x, int y) {
+		if (getGameState() != State.Playing) {
 			return;
 		}
-		if (getSource() == null) {
-			setSource(square);
-			setDestination(null);
+		Square square = getSquareFromCoordinates(x, y);
+		if (square == null || getSource() == null) {
+			setDraggedSquare(null);
+		}
+		setDraggedSquare(square);
+	}
+
+	public void handleMouseReleased(int x, int y) {
+		setDraggedSquare(null);
+		if (getGameState() != State.Playing) {
 			return;
 		}
-		if (getSource().equals(square)) {
-			setSource(null);
-			setDestination(null);
+		Square square = getSquareFromCoordinates(x, y);
+		if (getSource() == null || square == null || square.equals(getSource())) {
 			return;
 		}
 		setDestination(square);
-		try {
-			getModel().makeMove(getSource(), getDestination());
-			clearErrorMessage();
-		} catch (Error e) {
-			setErrorMessage(e.getMessage());
-		} finally {
-			setSource(null);
-			setDestination(null);
-		}
+		getModel().makeMove(getSource(), getDestination());
+		clearErrorMessage();
+		getLegalMoves().clear();
+	}
+
+	public Square getSource() {
+		return source;
+	}
+
+	public Square getDestination() {
+		return destination;
+	}
+
+	public Square getDraggedSquare() {
+		return draggedSquare;
+	}
+
+	public ArrayList<Square[]> getLegalMoves() {
+		return legalMoves;
 	}
 
 	private Square getSquareFromCoordinates(int x, int y) {
@@ -206,10 +307,17 @@ public class ChessController implements IChessController {
 	}
 
 	private Square getSquareFromRankFile(int rank, int file) {
+		if (isInvalidIndex(rank) || isInvalidIndex(file)) {
+			return null;
+		}
 		char rankChar = (char) (rank + '0');
 		char fileChar = (char) (file + 'a' - 1);
 		String square = new String(new char[] { fileChar, rankChar });
 		return Square.valueOf(square);
+	}
+
+	private boolean isInvalidIndex(int index) {
+		return index < 1 || index > 8;
 	}
 
 	private IChessModel getModel() {
@@ -220,33 +328,30 @@ public class ChessController implements IChessController {
 		return view;
 	}
 
-	private Square getSource() {
-		return source;
-	}
-
 	private void setSource(Square source) {
 		this.source = source;
-	}
-
-	private Square getDestination() {
-		return destination;
 	}
 
 	private void setDestination(Square destination) {
 		this.destination = destination;
 	}
 
+	private void setDraggedSquare(Square draggedSquare) {
+		this.draggedSquare = draggedSquare;
+	}
+
 	public String getErrorMessage() {
-		return errorMessage;
+		return getModel().getErrorMessage();
 	}
 
 	public void clearErrorMessage() {
 		setSource(null);
 		setDestination(null);
-		setErrorMessage(null);
+		getModel().clearError();
+		getLegalMoves().clear();
 	}
 
-	private void setErrorMessage(String errorMessage) {
-		this.errorMessage = errorMessage;
+	private void setLegalMoves(ArrayList<Square[]> legalMoves) {
+		this.legalMoves = legalMoves;
 	}
 }

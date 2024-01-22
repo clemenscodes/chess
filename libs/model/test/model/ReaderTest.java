@@ -2,56 +2,37 @@ package model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class ReaderTest {
 
+	public BlockingQueue<String> queue;
+	private IWriter<String> writer;
+	private IReader<String> reader;
+
+	@BeforeEach
+	void setup() {
+		queue = new LinkedBlockingQueue<>();
+		writer = new Writer<>(queue);
+		reader = new Reader<>(queue);
+	}
+
 	@Test
 	void shouldReadLineCorrectly() {
 		String inputString = "Hello, World!";
-		InputStream inputStream = new ByteArrayInputStream(
-			inputString.getBytes(StandardCharsets.UTF_8)
-		);
-		IReader reader = new Reader(inputStream);
-		String result = reader.readLine();
+		writer.write(inputString);
+		String result = reader.read();
 		assertEquals(inputString, result.trim());
 	}
 
 	@Test
 	void shouldReadEmptyLineCorrectly() {
 		String inputString = "";
-		InputStream inputStream = new ByteArrayInputStream(
-			inputString.getBytes(StandardCharsets.UTF_8)
-		);
-		Reader reader = new Reader(inputStream);
-		String result = reader.readLine();
+		writer.write(inputString);
+		String result = reader.read();
 		assertEquals(inputString, result);
-	}
-
-	@Test
-	void shouldReadFromBufferWhenNotEmpty() {
-		String inputString = "First Line\nSecond Line";
-		InputStream inputStream = new ByteArrayInputStream(
-			inputString.getBytes(StandardCharsets.UTF_8)
-		);
-		Reader reader = new Reader(inputStream);
-		reader.readLine();
-		reader.readLine();
-		String result = reader.readLine();
-		assertEquals("Second Line", result.trim());
-	}
-
-	@Test
-	void shouldReadFromStreamWhenBufferEmpty() {
-		String inputString = "First Line\nSecond Line";
-		InputStream inputStream = new ByteArrayInputStream(
-			inputString.getBytes(StandardCharsets.UTF_8)
-		);
-		Reader reader = new Reader(inputStream);
-		String result = reader.readLine();
-		assertEquals("First Line", result.trim());
 	}
 }

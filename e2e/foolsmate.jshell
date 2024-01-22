@@ -1,0 +1,14 @@
+import model.ChessModel;
+import static api.model.Square.*;
+
+var model = new ChessModel();
+
+model.startNewGame();
+model.makeMove(g2,g4);
+model.makeMove(e7,e5);
+model.makeMove(f2,f3);
+model.makeMove(d8,h4);
+
+/exit
+
+

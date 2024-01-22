@@ -1,5 +1,7 @@
 package model;
 
-interface IReader {
-	String readLine();
+interface IReader<T> {
+	T read();
+	T peek();
+	void flush();
 }

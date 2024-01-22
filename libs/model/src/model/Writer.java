@@ -1,6 +1,8 @@
 package model;
 
-class Writer {
+import java.util.concurrent.BlockingQueue;
+
+class Writer<T> implements IWriter<T> {
 
 	static StringBuilder loopOver(LoopBody body, IBitboard[] pieces) {
 		StringBuilder stringBuilder = new StringBuilder();
@@ -17,5 +19,26 @@ class Writer {
 
 	private static void appendLine(StringBuilder stringBuilder) {
 		stringBuilder.append("\n");
+	}
+
+	private BlockingQueue<T> sharedQueue;
+
+	Writer(BlockingQueue<T> sharedQueue) {
+		setSharedQueue(sharedQueue);
+	}
+
+	public void write(T data) {
+		while (getSharedQueue().peek() != null) {
+			getSharedQueue().remove();
+		}
+		getSharedQueue().add(data);
+	}
+
+	private BlockingQueue<T> getSharedQueue() {
+		return sharedQueue;
+	}
+
+	private void setSharedQueue(BlockingQueue<T> sharedQueue) {
+		this.sharedQueue = sharedQueue;
 	}
 }

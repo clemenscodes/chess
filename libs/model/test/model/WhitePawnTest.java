@@ -4,23 +4,29 @@ import static api.model.Square.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import api.model.Pieces;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import api.model.State;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class WhitePawnTest {
 
-	private WhitePawn piece;
-	private IReader reader;
+	public BlockingQueue<String> sharedQueue;
+	public BlockingQueue<State> stateQueue;
+	private IReader<String> reader;
+	private IWriter<String> writer;
+	private IWriter<State> stateWriter;
 	private IBoard board;
+	private WhitePawn piece;
 
 	@BeforeEach
 	void setup() {
-		String inputString = "Q";
-		byte[] bytes = inputString.getBytes();
-		InputStream inputStream = new ByteArrayInputStream(bytes);
-		reader = new Reader(inputStream);
+		sharedQueue = new LinkedBlockingQueue<>();
+		stateQueue = new LinkedBlockingQueue<>();
+		reader = new Reader<>(sharedQueue);
+		writer = new Writer<>(sharedQueue);
+		stateWriter = new Writer<>(stateQueue);
 		board = new Board();
 		piece = new WhitePawn(board.getWhitePawn().getBitboard());
 	}
@@ -164,7 +170,7 @@ public class WhitePawnTest {
 		int src = Board.getIndex(a1);
 		int dst = Board.getIndex(b1);
 		try {
-			piece.move(src, dst, board, reader);
+			piece.move(src, dst, board, reader, stateWriter);
 		} catch (Error e) {
 			assertEquals("Invalid move", e.getMessage());
 		}
@@ -176,7 +182,7 @@ public class WhitePawnTest {
 		int src = Board.getIndex(e5);
 		int dst = Board.getIndex(e6);
 		try {
-			piece.move(src, dst, board, reader);
+			piece.move(src, dst, board, reader, stateWriter);
 		} catch (Error e) {
 			assertEquals("Invalid move", e.getMessage());
 		}
@@ -190,7 +196,7 @@ public class WhitePawnTest {
 		int src = Board.getIndex(d2);
 		int dst = Board.getIndex(d3);
 		try {
-			piece.move(src, dst, board, reader);
+			piece.move(src, dst, board, reader, stateWriter);
 		} catch (Error e) {
 			assertEquals("King is in check", e.getMessage());
 		}
@@ -200,14 +206,14 @@ public class WhitePawnTest {
 	void shouldSinglePush() {
 		int src = Board.getIndex(e2);
 		int dst = Board.getIndex(e3);
-		piece.move(src, dst, board, reader);
+		piece.move(src, dst, board, reader, stateWriter);
 	}
 
 	@Test
 	void shouldDoublePush() {
 		int src = Board.getIndex(e2);
 		int dst = Board.getIndex(e4);
-		piece.move(src, dst, board, reader);
+		piece.move(src, dst, board, reader, stateWriter);
 	}
 
 	@Test
@@ -217,7 +223,7 @@ public class WhitePawnTest {
 		piece = new WhitePawn(board.getWhitePawn().getBitboard());
 		int src = Board.getIndex(e5);
 		int dst = Board.getIndex(d6);
-		piece.move(src, dst, board, reader);
+		piece.move(src, dst, board, reader, stateWriter);
 	}
 
 	@Test
@@ -227,7 +233,7 @@ public class WhitePawnTest {
 		piece = new WhitePawn(board.getWhitePawn().getBitboard());
 		int src = Board.getIndex(e5);
 		int dst = Board.getIndex(f6);
-		piece.move(src, dst, board, reader);
+		piece.move(src, dst, board, reader, stateWriter);
 	}
 
 	@Test
@@ -235,13 +241,11 @@ public class WhitePawnTest {
 		String fen = "rnbqk2r/ppp2pPp/3p1n2/2b1p3/8/8/PPPPPPP1/RNBQKBNR w KQkq - 0 5";
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new WhitePawn(board.getWhitePawn().getBitboard());
-		String inputString = "X\nR";
-		byte[] bytes = inputString.getBytes();
-		InputStream inputStream = new ByteArrayInputStream(bytes);
-		reader = new Reader(inputStream);
+		writer.write("X");
+		writer.write("R");
 		int src = Board.getIndex(g7);
 		int dst = Board.getIndex(g8);
-		piece.move(src, dst, board, reader);
+		piece.move(src, dst, board, reader, stateWriter);
 		assertEquals(Pieces.WhiteRook, board.getPiece(g8).getVariant());
 	}
 
@@ -252,7 +256,8 @@ public class WhitePawnTest {
 		piece = new WhitePawn(board.getWhitePawn().getBitboard());
 		int src = Board.getIndex(g7);
 		int dst = Board.getIndex(g8);
-		piece.move(src, dst, board, reader);
+		writer.write("Q");
+		piece.move(src, dst, board, reader, stateWriter);
 		assertEquals(Pieces.WhiteQueen, board.getPiece(g8).getVariant());
 	}
 
@@ -262,12 +267,10 @@ public class WhitePawnTest {
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new WhitePawn(board.getWhitePawn().getBitboard());
 		String inputString = "R";
-		byte[] bytes = inputString.getBytes();
-		InputStream inputStream = new ByteArrayInputStream(bytes);
-		reader = new Reader(inputStream);
+		writer.write(inputString);
 		int src = Board.getIndex(g7);
 		int dst = Board.getIndex(g8);
-		piece.move(src, dst, board, reader);
+		piece.move(src, dst, board, reader, stateWriter);
 		assertEquals(Pieces.WhiteRook, board.getPiece(g8).getVariant());
 	}
 
@@ -277,12 +280,10 @@ public class WhitePawnTest {
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new WhitePawn(board.getWhitePawn().getBitboard());
 		String inputString = "B";
-		byte[] bytes = inputString.getBytes();
-		InputStream inputStream = new ByteArrayInputStream(bytes);
-		reader = new Reader(inputStream);
+		writer.write(inputString);
 		int src = Board.getIndex(g7);
 		int dst = Board.getIndex(g8);
-		piece.move(src, dst, board, reader);
+		piece.move(src, dst, board, reader, stateWriter);
 		assertEquals(Pieces.WhiteBishop, board.getPiece(g8).getVariant());
 	}
 
@@ -292,12 +293,10 @@ public class WhitePawnTest {
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new WhitePawn(board.getWhitePawn().getBitboard());
 		String inputString = "N";
-		byte[] bytes = inputString.getBytes();
-		InputStream inputStream = new ByteArrayInputStream(bytes);
-		reader = new Reader(inputStream);
+		writer.write(inputString);
 		int src = Board.getIndex(g7);
 		int dst = Board.getIndex(g8);
-		piece.move(src, dst, board, reader);
+		piece.move(src, dst, board, reader, stateWriter);
 		assertEquals(Pieces.WhiteKnight, board.getPiece(g8).getVariant());
 	}
 
@@ -308,7 +307,8 @@ public class WhitePawnTest {
 		piece = new WhitePawn(board.getWhitePawn().getBitboard());
 		int src = Board.getIndex(g7);
 		int dst = Board.getIndex(h8);
-		piece.move(src, dst, board, reader);
+		writer.write("Q");
+		piece.move(src, dst, board, reader, stateWriter);
 		assertEquals(Pieces.WhiteQueen, board.getPiece(h8).getVariant());
 	}
 
@@ -318,12 +318,10 @@ public class WhitePawnTest {
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new WhitePawn(board.getWhitePawn().getBitboard());
 		String inputString = "R";
-		byte[] bytes = inputString.getBytes();
-		InputStream inputStream = new ByteArrayInputStream(bytes);
-		reader = new Reader(inputStream);
+		writer.write(inputString);
 		int src = Board.getIndex(g7);
 		int dst = Board.getIndex(h8);
-		piece.move(src, dst, board, reader);
+		piece.move(src, dst, board, reader, stateWriter);
 		assertEquals(Pieces.WhiteRook, board.getPiece(h8).getVariant());
 	}
 
@@ -333,12 +331,10 @@ public class WhitePawnTest {
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new WhitePawn(board.getWhitePawn().getBitboard());
 		String inputString = "B";
-		byte[] bytes = inputString.getBytes();
-		InputStream inputStream = new ByteArrayInputStream(bytes);
-		reader = new Reader(inputStream);
+		writer.write(inputString);
 		int src = Board.getIndex(g7);
 		int dst = Board.getIndex(h8);
-		piece.move(src, dst, board, reader);
+		piece.move(src, dst, board, reader, stateWriter);
 		assertEquals(Pieces.WhiteBishop, board.getPiece(h8).getVariant());
 	}
 
@@ -348,12 +344,10 @@ public class WhitePawnTest {
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new WhitePawn(board.getWhitePawn().getBitboard());
 		String inputString = "N";
-		byte[] bytes = inputString.getBytes();
-		InputStream inputStream = new ByteArrayInputStream(bytes);
-		reader = new Reader(inputStream);
+		writer.write(inputString);
 		int src = Board.getIndex(g7);
 		int dst = Board.getIndex(h8);
-		piece.move(src, dst, board, reader);
+		piece.move(src, dst, board, reader, stateWriter);
 		assertEquals(Pieces.WhiteKnight, board.getPiece(h8).getVariant());
 	}
 }

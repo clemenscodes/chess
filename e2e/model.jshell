@@ -1,0 +1,10 @@
+/open e2e/acceptDraw.jshell
+/open e2e/declineDraw.jshell
+/open e2e/foolsmate.jshell
+/open e2e/queenpromotion.jshell
+/open e2e/rookpromotion.jshell
+/open e2e/knightpromotion.jshell
+/open e2e/bishoppromotion.jshell
+/open e2e/kingcastle.jshell
+/open e2e/queencastle.jshell
+/open e2e/enpassant.jshell

@@ -1,5 +1,5 @@
 package model;
 
-public interface Movable {
+interface Movable {
 	IMove move(int source, int destination, IBoard board);
 }

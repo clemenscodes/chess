@@ -1,6 +1,7 @@
 package view;
 
 import api.controller.IChessController;
+import api.model.Square;
 import api.view.IChessView;
 import controlP5.Button;
 import controlP5.ControlP5;
@@ -15,6 +16,7 @@ public class ChessView extends PApplet implements IChessView {
 	private Button resignButton;
 	private Button startButton;
 	private Button clearErrorButton;
+	private Button offerDrawButton;
 	private PImage[] pieceImages;
 	private PFont font;
 	private String title;
@@ -24,7 +26,7 @@ public class ChessView extends PApplet implements IChessView {
 	private int topBoardOffset;
 	private int squareSize;
 	private final int whiteColor = color(237, 214, 176);
-	private final int blackColor = color(181, 136, 99);
+	private final int blackColor = color(184, 135, 98);
 
 	public ChessView(int width, int height, String title) {
 		setWidth(width);
@@ -50,13 +52,14 @@ public class ChessView extends PApplet implements IChessView {
 		initStartButton();
 		initResignButton();
 		initErrorButton();
+		initOfferDrawButton();
 		loadPieceImages();
 		getController().startGame();
 	}
 
 	@Override
 	public void draw() {
-		background(255);
+		background(221, 221, 221);
 		if (getController().getErrorMessage() != null) {
 			getClearErrorButton().show();
 			drawError();
@@ -67,8 +70,26 @@ public class ChessView extends PApplet implements IChessView {
 	}
 
 	@Override
+	public void mousePressed() {
+		getController().handleMousePressed(mouseX, mouseY);
+	}
+
+	@Override
+	public void mouseDragged() {
+		getController().handleMouseDragged(mouseX, mouseY);
+	}
+
+	@Override
 	public void mouseReleased() {
-		getController().handleUserInput(mouseX, mouseY);
+		getController().handleMouseReleased(mouseX, mouseY);
+	}
+
+	@Override
+	public void mouseMoved() {
+		if (mousePressed) {
+			return;
+		}
+		getController().handleMouseMoved(mouseX, mouseY);
 	}
 
 	public void setController(IChessController controller) {
@@ -97,20 +118,23 @@ public class ChessView extends PApplet implements IChessView {
 
 	public void drawStart() {
 		drawBoard();
+		drawPieces();
 	}
 
 	public void drawPlaying() {
-		drawStart();
-		drawPieces(getController().getPiecePlacementData());
+		drawBoard();
+		highlightSource();
+		highlightDraggedSquare();
+		drawPieces();
 		drawFen();
 		drawMoves();
+		drawLegalMoves();
 	}
 
 	public void drawCheckmate() {
 		drawGameOver();
 		String winner = getController().isWhite() ? "Black" : "White";
-		textSize(28);
-		textAlign(CENTER, CENTER);
+		textSettings();
 		text(
 			"Checkmate! " + winner + " won.",
 			getWidth() - (getLeftBoardOffset() / 2.0f),
@@ -120,16 +144,14 @@ public class ChessView extends PApplet implements IChessView {
 
 	public void drawStalemate() {
 		drawGameOver();
-		textSize(28);
-		textAlign(CENTER, CENTER);
+		textSettings();
 		text("Stalemate!", getWidth() - (getLeftBoardOffset() / 2.0f), getHeight() / 2.0f);
 	}
 
 	public void drawResignation() {
 		drawGameOver();
 		String winner = getController().isWhite() ? "Black" : "White";
-		textAlign(CENTER, CENTER);
-		textSize(28);
+		textSettings();
 		text(
 			"Resignation! " + winner + " won.",
 			getWidth() - (getLeftBoardOffset() / 2.0f),
@@ -137,9 +159,34 @@ public class ChessView extends PApplet implements IChessView {
 		);
 	}
 
+	public void drawDraw() {
+		drawGameOver();
+		textSettings();
+		text("Draw!", getWidth() - (getLeftBoardOffset() / 2.0f), getHeight() / 2.0f);
+	}
+
+	public void drawPromotion() {
+		drawPlaying();
+		textSettings();
+		text("Promotion!", getWidth() - (getLeftBoardOffset() / 2.0f), getHeight() / 2.0f);
+	}
+
+	public void drawDrawOffer() {
+		drawPlaying();
+		textSettings();
+		text("Draw offer!", getWidth() - (getLeftBoardOffset() / 2.0f), getHeight() / 2.0f);
+	}
+
+	private void textSettings() {
+		textAlign(CENTER, CENTER);
+		textSize(28);
+		fill(0);
+	}
+
 	private void drawGameOver() {
 		drawPlaying();
 		getResignButton().hide();
+		getOfferDrawButton().hide();
 		getStartButton().show();
 		textAlign(CENTER, CENTER);
 		textSize(32);
@@ -154,17 +201,75 @@ public class ChessView extends PApplet implements IChessView {
 	}
 
 	private void drawFen() {
-		fill(0);
-		textAlign(CENTER, CENTER);
-		textSize(24);
+		textSettings();
 		text(getController().getFen(), getWidth() / 2.0f, getHeight() - getHeight() / 20.0f);
 	}
 
 	private void drawMoves() {
 		fill(0);
 		textAlign(LEFT);
-		textSize(20);
+		textSize(16);
 		text(getController().getMoves(), getSquareSize() / 2.0f, getSquareSize() / 2.0f);
+	}
+
+	private void drawLegalMoves() {
+		var moves = getController().getLegalMoves();
+		if (moves == null || moves.isEmpty()) {
+			return;
+		}
+		for (var move : moves) {
+			highlightLegalDestination(move[1]);
+		}
+	}
+
+	private void highlightLegalDestination(Square square) {
+		int rank = getRankFromSquare(square);
+		int file = getFileFromSquare(square);
+		int halfSquareSize = (int) (getSquareSize() / 2.0f);
+		int fileOffset = getLeftSquareOffset(file) + halfSquareSize;
+		int rankOffset = getTopSquareOffset(rank) + halfSquareSize;
+		fill(color(213, 192, 158, 125));
+		noStroke();
+		circle(fileOffset, rankOffset, getSquareSize() / 3.0f);
+	}
+
+	private void highlightDraggedSquare() {
+		Square square = getController().getDraggedSquare();
+		if (square == null) {
+			return;
+		}
+		int rank = getRankFromSquare(square);
+		int file = getFileFromSquare(square);
+		fill(getFillColor(rank, file));
+		stroke(241, 233, 190);
+		strokeWeight(2);
+		if (square.equals(getController().getSource())) {
+			highlight();
+		}
+		square(getLeftSquareOffset(file), getTopSquareOffset(rank), getSquareSize());
+	}
+
+	private void highlight() {
+		fill(247, 247, 105);
+	}
+
+	private void highlightSource() {
+		Square source = getController().getSource();
+		if (source == null) {
+			return;
+		}
+		int rank = getRankFromSquare(source);
+		int file = getFileFromSquare(source);
+		highlight();
+		square(getLeftSquareOffset(file), getTopSquareOffset(rank), getSquareSize());
+	}
+
+	private int getFileFromSquare(Square square) {
+		return square.name().charAt(0) - 'a' + 1;
+	}
+
+	private int getRankFromSquare(Square square) {
+		return Character.getNumericValue(square.name().charAt(1));
 	}
 
 	private int getLeftSquareOffset(int file) {
@@ -188,22 +293,23 @@ public class ChessView extends PApplet implements IChessView {
 	}
 
 	private void drawSquare(int rank, int file) {
-		boolean bothEven = rank % 2 == 0 && file % 2 == 0;
-		boolean bothOdd = rank % 2 != 0 && file % 2 != 0;
-		boolean printBlack = bothEven || bothOdd;
-		if (printBlack) {
-			fill(getBlackColor());
-		} else {
-			fill(getWhiteColor());
-		}
+		fill(getFillColor(rank, file));
+		noStroke();
 		square(getLeftSquareOffset(file), getTopSquareOffset(rank), getSquareSize());
 	}
 
-	private void drawPieces(String[] piecePlacementData) {
+	private int getFillColor(int rank, int file) {
+		boolean bothEven = rank % 2 == 0 && file % 2 == 0;
+		boolean bothOdd = rank % 2 != 0 && file % 2 != 0;
+		return bothEven || bothOdd ? getBlackColor() : getWhiteColor();
+	}
+
+	private void drawPieces() {
+		String[] ppd = getController().getPiecePlacementData();
 		int i = 0;
 		for (int rank = 8; rank > 0; rank--) {
 			int fileToRenderPieceOn = 0;
-			for (var c : piecePlacementData[i].toCharArray()) {
+			for (var c : ppd[i].toCharArray()) {
 				if (Character.isDigit(c)) {
 					int emptySquares = Character.getNumericValue(c);
 					fileToRenderPieceOn += emptySquares;
@@ -300,6 +406,7 @@ public class ChessView extends PApplet implements IChessView {
 			.onRelease(event -> {
 				getStartButton().hide();
 				getResignButton().show();
+				getOfferDrawButton().show();
 				getController().startNewGame();
 			});
 	}
@@ -330,9 +437,11 @@ public class ChessView extends PApplet implements IChessView {
 		int background = color(200, 46, 43);
 		int hoverColor = color(190, 26, 24);
 		int textColor = color(255);
+		var pos = getClearErrorButton().getPosition();
 		getClearErrorButton()
 			.setColorBackground(background)
 			.setColorActive(background)
+			.setPosition(pos[0], pos[1] - ((4 * getHeight()) / 20.0f))
 			.setColorForeground(hoverColor);
 		getClearErrorButton().getCaptionLabel().setColor(textColor).setText("Clear error");
 		getClearErrorButton()
@@ -341,6 +450,29 @@ public class ChessView extends PApplet implements IChessView {
 				getController().clearErrorMessage();
 				getClearErrorButton().hide();
 			});
+	}
+
+	private Button getOfferDrawButton() {
+		return offerDrawButton;
+	}
+
+	private void setOfferDrawButton(Button offerDrawButton) {
+		this.offerDrawButton = offerDrawButton;
+	}
+
+	private void initOfferDrawButton() {
+		setOfferDrawButton(initButton("Offer draw button", "Offer draw"));
+		int background = color(176, 196, 222);
+		int hoverColor = color(166, 181, 202);
+		int textColor = color(0);
+		var pos = getOfferDrawButton().getPosition();
+		getOfferDrawButton()
+			.setColorBackground(background)
+			.setPosition(pos[0], pos[1] - ((2 * getHeight()) / 20.0f))
+			.setColorActive(background)
+			.setColorForeground(hoverColor);
+		getOfferDrawButton().getCaptionLabel().setColor(textColor).setText("Offer draw");
+		getOfferDrawButton().hide().onRelease(event -> getController().offerDraw());
 	}
 
 	private PImage[] getPieceImages() {
@@ -365,18 +497,18 @@ public class ChessView extends PApplet implements IChessView {
 
 	private String getImagePath(int index) {
 		return switch (index) {
-			case 0 -> "images/black/pawn.png";
-			case 1 -> "images/black/rook.png";
-			case 2 -> "images/black/knight.png";
-			case 3 -> "images/black/bishop.png";
-			case 4 -> "images/black/queen.png";
-			case 5 -> "images/black/king.png";
-			case 6 -> "images/white/pawn.png";
-			case 7 -> "images/white/rook.png";
-			case 8 -> "images/white/knight.png";
-			case 9 -> "images/white/bishop.png";
-			case 10 -> "images/white/queen.png";
-			case 11 -> "images/white/king.png";
+			case 0 -> "images/bp.png";
+			case 1 -> "images/br.png";
+			case 2 -> "images/bn.png";
+			case 3 -> "images/bb.png";
+			case 4 -> "images/bq.png";
+			case 5 -> "images/bk.png";
+			case 6 -> "images/wp.png";
+			case 7 -> "images/wr.png";
+			case 8 -> "images/wn.png";
+			case 9 -> "images/wb.png";
+			case 10 -> "images/wq.png";
+			case 11 -> "images/wk.png";
 			default -> throw new Error("Invalid image index");
 		};
 	}
