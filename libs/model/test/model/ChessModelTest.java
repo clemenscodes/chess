@@ -32,24 +32,24 @@ public class ChessModelTest {
 	}
 
 	@Test
-	void makeMoveShouldUpdateGameStateAndPrintGame() {
+	void makeMoveShouldUpdateGameStateAndPrintGame() throws InterruptedException {
 		chessModel = new ChessModel();
 		chessModel.startNewGame();
 		chessModel.makeMove(Square.e2, Square.e4);
 		chessModel.gameOver();
-		chessModel.joinMoveThread();
+		chessModel.getMoveThread().join();
 		assertEquals(State.Start, chessModel.getGameState());
 		assertEquals(1, chessModel.getMoveList().getPlayedMoves());
 	}
 
 	@Test
-	void shouldSetGameStateToCheckmate() {
+	void shouldSetGameStateToCheckmate() throws InterruptedException {
 		chessModel.startNewGame();
 		chessModel.makeMove(g2, g4);
 		chessModel.makeMove(e7, e5);
 		chessModel.makeMove(f2, f3);
 		chessModel.makeMove(d8, h4);
-		chessModel.joinMoveThread();
+		chessModel.getMoveThread().join();
 		assertEquals(State.Checkmate, chessModel.getGameState());
 	}
 

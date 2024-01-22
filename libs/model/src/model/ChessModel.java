@@ -10,18 +10,19 @@ import java.util.concurrent.Semaphore;
 
 public class ChessModel implements IChessModel {
 
+	private final Semaphore semaphore = new Semaphore(1);
+	private Thread moveThread;
+	private Thread drawOfferThread;
 	private State state;
+	private String errorMessage;
 	private IBoard board;
 	private IMoveList moveList;
 	private IReader<String> reader;
 	private IWriter<String> writer;
-	private BlockingQueue<String> dataQueue;
 	private IReader<Square[]> moveReader;
 	private IWriter<Square[]> moveWriter;
+	private BlockingQueue<String> dataQueue;
 	private BlockingQueue<Square[]> moveQueue;
-	private String errorMessage;
-	private Thread moveThread;
-	private Semaphore semaphore;
 
 	public ChessModel() {
 		setDataQueue(new LinkedBlockingQueue<>());
@@ -30,7 +31,8 @@ public class ChessModel implements IChessModel {
 		setWriter(getDataQueue());
 		setMoveReader(getMoveQueue());
 		setMoveWriter(getMoveQueue());
-		setSemaphore(new Semaphore(1));
+		initMoveThread();
+		initDrawOfferThread();
 	}
 
 	public State getGameState() {
@@ -39,14 +41,6 @@ public class ChessModel implements IChessModel {
 
 	public String getMoves() {
 		return getMoveList().toString();
-	}
-
-	IBoard getBoard() {
-		return board;
-	}
-
-	IMoveList getMoveList() {
-		return moveList;
 	}
 
 	/**
@@ -130,17 +124,9 @@ public class ChessModel implements IChessModel {
 		printGame();
 	}
 
-	public void startGame(String fen) {
-		setBoard(new Board(new ForsythEdwardsNotation(fen)));
-		setMoveList(new MoveList());
-		setGameState(State.Start);
-		printGame();
-	}
-
 	public void startNewGame() {
 		startGame();
 		setGameState(State.Playing);
-		setMoveThread(initMoveThread());
 		getMoveThread().start();
 	}
 
@@ -163,14 +149,7 @@ public class ChessModel implements IChessModel {
 	}
 
 	public void offerDraw() {
-		new Thread(() -> {
-			System.out.println("Draw offered! Accept ? (Y)");
-			String answer = getReader().read();
-			if (answer.equals("Y")) {
-				setGameState(State.Draw);
-			}
-		})
-			.start();
+		getDrawOfferThread().start();
 	}
 
 	public void claimDraw() {
@@ -210,29 +189,36 @@ public class ChessModel implements IChessModel {
 		setErrorMessage(null);
 	}
 
-	public Thread getMoveThread() {
+	Thread getMoveThread() {
 		return moveThread;
 	}
 
-	public void joinMoveThread() {
-		try {
-			getMoveThread().join();
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		}
+	IBoard getBoard() {
+		return board;
 	}
 
-	public void gameOver() {
+	IMoveList getMoveList() {
+		return moveList;
+	}
+
+	void startGame(String fen) {
+		setBoard(new Board(new ForsythEdwardsNotation(fen)));
+		setMoveList(new MoveList());
+		setGameState(State.Start);
+		printGame();
+	}
+
+	void gameOver() {
 		acquire();
 		setGameState(State.Start);
 		release();
 	}
 
-	public boolean isCheckmate() {
+	boolean isCheckmate() {
 		return isCheck() && hasNoLegalMoves();
 	}
 
-	public boolean isStalemate() {
+	boolean isStalemate() {
 		return !isCheck() && hasNoLegalMoves();
 	}
 
@@ -372,9 +358,9 @@ public class ChessModel implements IChessModel {
 		this.moveThread = moveThread;
 	}
 
-	private Thread initMoveThread() {
+	private void initMoveThread() {
 		acquire();
-		return new Thread(() -> {
+		Thread moveThread = new Thread(() -> {
 			while (isPlaying()) {
 				Square[] move = getMoveReader().read();
 				if (move == null) {
@@ -395,6 +381,21 @@ public class ChessModel implements IChessModel {
 			}
 			System.out.println(getMoveList());
 		});
+		setMoveThread(moveThread);
+	}
+
+	private void initDrawOfferThread() {
+		Thread drawOfferThread = new Thread(() -> {
+			setGameState(State.DrawOffer);
+			System.out.println("Draw offered! Accept ? (Y)");
+			String answer = getReader().read();
+			if (answer.equals("Y")) {
+				setGameState(State.Draw);
+			} else {
+				setGameState(State.Playing);
+			}
+		});
+		setDrawOfferThread(drawOfferThread);
 	}
 
 	private void acquire() {
@@ -413,7 +414,11 @@ public class ChessModel implements IChessModel {
 		return semaphore;
 	}
 
-	private void setSemaphore(Semaphore semaphore) {
-		this.semaphore = semaphore;
+	private Thread getDrawOfferThread() {
+		return drawOfferThread;
+	}
+
+	private void setDrawOfferThread(Thread drawOfferThread) {
+		this.drawOfferThread = drawOfferThread;
 	}
 }
