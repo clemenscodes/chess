@@ -24,5 +24,10 @@ public interface IChessView {
 	void drawStalemate();
 
 	void drawResignation();
+
 	void drawDraw();
+
+	void drawPromotion();
+
+	void drawDrawOffer();
 }

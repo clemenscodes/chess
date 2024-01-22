@@ -35,12 +35,15 @@ public class ChessController implements IChessController {
 
 	public void nextFrame() {
 		State state = getModel().getGameState();
+		System.out.println(state);
 		switch (state) {
 			case Start -> getView().drawStart();
 			case Playing -> getView().drawPlaying();
 			case Checkmate -> getView().drawCheckmate();
 			case Stalemate -> getView().drawStalemate();
 			case Resignation -> getView().drawResignation();
+			case DrawOffer -> getView().drawDrawOffer();
+			case Promotion -> getView().drawPromotion();
 			case Draw -> getView().drawDraw();
 			default -> throw new IllegalStateException("Unexpected value: " + state);
 		}

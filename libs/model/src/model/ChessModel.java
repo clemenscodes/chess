@@ -11,24 +11,30 @@ import java.util.concurrent.Semaphore;
 public class ChessModel implements IChessModel {
 
 	private final Semaphore semaphore = new Semaphore(1);
+	private String errorMessage;
 	private Thread moveThread;
 	private Thread drawOfferThread;
 	private State state;
-	private String errorMessage;
-	private IBoard board;
-	private IMoveList moveList;
+	private IReader<State> stateReader;
+	private IWriter<State> stateWriter;
+	private BlockingQueue<State> stateQueue;
 	private IReader<String> reader;
 	private IWriter<String> writer;
+	private BlockingQueue<String> dataQueue;
 	private IReader<Square[]> moveReader;
 	private IWriter<Square[]> moveWriter;
-	private BlockingQueue<String> dataQueue;
 	private BlockingQueue<Square[]> moveQueue;
+	private IBoard board;
+	private IMoveList moveList;
 
 	public ChessModel() {
+		setStateQueue(new LinkedBlockingQueue<>());
+		setStateReader(getStateQueue());
+		setStateWriter(getStateQueue());
 		setDataQueue(new LinkedBlockingQueue<>());
-		setMoveQueue(new LinkedBlockingQueue<>());
 		setReader(getDataQueue());
 		setWriter(getDataQueue());
+		setMoveQueue(new LinkedBlockingQueue<>());
 		setMoveReader(getMoveQueue());
 		setMoveWriter(getMoveQueue());
 		initMoveThread();
@@ -127,7 +133,10 @@ public class ChessModel implements IChessModel {
 	public void startNewGame() {
 		startGame();
 		setGameState(State.Playing);
+		acquire();
+		initMoveThread();
 		getMoveThread().start();
+		release();
 	}
 
 	public void makeMove(Square source, Square destination) {
@@ -145,15 +154,27 @@ public class ChessModel implements IChessModel {
 	}
 
 	public void resign() {
+		System.out.println("Resigned");
+		acquire();
 		setGameState(State.Resignation);
+		release();
 	}
 
 	public void offerDraw() {
-		getDrawOfferThread().start();
+		if (getDrawOfferThread().getState() == Thread.State.NEW) {
+			getDrawOfferThread().start();
+		} else {
+			getDrawOfferThread().interrupt();
+			initDrawOfferThread();
+			getDrawOfferThread().start();
+		}
 	}
 
 	public void claimDraw() {
+		System.out.println("Draw claimed");
+		acquire();
 		setGameState(State.Draw);
+		release();
 	}
 
 	public ArrayList<Square[]> getLegalMoves(Square square) {
@@ -209,9 +230,7 @@ public class ChessModel implements IChessModel {
 	}
 
 	void gameOver() {
-		acquire();
 		setGameState(State.Start);
-		release();
 	}
 
 	boolean isCheckmate() {
@@ -292,6 +311,30 @@ public class ChessModel implements IChessModel {
 
 	private void setGameState(State state) {
 		this.state = state;
+	}
+
+	private IReader<State> getStateReader() {
+		return stateReader;
+	}
+
+	private void setStateReader(BlockingQueue<State> stateQueue) {
+		this.stateReader = new Reader<>(stateQueue);
+	}
+
+	private IWriter<State> getStateWriter() {
+		return stateWriter;
+	}
+
+	private void setStateWriter(BlockingQueue<State> stateQueue) {
+		this.stateWriter = new Writer<>(stateQueue);
+	}
+
+	private BlockingQueue<State> getStateQueue() {
+		return stateQueue;
+	}
+
+	private void setStateQueue(BlockingQueue<State> stateQueue) {
+		this.stateQueue = stateQueue;
 	}
 
 	private void setMoveList(IMoveList moveList) {
@@ -383,7 +426,6 @@ public class ChessModel implements IChessModel {
 	}
 
 	private void initMoveThread() {
-		acquire();
 		Thread moveThread = new Thread(() -> {
 			while (isPlaying()) {
 				Square[] move = getMoveReader().read();
@@ -413,10 +455,12 @@ public class ChessModel implements IChessModel {
 			setGameState(State.DrawOffer);
 			System.out.println("Draw offered! Accept ? (Y)");
 			String answer = getReader().read();
+			if (answer == null) {
+				setGameState(State.Playing);
+				return;
+			}
 			if (answer.equals("Y")) {
 				setGameState(State.Draw);
-			} else {
-				setGameState(State.Playing);
 			}
 		});
 		setDrawOfferThread(drawOfferThread);
