@@ -6,6 +6,7 @@ import api.model.State;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.Semaphore;
 
 public class ChessModel implements IChessModel {
 
@@ -19,6 +20,8 @@ public class ChessModel implements IChessModel {
 	private IWriter<Square[]> moveWriter;
 	private BlockingQueue<Square[]> moveQueue;
 	private String errorMessage;
+	private Thread moveThread;
+	private Semaphore semaphore;
 
 	public ChessModel() {
 		setDataQueue(new LinkedBlockingQueue<>());
@@ -27,6 +30,7 @@ public class ChessModel implements IChessModel {
 		setWriter(getDataQueue());
 		setMoveReader(getMoveQueue());
 		setMoveWriter(getMoveQueue());
+		setSemaphore(new Semaphore(1));
 	}
 
 	public State getGameState() {
@@ -43,13 +47,6 @@ public class ChessModel implements IChessModel {
 
 	IMoveList getMoveList() {
 		return moveList;
-	}
-
-	public void startGame() {
-		setBoard(new Board());
-		setMoveList(new MoveList());
-		setGameState(State.Start);
-		printGame();
 	}
 
 	/**
@@ -126,6 +123,13 @@ public class ChessModel implements IChessModel {
 		return getBoard().getFen().toString();
 	}
 
+	public void startGame() {
+		setBoard(new Board());
+		setMoveList(new MoveList());
+		setGameState(State.Start);
+		printGame();
+	}
+
 	public void startGame(String fen) {
 		setBoard(new Board(new ForsythEdwardsNotation(fen)));
 		setMoveList(new MoveList());
@@ -136,47 +140,8 @@ public class ChessModel implements IChessModel {
 	public void startNewGame() {
 		startGame();
 		setGameState(State.Playing);
-		new Thread(() -> {
-			System.out.println("Started new game");
-			while (
-				getGameState() != State.Draw &&
-				getGameState() != State.Resignation &&
-				getGameState() != State.Stalemate
-			) {
-				Square[] move = getMoveReader().read();
-				if (move == null) {
-					continue;
-				}
-				if (getGameState() != State.Playing) {
-					System.err.println("Can not make moves");
-					return;
-				}
-				if (getHalfMoveClock() >= ForsythEdwardsNotation.MAX_HALF_MOVE_CLOCK) {
-					setGameState(State.Draw);
-					return;
-				}
-				try {
-					getMoveList().makeMove(move[0], move[1], getBoard(), getReader());
-				} catch (Error e) {
-					setErrorMessage(e.getMessage());
-				} finally {
-					getMoveReader().flush();
-				}
-				printGame();
-				if (isCheckmate()) {
-					setGameState(State.Checkmate);
-					System.out.println("Checkmate!");
-					System.out.println(getBoard().getFen().isWhite() ? "Black won." : "White won.");
-					System.out.println(getMoveList());
-				}
-				if (isStalemate()) {
-					setGameState(State.Stalemate);
-					System.out.println("Stalemate!");
-					System.out.println(getMoveList());
-				}
-			}
-		})
-			.start();
+		setMoveThread(initMoveThread());
+		getMoveThread().start();
 	}
 
 	public void makeMove(Square source, Square destination) {
@@ -198,11 +163,14 @@ public class ChessModel implements IChessModel {
 	}
 
 	public void offerDraw() {
-		System.out.println("Draw offered! Accept ? (Y)");
-		String answer = getReader().read();
-		if (answer.equals("Y")) {
-			setGameState(State.Draw);
-		}
+		new Thread(() -> {
+			System.out.println("Draw offered! Accept ? (Y)");
+			String answer = getReader().read();
+			if (answer.equals("Y")) {
+				setGameState(State.Draw);
+			}
+		})
+			.start();
 	}
 
 	public void claimDraw() {
@@ -219,19 +187,19 @@ public class ChessModel implements IChessModel {
 	}
 
 	public void promoteQueen() {
-		new Thread(() -> getWriter().write("Q"));
+		getWriter().write("Q");
 	}
 
 	public void promoteRook() {
-		new Thread(() -> getWriter().write("R"));
+		getWriter().write("R");
 	}
 
 	public void promoteKnight() {
-		new Thread(() -> getWriter().write("N"));
+		getWriter().write("N");
 	}
 
 	public void promoteBishop() {
-		new Thread(() -> getWriter().write("B"));
+		getWriter().write("B");
 	}
 
 	public String getErrorMessage() {
@@ -240,6 +208,32 @@ public class ChessModel implements IChessModel {
 
 	public void clearError() {
 		setErrorMessage(null);
+	}
+
+	public Thread getMoveThread() {
+		return moveThread;
+	}
+
+	public void joinMoveThread() {
+		try {
+			getMoveThread().join();
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public void gameOver() {
+		acquire();
+		setGameState(State.Start);
+		release();
+	}
+
+	public boolean isCheckmate() {
+		return isCheck() && hasNoLegalMoves();
+	}
+
+	public boolean isStalemate() {
+		return !isCheck() && hasNoLegalMoves();
 	}
 
 	private ArrayList<Square[]> getAllLegalMoves() {
@@ -264,14 +258,6 @@ public class ChessModel implements IChessModel {
 		return legalMoves;
 	}
 
-	public boolean isCheckmate() {
-		return isCheck() && hasNoLegalMoves();
-	}
-
-	public boolean isStalemate() {
-		return !isCheck() && hasNoLegalMoves();
-	}
-
 	private boolean hasNoLegalMoves() {
 		return getAllLegalMoves().isEmpty();
 	}
@@ -283,9 +269,39 @@ public class ChessModel implements IChessModel {
 		return Bitboard.overlap(king, attacks);
 	}
 
+	private boolean isPlaying() {
+		return (
+			getGameState() == State.Playing ||
+			getGameState() == State.Promotion ||
+			getGameState() == State.DrawOffer
+		);
+	}
+
 	private void printGame() {
 		System.out.println(getBoard());
 		System.out.println(getBoard().getFen());
+	}
+
+	private void printCheckmate() {
+		if (isCheckmate()) {
+			setGameState(State.Checkmate);
+			System.out.println("Checkmate!");
+			System.out.println(getBoard().getFen().isWhite() ? "Black won." : "White won.");
+		}
+	}
+
+	private void printStalemate() {
+		if (isStalemate()) {
+			setGameState(State.Stalemate);
+			System.out.println("Stalemate!");
+		}
+	}
+
+	private void printDraw() {
+		if (getHalfMoveClock() >= ForsythEdwardsNotation.MAX_HALF_MOVE_CLOCK) {
+			setGameState(State.Draw);
+			System.out.println("Draw!");
+		}
 	}
 
 	private void setGameState(State state) {
@@ -350,5 +366,54 @@ public class ChessModel implements IChessModel {
 
 	private void setErrorMessage(String errorMessage) {
 		this.errorMessage = errorMessage;
+	}
+
+	private void setMoveThread(Thread moveThread) {
+		this.moveThread = moveThread;
+	}
+
+	private Thread initMoveThread() {
+		acquire();
+		return new Thread(() -> {
+			while (isPlaying()) {
+				Square[] move = getMoveReader().read();
+				if (move == null) {
+					continue;
+				}
+				try {
+					getMoveList().makeMove(move[0], move[1], getBoard(), getReader());
+				} catch (Error e) {
+					setErrorMessage(e.getMessage());
+				} finally {
+					release();
+					getMoveReader().flush();
+				}
+				printGame();
+				printCheckmate();
+				printStalemate();
+				printDraw();
+			}
+			System.out.println(getMoveList());
+		});
+	}
+
+	private void acquire() {
+		try {
+			getSemaphore().acquire();
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private void release() {
+		getSemaphore().release();
+	}
+
+	private Semaphore getSemaphore() {
+		return semaphore;
+	}
+
+	private void setSemaphore(Semaphore semaphore) {
+		this.semaphore = semaphore;
 	}
 }

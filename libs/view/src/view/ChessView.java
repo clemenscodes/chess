@@ -134,8 +134,7 @@ public class ChessView extends PApplet implements IChessView {
 	public void drawCheckmate() {
 		drawGameOver();
 		String winner = getController().isWhite() ? "Black" : "White";
-		textSize(28);
-		textAlign(CENTER, CENTER);
+		textSettings();
 		text(
 			"Checkmate! " + winner + " won.",
 			getWidth() - (getLeftBoardOffset() / 2.0f),
@@ -145,16 +144,14 @@ public class ChessView extends PApplet implements IChessView {
 
 	public void drawStalemate() {
 		drawGameOver();
-		textSize(28);
-		textAlign(CENTER, CENTER);
+		textSettings();
 		text("Stalemate!", getWidth() - (getLeftBoardOffset() / 2.0f), getHeight() / 2.0f);
 	}
 
 	public void drawResignation() {
 		drawGameOver();
 		String winner = getController().isWhite() ? "Black" : "White";
-		textAlign(CENTER, CENTER);
-		textSize(28);
+		textSettings();
 		text(
 			"Resignation! " + winner + " won.",
 			getWidth() - (getLeftBoardOffset() / 2.0f),
@@ -164,9 +161,14 @@ public class ChessView extends PApplet implements IChessView {
 
 	public void drawDraw() {
 		drawGameOver();
+		textSettings();
+		text("Draw!", getWidth() - (getLeftBoardOffset() / 2.0f), getHeight() / 2.0f);
+	}
+
+	private void textSettings() {
 		textAlign(CENTER, CENTER);
 		textSize(28);
-		text("Draw!", getWidth() - (getLeftBoardOffset() / 2.0f), getHeight() / 2.0f);
+		fill(0);
 	}
 
 	private void drawGameOver() {
@@ -187,9 +189,7 @@ public class ChessView extends PApplet implements IChessView {
 	}
 
 	private void drawFen() {
-		fill(0);
-		textAlign(CENTER, CENTER);
-		textSize(24);
+		textSettings();
 		text(getController().getFen(), getWidth() / 2.0f, getHeight() - getHeight() / 20.0f);
 	}
 
