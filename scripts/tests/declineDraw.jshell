@@ -1,0 +1,10 @@
+import model.ChessModel;
+
+var model = new ChessModel();
+
+model.startNewGame();
+model.offerDraw();
+model.declineDraw();
+System.out.println(model.getGameState());
+
+/exit

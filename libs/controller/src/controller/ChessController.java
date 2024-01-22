@@ -34,7 +34,6 @@ public class ChessController implements IChessController {
 
 	public void nextFrame() {
 		State state = getModel().getGameState();
-		System.out.println(state);
 		switch (state) {
 			case Start -> getView().drawStart();
 			case Playing -> getView().drawPlaying();
@@ -69,6 +68,20 @@ public class ChessController implements IChessController {
 
 	public void offerDraw() {
 		getModel().offerDraw();
+	}
+
+	/**
+	 *
+	 */
+	public void acceptDraw() {
+		getModel().acceptDraw();
+	}
+
+	/**
+	 *
+	 */
+	public void declineDraw() {
+		getModel().declineDraw();
 	}
 
 	/**

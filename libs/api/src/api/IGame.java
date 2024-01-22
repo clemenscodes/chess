@@ -12,6 +12,10 @@ public interface IGame {
 
 	void offerDraw();
 
+	void acceptDraw();
+
+	void declineDraw();
+
 	void claimDraw();
 
 	State getGameState();

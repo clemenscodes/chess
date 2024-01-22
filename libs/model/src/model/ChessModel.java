@@ -168,6 +168,14 @@ public class ChessModel implements IChessModel {
 		}
 	}
 
+	public void acceptDraw() {
+		getWriter().write("Y");
+	}
+
+	public void declineDraw() {
+		getWriter().write("N");
+	}
+
 	public void claimDraw() {
 		System.out.println("Draw claimed");
 		acquire();
@@ -456,10 +464,12 @@ public class ChessModel implements IChessModel {
 			System.out.println("Draw offered! Accept ? (Y)");
 			String answer = getReader().read();
 			if (answer == null) {
+				System.out.println("Draw declined");
 				setGameState(oldState);
 				return;
 			}
 			if (answer.equals("Y")) {
+				System.out.println("Draw accepted");
 				setGameState(State.Draw);
 			}
 		});
