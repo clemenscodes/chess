@@ -17,6 +17,8 @@ public class ChessView extends PApplet implements IChessView {
 	private Button startButton;
 	private Button clearErrorButton;
 	private Button offerDrawButton;
+	private Button acceptDrawButton;
+	private Button declineDrawButton;
 	private PImage[] pieceImages;
 	private PFont font;
 	private String title;
@@ -53,6 +55,8 @@ public class ChessView extends PApplet implements IChessView {
 		initResignButton();
 		initErrorButton();
 		initOfferDrawButton();
+		initAcceptDrawButton();
+		initDeclineDrawButton();
 		loadPieceImages();
 		getController().startGame();
 	}
@@ -472,7 +476,79 @@ public class ChessView extends PApplet implements IChessView {
 			.setColorActive(background)
 			.setColorForeground(hoverColor);
 		getOfferDrawButton().getCaptionLabel().setColor(textColor).setText("Offer draw");
-		getOfferDrawButton().hide().onRelease(event -> getController().offerDraw());
+		getOfferDrawButton()
+			.hide()
+			.onRelease(event -> {
+				getController().offerDraw();
+				getOfferDrawButton().hide();
+				getAcceptDrawButton().show();
+				getDeclineDrawButton().show();
+			});
+	}
+
+	private Button getAcceptDrawButton() {
+		return acceptDrawButton;
+	}
+
+	private void setAcceptDrawButton(Button acceptDrawButton) {
+		this.acceptDrawButton = acceptDrawButton;
+	}
+
+	private void initAcceptDrawButton() {
+		setAcceptDrawButton(initButton("Accept draw button", "Accept"));
+		int background = color(106, 213, 65);
+		int hoverColor = color(96, 200, 55);
+		int textColor = color(255);
+		var pos = getAcceptDrawButton().getPosition();
+		getAcceptDrawButton()
+			.setColorBackground(background)
+			.setPosition(
+				pos[0] - getAcceptDrawButton().getWidth() / 2.0f,
+				pos[1] - ((4 * getHeight()) / 20.0f)
+			)
+			.setColorActive(background)
+			.setColorForeground(hoverColor);
+		getAcceptDrawButton().getCaptionLabel().setColor(textColor).setText("Accept");
+		getAcceptDrawButton()
+			.hide()
+			.onRelease(event -> {
+				getController().acceptDraw();
+				getAcceptDrawButton().hide();
+				getDeclineDrawButton().hide();
+			});
+	}
+
+	private Button getDeclineDrawButton() {
+		return declineDrawButton;
+	}
+
+	private void setDeclineDrawButton(Button declineDrawButton) {
+		this.declineDrawButton = declineDrawButton;
+	}
+
+	private void initDeclineDrawButton() {
+		setDeclineDrawButton(initButton("Decline draw button", "Decline"));
+		int background = color(245, 60, 60);
+		int hoverColor = color(205, 50, 50);
+		int textColor = color(255);
+		var pos = getDeclineDrawButton().getPosition();
+		getDeclineDrawButton()
+			.setColorBackground(background)
+			.setPosition(
+				pos[0] + getDeclineDrawButton().getWidth() / 2.0f,
+				pos[1] - ((4 * getHeight()) / 20.0f)
+			)
+			.setColorActive(background)
+			.setColorForeground(hoverColor);
+		getDeclineDrawButton().getCaptionLabel().setColor(textColor).setText("Decline");
+		getDeclineDrawButton()
+			.hide()
+			.onRelease(event -> {
+				getController().declineDraw();
+				getOfferDrawButton().show();
+				getAcceptDrawButton().hide();
+				getDeclineDrawButton().hide();
+			});
 	}
 
 	private PImage[] getPieceImages() {

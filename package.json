@@ -40,12 +40,12 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/clemenscodes/pis.git"
+		"url": "git+https://github.com/clemenscodes/chess.git"
 	},
 	"bugs": {
-		"url": "https://github.com/clemenscodes/pis/issues"
+		"url": "https://github.com/clemenscodes/chess/issues"
 	},
-	"homepage": "https://github.com/clemenscodes/pis#readme",
+	"homepage": "https://github.com/clemenscodes/chess#readme",
 	"keywords": [
 		"java"
 	]
