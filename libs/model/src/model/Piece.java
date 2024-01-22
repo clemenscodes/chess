@@ -99,21 +99,11 @@ abstract class Piece implements IPiece {
 	}
 
 	static Pieces[] getWhitePromotionPieces() {
-		return new Pieces[] {
-			Pieces.WhiteQueen,
-			Pieces.WhiteRook,
-			Pieces.WhiteKnight,
-			Pieces.WhiteBishop,
-		};
+		return new Pieces[] { WhiteQueen, WhiteRook, WhiteKnight, WhiteBishop };
 	}
 
 	static Pieces[] getBlackPromotionPieces() {
-		return new Pieces[] {
-			Pieces.BlackQueen,
-			Pieces.BlackRook,
-			Pieces.BlackKnight,
-			Pieces.BlackBishop,
-		};
+		return new Pieces[] { BlackQueen, BlackRook, BlackKnight, BlackBishop };
 	}
 
 	private Pieces variant;
@@ -146,6 +136,14 @@ abstract class Piece implements IPiece {
 		setBitboard(bitboard);
 	}
 
+	public boolean isInvalidMove(int source, int destination, IBoard board) {
+		return !(
+			sourceSquareHasPiece(source) &&
+			pieceCanMoveToDestination(source, destination, board) &&
+			kingSafe(source, destination, board)
+		);
+	}
+
 	public IMove move(int source, int destination, IBoard board) {
 		if (isInvalidMove(source, destination, board)) {
 			throw new Error("Invalid move");
@@ -162,14 +160,14 @@ abstract class Piece implements IPiece {
 	}
 
 	public ArrayList<Square[]> getMoves(IBoard board) {
-		ArrayList<Square[]> allDestinations = new ArrayList<>();
+		ArrayList<Square[]> allMoves = new ArrayList<>();
 		ArrayList<IBitboard> pieces = Bitboard.split(getBitboard());
 		pieces.forEach(piece -> {
 			Square pieceSourceSquare = getSquareFromSingleBit(piece);
 			IBitboard pieceAttacks = calculatePieceAttacks(piece, board);
-			addAttacksToDestinations(allDestinations, pieceSourceSquare, pieceAttacks);
+			addAttacks(allMoves, pieceSourceSquare, pieceAttacks);
 		});
-		return allDestinations;
+		return allMoves;
 	}
 
 	public ArrayList<Square[]> getPieceMoves(IBoard board, IBitboard piece) {
@@ -177,31 +175,25 @@ abstract class Piece implements IPiece {
 		if (!Bitboard.overlap(piece, ownPieces)) {
 			board.getFen().switchActiveColor();
 		}
-		ArrayList<Square[]> allDestinations = new ArrayList<>();
+		ArrayList<Square[]> allMoves = new ArrayList<>();
 		Square pieceSourceSquare = getSquareFromSingleBit(piece);
 		IBitboard pieceAttacks = calculatePieceAttacks(piece, board);
-		addAttacksToDestinations(allDestinations, pieceSourceSquare, pieceAttacks);
+		addAttacks(allMoves, pieceSourceSquare, pieceAttacks);
 		if (!Bitboard.overlap(piece, ownPieces)) {
 			board.getFen().switchActiveColor();
 		}
-		return allDestinations;
+		return allMoves;
 	}
 
 	private IBitboard calculatePieceAttacks(IBitboard piece, IBoard board) {
 		return this instanceof Pawn pawn ? pawn.getTargets(piece, board) : getAttacks(piece, board);
 	}
 
-	private void addAttacksToDestinations(
-		ArrayList<Square[]> allDestinations,
-		Square sourceSquare,
-		IBitboard attacks
-	) {
+	private void addAttacks(ArrayList<Square[]> moves, Square source, IBitboard attacks) {
 		ArrayList<IBitboard> splitAttacks = Bitboard.split(attacks);
 		splitAttacks.forEach(bitboard -> {
-			Square[] squarePair = new Square[2];
-			squarePair[0] = sourceSquare;
-			squarePair[1] = getSquareFromSingleBit(bitboard);
-			allDestinations.add(squarePair);
+			Square[] move = new Square[] { source, getSquareFromSingleBit(bitboard) };
+			moves.add(move);
 		});
 	}
 
@@ -217,18 +209,9 @@ abstract class Piece implements IPiece {
 	}
 
 	protected IBitboard removeFriendlyPieces(IBitboard piece, IBoard board) {
-		return Bitboard.intersect(
-			piece,
-			Bitboard.negate(board.getPieces(board.getFen().isWhite()))
-		);
-	}
-
-	public boolean isInvalidMove(int source, int destination, IBoard board) {
-		return !(
-			sourceSquareHasPiece(source) &&
-			pieceCanMoveToDestination(source, destination, board) &&
-			kingSafe(source, destination, board)
-		);
+		IBitboard friendlyPieces = board.getPieces(board.getFen().isWhite());
+		IBitboard notFriendlyPieces = Bitboard.negate(friendlyPieces);
+		return Bitboard.intersect(piece, notFriendlyPieces);
 	}
 
 	protected boolean pieceCanMoveToDestination(int source, int destination, IBoard board) {
@@ -266,7 +249,6 @@ abstract class Piece implements IPiece {
 		if (Move.isCapture(Bitboard.getSingleBit(destination), board)) {
 			return new CaptureMove(src, dst, board);
 		}
-
 		return new QuietMove(src, dst, board);
 	}
 
