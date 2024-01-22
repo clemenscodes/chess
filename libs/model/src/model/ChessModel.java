@@ -130,12 +130,11 @@ public class ChessModel implements IChessModel {
 	}
 
 	public void startNewGame() {
+		acquire();
 		startGame();
 		setGameState(State.Playing);
-		acquire();
 		initMoveThread();
 		getMoveThread().start();
-		release();
 	}
 
 	public void makeMove(Square source, Square destination) {
@@ -238,6 +237,16 @@ public class ChessModel implements IChessModel {
 
 	boolean isStalemate() {
 		return !isCheck() && hasNoLegalMoves();
+	}
+
+	void acquire() {
+		try {
+			getSemaphore().acquire();
+		} catch (InterruptedException ignored) {}
+	}
+
+	void release() {
+		getSemaphore().release();
 	}
 
 	private ArrayList<Square[]> getAllLegalMoves() {
@@ -413,20 +422,9 @@ public class ChessModel implements IChessModel {
 		return semaphore;
 	}
 
-	private void acquire() {
-		try {
-			getSemaphore().acquire();
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	private void release() {
-		getSemaphore().release();
-	}
-
 	private void initMoveThread() {
 		Thread moveThread = new Thread(() -> {
+			release();
 			while (isPlaying()) {
 				Square[] move = getMoveReader().read();
 				if (move == null) {
@@ -453,11 +451,12 @@ public class ChessModel implements IChessModel {
 
 	private void initDrawOfferThread() {
 		Thread drawOfferThread = new Thread(() -> {
+			State oldState = getGameState();
 			setGameState(State.DrawOffer);
 			System.out.println("Draw offered! Accept ? (Y)");
 			String answer = getReader().read();
 			if (answer == null) {
-				setGameState(State.Playing);
+				setGameState(oldState);
 				return;
 			}
 			if (answer.equals("Y")) {

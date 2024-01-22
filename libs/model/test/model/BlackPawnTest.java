@@ -4,6 +4,7 @@ import static api.model.Square.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import api.model.Pieces;
+import api.model.State;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,15 +13,19 @@ import org.junit.jupiter.api.Test;
 public class BlackPawnTest {
 
 	public BlockingQueue<String> sharedQueue;
+	public BlockingQueue<State> stateQueue;
 	private BlackPawn piece;
 	private IReader<String> reader;
 	private IWriter<String> writer;
+	private IWriter<State> stateWriter;
 	private IBoard board;
 
 	@BeforeEach
 	void setup() {
 		sharedQueue = new LinkedBlockingQueue<>();
+		stateQueue = new LinkedBlockingQueue<>();
 		writer = new Writer<>(sharedQueue);
+		stateWriter = new Writer<>(stateQueue);
 		reader = new Reader<>(sharedQueue);
 		board = new Board();
 		piece = new BlackPawn(board.getBlackPawn().getBitboard());
@@ -165,7 +170,7 @@ public class BlackPawnTest {
 		int src = Board.getIndex(a1);
 		int dst = Board.getIndex(b1);
 		try {
-			piece.move(src, dst, board, reader);
+			piece.move(src, dst, board, reader, stateWriter);
 		} catch (Error e) {
 			assertEquals("Invalid move", e.getMessage());
 		}
@@ -177,7 +182,7 @@ public class BlackPawnTest {
 		int src = Board.getIndex(e5);
 		int dst = Board.getIndex(e6);
 		try {
-			piece.move(src, dst, board, reader);
+			piece.move(src, dst, board, reader, stateWriter);
 		} catch (Error e) {
 			assertEquals("Invalid move", e.getMessage());
 		}
@@ -191,7 +196,7 @@ public class BlackPawnTest {
 		int src = Board.getIndex(f7);
 		int dst = Board.getIndex(f6);
 		try {
-			piece.move(src, dst, board, reader);
+			piece.move(src, dst, board, reader, stateWriter);
 		} catch (Error e) {
 			assertEquals("King is in check", e.getMessage());
 		}
@@ -204,7 +209,7 @@ public class BlackPawnTest {
 		piece = new BlackPawn(board.getBlackPawn().getBitboard());
 		int src = Board.getIndex(e7);
 		int dst = Board.getIndex(e6);
-		piece.move(src, dst, board, reader);
+		piece.move(src, dst, board, reader, stateWriter);
 	}
 
 	@Test
@@ -214,7 +219,7 @@ public class BlackPawnTest {
 		piece = new BlackPawn(board.getBlackPawn().getBitboard());
 		int src = Board.getIndex(e7);
 		int dst = Board.getIndex(e5);
-		piece.move(src, dst, board, reader);
+		piece.move(src, dst, board, reader, stateWriter);
 	}
 
 	@Test
@@ -224,7 +229,7 @@ public class BlackPawnTest {
 		piece = new BlackPawn(board.getBlackPawn().getBitboard());
 		int src = Board.getIndex(d5);
 		int dst = Board.getIndex(e4);
-		piece.move(src, dst, board, reader);
+		piece.move(src, dst, board, reader, stateWriter);
 	}
 
 	@Test
@@ -234,7 +239,7 @@ public class BlackPawnTest {
 		piece = new BlackPawn(board.getBlackPawn().getBitboard());
 		int src = Board.getIndex(d4);
 		int dst = Board.getIndex(c3);
-		piece.move(src, dst, board, reader);
+		piece.move(src, dst, board, reader, stateWriter);
 	}
 
 	@Test
@@ -246,7 +251,7 @@ public class BlackPawnTest {
 		writer.write("R");
 		int src = Board.getIndex(b2);
 		int dst = Board.getIndex(b1);
-		piece.move(src, dst, board, reader);
+		piece.move(src, dst, board, reader, stateWriter);
 		assertEquals(Pieces.BlackRook, board.getPiece(b1).getVariant());
 	}
 
@@ -258,7 +263,7 @@ public class BlackPawnTest {
 		int src = Board.getIndex(b2);
 		int dst = Board.getIndex(b1);
 		writer.write("Q");
-		piece.move(src, dst, board, reader);
+		piece.move(src, dst, board, reader, stateWriter);
 		assertEquals(Pieces.BlackQueen, board.getPiece(b1).getVariant());
 	}
 
@@ -271,7 +276,7 @@ public class BlackPawnTest {
 		writer.write(inputString);
 		int src = Board.getIndex(b2);
 		int dst = Board.getIndex(b1);
-		piece.move(src, dst, board, reader);
+		piece.move(src, dst, board, reader, stateWriter);
 		assertEquals(Pieces.BlackRook, board.getPiece(b1).getVariant());
 	}
 
@@ -284,7 +289,7 @@ public class BlackPawnTest {
 		writer.write(inputString);
 		int src = Board.getIndex(b2);
 		int dst = Board.getIndex(b1);
-		piece.move(src, dst, board, reader);
+		piece.move(src, dst, board, reader, stateWriter);
 		assertEquals(Pieces.BlackBishop, board.getPiece(b1).getVariant());
 	}
 
@@ -297,7 +302,7 @@ public class BlackPawnTest {
 		writer.write(inputString);
 		int src = Board.getIndex(b2);
 		int dst = Board.getIndex(b1);
-		piece.move(src, dst, board, reader);
+		piece.move(src, dst, board, reader, stateWriter);
 		assertEquals(Pieces.BlackKnight, board.getPiece(b1).getVariant());
 	}
 
@@ -309,7 +314,7 @@ public class BlackPawnTest {
 		int src = Board.getIndex(b2);
 		int dst = Board.getIndex(a1);
 		writer.write("Q");
-		piece.move(src, dst, board, reader);
+		piece.move(src, dst, board, reader, stateWriter);
 		assertEquals(Pieces.BlackQueen, board.getPiece(a1).getVariant());
 	}
 
@@ -322,7 +327,7 @@ public class BlackPawnTest {
 		writer.write(inputString);
 		int src = Board.getIndex(b2);
 		int dst = Board.getIndex(a1);
-		piece.move(src, dst, board, reader);
+		piece.move(src, dst, board, reader, stateWriter);
 		assertEquals(Pieces.BlackRook, board.getPiece(a1).getVariant());
 	}
 
@@ -335,7 +340,7 @@ public class BlackPawnTest {
 		writer.write(inputString);
 		int src = Board.getIndex(b2);
 		int dst = Board.getIndex(a1);
-		piece.move(src, dst, board, reader);
+		piece.move(src, dst, board, reader, stateWriter);
 		assertEquals(Pieces.BlackBishop, board.getPiece(a1).getVariant());
 	}
 
@@ -348,7 +353,7 @@ public class BlackPawnTest {
 		writer.write(inputString);
 		int src = Board.getIndex(b2);
 		int dst = Board.getIndex(a1);
-		piece.move(src, dst, board, reader);
+		piece.move(src, dst, board, reader, stateWriter);
 		assertEquals(Pieces.BlackKnight, board.getPiece(a1).getVariant());
 	}
 }

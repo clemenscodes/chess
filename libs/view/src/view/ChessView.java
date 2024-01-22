@@ -166,11 +166,13 @@ public class ChessView extends PApplet implements IChessView {
 	}
 
 	public void drawPromotion() {
+		drawPlaying();
 		textSettings();
 		text("Promotion!", getWidth() - (getLeftBoardOffset() / 2.0f), getHeight() / 2.0f);
 	}
 
 	public void drawDrawOffer() {
+		drawPlaying();
 		textSettings();
 		text("Draw offer!", getWidth() - (getLeftBoardOffset() / 2.0f), getHeight() / 2.0f);
 	}
