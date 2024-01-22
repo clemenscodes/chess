@@ -159,6 +159,7 @@ public class ChessModel implements IChessModel {
 	}
 
 	public void offerDraw() {
+		System.out.println("Offering draw");
 		if (getDrawOfferThread().getState() == Thread.State.NEW) {
 			getDrawOfferThread().start();
 		} else {
@@ -462,18 +463,21 @@ public class ChessModel implements IChessModel {
 
 	private void initDrawOfferThread() {
 		Thread drawOfferThread = new Thread(() -> {
+			getReader().flush();
 			State oldState = getGameState();
 			setGameState(State.DrawOffer);
 			System.out.println("Draw offered! Accept ? (Y)");
 			String answer = getReader().read();
 			if (answer == null) {
-				System.out.println("Draw declined");
 				setGameState(oldState);
 				return;
 			}
 			if (answer.equals("Y")) {
 				System.out.println("Draw accepted");
 				setGameState(State.Draw);
+			} else {
+				System.out.println("Draw declined");
+				setGameState(oldState);
 			}
 		});
 		setDrawOfferThread(drawOfferThread);
