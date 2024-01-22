@@ -157,6 +157,7 @@ abstract class Pawn extends Piece implements IPawn {
 
 	private String getSelection(IReader<String> reader) {
 		String userInput = reader.read();
+		System.out.println(userInput);
 		while (userInput == null || !userInput.matches("[QRNB]")) {
 			System.err.println("Invalid selection");
 			userInput = reader.read();

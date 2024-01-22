@@ -358,6 +358,30 @@ public class ChessModel implements IChessModel {
 		this.moveThread = moveThread;
 	}
 
+	private Thread getDrawOfferThread() {
+		return drawOfferThread;
+	}
+
+	private void setDrawOfferThread(Thread drawOfferThread) {
+		this.drawOfferThread = drawOfferThread;
+	}
+
+	private Semaphore getSemaphore() {
+		return semaphore;
+	}
+
+	private void acquire() {
+		try {
+			getSemaphore().acquire();
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private void release() {
+		getSemaphore().release();
+	}
+
 	private void initMoveThread() {
 		acquire();
 		Thread moveThread = new Thread(() -> {
@@ -396,29 +420,5 @@ public class ChessModel implements IChessModel {
 			}
 		});
 		setDrawOfferThread(drawOfferThread);
-	}
-
-	private void acquire() {
-		try {
-			getSemaphore().acquire();
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	private void release() {
-		getSemaphore().release();
-	}
-
-	private Semaphore getSemaphore() {
-		return semaphore;
-	}
-
-	private Thread getDrawOfferThread() {
-		return drawOfferThread;
-	}
-
-	private void setDrawOfferThread(Thread drawOfferThread) {
-		this.drawOfferThread = drawOfferThread;
 	}
 }

@@ -19,11 +19,9 @@ public class BlackPawnTest {
 
 	@BeforeEach
 	void setup() {
-		String inputString = "Q";
 		sharedQueue = new LinkedBlockingQueue<>();
 		writer = new Writer<>(sharedQueue);
 		reader = new Reader<>(sharedQueue);
-		writer.write(inputString);
 		board = new Board();
 		piece = new BlackPawn(board.getBlackPawn().getBitboard());
 	}
@@ -244,7 +242,8 @@ public class BlackPawnTest {
 		String fen = "rnbqkbnr/1ppppppp/8/8/3PP3/2N2N2/PpPB1PPP/R2QKB1R b KQkq - 1 5";
 		board = new Board(new ForsythEdwardsNotation(fen));
 		piece = new BlackPawn(board.getBlackPawn().getBitboard());
-		writer.write("X\nR");
+		writer.write("X");
+		writer.write("R");
 		int src = Board.getIndex(b2);
 		int dst = Board.getIndex(b1);
 		piece.move(src, dst, board, reader);
