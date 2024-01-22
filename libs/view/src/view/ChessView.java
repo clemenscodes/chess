@@ -19,6 +19,10 @@ public class ChessView extends PApplet implements IChessView {
 	private Button offerDrawButton;
 	private Button acceptDrawButton;
 	private Button declineDrawButton;
+	private Button promoteQueenButton;
+	private Button promoteRookButton;
+	private Button promoteKnightButton;
+	private Button promoteBishopButton;
 	private PImage[] pieceImages;
 	private PFont font;
 	private String title;
@@ -57,6 +61,10 @@ public class ChessView extends PApplet implements IChessView {
 		initOfferDrawButton();
 		initAcceptDrawButton();
 		initDeclineDrawButton();
+		initPromoteQueenButton();
+		initPromoteRookButton();
+		initPromoteKnightButton();
+		initPromoteBishopButton();
 		loadPieceImages();
 		getController().startGame();
 	}
@@ -171,6 +179,7 @@ public class ChessView extends PApplet implements IChessView {
 
 	public void drawPromotion() {
 		drawPlaying();
+		showPromotionButtons();
 		textSettings();
 		text("Promotion!", getWidth() - (getLeftBoardOffset() / 2.0f), getHeight() / 2.0f);
 	}
@@ -549,6 +558,144 @@ public class ChessView extends PApplet implements IChessView {
 				getAcceptDrawButton().hide();
 				getDeclineDrawButton().hide();
 			});
+	}
+
+	private Button getPromoteQueenButton() {
+		return promoteQueenButton;
+	}
+
+	private void setPromoteQueenButton(Button promoteQueenButton) {
+		this.promoteQueenButton = promoteQueenButton;
+	}
+
+	private void initPromoteQueenButton() {
+		setPromoteQueenButton(initButton("Promote queen button", "Promote queen"));
+		int background = color(245, 60, 60);
+		int hoverColor = color(205, 50, 50);
+		int textColor = color(255);
+		getPromoteQueenButton()
+			.setColorBackground(background)
+			.setPosition(
+				(getWidth() / 2f) - getPromoteQueenButton().getWidth(),
+				(getHeight() / 20f) - (getPromoteQueenButton().getHeight() / 2f)
+			)
+			.setWidth(getPromoteQueenButton().getWidth() / 2)
+			.setColorActive(background)
+			.setColorForeground(hoverColor);
+		getPromoteQueenButton().getCaptionLabel().setColor(textColor).setText("Queen");
+		getPromoteQueenButton()
+			.hide()
+			.onRelease(event -> {
+				getController().promoteQueen();
+				hidePromotionButtons();
+			});
+	}
+
+	private Button getPromoteRookButton() {
+		return promoteRookButton;
+	}
+
+	private void setPromoteRookButton(Button promoteRookButton) {
+		this.promoteRookButton = promoteRookButton;
+	}
+
+	private void initPromoteRookButton() {
+		setPromoteRookButton(initButton("Promote rook button", "Promote rook"));
+		int background = color(245, 60, 60);
+		int hoverColor = color(205, 50, 50);
+		int textColor = color(255);
+		getPromoteRookButton()
+			.setColorBackground(background)
+			.setPosition(
+				(getWidth() / 2f) - (getPromoteRookButton().getWidth() / 2f),
+				(getHeight() / 20f) - (getPromoteRookButton().getHeight() / 2f)
+			)
+			.setWidth(getPromoteRookButton().getWidth() / 2)
+			.setColorActive(background)
+			.setColorForeground(hoverColor);
+		getPromoteRookButton().getCaptionLabel().setColor(textColor).setText("Rook");
+		getPromoteRookButton()
+			.hide()
+			.onRelease(event -> {
+				getController().promoteRook();
+				hidePromotionButtons();
+			});
+	}
+
+	private Button getPromoteKnightButton() {
+		return promoteKnightButton;
+	}
+
+	private void setPromoteKnightButton(Button promoteKnightButton) {
+		this.promoteKnightButton = promoteKnightButton;
+	}
+
+	private void initPromoteKnightButton() {
+		setPromoteKnightButton(initButton("Promote knight button", "Promote knight"));
+		int background = color(245, 60, 60);
+		int hoverColor = color(205, 50, 50);
+		int textColor = color(255);
+		getPromoteKnightButton()
+			.setColorBackground(background)
+			.setPosition(
+				getWidth() / 2f,
+				(getHeight() / 20f) - (getPromoteKnightButton().getHeight() / 2f)
+			)
+			.setWidth(getPromoteKnightButton().getWidth() / 2)
+			.setColorActive(background)
+			.setColorForeground(hoverColor);
+		getPromoteKnightButton().getCaptionLabel().setColor(textColor).setText("Knight");
+		getPromoteKnightButton()
+			.hide()
+			.onRelease(event -> {
+				getController().promoteKnight();
+				hidePromotionButtons();
+			});
+	}
+
+	private Button getPromoteBishopButton() {
+		return promoteBishopButton;
+	}
+
+	private void setPromoteBishopButton(Button promoteBishopButton) {
+		this.promoteBishopButton = promoteBishopButton;
+	}
+
+	private void initPromoteBishopButton() {
+		setPromoteBishopButton(initButton("Promote bishop button", "Promote bishop"));
+		int background = color(245, 60, 60);
+		int hoverColor = color(205, 50, 50);
+		int textColor = color(255);
+		getPromoteBishopButton()
+			.setColorBackground(background)
+			.setPosition(
+				(getWidth() / 2f) + getPromoteBishopButton().getWidth() / 2f,
+				(getHeight() / 20f) - (getPromoteBishopButton().getHeight() / 2f)
+			)
+			.setWidth(getPromoteBishopButton().getWidth() / 2)
+			.setColorActive(background)
+			.setColorForeground(hoverColor);
+		getPromoteBishopButton().getCaptionLabel().setColor(textColor).setText("Bishop");
+		getPromoteBishopButton()
+			.hide()
+			.onRelease(event -> {
+				getController().promoteBishop();
+				hidePromotionButtons();
+			});
+	}
+
+	private void hidePromotionButtons() {
+		getPromoteQueenButton().hide();
+		getPromoteRookButton().hide();
+		getPromoteBishopButton().hide();
+		getPromoteKnightButton().hide();
+	}
+
+	private void showPromotionButtons() {
+		getPromoteQueenButton().show();
+		getPromoteRookButton().show();
+		getPromoteBishopButton().show();
+		getPromoteKnightButton().show();
 	}
 
 	private PImage[] getPieceImages() {
