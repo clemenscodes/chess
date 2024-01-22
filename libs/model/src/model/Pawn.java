@@ -183,9 +183,11 @@ abstract class Pawn extends Piece implements IPawn {
 		);
 		Pieces piece = Piece.getSelectedPiece(getPromotionPieces(), getSelection(reader));
 		IBitboard destinationBit = Bitboard.getSingleBit(Board.getIndex(dst));
-		return Move.isCapture(destinationBit, board)
+		IMove move = Move.isCapture(destinationBit, board)
 			? makePromotionCapture(src, dst, piece, board)
 			: makePromotion(src, dst, piece, board);
+		writer.write(State.Playing);
+		return move;
 	}
 
 	private String getSelection(IReader<String> reader) {

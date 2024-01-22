@@ -433,6 +433,9 @@ public class ChessModel implements IChessModel {
 	private void initMoveThread() {
 		Thread moveThread = new Thread(() -> {
 			release();
+			if (getGameState() == State.Promotion) {
+				setGameState(State.Playing);
+			}
 			while (isPlaying()) {
 				Square[] move = getMoveReader().read();
 				if (move == null) {
