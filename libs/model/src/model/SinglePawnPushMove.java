@@ -1,6 +1,6 @@
 package model;
 
-import api.model.Square;
+import api.Square;
 
 class SinglePawnPushMove extends PawnMove {
 

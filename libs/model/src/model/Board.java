@@ -1,9 +1,9 @@
 package model;
 
-import static api.model.Square.*;
+import static api.Square.*;
 
-import api.model.Pieces;
-import api.model.Square;
+import api.Pieces;
+import api.Square;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;

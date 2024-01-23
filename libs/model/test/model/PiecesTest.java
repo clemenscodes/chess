@@ -2,7 +2,7 @@ package model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import api.model.Pieces;
+import api.Pieces;
 import org.junit.jupiter.api.Test;
 
 public class PiecesTest {

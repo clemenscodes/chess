@@ -1,7 +1,7 @@
 package model;
 
-import api.model.Pieces;
-import api.model.Square;
+import api.Pieces;
+import api.Square;
 
 abstract class PromotionMove extends PawnMove {
 

@@ -1,6 +1,6 @@
 package model;
 
-import api.model.State;
+import api.State;
 
 interface MovableWithReader {
 	IMove move(

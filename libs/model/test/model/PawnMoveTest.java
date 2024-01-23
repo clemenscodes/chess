@@ -1,6 +1,6 @@
 package model;
 
-import static api.model.Square.*;
+import static api.Square.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
