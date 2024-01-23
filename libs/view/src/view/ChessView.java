@@ -408,6 +408,9 @@ public class ChessView extends PApplet implements IChessView {
 		square(getLeftSquareOffset(file), getTopSquareOffset(rank), getSquareSize());
 	}
 
+	/**
+	 * Sets the fill color for highlighting a square to a yellow signal value.
+	 */
 	private void highlight() {
 		fill(247, 247, 105);
 	}
@@ -511,6 +514,9 @@ public class ChessView extends PApplet implements IChessView {
 		return bothEven || bothOdd ? getBlackColor() : getWhiteColor();
 	}
 
+	/**
+	 * Draws all the chess pieces on the board.
+	 */
 	private void drawPieces() {
 		String[] ppd = getController().getPiecePlacementData();
 		int i = 0;
@@ -529,6 +535,13 @@ public class ChessView extends PApplet implements IChessView {
 		}
 	}
 
+	/**
+	 * Draws a specific chess piece on the board.
+	 *
+	 * @param rank  The rank index of the piece.
+	 * @param file  The file index of the piece.
+	 * @param image The image representing the chess piece.
+	 */
 	private void drawPiece(int rank, int file, PImage image) {
 		if (image == null) {
 			return;
@@ -561,16 +574,31 @@ public class ChessView extends PApplet implements IChessView {
 		};
 	}
 
+	/**
+	 * Retrieves the chess controller associated with this view.
+	 *
+	 * @return The chess controller.
+	 */
 	private IChessController getController() {
 		return controller;
 	}
 
-	private void setCp5(ControlP5 cp5) {
-		this.cp5 = cp5;
-	}
-
+	/**
+	 * Retrieves the ControlP5 instance used for GUI components.
+	 *
+	 * @return The ControlP5 instance.
+	 */
 	private ControlP5 getCp5() {
 		return cp5;
+	}
+
+	/**
+	 * Sets the ControlP5 instance for GUI components.
+	 *
+	 * @param cp5 The ControlP5 instance to set.
+	 */
+	private void setCp5(ControlP5 cp5) {
+		this.cp5 = cp5;
 	}
 
 	/**
@@ -615,10 +643,20 @@ public class ChessView extends PApplet implements IChessView {
 		return button;
 	}
 
+	/**
+	 * Retrieves the "Start Game" button.
+	 *
+	 * @return The "Start Game" button.
+	 */
 	private Button getStartButton() {
 		return startButton;
 	}
 
+	/**
+	 * Sets the "Start Game" button.
+	 *
+	 * @param startButton The "Start Game" button to set.
+	 */
 	private void setStartButton(Button startButton) {
 		this.startButton = startButton;
 	}
@@ -637,10 +675,20 @@ public class ChessView extends PApplet implements IChessView {
 			});
 	}
 
+	/**
+	 * Retrieves the "Resign" button.
+	 *
+	 * @return The "Resign" button.
+	 */
 	private Button getResignButton() {
 		return resignButton;
 	}
 
+	/**
+	 * Sets the "Resign" button.
+	 *
+	 * @param resignButton The "Resign" button to set.
+	 */
 	private void setResignButton(Button resignButton) {
 		this.resignButton = resignButton;
 	}
@@ -653,10 +701,20 @@ public class ChessView extends PApplet implements IChessView {
 		getResignButton().hide().onRelease(event -> getController().resign());
 	}
 
+	/**
+	 * Retrieves the "Clear Error" button.
+	 *
+	 * @return The "Clear Error" button.
+	 */
 	private Button getClearErrorButton() {
 		return clearErrorButton;
 	}
 
+	/**
+	 * Sets the "Clear Error" button.
+	 *
+	 * @param clearErrorButton The "Clear Error" button to set.
+	 */
 	private void setClearErrorButton(Button clearErrorButton) {
 		this.clearErrorButton = clearErrorButton;
 	}
@@ -684,10 +742,20 @@ public class ChessView extends PApplet implements IChessView {
 			});
 	}
 
+	/**
+	 * Retrieves the "Offer Draw" button.
+	 *
+	 * @return The "Offer Draw" button.
+	 */
 	private Button getOfferDrawButton() {
 		return offerDrawButton;
 	}
 
+	/**
+	 * Sets the "Offer Draw" button.
+	 *
+	 * @param offerDrawButton The "Offer Draw" button to set.
+	 */
 	private void setOfferDrawButton(Button offerDrawButton) {
 		this.offerDrawButton = offerDrawButton;
 	}
@@ -717,10 +785,20 @@ public class ChessView extends PApplet implements IChessView {
 			});
 	}
 
+	/**
+	 * Retrieves the "Accept Draw" button.
+	 *
+	 * @return The "Accept Draw" button.
+	 */
 	private Button getAcceptDrawButton() {
 		return acceptDrawButton;
 	}
 
+	/**
+	 * Sets the "Accept Draw" button.
+	 *
+	 * @param acceptDrawButton The "Accept Draw" button to set.
+	 */
 	private void setAcceptDrawButton(Button acceptDrawButton) {
 		this.acceptDrawButton = acceptDrawButton;
 	}
@@ -752,10 +830,20 @@ public class ChessView extends PApplet implements IChessView {
 			});
 	}
 
+	/**
+	 * Retrieves the "Decline Draw" button.
+	 *
+	 * @return The "Decline Draw" button.
+	 */
 	private Button getDeclineDrawButton() {
 		return declineDrawButton;
 	}
 
+	/**
+	 * Sets the "Decline Draw" button.
+	 *
+	 * @param declineDrawButton The "Decline Draw" button to set.
+	 */
 	private void setDeclineDrawButton(Button declineDrawButton) {
 		this.declineDrawButton = declineDrawButton;
 	}
@@ -814,10 +902,20 @@ public class ChessView extends PApplet implements IChessView {
 		return promotionButton;
 	}
 
+	/**
+	 * Retrieves the "Promote Queen" button.
+	 *
+	 * @return The "Promote Queen" button.
+	 */
 	private Button getPromoteQueenButton() {
 		return promoteQueenButton;
 	}
 
+	/**
+	 * Sets the "Promote Queen" button.
+	 *
+	 * @param promoteQueenButton The "Promote Queen" button to set.
+	 */
 	private void setPromoteQueenButton(Button promoteQueenButton) {
 		this.promoteQueenButton = promoteQueenButton;
 	}
@@ -838,10 +936,20 @@ public class ChessView extends PApplet implements IChessView {
 			});
 	}
 
+	/**
+	 * Retrieves the "Promote Rook" button.
+	 *
+	 * @return The "Promote Rook" button.
+	 */
 	private Button getPromoteRookButton() {
 		return promoteRookButton;
 	}
 
+	/**
+	 * Sets the "Promote Rook" button.
+	 *
+	 * @param promoteRookButton The "Promote Rook" button to set.
+	 */
 	private void setPromoteRookButton(Button promoteRookButton) {
 		this.promoteRookButton = promoteRookButton;
 	}
@@ -862,10 +970,20 @@ public class ChessView extends PApplet implements IChessView {
 			});
 	}
 
+	/**
+	 * Retrieves the "Promote Knight" button.
+	 *
+	 * @return The "Promote Knight" button.
+	 */
 	private Button getPromoteKnightButton() {
 		return promoteKnightButton;
 	}
 
+	/**
+	 * Sets the "Promote Knight" button.
+	 *
+	 * @param promoteKnightButton The "Promote Knight" button to set.
+	 */
 	private void setPromoteKnightButton(Button promoteKnightButton) {
 		this.promoteKnightButton = promoteKnightButton;
 	}
@@ -886,10 +1004,20 @@ public class ChessView extends PApplet implements IChessView {
 			});
 	}
 
+	/**
+	 * Retrieves the "Promote Bishop" button.
+	 *
+	 * @return The "Promote Bishop" button.
+	 */
 	private Button getPromoteBishopButton() {
 		return promoteBishopButton;
 	}
 
+	/**
+	 * Sets the "Promote Bishop" button.
+	 *
+	 * @param promoteBishopButton The "Promote Bishop" button to set.
+	 */
 	private void setPromoteBishopButton(Button promoteBishopButton) {
 		this.promoteBishopButton = promoteBishopButton;
 	}
@@ -966,6 +1094,13 @@ public class ChessView extends PApplet implements IChessView {
 		}
 	}
 
+	/**
+	 * Retrieves the file path for the image associated with the given piece index.
+	 *
+	 * @param index The index of the piece.
+	 * @return The file path for the image of the corresponding piece.
+	 * @throws Error if the index is invalid.
+	 */
 	private String getImagePath(int index) {
 		return switch (index) {
 			case 0 -> "images/bp.png";
