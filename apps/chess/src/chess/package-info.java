@@ -1,13 +1,12 @@
 /**
- * The "chess" package contains the main entry point for a chess game application,
+ * The {@link chess} package contains the main entry point for a chess game application,
  * utilizing the {@link api}, {@link model}, {@link view} and {@link controller} libraries to create a fully functioning chess game.
- * The application initializes the model, view, and controller components, establishing communication
+ * The application initializes the {@link model}, {@link view} and {@link controller} components, establishing communication
  * between them, and launches the game using the Processing and controlP5 libraries.
  *
  * <p><strong>Classes:</strong></p>
  * The package includes the following classes:
- * <p></p>
- * - {@link chess.Chess}: The main class serving as the entry point for the chess game application.
+ * <p>- {@link chess.Chess}: The main class serving as the entry point for the chess game application.</p>
  *
  * <p><strong>Usage:</strong></p>
  * Developers can utilize the classes in this package to bootstrap a chess game with a graphical user interface.
@@ -15,18 +14,14 @@
  *
  * <p><strong>Dependencies:</strong></p>
  * This package relies on the following components:
- * <p></p>
- * - API: Provides interfaces for chess game logic and actions.
- * <p></p>
- * - Model: Implements the chess game model based on the API.
- * <p></p>
- * - View: Implements the graphical user interface (GUI) for the chess game.
- * <p></p>
- * - Controller: Implements the game controller to manage interactions between the model and view.
+ * <p>- {@link api}: Provides interfaces for chess game logic and actions.</p>
+ * <p>- {@link model}: Implements the chess game model based on the {@link api}.</p>
+ * <p>- {@link view}: Implements the graphical user interface (GUI) for the chess game.</p>
+ * <p>- {@link controller}: Implements the game controller to manage interactions between the model and view.</p>
  *
  * <p><strong>Example:</strong></p>
  * To launch a chess game, developers can create an instance of the {@link chess.Chess} class and call the main method.
- * The dimensions and title of the game window, as well as the instances of the model, view, and controller, can be customized
+ * The dimensions and title of the game window, as well as the instances of the {@link model}, {@link view} and {@link controller}, can be customized
  * based on the specific requirements of the chess game implementation.
  *
  * <pre>{@code

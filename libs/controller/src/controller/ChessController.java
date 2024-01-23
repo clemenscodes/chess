@@ -7,13 +7,43 @@ import api.Square;
 import api.State;
 import java.util.ArrayList;
 
+/**
+ * The {@link ChessController} class implements the {@link IChessController} interface, serving as the
+ * controller component in the Chess MVC (Model-View-Controller) architecture. It manages the game logic,
+ * user interactions, and communication between the model and view components.
+ */
 public class ChessController implements IChessController {
 
+	/**
+	 * The model representing the chess game state. It implements the {@link IChessModel} interface.
+	 */
 	private IChessModel model;
+
+	/**
+	 * The view responsible for rendering the graphical user interface (GUI) of the chess game.
+	 * It implements the {@link IChessView} interface.
+	 */
 	private IChessView view;
+
+	/**
+	 * The source square of the last chess move. It represents the starting position of a piece.
+	 */
 	private Square source;
+
+	/**
+	 * The destination square of the last chess move. It represents the target position of a piece.
+	 */
 	private Square destination;
+
+	/**
+	 * The square being dragged by the user during user interactions.
+	 */
 	private Square draggedSquare;
+
+	/**
+	 * The list of legal moves available for the current player.
+	 * Each element is an array of squares representing a legal move (source and destination).
+	 */
 	private ArrayList<Square[]> legalMoves;
 
 	public void setModel(IChessModel model) {
@@ -55,13 +85,6 @@ public class ChessController implements IChessController {
 		return getModel().getMoves();
 	}
 
-	private ArrayList<Square[]> getLegalMoves(Square square) {
-		return getModel().getLegalMoves(square);
-	}
-
-	/**
-	 *
-	 */
 	public void resign() {
 		getModel().resign();
 	}
@@ -70,74 +93,42 @@ public class ChessController implements IChessController {
 		getModel().offerDraw();
 	}
 
-	/**
-	 *
-	 */
 	public void acceptDraw() {
 		getModel().acceptDraw();
 	}
 
-	/**
-	 *
-	 */
 	public void declineDraw() {
 		getModel().declineDraw();
 	}
 
-	/**
-	 * Sets the game state to Draw, ending the game as a draw
-	 */
 	public void claimDraw() {
 		getModel().claimDraw();
 	}
 
-	/**
-	 * @param source      Square
-	 * @param destination Square
-	 */
 	public void makeMove(Square source, Square destination) {
 		getModel().makeMove(source, destination);
 	}
 
-	/**
-	 *
-	 */
 	public void promoteQueen() {
 		getModel().promoteQueen();
 	}
 
-	/**
-	 *
-	 */
 	public void promoteRook() {
 		getModel().promoteRook();
 	}
 
-	/**
-	 *
-	 */
 	public void promoteKnight() {
 		getModel().promoteKnight();
 	}
 
-	/**
-	 *
-	 */
 	public void promoteBishop() {
 		getModel().promoteBishop();
 	}
 
-	/**
-	 * @param square The square to check for own piece
-	 * @return boolean Whether own piece is on the given square
-	 */
 	public boolean isOwnPieceOnSquare(Square square) {
 		return getModel().isOwnPieceOnSquare(square);
 	}
 
-	/**
-	 * @return String piecePlacementData
-	 */
 	public String[] getPiecePlacementData() {
 		return getModel().getPiecePlacementData();
 	}
@@ -146,65 +137,38 @@ public class ChessController implements IChessController {
 		return getModel().getFen();
 	}
 
-	/**
-	 * @return boolean isWhite
-	 */
 	public boolean isWhite() {
 		return getModel().isWhite();
 	}
 
-	/**
-	 * @return String castlingInformation
-	 */
 	public String getCastling() {
 		return getModel().getCastling();
 	}
 
-	/**
-	 * @return boolean canWhiteKingCastle
-	 */
 	public boolean getWhiteKingCastle() {
 		return getModel().getWhiteKingCastle();
 	}
 
-	/**
-	 * @return boolean canWhiteQueenCastle
-	 */
 	public boolean getWhiteQueenCastle() {
 		return getModel().getWhiteQueenCastle();
 	}
 
-	/**
-	 * @return boolean canBlackKingCastle
-	 */
 	public boolean getBlackKingCastle() {
 		return getModel().getBlackKingCastle();
 	}
 
-	/**
-	 * @return boolean canBlackQueenCastle
-	 */
 	public boolean getBlackQueenCastle() {
 		return getModel().getBlackQueenCastle();
 	}
 
-	/**
-	 * @return String enPassantSquare
-	 */
 	public String getEnPassant() {
 		return getModel().getEnPassant();
 	}
 
-	/**
-	 * @return int halfMoveClock
-	 */
 	public int getHalfMoveClock() {
 		return getModel().getHalfMoveClock();
 	}
 
-	/**
-	 * @return int fullMoveNumber
-	 */
 	public int getFullMoveNumber() {
 		return getModel().getFullMoveNumber();
 	}
@@ -275,6 +239,25 @@ public class ChessController implements IChessController {
 		return legalMoves;
 	}
 
+	public String getErrorMessage() {
+		return getModel().getErrorMessage();
+	}
+
+	public void clearErrorMessage() {
+		setSource(null);
+		setDestination(null);
+		getModel().clearError();
+		getLegalMoves().clear();
+	}
+
+	/**
+	 * The {@code getSquareFromCoordinates} method converts screen coordinates (x, y) to a corresponding chessboard square.
+	 * It checks if the coordinates are outside the chessboard boundaries and returns null if so.
+	 *
+	 * @param x The x-coordinate.
+	 * @param y The y-coordinate.
+	 * @return The corresponding chessboard square or null if coordinates are outside the boundaries.
+	 */
 	private Square getSquareFromCoordinates(int x, int y) {
 		boolean isOutsideHorizontally = isOutsideHorizontally(x);
 		boolean isOutsideVertically = isOutsideVertically(y);
@@ -290,22 +273,49 @@ public class ChessController implements IChessController {
 		return getSquareFromRankFile(rank, file);
 	}
 
+	/**
+	 * The {@code isOutsideHorizontally} method checks if a given coordinate is outside the horizontal boundaries of the chessboard.
+	 *
+	 * @param point The coordinate to check.
+	 * @return True if the coordinate is outside horizontally, false otherwise.
+	 */
 	private boolean isOutsideHorizontally(int point) {
 		boolean isOutsideLeft = point < getView().getLeftBoardOffset();
 		boolean isOutsideRight = point > getView().getWidth() - getView().getLeftBoardOffset();
 		return isOutsideLeft || isOutsideRight;
 	}
 
+	/**
+	 * The {@code isOutsideVertically} method checks if a given coordinate is outside the vertical boundaries of the chessboard.
+	 *
+	 * @param point The coordinate to check.
+	 * @return True if the coordinate is outside vertically, false otherwise.
+	 */
 	private boolean isOutsideVertically(int point) {
 		boolean isOutsideTop = point < getView().getTopBoardOffset();
 		boolean isOutsideBottom = point > getView().getHeight() - getView().getTopBoardOffset();
 		return isOutsideTop || isOutsideBottom;
 	}
 
+	/**
+	 * The {@code getIndex} method calculates the index of a square based on the offset and square size.
+	 *
+	 * @param offset     The offset from the reference point.
+	 * @param squareSize The size of a chess square
+	 * @return The calculated index.
+	 */
 	private int getIndex(int offset, int squareSize) {
 		return (int) Math.floor((double) offset / squareSize) + 1;
 	}
 
+	/**
+	 * The {@code getSquareFromRankFile} method converts rank and file indices to a corresponding chessboard square.
+	 * It checks if the indices are valid and returns null if not.
+	 *
+	 * @param rank The rank index.
+	 * @param file The file index.
+	 * @return The corresponding chessboard square or null if indices are invalid.
+	 */
 	private Square getSquareFromRankFile(int rank, int file) {
 		if (isInvalidIndex(rank) || isInvalidIndex(file)) {
 			return null;
@@ -316,42 +326,77 @@ public class ChessController implements IChessController {
 		return Square.valueOf(square);
 	}
 
+	/**
+	 * The {@code isInvalidIndex} method checks if a given index is outside the valid range [1, 8].
+	 *
+	 * @param index The index to check.
+	 * @return True if the index is invalid, false otherwise.
+	 */
 	private boolean isInvalidIndex(int index) {
 		return index < 1 || index > 8;
 	}
 
+	/**
+	 * The {@code getModel} method retrieves the associated chess model.
+	 *
+	 * @return The chess model.
+	 */
 	private IChessModel getModel() {
 		return model;
 	}
 
+	/**
+	 * The {@code getView} method retrieves the associated chess view.
+	 *
+	 * @return The chess view.
+	 */
 	private IChessView getView() {
 		return view;
 	}
 
+	/**
+	 * The {@code setSource} method sets the source square for a chess move.
+	 *
+	 * @param source The source square.
+	 */
 	private void setSource(Square source) {
 		this.source = source;
 	}
 
+	/**
+	 * The {@code setDestination} method sets the destination square for a chess move.
+	 *
+	 * @param destination The destination square.
+	 */
 	private void setDestination(Square destination) {
 		this.destination = destination;
 	}
 
+	/**
+	 * The {@code setDraggedSquare} method sets the square being dragged to by the user during interactions.
+	 *
+	 * @param draggedSquare The square being dragged to.
+	 */
 	private void setDraggedSquare(Square draggedSquare) {
 		this.draggedSquare = draggedSquare;
 	}
 
-	public String getErrorMessage() {
-		return getModel().getErrorMessage();
-	}
-
-	public void clearErrorMessage() {
-		setSource(null);
-		setDestination(null);
-		getModel().clearError();
-		getLegalMoves().clear();
-	}
-
+	/**
+	 * The {@code setLegalMoves} method sets the list of legal moves available for the current player.
+	 *
+	 * @param legalMoves The list of legal moves.
+	 */
 	private void setLegalMoves(ArrayList<Square[]> legalMoves) {
 		this.legalMoves = legalMoves;
+	}
+
+	/**
+	 * The {@code getLegalMoves} method retrieves the list of legal moves for a specified square from the model.
+	 *
+	 * @param square The square to get legal moves for.
+	 * @return The list of legal moves.
+	 */
+	private ArrayList<Square[]> getLegalMoves(Square square) {
+		return getModel().getLegalMoves(square);
 	}
 }

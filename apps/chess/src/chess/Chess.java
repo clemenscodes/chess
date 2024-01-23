@@ -10,8 +10,8 @@ import view.ChessView;
 
 /**
  * The {@link Chess} class serves as the main entry point for the chess game application,
- * utilizing the API, model, view, and controller libraries to bootstrap a fully functioning chess game.
- * It initializes the model, view, and controller components, establishing communication between them,
+ * utilizing the {@link api}, {@link model}, {@link view}, and {@link controller} libraries to bootstrap a fully functioning chess game.
+ * It initializes the {@link model}, {@link view}, and {@link controller} components, establishing communication between them,
  * and launches the game using the Processing library.
  */
 public final class Chess {
