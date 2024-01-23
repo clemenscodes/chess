@@ -138,12 +138,19 @@ public class ChessView extends PApplet implements IChessView {
 		setTitle(title);
 	}
 
-	@Override
+    /**
+     * Configures the size and pixel density of the game window based on the specified width and height.
+     */
+    @Override
 	public void settings() {
 		size(getWidth(), getHeight());
 		pixelDensity(displayDensity());
 	}
 
+    /**
+     * Sets up the initial configuration for the chess game, including window title, square size, board offsets,
+     * font, GUI components, piece images, and initiates the game start.
+     */
 	@Override
 	public void setup() {
 		windowTitle(getTitle());
@@ -167,6 +174,9 @@ public class ChessView extends PApplet implements IChessView {
 		getController().startGame();
 	}
 
+    /**
+     * Handles the rendering of the game window, background, error message, and updates the frame.
+     */
 	@Override
 	public void draw() {
 		background(221, 221, 221);
@@ -179,21 +189,33 @@ public class ChessView extends PApplet implements IChessView {
 		getController().nextFrame();
 	}
 
+    /**
+     * Handles the processing of mouse press events by forwarding them to the chess controller.
+     */
 	@Override
 	public void mousePressed() {
 		getController().handleMousePressed(mouseX, mouseY);
 	}
 
+    /**
+     * Handles the processing of mouse drag events by forwarding them to the chess controller.
+     */
 	@Override
 	public void mouseDragged() {
 		getController().handleMouseDragged(mouseX, mouseY);
 	}
 
+    /**
+     * Handles the processing of mouse release events by forwarding them to the chess controller.
+     */
 	@Override
 	public void mouseReleased() {
 		getController().handleMouseReleased(mouseX, mouseY);
 	}
 
+    /**
+     * Handles the processing of mouse move events by forwarding them to the chess controller.
+     */
 	@Override
 	public void mouseMoved() {
 		if (mousePressed) {
@@ -304,7 +326,7 @@ public class ChessView extends PApplet implements IChessView {
 		text("Game over", getWidth() / 2.0f, getHeight() / 20.0f);
 	}
 
-	public void drawError() {
+	private void drawError() {
 		fill(255, 0, 0);
 		textAlign(CENTER, CENTER);
 		textSize(20);
@@ -658,6 +680,22 @@ public class ChessView extends PApplet implements IChessView {
 			});
 	}
 
+	private Button initPromotionButton(String name, String label, String text, float x, float y) {
+		Button promotionButton = initButton(name, label);
+		int background = color(245, 60, 60);
+		int hoverColor = color(205, 50, 50);
+		int textColor = color(255);
+		promotionButton
+			.hide()
+			.setColorBackground(background)
+			.setPosition(x, y)
+			.setWidth(getPromoteBishopButton().getWidth() / 2)
+			.setColorActive(background)
+			.setColorForeground(hoverColor);
+		getPromoteBishopButton().getCaptionLabel().setColor(textColor).setText(text);
+		return promotionButton;
+	}
+
 	private Button getPromoteQueenButton() {
 		return promoteQueenButton;
 	}
@@ -667,22 +705,12 @@ public class ChessView extends PApplet implements IChessView {
 	}
 
 	private void initPromoteQueenButton() {
-		setPromoteQueenButton(initButton("Promote queen button", "Promote queen"));
-		int background = color(245, 60, 60);
-		int hoverColor = color(205, 50, 50);
-		int textColor = color(255);
+		float x = (getWidth() / 2f) - getPromoteQueenButton().getWidth();
+		float y = (getHeight() / 20f) - (getPromoteQueenButton().getHeight() / 2f);
+		setPromoteQueenButton(
+			initPromotionButton("Promote queen button", "Promote queen", "Queen", x, y)
+		);
 		getPromoteQueenButton()
-			.setColorBackground(background)
-			.setPosition(
-				(getWidth() / 2f) - getPromoteQueenButton().getWidth(),
-				(getHeight() / 20f) - (getPromoteQueenButton().getHeight() / 2f)
-			)
-			.setWidth(getPromoteQueenButton().getWidth() / 2)
-			.setColorActive(background)
-			.setColorForeground(hoverColor);
-		getPromoteQueenButton().getCaptionLabel().setColor(textColor).setText("Queen");
-		getPromoteQueenButton()
-			.hide()
 			.onRelease(event -> {
 				getController().promoteQueen();
 				hidePromotionButtons();
@@ -698,22 +726,12 @@ public class ChessView extends PApplet implements IChessView {
 	}
 
 	private void initPromoteRookButton() {
-		setPromoteRookButton(initButton("Promote rook button", "Promote rook"));
-		int background = color(245, 60, 60);
-		int hoverColor = color(205, 50, 50);
-		int textColor = color(255);
+		float x = (getWidth() / 2f) - (getPromoteRookButton().getWidth() / 2f);
+		float y = (getHeight() / 20f) - (getPromoteRookButton().getHeight() / 2f);
+		setPromoteRookButton(
+			initPromotionButton("Promote rook button", "Promote rook", "Rook", x, y)
+		);
 		getPromoteRookButton()
-			.setColorBackground(background)
-			.setPosition(
-				(getWidth() / 2f) - (getPromoteRookButton().getWidth() / 2f),
-				(getHeight() / 20f) - (getPromoteRookButton().getHeight() / 2f)
-			)
-			.setWidth(getPromoteRookButton().getWidth() / 2)
-			.setColorActive(background)
-			.setColorForeground(hoverColor);
-		getPromoteRookButton().getCaptionLabel().setColor(textColor).setText("Rook");
-		getPromoteRookButton()
-			.hide()
 			.onRelease(event -> {
 				getController().promoteRook();
 				hidePromotionButtons();
@@ -729,22 +747,12 @@ public class ChessView extends PApplet implements IChessView {
 	}
 
 	private void initPromoteKnightButton() {
-		setPromoteKnightButton(initButton("Promote knight button", "Promote knight"));
-		int background = color(245, 60, 60);
-		int hoverColor = color(205, 50, 50);
-		int textColor = color(255);
+		float x = getWidth() / 2f;
+		float y = (getHeight() / 20f) - (getPromoteKnightButton().getHeight() / 2f);
+		setPromoteKnightButton(
+			initPromotionButton("Promote knight button", "Promote knight", "Knight", x, y)
+		);
 		getPromoteKnightButton()
-			.setColorBackground(background)
-			.setPosition(
-				getWidth() / 2f,
-				(getHeight() / 20f) - (getPromoteKnightButton().getHeight() / 2f)
-			)
-			.setWidth(getPromoteKnightButton().getWidth() / 2)
-			.setColorActive(background)
-			.setColorForeground(hoverColor);
-		getPromoteKnightButton().getCaptionLabel().setColor(textColor).setText("Knight");
-		getPromoteKnightButton()
-			.hide()
 			.onRelease(event -> {
 				getController().promoteKnight();
 				hidePromotionButtons();
@@ -760,22 +768,12 @@ public class ChessView extends PApplet implements IChessView {
 	}
 
 	private void initPromoteBishopButton() {
-		setPromoteBishopButton(initButton("Promote bishop button", "Promote bishop"));
-		int background = color(245, 60, 60);
-		int hoverColor = color(205, 50, 50);
-		int textColor = color(255);
+		float x = (getWidth() / 2f) + getPromoteBishopButton().getWidth() / 2f;
+		float y = (getHeight() / 20f) - (getPromoteBishopButton().getHeight() / 2f);
+		setPromoteBishopButton(
+			initPromotionButton("Promote bishop button", "Promote bishop", "Bishop", x, y)
+		);
 		getPromoteBishopButton()
-			.setColorBackground(background)
-			.setPosition(
-				(getWidth() / 2f) + getPromoteBishopButton().getWidth() / 2f,
-				(getHeight() / 20f) - (getPromoteBishopButton().getHeight() / 2f)
-			)
-			.setWidth(getPromoteBishopButton().getWidth() / 2)
-			.setColorActive(background)
-			.setColorForeground(hoverColor);
-		getPromoteBishopButton().getCaptionLabel().setColor(textColor).setText("Bishop");
-		getPromoteBishopButton()
-			.hide()
 			.onRelease(event -> {
 				getController().promoteBishop();
 				hidePromotionButtons();
