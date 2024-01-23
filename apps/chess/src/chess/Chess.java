@@ -22,8 +22,8 @@ public final class Chess {
 	 * @param args Command line arguments (not used).
 	 */
 	public static void main(String[] args) {
-		final int width = 1600;
-		final int height = 900;
+		final int width = 1920;
+		final int height = 1080;
 		final String title = "Chess";
 		IChessModel model = new ChessModel();
 		IChessView view = new ChessView(width, height, title);
