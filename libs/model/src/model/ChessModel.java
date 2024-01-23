@@ -48,72 +48,42 @@ public class ChessModel implements IChessModel {
 		return getMoveList().toString();
 	}
 
-	/**
-	 * @return String[] getPiecePlacementData
-	 */
 	public String[] getPiecePlacementData() {
 		return getBoard().getFen().getPiecePlacementData();
 	}
 
-	/**
-	 * @return boolean isWhite
-	 */
 	public boolean isWhite() {
 		return getBoard().getFen().isWhite();
 	}
 
-	/**
-	 * @return String castlingInformation
-	 */
 	public String getCastling() {
 		return getBoard().getFen().getCastling();
 	}
 
-	/**
-	 * @return boolean canWhiteKingCastle
-	 */
 	public boolean getWhiteKingCastle() {
 		return getBoard().getFen().getWhiteKingCastle();
 	}
 
-	/**
-	 * @return boolean canWhiteQueenCastle
-	 */
 	public boolean getWhiteQueenCastle() {
 		return getBoard().getFen().getWhiteQueenCastle();
 	}
 
-	/**
-	 * @return boolean canBlackKingCastle
-	 */
 	public boolean getBlackKingCastle() {
 		return getBoard().getFen().getWhiteKingCastle();
 	}
 
-	/**
-	 * @return boolean canBlackQueenCastle
-	 */
 	public boolean getBlackQueenCastle() {
 		return getBoard().getFen().getBlackKingCastle();
 	}
 
-	/**
-	 * @return boolean enPassantSquare
-	 */
 	public String getEnPassant() {
 		return getBoard().getFen().getEnPassant();
 	}
 
-	/**
-	 * @return int halfMoveClock
-	 */
 	public int getHalfMoveClock() {
 		return getBoard().getFen().getHalfMoveClock();
 	}
 
-	/**
-	 * @return int fullMoveNumber
-	 */
 	public int getFullMoveNumber() {
 		return getBoard().getFen().getFullMoveNumber();
 	}
@@ -141,10 +111,6 @@ public class ChessModel implements IChessModel {
 		getMoveWriter().write(new Square[] { source, destination });
 	}
 
-	/**
-	 * @param square The square to check for own piece
-	 * @return boolean Whether own piece is on the given square
-	 */
 	public boolean isOwnPieceOnSquare(Square square) {
 		IBitboard piece = Bitboard.getSingleBit(Board.getIndex(square));
 		IBitboard ownPieces = getBoard().getPieces(getBoard().getFen().isWhite());

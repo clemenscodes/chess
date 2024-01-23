@@ -7,8 +7,7 @@ import java.util.ArrayList;
 
 class Bitboard implements IBitboard, Serializable {
 
-	private static final int BITS = 64;
-
+	private static final int BITS = Board.SIZE * Board.SIZE;
 	private static final IBitboard[] singleBits = new IBitboard[Board.SIZE * Board.SIZE];
 
 	static {

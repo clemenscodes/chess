@@ -883,10 +883,9 @@ public class ChessView extends PApplet implements IChessView {
 	 * @param label The label for the button.
 	 * @param text  The text displayed on the button.
 	 * @param x     The x-coordinate of the button position.
-	 * @param y     The y-coordinate of the button position.
 	 * @return The initialized promotion button.
 	 */
-	private Button initPromotionButton(String name, String label, String text, float x, float y) {
+	private Button initPromotionButton(String name, String label, String text, float x) {
 		Button promotionButton = initButton(name, label);
 		int background = color(245, 60, 60);
 		int hoverColor = color(205, 50, 50);
@@ -894,11 +893,12 @@ public class ChessView extends PApplet implements IChessView {
 		promotionButton
 			.hide()
 			.setColorBackground(background)
-			.setPosition(x, y)
-			.setWidth(getPromoteBishopButton().getWidth() / 2)
+			.setHeight((int) ((getHeight() / 20f) - ((getHeight() / 20f) / 2f)))
+			.setPosition(x, promotionButton.getHeight())
+			.setWidth(getWidth() / 20)
 			.setColorActive(background)
 			.setColorForeground(hoverColor);
-		getPromoteBishopButton().getCaptionLabel().setColor(textColor).setText(text);
+		promotionButton.getCaptionLabel().setColor(textColor).setText(text);
 		return promotionButton;
 	}
 
@@ -924,10 +924,9 @@ public class ChessView extends PApplet implements IChessView {
 	 * Initiates the "Promote Queen" button with appropriate settings and actions.
 	 */
 	private void initPromoteQueenButton() {
-		float x = (getWidth() / 2f) - getPromoteQueenButton().getWidth();
-		float y = (getHeight() / 20f) - (getPromoteQueenButton().getHeight() / 2f);
+		float x = (getWidth() / 2f) - ((getWidth() / 20f));
 		setPromoteQueenButton(
-			initPromotionButton("Promote queen button", "Promote queen", "Queen", x, y)
+			initPromotionButton("Promote queen button", "Promote queen", "Queen", x)
 		);
 		getPromoteQueenButton()
 			.onRelease(event -> {
@@ -958,11 +957,8 @@ public class ChessView extends PApplet implements IChessView {
 	 * Initiates the "Promote Rook" button with appropriate settings and actions.
 	 */
 	private void initPromoteRookButton() {
-		float x = (getWidth() / 2f) - (getPromoteRookButton().getWidth() / 2f);
-		float y = (getHeight() / 20f) - (getPromoteRookButton().getHeight() / 2f);
-		setPromoteRookButton(
-			initPromotionButton("Promote rook button", "Promote rook", "Rook", x, y)
-		);
+		float x = (getWidth() / 2f) - ((getWidth() / 20f) / 2f);
+		setPromoteRookButton(initPromotionButton("Promote rook button", "Promote rook", "Rook", x));
 		getPromoteRookButton()
 			.onRelease(event -> {
 				getController().promoteRook();
@@ -992,10 +988,9 @@ public class ChessView extends PApplet implements IChessView {
 	 * Initiates the "Promote Knight" button with appropriate settings and actions.
 	 */
 	private void initPromoteKnightButton() {
-		float x = getWidth() / 2f;
-		float y = (getHeight() / 20f) - (getPromoteKnightButton().getHeight() / 2f);
+		float x = getWidth() / 20f;
 		setPromoteKnightButton(
-			initPromotionButton("Promote knight button", "Promote knight", "Knight", x, y)
+			initPromotionButton("Promote knight button", "Promote knight", "Knight", x)
 		);
 		getPromoteKnightButton()
 			.onRelease(event -> {
@@ -1026,10 +1021,9 @@ public class ChessView extends PApplet implements IChessView {
 	 * Initiates the "Promote Bishop" button with appropriate settings and actions.
 	 */
 	private void initPromoteBishopButton() {
-		float x = (getWidth() / 2f) + getPromoteBishopButton().getWidth() / 2f;
-		float y = (getHeight() / 20f) - (getPromoteBishopButton().getHeight() / 2f);
+		float x = (getWidth() / 2f) + ((getWidth() / 20f) / 2f);
 		setPromoteBishopButton(
-			initPromotionButton("Promote bishop button", "Promote bishop", "Bishop", x, y)
+			initPromotionButton("Promote bishop button", "Promote bishop", "Bishop", x)
 		);
 		getPromoteBishopButton()
 			.onRelease(event -> {
