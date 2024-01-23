@@ -1,8 +1,8 @@
 package chess;
 
-import api.controller.IChessController;
-import api.model.IChessModel;
-import api.view.IChessView;
+import api.IChessController;
+import api.IChessModel;
+import api.IChessView;
 import controller.ChessController;
 import model.ChessModel;
 import processing.core.PApplet;

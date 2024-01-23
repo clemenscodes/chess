@@ -7,7 +7,7 @@
 	"private": true,
 	"scripts": {
 		"cloc": "cloc libs/model/src",
-		"docs": "javadoc -private -splitindex -d ./docs -classpath apps/chess/assets:apps/chess/src:libs/controller/src:libs/api/src:libs/model/src:libs/view/src:repository/thm/pis/controlp5/0.0.1/controlp5-0.0.1.jar:repository/thm/pis/processing/0.0.1/processing-0.0.1.jar --source-path apps/chess/assets:apps/chess/src:libs/controller/src:libs/api/src:libs/model:src:libs/view:src apps/chess/src/chess/*.java libs/view/src/view/*.java libs/model/src/model/*.java libs/controller/src/controller/*.java libs/api/src/api/controller/*.java libs/api/src/api/view/*.java libs/api/src/api/model/*.java",
+		"docs": "javadoc -private -splitindex -d ./docs -classpath apps/chess/assets:apps/chess/src:libs/controller/src:libs/api/src:libs/model/src:libs/view/src:repository/thm/pis/controlp5/0.0.1/controlp5-0.0.1.jar:repository/thm/pis/processing/0.0.1/processing-0.0.1.jar --source-path apps/chess/assets:apps/chess/src:libs/controller/src:libs/api/src:libs/model:src:libs/view:src apps/chess/src/chess/*.java libs/view/src/view/*.java libs/model/src/model/*.java libs/controller/src/controller/*.java libs/api/src/api/*.java",
 		"start": "pnpm nx serve chess --output-style=stream --skip-nx-cache",
 		"zipCode": "./scripts/zipCode.sh",
 		"zipDocs": "pnpm run docs && ./scripts/zipDocs.sh",

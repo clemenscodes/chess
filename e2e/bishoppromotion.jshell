@@ -1,5 +1,5 @@
 import model.ChessModel;
-import static api.model.Square.*;
+import static api.Square.*;
 
 var model = new ChessModel();
 

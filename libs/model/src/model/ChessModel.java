@@ -1,8 +1,8 @@
 package model;
 
-import api.model.IChessModel;
-import api.model.Square;
-import api.model.State;
+import api.IChessModel;
+import api.Square;
+import api.State;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;

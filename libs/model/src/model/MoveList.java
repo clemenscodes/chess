@@ -1,8 +1,8 @@
 package model;
 
-import api.model.Pieces;
-import api.model.Square;
-import api.model.State;
+import api.Pieces;
+import api.Square;
+import api.State;
 import java.io.Serializable;
 import java.util.ArrayList;
 

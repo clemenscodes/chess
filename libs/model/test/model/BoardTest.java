@@ -1,9 +1,9 @@
 package model;
 
-import static api.model.Square.*;
+import static api.Square.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import api.model.Pieces;
+import api.Pieces;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 

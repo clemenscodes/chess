@@ -1,8 +1,8 @@
 package view;
 
-import api.controller.IChessController;
-import api.model.Square;
-import api.view.IChessView;
+import api.IChessController;
+import api.IChessView;
+import api.Square;
 import controlP5.Button;
 import controlP5.ControlP5;
 import processing.core.PApplet;

@@ -1,9 +1,9 @@
 package model;
 
-import static api.model.Square.*;
+import static api.Square.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import api.model.State;
+import api.State;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import org.junit.jupiter.api.BeforeEach;

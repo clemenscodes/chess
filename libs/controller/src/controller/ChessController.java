@@ -1,10 +1,10 @@
 package controller;
 
-import api.controller.IChessController;
-import api.model.IChessModel;
-import api.model.Square;
-import api.model.State;
-import api.view.IChessView;
+import api.IChessController;
+import api.IChessModel;
+import api.IChessView;
+import api.Square;
+import api.State;
 import java.util.ArrayList;
 
 public class ChessController implements IChessController {

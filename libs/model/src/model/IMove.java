@@ -1,6 +1,6 @@
 package model;
 
-import api.model.Square;
+import api.Square;
 
 interface IMove {
 	Square getSource();

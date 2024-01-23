@@ -2,7 +2,7 @@ package model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import api.model.State;
+import api.State;
 import org.junit.jupiter.api.Test;
 
 public class StateTest {

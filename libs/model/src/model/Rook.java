@@ -1,6 +1,6 @@
 package model;
 
-import api.model.Pieces;
+import api.Pieces;
 
 abstract class Rook extends Piece implements IRook {
 

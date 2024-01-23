@@ -1,6 +1,6 @@
 package model;
 
-import api.model.Pieces;
+import api.Pieces;
 
 class WhitePawn extends Pawn {
 

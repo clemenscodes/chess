@@ -1,7 +1,7 @@
 package model;
 
-import api.model.Pieces;
-import api.model.Square;
+import api.Pieces;
+import api.Square;
 
 class RookPromotionMove extends PromotionMove {
 

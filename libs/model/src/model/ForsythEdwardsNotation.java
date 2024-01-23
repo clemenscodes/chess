@@ -1,6 +1,6 @@
 package model;
 
-import api.model.Square;
+import api.Square;
 import java.io.Serializable;
 
 class ForsythEdwardsNotation implements IForsythEdwardsNotation, Serializable {

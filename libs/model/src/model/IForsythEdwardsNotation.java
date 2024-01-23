@@ -1,7 +1,7 @@
 package model;
 
 import api.IChess;
-import api.model.Square;
+import api.Square;
 
 interface IForsythEdwardsNotation extends IChess {
 	IBitboard getEnPassantMask();
