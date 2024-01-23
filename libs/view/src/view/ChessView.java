@@ -9,31 +9,129 @@ import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PImage;
 
+/**
+ * The {@link ChessView} class implements the {@link IChessView} interface and extends the Processing {@link PApplet}.
+ * It serves as the graphical user interface (GUI) for the chess game, providing visual representation and user interaction.
+ */
 public class ChessView extends PApplet implements IChessView {
 
+	/**
+	 * The associated chess controller implementing the {@link IChessController} interface.
+	 */
 	private IChessController controller;
+
+	/**
+	 * The {@code ControlP5} instance for button management.
+	 */
 	private ControlP5 cp5;
+
+	/**
+	 * Button for resigning the game.
+	 */
 	private Button resignButton;
+
+	/**
+	 * Button for starting a new game.
+	 */
 	private Button startButton;
+
+	/**
+	 * Button for clearing error messages.
+	 */
 	private Button clearErrorButton;
+
+	/**
+	 * Button for offering a draw.
+	 */
 	private Button offerDrawButton;
+
+	/**
+	 * Button for accepting a draw offer.
+	 */
 	private Button acceptDrawButton;
+
+	/**
+	 * Button for declining a draw offer.
+	 */
 	private Button declineDrawButton;
+
+	/**
+	 * Button for promoting a pawn to a queen.
+	 */
 	private Button promoteQueenButton;
+
+	/**
+	 * Button for promoting a pawn to a rook.
+	 */
 	private Button promoteRookButton;
+
+	/**
+	 * Button for promoting a pawn to a knight.
+	 */
 	private Button promoteKnightButton;
+
+	/**
+	 * Button for promoting a pawn to a bishop.
+	 */
 	private Button promoteBishopButton;
+
+	/**
+	 * Array of images representing chess pieces.
+	 */
 	private PImage[] pieceImages;
+
+	/**
+	 * The font used for text rendering.
+	 */
 	private PFont font;
+
+	/**
+	 * The title of the game window.
+	 */
 	private String title;
+
+	/**
+	 * The dimensions of the game window.
+	 */
 	private int width;
+
+	/**
+	 * The dimensions of the game window.
+	 */
 	private int height;
+
+	/**
+	 * Offsets for the chessboard within the window.
+	 */
 	private int leftBoardOffset;
+
+	/**
+	 * Offsets for the chessboard within the window.
+	 */
 	private int topBoardOffset;
+
+	/**
+	 * The size of a chessboard square.
+	 */
 	private int squareSize;
+
+	/**
+	 * Colors representing white squares.
+	 */
 	private final int whiteColor = color(237, 214, 176);
+
+	/**
+	 * Colors representing black squares.
+	 */
 	private final int blackColor = color(184, 135, 98);
 
+	/**
+	 * The constructor initializes the dimensions and title of the game window.
+	 *
+	 * @param width  The width of the game window.
+	 * @param height The height of the game window.
+	 * @param title  The title of the game window.
+	 */
 	public ChessView(int width, int height, String title) {
 		setWidth(width);
 		setHeight(height);
