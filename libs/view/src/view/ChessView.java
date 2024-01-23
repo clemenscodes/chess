@@ -893,8 +893,8 @@ public class ChessView extends PApplet implements IChessView {
 		promotionButton
 			.hide()
 			.setColorBackground(background)
-			.setHeight((int) ((getHeight() / 20f) - ((getHeight() / 20f) / 2f)))
-			.setPosition(x, promotionButton.getHeight())
+			.setHeight((int) ((getHeight() / 20f)))
+			.setPosition(x, (getHeight() / 20f) - (promotionButton.getHeight() / 2f))
 			.setWidth(getWidth() / 20)
 			.setColorActive(background)
 			.setColorForeground(hoverColor);
@@ -924,7 +924,7 @@ public class ChessView extends PApplet implements IChessView {
 	 * Initiates the "Promote Queen" button with appropriate settings and actions.
 	 */
 	private void initPromoteQueenButton() {
-		float x = (getWidth() / 2f) - ((getWidth() / 20f));
+		float x = (getWidth() / 2f) - 2 * ((getWidth() / 20f));
 		setPromoteQueenButton(
 			initPromotionButton("Promote queen button", "Promote queen", "Queen", x)
 		);
@@ -957,7 +957,7 @@ public class ChessView extends PApplet implements IChessView {
 	 * Initiates the "Promote Rook" button with appropriate settings and actions.
 	 */
 	private void initPromoteRookButton() {
-		float x = (getWidth() / 2f) - ((getWidth() / 20f) / 2f);
+		float x = (getWidth() / 2f) - ((getWidth() / 20f));
 		setPromoteRookButton(initPromotionButton("Promote rook button", "Promote rook", "Rook", x));
 		getPromoteRookButton()
 			.onRelease(event -> {
@@ -988,7 +988,7 @@ public class ChessView extends PApplet implements IChessView {
 	 * Initiates the "Promote Knight" button with appropriate settings and actions.
 	 */
 	private void initPromoteKnightButton() {
-		float x = getWidth() / 20f;
+		float x = getWidth() / 2f;
 		setPromoteKnightButton(
 			initPromotionButton("Promote knight button", "Promote knight", "Knight", x)
 		);
@@ -1021,7 +1021,7 @@ public class ChessView extends PApplet implements IChessView {
 	 * Initiates the "Promote Bishop" button with appropriate settings and actions.
 	 */
 	private void initPromoteBishopButton() {
-		float x = (getWidth() / 2f) + ((getWidth() / 20f) / 2f);
+		float x = (getWidth() / 2f) + ((getWidth() / 20f));
 		setPromoteBishopButton(
 			initPromotionButton("Promote bishop button", "Promote bishop", "Bishop", x)
 		);
