@@ -35,6 +35,7 @@
             pkgs.jdk21
             pkgs.nodejs
             pkgs.pnpm
+            pkgs.jdt-language-server
           ];
         };
       };
