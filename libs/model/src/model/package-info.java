@@ -1,8 +1,7 @@
 /**
  * The {@link model} package contains the implementation of a chess game using
- * bitboards.
- * It provides the core logic for managing the state of the game, enforcing
- * chess rules,
+ * bitboards. It provides the core logic for managing the state of the game,
+ * enforcing chess rules,
  * and handling interactions between different game components.
  *
  * <p>

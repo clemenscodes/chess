@@ -18,10 +18,9 @@
  * <strong>Model API</strong>
  * </p>
  * The {@link api.IChessModel} API outlines the structure and behavior of the
- * Chess game model. It includes
- * interfaces for managing the game state, enforcing game rules, and providing
- * information
- * about the current game status. Implementations of this API represent the core
+ * Chess game model. It includes interfaces for managing the game state,
+ * enforcing game rules, and providing information about the current game
+ * status. Implementations of this API represent the core
  * logic of the game.
  *
  * <p>
