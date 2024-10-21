@@ -17,3 +17,5 @@ dist/
 node_modules
 docs
 coverage
+.direnv
+result
