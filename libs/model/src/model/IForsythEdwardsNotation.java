@@ -4,31 +4,31 @@ import api.IChess;
 import api.Square;
 
 interface IForsythEdwardsNotation extends IChess {
-	IBitboard getEnPassantMask();
+    IBitboard getEnPassantMask();
 
-	char getActiveColor();
+    char getActiveColor();
 
-	void updatePiecePlacementData(IBoard board);
+    void updatePiecePlacementData(IBoard board);
 
-	void incrementFullMoveNumber();
+    void incrementFullMoveNumber();
 
-	void incrementHalfMoveClock();
+    void incrementHalfMoveClock();
 
-	void resetHalfMoveClock();
+    void resetHalfMoveClock();
 
-	void switchActiveColor();
+    void switchActiveColor();
 
-	void setEnPassantTargetSquare(Square square);
+    void setEnPassantTargetSquare(Square square);
 
-	void unsetEnPassantTargetSquare();
+    void unsetEnPassantTargetSquare();
 
-	void parse(String fen);
+    void parse(String fen);
 
-	void castle();
+    void castle();
 
-	void kingMove();
+    void kingMove();
 
-	void kingRookMove();
+    void kingRookMove();
 
-	void queenRookMove();
+    void queenRookMove();
 }

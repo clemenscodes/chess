@@ -1,5 +1,5 @@
 package model;
 
 public interface IWriter<T> {
-	void write(T data);
+    void write(T data);
 }

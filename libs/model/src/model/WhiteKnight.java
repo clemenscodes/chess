@@ -4,11 +4,11 @@ import api.Pieces;
 
 class WhiteKnight extends Knight {
 
-	WhiteKnight() {
-		super(Pieces.WhiteKnight);
-	}
+    WhiteKnight() {
+        super(Pieces.WhiteKnight);
+    }
 
-	WhiteKnight(IBitboard board) {
-		super(Pieces.WhiteKnight, board);
-	}
+    WhiteKnight(IBitboard board) {
+        super(Pieces.WhiteKnight, board);
+    }
 }

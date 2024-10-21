@@ -4,7 +4,7 @@ import api.Pieces;
 
 class WhiteKing extends King {
 
-	WhiteKing() {
-		super(Pieces.WhiteKing);
-	}
+    WhiteKing() {
+        super(Pieces.WhiteKing);
+    }
 }

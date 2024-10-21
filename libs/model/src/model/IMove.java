@@ -3,7 +3,7 @@ package model;
 import api.Square;
 
 interface IMove {
-	Square getSource();
+    Square getSource();
 
-	Square getDestination();
+    Square getDestination();
 }

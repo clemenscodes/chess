@@ -16,7 +16,11 @@ maven.buildMavenPackage rec {
   installPhase = ''
     mkdir -p $out/bin $out/share
     mkdir -p $out/share/controlp5 $out/share/processing
-    cp -r dist/* $out/share
+    cp -r apps/chess/target/* $out/share
+    cp -r libs/api/target/* $out/share
+    cp -r libs/controller/target/* $out/share
+    cp -r libs/model/target/* $out/share
+    cp -r libs/view/target/* $out/share
     cp -r repository/thm/pis/controlp5/${version}/* $out/share/controlp5
     cp -r repository/thm/pis/processing/${version}/* $out/share/processing
 

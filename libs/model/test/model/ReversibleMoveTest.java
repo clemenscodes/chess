@@ -9,26 +9,26 @@ import org.junit.jupiter.api.Test;
 
 public class ReversibleMoveTest {
 
-	static class ReversibleMoveMock extends ReversibleMove {
+    static class ReversibleMoveMock extends ReversibleMove {
 
-		public ReversibleMoveMock(Square source, Square destination, IBoard board) {
-			super(source, destination, board);
-		}
-	}
+        public ReversibleMoveMock(Square source, Square destination, IBoard board) {
+            super(source, destination, board);
+        }
+    }
 
-	private IBoard board;
+    private IBoard board;
 
-	@BeforeEach
-	void init() {
-		board = new Board();
-	}
+    @BeforeEach
+    void init() {
+        board = new Board();
+    }
 
-	@Test
-	void shouldIncrementHalfMoveClock() {
-		int halfMoveClock = board.getFen().getHalfMoveClock();
-		assertEquals(0, halfMoveClock);
-		new ReversibleMoveMock(e2, e4, board);
-		halfMoveClock = board.getFen().getHalfMoveClock();
-		assertEquals(1, halfMoveClock);
-	}
+    @Test
+    void shouldIncrementHalfMoveClock() {
+        int halfMoveClock = board.getFen().getHalfMoveClock();
+        assertEquals(0, halfMoveClock);
+        new ReversibleMoveMock(e2, e4, board);
+        halfMoveClock = board.getFen().getHalfMoveClock();
+        assertEquals(1, halfMoveClock);
+    }
 }

@@ -6,73 +6,73 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 interface IBoard {
-	IForsythEdwardsNotation getFen();
+    IForsythEdwardsNotation getFen();
 
-	IKing getWhiteKing();
+    IKing getWhiteKing();
 
-	IQueen getWhiteQueen();
+    IQueen getWhiteQueen();
 
-	IRook getWhiteRook();
+    IRook getWhiteRook();
 
-	IKnight getWhiteKnight();
+    IKnight getWhiteKnight();
 
-	IBishop getWhiteBishop();
+    IBishop getWhiteBishop();
 
-	IPawn getWhitePawn();
+    IPawn getWhitePawn();
 
-	IKing getBlackKing();
+    IKing getBlackKing();
 
-	IQueen getBlackQueen();
+    IQueen getBlackQueen();
 
-	IRook getBlackRook();
+    IRook getBlackRook();
 
-	IKnight getBlackKnight();
+    IKnight getBlackKnight();
 
-	IBishop getBlackBishop();
+    IBishop getBlackBishop();
 
-	IPawn getBlackPawn();
+    IPawn getBlackPawn();
 
-	IPiece[] getAllWhitePieces();
+    IPiece[] getAllWhitePieces();
 
-	IBitboard getWhitePieces();
+    IBitboard getWhitePieces();
 
-	IPiece[] getAllBlackPieces();
+    IPiece[] getAllBlackPieces();
 
-	IBitboard getBlackPieces();
+    IBitboard getBlackPieces();
 
-	IBitboard getOccupiedSquares();
+    IBitboard getOccupiedSquares();
 
-	IBitboard getEmptySquares();
+    IBitboard getEmptySquares();
 
-	IBitboard[] getAllPieces();
+    IBitboard[] getAllPieces();
 
-	IBitboard getPieces(boolean getWhite);
+    IBitboard getPieces(boolean getWhite);
 
-	IBitboard getAllOpponentAttacks();
+    IBitboard getAllOpponentAttacks();
 
-	IBitboard getAllFriendlyAttacks();
+    IBitboard getAllFriendlyAttacks();
 
-	IBitboard getKing(boolean getWhite);
+    IBitboard getKing(boolean getWhite);
 
-	IPiece getPiece(Square square);
+    IPiece getPiece(Square square);
 
-	IPiece getPieceByKind(Pieces kind);
+    IPiece getPieceByKind(Pieces kind);
 
-	Pieces getPieceByIndex(int index);
+    Pieces getPieceByIndex(int index);
 
-	void capturePiece(int index);
+    void capturePiece(int index);
 
-	void setPieces();
+    void setPieces();
 
-	IBoard deepCopy() throws IOException, ClassNotFoundException;
+    IBoard deepCopy() throws IOException, ClassNotFoundException;
 
-	boolean kingUnsafe();
+    boolean kingUnsafe();
 
-	boolean isSquareAttacked(Square square);
+    boolean isSquareAttacked(Square square);
 
-	boolean isSquareEmpty(Square square);
+    boolean isSquareEmpty(Square square);
 
-	String getPiecePlacementData();
+    String getPiecePlacementData();
 
-	ArrayList<Square[]> getAllMoves(boolean getWhite);
+    ArrayList<Square[]> getAllMoves(boolean getWhite);
 }

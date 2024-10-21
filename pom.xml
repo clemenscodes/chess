@@ -34,10 +34,10 @@
 				<directory>${project.basedir}/assets</directory>
 			</testResource>
 		</testResources>
-		<directory>${project.basedir}/../../dist/${project.artifactId}</directory>
-		<outputDirectory>${project.basedir}/../../dist/${project.artifactId}</outputDirectory>
+		<directory>${project.basedir}/target/${project.artifactId}</directory>
+		<outputDirectory>${project.basedir}/target/${project.artifactId}</outputDirectory>
 		<testOutputDirectory>
-			${project.basedir}/../../dist/${project.artifactId}/test
+			${project.basedir}/target/${project.artifactId}
 		</testOutputDirectory>
 	</build>
 

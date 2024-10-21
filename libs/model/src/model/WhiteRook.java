@@ -4,7 +4,7 @@ import api.Pieces;
 
 class WhiteRook extends Rook {
 
-	WhiteRook() {
-		super(Pieces.WhiteRook);
-	}
+    WhiteRook() {
+        super(Pieces.WhiteRook);
+    }
 }

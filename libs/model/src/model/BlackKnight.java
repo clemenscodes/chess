@@ -4,7 +4,7 @@ import api.Pieces;
 
 class BlackKnight extends Knight {
 
-	BlackKnight() {
-		super(Pieces.BlackKnight);
-	}
+    BlackKnight() {
+        super(Pieces.BlackKnight);
+    }
 }
