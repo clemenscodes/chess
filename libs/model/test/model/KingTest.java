@@ -1,11 +1,22 @@
 package model;
 
-import static api.Square.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static api.Square.a1;
+import static api.Square.a2;
+import static api.Square.a4;
+import static api.Square.a8;
+import static api.Square.c1;
+import static api.Square.e1;
+import static api.Square.e2;
+import static api.Square.e4;
+import static api.Square.g1;
+import static api.Square.h1;
+import static api.Square.h8;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import api.Pieces;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import api.Pieces;
 
 public class KingTest {
 
