@@ -39,6 +39,9 @@
             pkgs.pnpm
             pkgs.jdt-language-server
           ];
+          shellHook = ''
+            ${pkgs.maven}/bin/mvn eclipse:eclipse
+          '';
         };
       };
     };
