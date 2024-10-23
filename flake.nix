@@ -20,19 +20,21 @@
           builtins.elem (pkgs.lib.getName pkg) unfreePkgs;
       };
     };
+    jdk = pkgs.jdk21;
   in {
     packages = {
-      ${system} = {
-        default = pkgs.chess;
+      ${system} = rec {
+        inherit (pkgs) chess;
+        default = chess;
       };
     };
     devShells = {
       ${system} = {
         default = pkgs.mkShell {
-          JAVA_HOME = "${pkgs.jdk.home}";
+          JAVA_HOME = "${jdk.home}";
           buildInputs = [
+            jdk
             pkgs.maven
-            pkgs.jdk21
             pkgs.nodejs
             pkgs.pnpm
             pkgs.jdt-language-server
